@@ -1,0 +1,71 @@
+---
+title: "Localize your GDK title across regions and languages"
+sidebarTitle: "Localization"
+description: "Plan localization for your GDK title: MicrosoftGame.config locale lists, resource selection, font and IME considerations, and per-region store listings."
+---
+
+Shipping globally on Xbox and the Microsoft Store means declaring which languages your title supports, providing localized resources, and letting the platform select the right strings and assets based on the player's console language. The GDK gives you the manifest entries and runtime helpers; the rest is conventional Win32-style resource loading.
+
+## Declare supported languages
+
+List every language your title ships with in `MicrosoftGame.config` under the `Resources` element. The platform uses this list to:
+
+- Decide which store listing to show in each market
+- Pick the closest matching language for the in-game UI
+- Validate that you provide a localized title name and description per language at cert
+
+```xml
+<Resources>
+  <Resource Language="en-US" />
+  <Resource Language="fr-FR" />
+  <Resource Language="de-DE" />
+  <Resource Language="ja-JP" />
+  <Resource Language="zh-CN" />
+</Resources>
+```
+
+The first entry is the **default** language and is the fallback used when the player's console language is not in the list.
+
+## Runtime language selection
+
+At runtime, query the player's preferred UI language from the platform and load the matching string table or asset bundle. The recommended call is the Win32 `GetUserPreferredUILanguages` API, which returns a prioritized list.
+
+```cpp
+ULONG numLanguages = 0;
+ULONG bufferSize = 0;
+GetUserPreferredUILanguages(
+    MUI_LANGUAGE_NAME,
+    &numLanguages,
+    nullptr,
+    &bufferSize);
+
+std::vector<wchar_t> buffer(bufferSize);
+GetUserPreferredUILanguages(
+    MUI_LANGUAGE_NAME,
+    &numLanguages,
+    buffer.data(),
+    &bufferSize);
+
+// buffer contains a double-null-terminated list of BCP-47 tags,
+// for example: L"en-US\0fr-FR\0\0"
+```
+
+## Fonts and scripts
+
+- **Latin / Cyrillic / Greek.** A single font with a broad glyph range usually covers all European languages.
+- **CJK (Chinese, Japanese, Korean).** Plan for large glyph atlases. Use the platform font fallback or ship a dedicated CJK font.
+- **Arabic and Hebrew.** Right-to-left layout requires bidi-aware text rendering. Test your HUD layouts in both LTR and RTL contexts.
+
+## IME and text input
+
+For any free-form text input (player names, chat, search), use the platform virtual keyboard via `XGameUiShowTextEntryAsync`. The keyboard automatically switches to the correct IME for the player's language — no per-language handling required in your title.
+
+## Store listings
+
+Each declared language requires a store listing in Partner Center: title, description, screenshots, and feature lists. Missing or machine-translated listings are a common cert failure. Plan localization of marketing copy alongside in-game strings.
+
+## See also
+
+- [Game Config](/gdk/game-config) — where the `Resources` element lives
+- [Game Config Schema](/reference/microsoftgameconfig-schema)
+- [Store Listings](/publishing/store-listings)

@@ -1,0 +1,81 @@
+---
+title: "People system: friends, followers, and player groups"
+sidebarTitle: "People System"
+description: "Query the player's friend and follower graph with the Xbox People system, build social user groups, and combine it with Social Manager."
+---
+
+The Xbox **People system** is the source of truth for who the player follows and is followed by. It's the data behind the friends list in the guide, profile cards, and the social tab on Xbox.com. Your title queries it through XSAPI to build features like "play with friends," "see friends in this game," and friend leaderboards.
+
+## People system vs. Social Manager
+
+<CardGroup cols={2}>
+  <Card title="People system (raw)" icon="address-book">
+    Direct query API. Good for one-off lookups ("is this XUID a friend?") but expensive if you need to maintain a live, fresh view.
+  </Card>
+
+  <Card title="Social Manager (recommended)" icon="users-rectangle">
+    A cached, change-tracking layer on top of the People system. Maintains a live picture of the player's friends, their presence, and their game state.
+  </Card>
+</CardGroup>
+
+For most titles, **use Social Manager**. The raw People system APIs are appropriate for back-end services or for one-shot queries during startup.
+
+## Relationship types
+
+The People system models a directional follow graph:
+
+- **Following** — people the player has chosen to follow.
+- **Followers** — people who follow the player.
+- **Friends** — mutual followers. This is the relationship most titles care about.
+- **Favorites** — a subset the player has pinned for quick access.
+
+Query by relationship filter:
+
+```cpp
+XblSocialRelationshipResultHandle handle = nullptr;
+XAsyncBlock* async = new XAsyncBlock{};
+async->callback = [](XAsyncBlock* a) {
+    XblSocialRelationshipResultHandle h = nullptr;
+    if (SUCCEEDED(XblSocialGetSocialRelationshipsResult(a, &h))) {
+        size_t count;
+        const XblSocialRelationship* relationships;
+        XblSocialRelationshipResultGetRelationships(h, &relationships, &count);
+        // ... use relationships ...
+        XblSocialRelationshipResultCloseHandle(h);
+    }
+    delete a;
+};
+
+XblSocialGetSocialRelationshipsAsync(
+    xblContext,
+    localXuid,
+    XblSocialRelationshipFilter::Friends,
+    /*startIndex*/ 0,
+    /*maxItems*/ 100,
+    async);
+```
+
+## Building social user groups
+
+With Social Manager, the typical pattern is to add the local user, then create groups based on filters:
+
+```cpp
+XblSocialManagerUserGroupHandle group = nullptr;
+XblSocialManagerCreateSocialUserGroupFromFilters(
+    xblContext,
+    XblPresenceFilter::TitleOnline,         // friends currently in this title
+    XblRelationshipFilter::Friends,
+    &group);
+```
+
+Then each frame, call `XblSocialManagerDoWork` and read events to track friends going online / offline, entering / leaving your title, and updating presence.
+
+## Privacy
+
+The People system honors player privacy settings. If a player has restricted who can see their profile, the People APIs return only the subset of data the local user is allowed to view. Do not cache profile data outside of session lifetime, and do not export friend graphs to third-party services without explicit consent.
+
+## See also
+
+- [Social](/services/social) — Social Manager overview
+- [Social Manager API reference](/reference/social-manager)
+- [Rich Presence](/services/rich-presence)

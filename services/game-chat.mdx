@@ -1,0 +1,99 @@
+---
+title: "Game Chat 2: in-game voice chat with TTS and STT"
+sidebarTitle: "Game Chat"
+description: "Add cross-platform in-game voice chat with Game Chat 2 — channel routing, TTS, STT, mute enforcement, and integration with multiplayer sessions."
+---
+
+Game Chat 2 is the GDK voice chat library. It manages microphone capture, audio mixing, codec choice, channel routing, and platform privacy / mute enforcement. It also bundles text-to-speech and speech-to-text for accessibility — features that are required by Xbox certification for any title that supports voice chat.
+
+## Key concepts
+
+<CardGroup cols={2}>
+  <Card title="Chat users" icon="users">
+    Every participating player is a `chat_user`. Local users own a microphone and speakers; remote users represent network peers.
+  </Card>
+
+  <Card title="Channels" icon="network-wired">
+    A channel is a logical group. Two users on the same channel hear each other; users on different channels do not. Use channels for teams, squads, or proximity zones.
+  </Card>
+
+  <Card title="Communication relationships" icon="arrows-left-right">
+    Pairwise relationships honor mute state, platform privacy, and parental controls. Game Chat 2 enforces them — you do not have to.
+  </Card>
+
+  <Card title="Transport-agnostic" icon="plug">
+    Game Chat 2 produces encoded audio packets that you ship over your existing network transport (PlayFab Party, your own server, a P2P mesh).
+  </Card>
+</CardGroup>
+
+## Initialization
+
+```cpp
+#include <GameChat2.h>
+using namespace xbox::services::game_chat_2;
+
+chat_manager::singleton_instance().initialize(
+    /* maxChatUsers */ 16,
+    /* chatVolume   */ 1.0f,
+    /* speakerPath  */ communication_relationship::send_and_receive_microphone_audio,
+    /* sharedVolume */ communication_relationship::send_and_receive_text,
+    /* shared mode  */ shared_device_communication_relationship_resolution_mode::permissive
+);
+
+chat_user* local = chat_manager::singleton_instance().add_local_user(localXuid);
+local->local()->set_microphone_muted(false);
+local->local()->set_text_to_speech_conversion_preference_enabled(true);
+local->local()->set_speech_to_text_conversion_preference_enabled(true);
+```
+
+After you add remote users (one per network peer), set them all on the same channel:
+
+```cpp
+localUser->local()->set_channel_index(0);
+remoteUser->set_channel_index(0);
+```
+
+## Per-frame work
+
+Call `start_processing_state_changes` and `start_processing_data_frames` each frame, dispatch events, and ferry encoded packets between Game Chat 2 and your network transport.
+
+```cpp
+// Pull state changes
+uint32_t stateChangeCount;
+chat_state_change const* const* stateChanges;
+chat_manager::singleton_instance().start_processing_state_changes(
+    &stateChangeCount, &stateChanges);
+// ... handle ...
+chat_manager::singleton_instance().finish_processing_state_changes(stateChanges);
+
+// Pull outgoing encoded audio
+uint32_t dataFrameCount;
+game_chat_data_frame const* const* dataFrames;
+chat_manager::singleton_instance().start_processing_data_frames(
+    &dataFrameCount, &dataFrames);
+for (uint32_t i = 0; i < dataFrameCount; ++i) {
+    SendOverNetwork(dataFrames[i]);
+}
+chat_manager::singleton_instance().finish_processing_data_frames(dataFrames);
+```
+
+## TTS and STT
+
+Game Chat 2's built-in TTS / STT pipeline is the easiest way to meet the accessibility certification bar. See [Text-to-Speech](/gdk/text-to-speech) for the full pattern and required defaults.
+
+## Privacy and mute enforcement
+
+Game Chat 2 reads the player's communication settings from Xbox services (privacy, mute lists, parental controls) and enforces them automatically. If a player has muted another, Game Chat 2 silently drops audio in both directions — you do not need to filter in your title code.
+
+## Multiplayer integration
+
+Game Chat 2 fits naturally above either MPSD-based multiplayer or PlayFab Party:
+
+- **MPSD / matchmaking.** Add a remote chat user when a remote MPSD member joins; remove when they leave.
+- **PlayFab Party.** Party already handles the network transport. Use Party's data channel APIs to send and receive Game Chat 2 packets.
+
+## See also
+
+- [Multiplayer](/services/multiplayer) — sessions, matchmaking, and Party transport
+- [Text-to-Speech](/gdk/text-to-speech) — accessibility certification
+- [Audio](/gdk/audio) — mixing voice with game audio

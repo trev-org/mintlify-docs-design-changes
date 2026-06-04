@@ -1,0 +1,98 @@
+---
+title: "Package your XBOX GDK game for XBOX and Windows PC"
+sidebarTitle: "Packaging"
+description: "Learn how to create GDK packages for Xbox and PC using makepkg, Intelligent Delivery, MSIXVC2, and package encryption for Microsoft Store submission."
+---
+
+Packaging is the process of bundling your game's executables, assets, and manifest into a distributable format that Microsoft Store can ingest, validate, and deliver to players. The GDK packaging system is shared across Xbox console and Windows PC targets, giving you Streaming Install, Intelligent Delivery, differential content updates, and support for downloadable content (DLC) — all from a single toolchain.
+
+## Key features
+
+<CardGroup cols={2}>
+  <Card title="Streaming Install" icon="download" href="/reference/xpackage">
+    Players can start your game as soon as the first required chunk is installed. Additional content continues downloading in the background while the player is already in the game.
+  </Card>
+
+  <Card title="Intelligent Delivery" icon="tags" href="/reference/xpackage">
+    Tag content chunks as language-specific or hardware-specific (e.g., 4K textures for Xbox One X and Xbox Series consoles) so that players only download what their system actually needs.
+  </Card>
+
+  <Card title="Differential Updates" icon="arrows-rotate" href="/reference/xpackage">
+    Only the changed portions of a package need to be downloaded when you publish an update, significantly reducing update sizes for players and CDN bandwidth costs for you.
+  </Card>
+
+  <Card title="Redistributable Support (PC)" icon="puzzle-piece" href="/publishing/overview">
+    PC packages can declare dependencies on common framework packages (DirectX, Visual C\+\+ runtimes) and include custom installer actions that run with elevated privileges at install time.
+  </Card>
+</CardGroup>
+
+## Packaging workflow
+
+<Steps>
+  <Step title="Configure MicrosoftGame.config">
+    Ensure your `MicrosoftGame.config` has a valid `Identity`, at least one `Executable` in `ExecutableList`, `ShellVisuals`, and a `StoreId` for commerce-related APIs to function. Set `configVersion="1"`.
+  </Step>
+  <Step title="Create a layout file (layout.xml)">
+    The layout file tells `makepkg` which files belong in the package and how they are organized into chunks. Intelligent Delivery tags (language, device family) are applied here.
+  </Step>
+  <Step title="Run makepkg to build the package">
+    For **Xbox console** and **PC (MSIXVC)**, use `makepkg.exe`:
+
+    ```bash
+    # Xbox console (XVC format)
+    makepkg pack /f layout.xml /d .\gamefiles\ /pd .\output\
+    
+    # PC (MSIXVC format)
+    makepkg pack /f layout.xml /d .\gamefiles\ /pd .\output\ /pc
+    ```
+
+    For **PC with the new MSIXVC2 format** (April 2026 GDK\+), use `makepkg2.exe`:
+
+    ```bash
+    makepkg2 pack /f layout.xml /d .\gamefiles\ /pd .\output\
+    ```
+  </Step>
+  <Step title="Test with a sideloaded package">
+    Install the package on a development kit or test PC to verify installation behavior, chunk streaming, and Gaming Runtime integration before submitting to Partner Center.
+  </Step>
+  <Step title="Upload to Partner Center">
+    Upload the resulting `.xvc` (console) or `.msixvc` / `.msixvc2` (PC) package to Partner Center for certification and store publishing. You can automate this step with the **Package Uploader** open-source tool.
+  </Step>
+</Steps>
+
+## MSIXVC2 for PC (April 2026 GDK\+)
+
+Starting with the April 2026 GDK, a next-generation PC packaging format called **MSIXVC2** is available as a preview. It delivers significant improvements over the original MSIXVC format:
+
+| Metric | Improvement |
+| --- | --- |
+| Content update size | 64–94% smaller |
+| Packaging speed | Up to 7.6× faster |
+| Workflow | Combined pack and upload in a single command |
+
+MSIXVC2 is **PC-only**. Xbox console games continue to use the XVC format. Both formats are supported by the `makepkg2` tool.
+
+<Tip>
+  If you are starting a new PC game or overhauling your packaging pipeline, MSIXVC2 is the recommended format for its dramatically smaller update deltas and faster turnaround during development.
+</Tip>
+
+## Package encryption
+
+The GDK packaging system encrypts your content in the following contexts:
+
+- **On optical disc media** — always encrypted
+- **On the content distribution network (CDN)** — encrypted in transit and at rest
+- **Installed on a console** — always encrypted
+- **On an external hard drive formatted for games** connected to a console — always encrypted
+
+<Note>
+  When a PC package is installed on Windows and licensed (i.e., while the game is running), users can access the package contents unencrypted. The GDK packaging system is **not** a DRM solution for PC. Certain parts of a package — including `MicrosoftGame.config`, icons, images, and Intelligent Delivery tags — are always stored unencrypted even on the CDN.
+</Note>
+
+## Automating uploads
+
+You can automate package uploads to Partner Center using the open-source **Package Uploader** tool. Package Uploader is a .NET 5.0 cross-platform application that interacts programmatically with the Partner Center API, making it easy to integrate publishing into your CI/CD pipeline.
+
+## Dynamic chunk ordering
+
+Your game can change the chunk installation order at runtime in response to player actions — for example, prioritizing the installation of a specific map or game mode based on what the player selects in the title screen. This lets you minimize wait times for the content your players are most likely to engage with first.

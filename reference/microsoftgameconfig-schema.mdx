@@ -1,0 +1,328 @@
+---
+title: "MicrosoftGame.config schema reference"
+sidebarTitle: "Game Config Schema"
+description: "MicrosoftGame.config schema reference: configVersion rules, Identity, ShellVisuals, ExecutableList, StoreId, TitleId, and persistent storage configuration."
+---
+
+`MicrosoftGame.config` is the central configuration file for every GDK title. It defines the game's identity, shell presence (logos and display names), list of executables, Xbox Live service identifiers, storage settings, and platform-specific options. The file is processed by `makepkg.exe` at packaging time and by the Gaming Runtime when a title is registered or launched.
+
+The source file you author is a `.mgc` file (MicrosoftGame Config); the GDK build tools compile it to the final `MicrosoftGame.config` placed in your output directory.
+
+## configVersion
+
+All titles using the October 2023 GDK or later **must** use `configVersion="1"`. Submission Validator reports a failure for any package submitted with `configVersion="0"`.
+
+```xml
+<Game configVersion="1">
+  <!-- all other elements go here -->
+</Game>
+```
+
+**Changes in configVersion 1 vs 0:**
+- `MSAAppId` and `TitleId` must both be present if either is specified.
+- Both are required when `NoCodePCRoot` is specified or `AdvancedUserModel` is set to `false`.
+- The following elements are **deprecated**: `ModFolder`, `EnableWritesToPackageRoot`, `DisableFilesystemWriteVirtualization`, `DisableRegistryWriteVirtualization`.
+
+---
+
+## Key element reference
+
+| Element | Required | Parent | Description |
+|---|---|---|---|
+| `Game` | Required | — | Root element. Accepts `configVersion` attribute. |
+| `Identity` | Required | `Game` | Package identity: `Name`, `Publisher` (CN= format), and `Version`. |
+| `ShellVisuals` | Required (packaged) | `Game` | Logo images and display name used in the shell. |
+| `ExecutableList` | Required | `Game` | List of one or more `Executable` entries. |
+| `Executable` | Required | `ExecutableList` | An individual executable: `Name`, `TargetDeviceFamily`, `Id`, `IsDevOnly`. |
+| `StoreId` | Optional | `Game` | Microsoft Store product ID (from Partner Center). |
+| `MSAAppId` | Required (if using Xbox Live) | `Game` | 16-character hex MSA App ID for Xbox Live identity. |
+| `TitleId` | Required with MSAAppId | `Game` | 8-character hex Xbox Live Title ID. |
+| `RequiresXboxLive` | Optional | `Game` | `true` if the title must have Xbox Live connectivity to run. |
+| `Resources` | Optional | `Game` | Language locale list for localizing `ShellVisuals`. |
+| `PersistentLocalStorage` | Optional (console) | `Game` | Specifies the `SizeMB` and `GrowableToMB` for console persistent local storage. |
+| `VirtualMachine` | Optional (console) | `Game` | Memory and compatibility settings for specific Xbox hardware. |
+| `MediaCapture` | Optional (console) | `Game` | Controls Game DVR, broadcast blocking, and screenshot behavior. |
+| `RelatedProducts` | Optional | `Game` | `RelatedProduct` StoreId entries for DLC relationship mapping. |
+| `AllowedProducts` | Optional | `Game` | Base game StoreId entries that this DLC belongs to. |
+| `DesktopRegistration` | Optional (PC) | `Game` | PC-specific settings: processor architecture, dependencies, custom install actions. |
+| `AdvancedUserModel` | Optional | `Game` | Set to `false` to use the simplified user model (guaranteed consistent active user). |
+| `DevelopmentOnly` | Optional (console) | `Game` | Development-only overrides: `ContentIdOverride`, `EKBIDOverride`, debug port list. |
+
+---
+
+## Element groups
+
+<Accordion title="Identity and ShellVisuals">
+  ### Identity
+
+  Specifies the package identity used when registering and packaging the title. All three attributes are recognized by the Windows package model.
+
+  ```xml
+  <Identity
+      Name="41336PublisherName.ExampleGame"
+      Publisher="CN=A4954634-DF4B-47C7-AB70-D3215D246AF1"
+      Version="1.6.0.0" />
+  ```
+
+  | Attribute | Description |
+  |---|---|
+  | `Name` | Package name in `PublisherId.GameName` format, from Partner Center → Product Management → Product Identity |
+  | `Publisher` | Publisher certificate subject (CN= format) |
+  | `Version` | Four-part version number (`major.minor.build.revision`). Subsequent console generations must increment major version. |
+
+  ### ShellVisuals
+
+  Defines how the title appears in the Xbox or Windows shell: its display name, publisher display name, logo images, description, splash screen, and background colour.
+
+  ```xml
+  <ShellVisuals
+      DefaultDisplayName="Example Game"
+      PublisherDisplayName="Example Publisher"
+      StoreLogo="StoreLogoFile.png"
+      Square150x150Logo="LogoFile150x150.png"
+      Square44x44Logo="LogoFile44x44.png"
+      Square480x480Logo="LogoFile480x480.png"
+      Description="Example Game"
+      ForegroundText="light"
+      BackgroundColor="#ffffff"
+      SplashScreenImage="SplashScreen.png" />
+  ```
+</Accordion>
+
+<Accordion title="ExecutableList and Executable">
+  At least one `Executable` entry is required to register or package successfully.
+
+  ```xml
+  <ExecutableList>
+      <Executable
+          Name="ExampleGame.exe"
+          TargetDeviceFamily="Scarlett"
+          Id="Game"
+          IsDevOnly="false"
+          OverrideDisplayName="Example Game"
+          OverrideLogo="OverriddenLogo.png" />
+      <Executable
+          Name="ExampleGame_Debug.exe"
+          IsDevOnly="true" />
+  </ExecutableList>
+  ```
+
+  | Attribute | Description |
+  |---|---|
+  | `Name` | Path to the executable, relative to the package root |
+  | `TargetDeviceFamily` | `XboxOne`, `Scarlett`, or `PC` |
+  | `Id` | Application ID used in the AUMID. Must be unique per executable. |
+  | `IsDevOnly` | `true` to exclude this entry from submission-signed packages |
+  | `OverrideDisplayName` | Override the display name from `ShellVisuals` for this specific executable |
+  | `OverrideLogo` | Override the logo from `ShellVisuals` |
+</Accordion>
+
+<Accordion title="Xbox Live identifiers (MSAAppId, TitleId, StoreId)">
+  ```xml
+  <MSAAppId>0000000000000000</MSAAppId>
+  <TitleId>FFFFFFFF</TitleId>
+  <StoreId>9NZTKMP36L8J</StoreId>
+  ```
+
+  - **MSAAppId** — 16-character hex string from Partner Center. Required if `TitleId` is present (configVersion 1).
+  - **TitleId** — 8-character hex string (decimal `4294967295` = `FFFFFFFF`). Required if `MSAAppId` is present.
+  - **StoreId** — The 12-character alphanumeric Store product ID from Partner Center → Product Management → Product Identity.
+
+  <Note>
+    Find your `MSAAppId`, `TitleId`, and `StoreId` in Partner Center under **Product Management → Product Identity**.
+  </Note>
+</Accordion>
+
+<Accordion title="PersistentLocalStorage (console)">
+  Configures the size of the title's persistent local storage on Xbox consoles. This storage persists across game updates and is separate from cloud saves.
+
+  ```xml
+  <PersistentLocalStorage>
+      <SizeMB>322</SizeMB>
+      <!-- Optional: allow storage to grow up to this limit over time -->
+      <GrowableToMB>1024</GrowableToMB>
+  </PersistentLocalStorage>
+  ```
+
+  | Element | Range | Description |
+  |---|---|---|
+  | `SizeMB` | 10 – 100000 | Minimum guaranteed size in MB |
+  | `GrowableToMB` | ≥ 10 | Maximum size the storage can grow to on-demand. Must be ≥ `SizeMB`. |
+
+  Persistent local storage requires title identity (`MSAAppId` and `TitleId`) to be configured.
+</Accordion>
+
+<Accordion title="VirtualMachine (console memory)">
+  Controls per-console-generation memory allocation for Xbox hardware:
+
+  ```xml
+  <VirtualMachine>
+      <XboxLockhartTitleMemory>Standard</XboxLockhartTitleMemory>   <!-- Xbox Series S -->
+      <XboxAnacondaTitleMemory>Standard</XboxAnacondaTitleMemory>   <!-- Xbox Series X -->
+      <!-- <XboxOneXTitleMemory>Standard</XboxOneXTitleMemory>  for Xbox One X -->
+  </VirtualMachine>
+  ```
+
+  | Element | Allowed values | Console |
+  |---|---|---|
+  | `XboxOneXTitleMemory` | `Standard`, `Advanced` | Xbox One X |
+  | `XboxLockhartTitleMemory` | `Standard`, `Advanced` | Xbox Series S |
+  | `XboxAnacondaTitleMemory` | `Standard`, `Advanced` | Xbox Series X |
+  | `SMTEnabled` | `true`, `false` | Enable simultaneous multi-threading |
+  | `XboxCompatibility` | `XboxOne`, `Scarlett` | Max compatible console generation |
+</Accordion>
+
+<Accordion title="MediaCapture (console)">
+  Controls Game DVR, screenshots, and broadcasting while the title is running.
+
+  ```xml
+  <MediaCapture>
+      <GameDVRSystemComponent>true</GameDVRSystemComponent>
+      <BlockBroadcast>0</BlockBroadcast>
+      <BlockGameDVR>0</BlockGameDVR>
+  </MediaCapture>
+  ```
+
+  | Element | Description |
+  |---|---|
+  | `GameDVRSystemComponent` | `true` to enable the Game DVR system component |
+  | `BlockBroadcast` | `1` to prevent broadcasting the title |
+  | `BlockGameDVR` | `1` to prevent Game DVR recordings |
+</Accordion>
+
+<Accordion title="RelatedProducts and DLC">
+  Use `RelatedProducts` to associate DLC Store IDs with the base game:
+
+  ```xml
+  <RelatedProducts>
+      <RelatedProduct>9NZTKMP36L8J</RelatedProduct>
+      <RelatedProduct>9NQJV5BMKR6C</RelatedProduct>
+  </RelatedProducts>
+  ```
+
+  For DLC packages, use `AllowedProducts` to declare which base game the DLC belongs to:
+
+  ```xml
+  <AllowedProducts>
+      <AllowedProduct>9NZTKMP36L8J</AllowedProduct>
+  </AllowedProducts>
+  ```
+</Accordion>
+
+<Accordion title="DevelopmentOnly (console)">
+  Contains settings that apply only during development and are stripped from submission packages.
+
+  ```xml
+  <DevelopmentOnly>
+      <ContentIdOverride>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</ContentIdOverride>
+      <EKBIDOverride>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</EKBIDOverride>
+      <DebugNetworkPortList>
+          <DebugNetworkPort>4600</DebugNetworkPort>
+      </DebugNetworkPortList>
+  </DevelopmentOnly>
+  ```
+
+  Use `xbapp list /d /nosystem` to find your title's `ContentID` and `EKBID` from a development kit.
+</Accordion>
+
+---
+
+## Deprecated elements
+
+The following elements were deprecated in the March 2022 GDK and must not be used in `configVersion="1"` files:
+
+| Element | Replacement |
+|---|---|
+| `ModFolder` | Not replaced; mod support is handled outside the config |
+| `DisableFilesystemWriteVirtualization` | Removed; not required for GDK titles |
+| `DisableRegistryWriteVirtualization` | Removed; not required for GDK titles |
+| `EnableWritesToPackageRoot` | Removed; not required for GDK titles |
+
+---
+
+## Sample MicrosoftGame.config (Xbox Series X\|S)
+
+The following example shows a complete `MicrosoftGame.config` for an Xbox Series X\|S title. Comments note differences for an Xbox One target.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Game configVersion="1">
+
+    <Identity
+        Name="41336PublisherName.ExampleGame"
+        Publisher="CN=A4954634-DF4B-47C7-AB70-D3215D246AF1"
+        Version="1.6.0.0" />
+
+    <GameOsVersion>**REPLACE**</GameOsVersion>
+
+    <MediaCapture>
+        <GameDVRSystemComponent>true</GameDVRSystemComponent>
+        <BlockBroadcast>0</BlockBroadcast>
+        <BlockGameDVR>0</BlockGameDVR>
+    </MediaCapture>
+
+    <PersistentLocalStorage>
+        <SizeMB>322</SizeMB>
+    </PersistentLocalStorage>
+
+    <MSAAppId>0000000000000000</MSAAppId>
+    <TitleId>FFFFFFFF</TitleId>
+    <StoreId>9NZTKMP36L8J</StoreId>
+
+    <RelatedProducts>
+        <RelatedProduct>9NZTKMP36L8J</RelatedProduct>
+        <RelatedProduct>9NQJV5BMKR6C</RelatedProduct>
+        <RelatedProduct>9PNX38847DWW</RelatedProduct>
+    </RelatedProducts>
+
+    <VirtualMachine>
+        <!-- Use XboxOneXTitleMemory instead if targeting Xbox One -->
+        <XboxLockhartTitleMemory>Standard</XboxLockhartTitleMemory>
+        <XboxAnacondaTitleMemory>Standard</XboxAnacondaTitleMemory>
+    </VirtualMachine>
+
+    <MSAFullTrust>false</MSAFullTrust>
+
+    <ExecutableList>
+        <!-- Use TargetDeviceFamily="XboxOne" if targeting Xbox One -->
+        <Executable
+            Name="ExampleGame.exe"
+            TargetDeviceFamily="Scarlett"
+            Id="Game"
+            IsDevOnly="false"
+            OverrideDisplayName="Example Game"
+            OverrideLogo="OverriddenLogo.png" />
+        <Executable Name="ExampleGame_Debug.exe"   IsDevOnly="true" />
+        <Executable Name="ExampleGame_Profile.exe" IsDevOnly="true" />
+    </ExecutableList>
+
+    <ShellVisuals
+        DefaultDisplayName="Example Game"
+        PublisherDisplayName="Example Publisher"
+        StoreLogo="StoreLogoFile.png"
+        Square150x150Logo="LogoFile150x150.png"
+        Square44x44Logo="LogoFile44x44.png"
+        Square480x480Logo="LogoFile480x480.png"
+        Description="Example Game"
+        ForegroundText="light"
+        BackgroundColor="#ffffff"
+        SplashScreenImage="SplashScreen.png" />
+
+    <Resources>
+        <Resource Language="en-us" />
+        <Resource Language="de-de" />
+        <Resource Language="es-mx" />
+    </Resources>
+
+    <DevelopmentOnly>
+        <DebugNetworkPortList>
+            <DebugNetworkPort>4600</DebugNetworkPort>
+        </DebugNetworkPortList>
+    </DevelopmentOnly>
+
+</Game>
+```
+
+<Tip>
+  The XSD schema that validates your `MicrosoftGame.config` is installed at `<GDK install root>/bin/GameConfigSchema.xsd`. Open it in any XML-aware editor to see the full list of allowed elements, attribute types, and constraints.
+</Tip>

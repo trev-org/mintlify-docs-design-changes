@@ -1,0 +1,227 @@
+---
+title: "XGameSave API reference for cloud game saves"
+sidebarTitle: "XGameSave"
+description: "Reference for the XGameSave Connected Storage API: initialize a provider, create containers, read and write blobs, and delete save data."
+---
+
+The XGameSave API implements **Connected Storage** — the GDK's roaming, fault-tolerant cloud save system. Save data is organized into **containers** (named groups) each containing one or more **blobs** (named byte arrays). Writes are transactional: you stage changes into an `XGameSaveUpdate` and then submit the whole update atomically. If the device loses power mid-write, the previous save state remains intact.
+
+**Header:** `XGameSave.h`  
+**Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
+
+---
+
+## Key types
+
+| Type | Description |
+|---|---|
+| `XGameSaveProviderHandle` | Opaque handle to an initialized save provider for a specific user |
+| `XGameSaveContainerHandle` | Opaque handle to an open container within a provider |
+| `XGameSaveUpdateHandle` | Opaque handle to a pending update (set of blob writes/deletes) |
+| `XGameSaveBlobInfo` | Metadata about a blob: name and size in bytes |
+| `XGameSaveContainerInfo` | Metadata about a container: name, display name, last-modified time, and total blob size |
+| `XGameSaveBlob` | A blob returned from a read operation: name, data pointer, and size |
+
+---
+
+## Functions
+
+### Provider management
+
+<ResponseField name="XGameSaveInitializeProvider" type="HRESULT">
+  Synchronously initializes a save provider for the specified user and SCID. Call this before opening any containers.
+
+  ```c
+  HRESULT XGameSaveInitializeProvider(
+      XUserHandle              user,
+      const char*              configurationId,   // SCID
+      bool                     allowOffline,
+      XGameSaveProviderHandle* provider
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XGameSaveInitializeProviderAsync" type="HRESULT">
+  Async variant of `XGameSaveInitializeProvider`. Use this on titles where blocking the calling thread is unacceptable.
+</ResponseField>
+
+<ResponseField name="XGameSaveCloseProvider" type="void">
+  Releases all resources held by an `XGameSaveProviderHandle`. Call when your game no longer needs save access for this user.
+</ResponseField>
+
+<ResponseField name="XGameSaveGetRemainingQuota" type="HRESULT">
+  Returns the number of bytes remaining in the user's save quota for this title.
+</ResponseField>
+
+### Container management
+
+<ResponseField name="XGameSaveCreateContainer" type="HRESULT">
+  Opens (or creates) a named container within the provider.
+
+  ```c
+  HRESULT XGameSaveCreateContainer(
+      XGameSaveProviderHandle   provider,
+      const char*               containerName,
+      XGameSaveContainerHandle* container
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XGameSaveGetContainerInfo" type="HRESULT">
+  Retrieves metadata for all containers in a provider via a callback. Use this to build a save-slot UI.
+</ResponseField>
+
+<ResponseField name="XGameSaveEnumerateContainerInfo" type="HRESULT">
+  Enumerates `XGameSaveContainerInfo` records for every container in the provider, invoking `XGameSaveContainerInfoCallback` for each.
+</ResponseField>
+
+<ResponseField name="XGameSaveDeleteContainer" type="HRESULT">
+  Deletes a container and all its blobs from cloud storage.
+</ResponseField>
+
+<ResponseField name="XGameSaveCloseContainer" type="void">
+  Closes an `XGameSaveContainerHandle` without deleting the container.
+</ResponseField>
+
+### Writing save data
+
+<ResponseField name="XGameSaveCreateUpdate" type="HRESULT">
+  Creates a new `XGameSaveUpdateHandle` scoped to a container. Stage blob writes and deletes against this handle before submitting.
+
+  ```c
+  HRESULT XGameSaveCreateUpdate(
+      XGameSaveContainerHandle container,
+      const char*              containerName,
+      XGameSaveUpdateHandle*   update
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XGameSaveSubmitBlobWrite" type="HRESULT">
+  Stages a blob write into an update. The blob data is copied immediately; you can free your buffer after this call returns.
+
+  ```c
+  HRESULT XGameSaveSubmitBlobWrite(
+      XGameSaveUpdateHandle update,
+      const char*           blobName,
+      const uint8_t*        data,
+      uint32_t              dataSize
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XGameSaveSubmitBlobDelete" type="HRESULT">
+  Stages a blob deletion into an update.
+</ResponseField>
+
+<ResponseField name="XGameSaveSubmitUpdateAsync" type="HRESULT">
+  Atomically commits all staged writes and deletes to cloud storage. The operation is transactional — either all changes land or none do.
+</ResponseField>
+
+<ResponseField name="XGameSaveSubmitUpdate" type="HRESULT">
+  Synchronous variant of `XGameSaveSubmitUpdateAsync`.
+</ResponseField>
+
+<ResponseField name="XGameSaveCloseUpdate" type="void">
+  Releases an `XGameSaveUpdateHandle`. Call whether or not you submitted the update.
+</ResponseField>
+
+### Reading save data
+
+<ResponseField name="XGameSaveReadBlobData" type="HRESULT">
+  Reads one or more blobs from a container into caller-supplied buffers.
+
+  ```c
+  HRESULT XGameSaveReadBlobData(
+      XGameSaveContainerHandle container,
+      const char**             blobNames,
+      uint32_t                 countOfBlobs,
+      uint32_t                 dataSize,
+      uint8_t*                 blobData,        // output buffer
+      uint32_t*                countOfBlobsRead // output
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XGameSaveReadBlobDataAsync" type="HRESULT">
+  Async variant of `XGameSaveReadBlobData`.
+</ResponseField>
+
+<ResponseField name="XGameSaveEnumerateBlobInfo" type="HRESULT">
+  Enumerates `XGameSaveBlobInfo` records for each blob in a container, invoking `XGameSaveBlobInfoCallback` for each entry. Use this to discover blob names and sizes before reading.
+</ResponseField>
+
+---
+
+## Code example: save then load
+
+```cpp
+// --- SAVING ---
+
+XGameSaveProviderHandle provider = nullptr;
+HRESULT hr = XGameSaveInitializeProvider(
+    userHandle,
+    "00000000-0000-0000-0000-000000000000",  // SCID from Partner Center
+    false,  // requireOnline
+    &provider);
+
+if (SUCCEEDED(hr))
+{
+    XGameSaveContainerHandle container = nullptr;
+    hr = XGameSaveCreateContainer(provider, "Slot_1", &container);
+
+    if (SUCCEEDED(hr))
+    {
+        // Stage the save data
+        XGameSaveUpdateHandle update = nullptr;
+        XGameSaveCreateUpdate(container, "Slot_1", &update);
+
+        uint8_t saveData[1024] = { /* ... game state ... */ };
+        XGameSaveSubmitBlobWrite(update, "PlayerState", saveData, sizeof(saveData));
+
+        // Commit atomically
+        hr = XGameSaveSubmitUpdate(update);
+        XGameSaveCloseUpdate(update);
+        XGameSaveCloseContainer(container);
+    }
+
+    XGameSaveCloseProvider(provider);
+}
+
+// --- LOADING ---
+
+hr = XGameSaveInitializeProvider(userHandle, "00000000-0000-0000-0000-000000000000", false, &provider);
+if (SUCCEEDED(hr))
+{
+    XGameSaveContainerHandle container = nullptr;
+    hr = XGameSaveCreateContainer(provider, "Slot_1", &container);
+
+    if (SUCCEEDED(hr))
+    {
+        const char* blobNames[] = { "PlayerState" };
+        uint8_t     readBuffer[1024] = {};
+        uint32_t    blobsRead = 0;
+
+        hr = XGameSaveReadBlobData(
+            container,
+            blobNames,
+            1,
+            sizeof(readBuffer),
+            readBuffer,
+            &blobsRead);
+
+        if (SUCCEEDED(hr) && blobsRead > 0)
+        {
+            // Restore game state from readBuffer
+        }
+
+        XGameSaveCloseContainer(container);
+    }
+
+    XGameSaveCloseProvider(provider);
+}
+```
+
+<Note>
+  Connected Storage is per-user and per-SCID. Each user gets a separate quota, and data is isolated between titles. Always close containers and providers to avoid resource leaks, even on error paths.
+</Note>

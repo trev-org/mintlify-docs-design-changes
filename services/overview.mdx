@@ -1,0 +1,135 @@
+---
+title: "Xbox services overview: features and XSAPI for GDK"
+sidebarTitle: "Overview"
+description: "Discover Xbox services: cloud micro-services for achievements, multiplayer, social, and cloud storage on Xbox and Windows PC using XSAPI or REST endpoints."
+---
+
+Xbox services is Microsoft's cloud gaming network — a collection of micro-services that expose features such as player profiles, friends and presence, stats, leaderboards, achievements, multiplayer session management, matchmaking, and cloud storage. When you integrate Xbox services into your title, you instantly connect your players to a network of over **55 million active users** across Xbox One family consoles, Xbox Series X|S, and Windows 10/11 PC.
+
+Xbox services data is stored in the cloud and accessed through REST endpoints secured with Xbox Live authentication. For GDK titles, Microsoft provides the **Xbox Services API (XSAPI)** client library, which wraps the REST layer and handles authentication, JSON serialization, async patterns, and retry logic for you.
+
+## How Xbox services work
+
+```text
+Your Title
+    │
+    ├── XSAPI C API  (recommended)
+    │       └── libHttpClient
+    │               └── REST / WebSocket endpoints ──► Xbox services cloud
+    │
+    └── Direct REST calls (advanced / web services)
+                └── REST / WebSocket endpoints ──► Xbox services cloud
+```
+
+XSAPI handles the complexity of OAuth token management, endpoint discovery, and asynchronous HTTP so you can focus on integrating features rather than networking plumbing. For GDK titles, you must use the **XSAPI C-based API** exclusively — the WinRT and C++11 XSAPI variants are for the legacy XDK only.
+
+<Tip>
+  Some Xbox services functionality — such as writing game events — is **only** available through XSAPI and has no direct REST equivalent. Always prefer XSAPI for GDK titles.
+</Tip>
+
+## Feature areas
+
+<CardGroup cols={2}>
+  <Card title="Player Data" icon="chart-bar" href="/services/player-data">
+    Stats, leaderboards, and achievements. Event-based server-side aggregation or title-managed direct-call models.
+  </Card>
+  <Card title="Multiplayer" icon="users" href="/services/multiplayer">
+    MPSD session management, SmartMatch matchmaking, Multiplayer Manager, Game Chat 2, and PlayFab Party.
+  </Card>
+  <Card title="Social" icon="heart" href="/services/social">
+    Friends list, followers, Rich Presence strings, Social Manager caching, and Game Hubs.
+  </Card>
+  <Card title="Cloud Storage" icon="cloud" href="/services/cloud-storage">
+    Connected Storage for roaming game saves and Title Storage for shared global or per-user assets.
+  </Card>
+</CardGroup>
+
+## Xbox services feature summary
+
+| Feature area | Key capabilities |
+|---|---|
+| **Player Data** | Stats, leaderboards, achievements, Gamerscore, Featured Stats |
+| **Social** | Friends list (People system), Rich Presence, activity feed, Game Hubs, reputation |
+| **Multiplayer** | MPSD, Multiplayer Manager, SmartMatch matchmaking, Looking for Group, MPA |
+| **Chat** | Game Chat 2 (voice + text), PlayFab Party (cross-platform) |
+| **Cloud Storage** | Connected Storage (roaming saves), Title Storage (global/per-user blobs) |
+| **Identity** | Sign-in, profile, gamertag, gamerpic, account management |
+
+## Sandboxes: RETAIL vs. test sandboxes
+
+Xbox services uses a **sandbox** model to separate live production data from developer test data. Every title is associated with a sandbox ID:
+
+- **RETAIL** — the live, player-facing environment. Real Gamerscore, real achievements, and real leaderboards live here.
+- **Developer test sandboxes** — isolated environments (for example, `XDKS.1`) where you can configure services, unlock test achievements, and reset player data without affecting real players.
+
+Your development kit and test accounts must be configured to point at the correct sandbox. Use **Xbox Device Portal** or the `XblPlayerDataReset` tool to manage test data. You configure sandbox settings and Xbox services features in **Partner Center** under your title's Xbox services configuration.
+
+<Warning>
+  Changing your Stats or Achievements configuration model (event-based ↔ title-managed) **while in a sandbox clears all existing data for that system**. Make this decision early and do not switch models after you have meaningful test data you want to keep.
+</Warning>
+
+## XSAPI C-based API
+
+The XSAPI C-based API is the recommended client library for all GDK titles. It offers:
+
+- **Memory control** — titles can supply custom allocators for all XSAPI heap operations.
+- **Thread control** — titles control which threads XSAPI uses for callbacks and work items.
+- **libHttpClient** — a game-developer-focused HTTP library with configurable retry, timeout, and mock support.
+- **PC and Xbox** — the same API surface works on both Windows PC and Xbox console GDK targets.
+
+To get started, include the XSAPI headers and link against the XSAPI library provided in the GDK:
+
+```cpp
+#include <xsapi-c/services_c.h>
+
+// Initialize XSAPI with your title's service configuration ID (SCID)
+XblInitArgs args = {};
+args.queue = /* your XTaskQueue */;
+HRESULT hr = XblInitialize(&args);
+```
+
+For full API reference, see the [XSAPI C reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/live/xsapi-c/atoc-xsapi-c).
+
+## Partner Center configuration
+
+You configure all Xbox services features — including achievements, stats events, Rich Presence strings, and multiplayer session templates — in the **Xbox services** section of your title's Partner Center submission. Changes made here are published to your development sandbox immediately and to RETAIL only when you promote a submission.
+
+Key configuration areas:
+
+<Accordion title="Achievements and Stats">
+  Define achievement definitions (name, description, gamerscore value, artwork), configure unlock rules for event-based achievements, and set up stat rules for event-based stats aggregation.
+</Accordion>
+
+<Accordion title="Multiplayer Session Templates">
+  Define MPSD session templates that describe the rules for your multiplayer sessions: player counts, timeout values, visibility, join restrictions, and capabilities.
+</Accordion>
+
+<Accordion title="Rich Presence Strings">
+  Author the presence string templates that appear in the Xbox shell and friends list — for example, "Playing Ranked Match on Arcadia Station (12 of 15 rounds)".
+</Accordion>
+
+<Accordion title="Title Storage">
+  Configure the storage types (global blob, per-user blob, JSON, binary config) and access permissions for Title Storage containers.
+</Accordion>
+
+## Xbox Creators Program vs. ID@Xbox
+
+Some Xbox services features are available only to titles in a **managed developer program** such as ID\@Xbox:
+
+| Feature | Creators Program | ID@Xbox |
+|---|---|---|
+| Title-Managed Stats | ✅ | ✅ |
+| Event-Based Stats | ❌ | ✅ |
+| Achievements & Gamerscore | ❌ | ✅ |
+| Rich Presence | ❌ | ✅ |
+| Connected Storage | ✅ | ✅ |
+| Title Storage | ✅ | ✅ |
+| Multiplayer / MPSD | Limited | ✅ |
+
+If you need achievements or event-based stats, apply to [ID\@Xbox](https://www.xbox.com/Developers/id).
+
+## See also
+
+- [Xbox services API overview](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/fundamentals/xbox-services-api/live-introduction-to-xbox-live-apis)
+- [XSAPI C reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/live/xsapi-c/atoc-xsapi-c)
+- [Getting started with Xbox services](https://learn.microsoft.com/en-us/gaming/gdk/docs/archive/services-archive/live-getstarted-nav)

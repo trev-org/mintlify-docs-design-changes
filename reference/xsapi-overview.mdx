@@ -1,0 +1,145 @@
+---
+title: "Xbox Services API (XSAPI) overview"
+sidebarTitle: "XSAPI Overview"
+description: "Overview of the Xbox Services API (XSAPI): XSAPI C vs direct REST endpoints, libHttpClient, key API areas, and how to get started for GDK titles."
+---
+
+Xbox services expose two ways for your game to interact with the Xbox Live back-end: the **Xbox Services API (XSAPI)** client library and the **Xbox services REST endpoints** called directly. For all GDK titles, Microsoft recommends using the XSAPI C-based API. This page explains both approaches, their trade-offs, and the key areas of the XSAPI C surface.
+
+## Two approaches
+
+<Tabs>
+  <Tab title="XSAPI C-based API (recommended for GDK)">
+    The XSAPI C API is the recommended approach for all GDK titles targeting Windows PC, Xbox One, or Xbox Series consoles. It was introduced in June 2018 and is the only API set supported for GDK development.
+
+    **Advantages:**
+
+    - Authentication, HTTPS encoding, request signing, and error handling are all managed by the library — you write game logic, not HTTP glue code.
+    - Arguments and return values use native C types. No manual JSON serialization or deserialization.
+    - Multiple async steps are encapsulated behind a single async function pair, keeping your title code clean and readable.
+    - Some features — such as writing game events — are **only available through XSAPI** and cannot be replicated via raw REST calls.
+    - Full control over memory allocation and thread dispatch through the GDK async model.
+
+    **Header:** `microsoft.xbox.services.h`  
+    **Library:** `Microsoft.Xbox.Services.14x.GDK.C.lib`
+  </Tab>
+  <Tab title="Xbox services REST endpoints">
+    Calling the Xbox services REST endpoints directly gives you maximum flexibility at the cost of managing all the HTTP plumbing yourself.
+
+    **Advantages:**
+
+    - Call Xbox services from a **web service or back-end server** that cannot link against a native client library.
+    - Access **endpoints not yet wrapped by XSAPI** — if you need a feature not exposed in XSAPI, the REST layer is your fallback.
+    - Some REST capabilities have no XSAPI equivalent.
+
+    You can mix both approaches in a single game: use XSAPI for social, achievements, and multiplayer, and call REST directly for any endpoint XSAPI does not cover. See the [Xbox services REST API reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/live/rest/atoc-xboxlivews-reference) for the full endpoint catalogue.
+  </Tab>
+</Tabs>
+
+---
+
+## libHttpClient
+
+XSAPI uses **libHttpClient** as its underlying HTTP library. libHttpClient is a game-developer-friendly HTTP client that integrates with the GDK async model and supports the same memory and threading controls as the rest of the GDK. If you call Xbox services REST endpoints directly from native code, you can use libHttpClient as well.
+
+See the [libHttpClient reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/live/httpclient/atoc-httpclient) for API details.
+
+---
+
+## XSAPI C API key areas
+
+<CardGroup cols={2}>
+  <Card title="Social Manager" icon="users" href="/reference/social-manager">
+    Efficiently manage and cache the local user's friends list and social graph. Uses a polling model: call `XblSocialManagerDoWork` each frame to receive change events.
+  </Card>
+  <Card title="Achievements" icon="trophy" href="/services/achievements">
+    Unlock, query, and display Xbox achievements. Includes both the classic Achievements API and the newer Achievements Manager for simplified graph caching.
+  </Card>
+  <Card title="Stats & Leaderboards" icon="chart-bar" href="/reference/xsapi-overview">
+    Write title-managed statistics and query leaderboards. Stats drive the Xbox leaderboard service.
+  </Card>
+  <Card title="Multiplayer" icon="gamepad" href="/services/multiplayer">
+    Create and manage multiplayer sessions, implement matchmaking, and integrate with Multiplayer Activity. Also includes Multiplayer Manager for common patterns.
+  </Card>
+  <Card title="Presence" icon="circle-dot" href="/services/social">
+    Set and query rich presence strings that display in the Xbox social graph for active players.
+  </Card>
+  <Card title="Privacy" icon="shield-halved" href="/services/social">
+    Check privacy settings before exposing one user's content or identity to another user.
+  </Card>
+  <Card title="Profile" icon="id-card" href="/services/social">
+    Query gamertag, gamerpic, and other profile fields for any Xbox user.
+  </Card>
+  <Card title="Title Storage" icon="database" href="/services/player-data">
+    Per-user and global title storage for arbitrary data that does not fit in Connected Storage (XGameSave).
+  </Card>
+</CardGroup>
+
+---
+
+## Getting started
+
+<Steps>
+  <Step title="Add the XSAPI extension library to your project">
+    In your `.vcxproj` file, import the XSAPI props file for your GDK edition:
+
+    ```xml
+    <!-- October 2024 GDK and later -->
+    <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.Services.API.C\ExtensionLibrary.props" />
+    ```
+  </Step>
+  <Step title="Include the main header">
+    ```cpp
+    #include <microsoft.xbox.services.h>
+    ```
+  </Step>
+  <Step title="Initialize XSAPI">
+    Call `XblInitialize` after `XGameRuntimeInitialize`. Provide an `XblInitArgs` struct with your SCID and a title-display-friendly string.
+
+    ```cpp
+    XblInitArgs xblArgs = {};
+    xblArgs.scid = "00000000-0000-0000-0000-000000000000"; // from Partner Center
+    HRESULT hr = XblInitialize(&xblArgs);
+    ```
+  </Step>
+  <Step title="Create an Xbox Live context for a signed-in user">
+    Most XSAPI operations require an `XblContextHandle` tied to a signed-in user.
+
+    ```cpp
+    XblContextHandle xblContext = nullptr;
+    hr = XblContextCreateHandle(xblUserHandle, &xblContext);
+    ```
+  </Step>
+  <Step title="Call service APIs">
+    Use the context handle with any XSAPI function, for example to add a local user to Social Manager or query an achievement.
+  </Step>
+  <Step title="Clean up">
+    Close the context and uninitialize XSAPI before calling `XGameRuntimeUninitialize`:
+
+    ```cpp
+    XblContextCloseHandle(xblContext);
+    XblCleanup();
+    ```
+  </Step>
+</Steps>
+
+---
+
+## XSAPI C API reference
+
+For the full API reference organized by functional area, see the [XSAPI C reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/live/xsapi-c/atoc-xsapi-c). Major namespaces include:
+
+| Header | Contents |
+|---|---|
+| `achievements_c.h` | Achievement unlock and query |
+| `achievements_manager_c.h` | Cached achievement graph |
+| `social_manager_c.h` | Social graph caching and presence |
+| `multiplayer_c.h` | Session management |
+| `multiplayer_manager_c.h` | High-level multiplayer patterns |
+| `leaderboard_c.h` | Leaderboard queries |
+| `title_managed_statistics_c.h` | Stat writes and queries |
+| `presence_c.h` | Rich presence |
+| `privacy_c.h` | Privacy permission checks |
+| `profile_c.h` | User profile queries |
+| `title_storage_c.h` | Title storage read/write |
+| `events_c.h` | Game event writing |

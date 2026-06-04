@@ -1,0 +1,160 @@
+---
+title: "Create and manage DLC and add-ons for your GDK game"
+sidebarTitle: "DLC & Add-ons"
+description: "Learn how to create durable DLC, consumables, season passes, and bundles in Partner Center, and manage packages and licensing in your GDK title."
+---
+
+Add-ons let you extend your game with optional content that players can purchase separately — story expansions, map packs, cosmetic items, season passes, and more. In the GDK, add-ons come in several product types, each with its own licensing model and package management behavior. This page covers how to create and configure add-ons in Partner Center, how to declare them in `MicrosoftGame.config`, and how to use the XStore and XPackage APIs to check entitlements and manage installed content.
+
+## Add-on product types
+
+<CardGroup cols={2}>
+  <Card title="Durable DLC" icon="box-archive" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/store/commerce/fundamentals/xstore-manage-and-license-optional-packages?view=gdk-2604">
+    Content the player purchases once and owns permanently. Can include a downloadable package (map pack, story DLC) or be package-free (a license-only unlock like a character skin baked into the base game).
+  </Card>
+  <Card title="Consumable" icon="bolt" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/store/commerce/fundamentals/xstore-consumable-based-ecosystems?view=gdk-2604">
+    Products the player buys repeatedly. Common examples are virtual currency packs or experience boosts. Consumable quantities decrement as the player spends them in-game.
+  </Card>
+  <Card title="Subscription" icon="calendar-check" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/store/commerce/getting-started/xstore-choosing-the-right-product-type?view=gdk-2604">
+    Recurring-access products that grant benefits for a fixed period. The player's access lapses if the subscription is not renewed.
+  </Card>
+  <Card title="Season Pass / Bundle" icon="layer-group" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/store/commerce/fundamentals/xstore-bundles-and-season-passes?view=gdk-2604">
+    Groups multiple add-ons under a single purchase, often at a discount. A Season Pass scopes to a single game's content and can include content not yet released.
+  </Card>
+</CardGroup>
+
+## Creating add-on products in Partner Center
+
+<Steps>
+  <Step title="Open your game product">
+    In Partner Center, navigate to your game and open the **Add-ons** section from the submission overview page.
+  </Step>
+  <Step title="Create a new add-on">
+    Select **Create a new add-on** and choose the product type: **Durable**, **Consumable**, **Subscription**, or **Add-on bundle** (for Season Passes). Enter a **Product ID** — an internal identifier used in Partner Center and referenced in your game's code.
+  </Step>
+  <Step title="Configure availability and pricing">
+    Set the pricing tier, release markets, and availability date. For Season Passes, use the **Manage included add-ons** section to list all products included at launch. You can add more products later as you release content.
+  </Step>
+  <Step title="Add store listings">
+    Provide localized names, descriptions, and screenshots for each add-on. Compelling store listings improve discoverability and purchase rates.
+  </Step>
+  <Step title="Publish to sandbox">
+    Publish the add-on to your **development sandbox** to make it queryable during development and QA testing. The add-on will not be visible to retail players until you publish it to retail.
+  </Step>
+</Steps>
+
+## Configuring DLC in MicrosoftGame.config
+
+Your `MicrosoftGame.config` file declares how your game product and its DLC relate to each other. Key fields for DLC support:
+
+```xml
+<Game>
+  <!-- ... base game config ... -->
+
+  <!-- Declare related DLC products -->
+  <RelatedProducts>
+    <RelatedProduct StoreId="9NBLGGH4R315" Relationship="DLC" />
+    <RelatedProduct StoreId="9NBLGGH5X123" Relationship="DLC" />
+  </RelatedProducts>
+
+  <!-- Restrict DLC availability to a specific device family (optional) -->
+  <TargetDeviceFamilyForDLC Name="Xbox.Series" />
+</Game>
+```
+
+- **`RelatedProducts`** — lists the Store IDs of all DLC associated with your base game. This is required for XPackage APIs to find and mount the correct packages.
+- **`TargetDeviceFamilyForDLC`** — optionally restricts which devices a DLC package targets (for example, Xbox Series X|S-only high-resolution texture packs).
+
+## Managing installed packages with XPackage APIs
+
+After a player purchases DLC that includes a downloadable package, your game uses the XPackage API family to discover, mount, and access that content.
+
+### Enumerate installed chunks and packages
+
+Use `XPackageEnumerateChunkAvailability` to check which chunks of a DLC package are installed and available on the device:
+
+```cpp
+HRESULT hr = XPackageEnumerateChunkAvailability(
+    packageIdentifier,
+    XPackageChunkAvailability::Installed,
+    [](void* context, const XPackageChunkAvailabilityResult* result) -> bool
+    {
+        printf("Chunk %u: %s\n",
+            result->chunkId,
+            result->availability == XPackageChunkAvailability::Installed
+                ? "installed" : "not installed");
+        return true; // continue enumeration
+    },
+    nullptr);
+```
+
+### Mount a DLC package
+
+Before your game can read content from a DLC package, mount it using `XPackageMountWithUiAsync` (which shows a download prompt if the package is not yet installed) or `XPackageMount` (for already-installed packages):
+
+```cpp
+XPackageMountHandle mountHandle = nullptr;
+HRESULT hr = XPackageMount(packageIdentifier, &mountHandle);
+if (SUCCEEDED(hr))
+{
+    // Use mountHandle to get the mount path and load assets
+    char mountPath[MAX_PATH];
+    hr = XPackageGetMountPath(mountHandle, sizeof(mountPath), mountPath);
+}
+```
+
+Remember to call `XPackageCloseMountHandle` when you are done with the mounted package to release the handle.
+
+## Checking entitlements and licensing
+
+Owning a DLC product does not automatically mean the player is licensed to use it in-game — the **product sharing model** must be honored. A shared-console user may have access to a DLC that only one account purchased, but a DLC with a package requires a valid license check before granting access.
+
+### Check if a durable DLC is licensed
+
+For **durable DLC with a package**, call `XStoreAcquireLicenseForPackageAsync` to obtain a license handle and verify the player is entitled under the sharing model:
+
+```cpp
+XStoreLicenseHandle licenseHandle = nullptr;
+HRESULT hr = XStoreAcquireLicenseForPackageAsync(
+    m_xStoreContext,
+    packageIdentifier,
+    async);
+
+// In async callback:
+hr = XStoreAcquireLicenseForPackageResult(async, &licenseHandle);
+if (SUCCEEDED(hr))
+{
+    bool isValid = false;
+    XStoreIsLicenseValid(licenseHandle, &isValid);
+    if (isValid)
+    {
+        // Player is licensed — mount and use the DLC
+    }
+    XStoreCloseLicenseHandle(licenseHandle);
+}
+```
+
+For **durable DLC without a package** (license-only unlocks), use `XStoreAcquireLicenseForDurablesAsync` instead.
+
+### Using XStoreLicenseToken for service-side validation
+
+If your game service needs to validate a DLC license independently (for example, to gate server-side content), request an `XStoreLicenseToken` from the client and send it to your service for verification. See [Using License Tokens](https://learn.microsoft.com/en-us/gaming/gdk/docs/store/commerce/pc-specific-considerations/xstore-license-tokens?view=gdk-2604) for the implementation details.
+
+## Season passes and bundles
+
+When configuring a Season Pass, include at least one product at launch — even if it is a bonus cosmetic — so players get immediate value. As you add new DLC to the Season Pass, update the Season Pass product in Partner Center and republish. Existing Season Pass owners automatically receive a license for the newly added content; however, downloadable packages for the new content are **not** automatically downloaded. Use the `XStoreDownload` APIs or prompt players to download from My Games and Apps.
+
+<Tip>
+  If your game bundle includes a Season Pass, also list the individual contents of that Season Pass directly in the bundle's included-products list. This ensures the Store UI shows all included items as owned and that licenses are issued correctly for each piece of content.
+</Tip>
+
+<Note>
+  When you add new items to a Season Pass, there is a cache delay of **two to three hours** before server-to-server Collections API calls reflect the new ownership — even though the client-side XStore APIs grant access immediately after the catalog update propagates.
+</Note>
+
+## Reference
+
+- [XPackage API reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/system/xpackage/xpackage_members?view=gdk-2604)
+- [XStore API reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/system/xstore/xstore_members?view=gdk-2604)
+- [Bundles and Season Passes overview](/publishing/commerce#bundles-and-season-passes)
+- [Product sharing model for games](https://learn.microsoft.com/en-us/gaming/gdk/docs/store/commerce/fundamentals/xstore-product-sharing-model-for-games?view=gdk-2604)

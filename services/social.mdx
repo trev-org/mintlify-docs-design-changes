@@ -1,0 +1,179 @@
+---
+title: "Xbox social features: friends, presence, and Game Hubs"
+sidebarTitle: "Social"
+description: "Integrate Xbox social features: Social Manager for friend caching, People system relationships, Rich Presence strings, and Game Hubs for player engagement."
+---
+
+Xbox services' social features connect your title to a network of over **55 million active gamers** who share achievements, clips, game clips, and activity with their friends. Every player who signs in to Xbox services brings their social graph with them — their friends list, their followers, their presence status, and their game history. By integrating the social APIs, you tap into that network organically: a friend sees a clip from your game on their activity feed, notices their buddy is playing, and jumps in.
+
+Social features are available to all titles that integrate Xbox services sign-in. Some features — Rich Presence and Achievements — require participation in the ID\@Xbox managed developer program.
+
+## Social Manager
+
+**Social Manager** is the recommended way to access a player's social graph in your title. Rather than making individual REST calls to fetch friends list data, Social Manager maintains a **local cache** of the signed-in player's relationships and their current status (online, in a game, presence string). It keeps that cache updated automatically via Real-Time Activity (RTA) subscriptions.
+
+This means your UI can read from the local cache at any time without waiting for a round trip to Xbox services — ideal for a friends list in a lobby or a roster screen in your game.
+
+### Adding a local user
+
+```cpp
+#include <xsapi-c/social_manager_c.h>
+
+// Register a signed-in user with Social Manager.
+// This starts populating the local social graph cache.
+HRESULT hr = XblSocialManagerAddLocalUser(
+    localUserHandle,
+    XblSocialManagerExtraDetailLevel::NoExtraDetail,
+    queue
+);
+```
+
+### Calling DoWork every frame
+
+Social Manager uses a background update model. Call `XblSocialManagerDoWork` once per game frame to process incoming updates and fire event notifications:
+
+```cpp
+// Call once per frame (e.g., in your main game loop)
+XblSocialManagerEvent* events = nullptr;
+uint32_t eventCount = 0;
+HRESULT hr = XblSocialManagerDoWork(&events, &eventCount);
+
+for (uint32_t i = 0; i < eventCount; ++i)
+{
+    switch (events[i].eventType)
+    {
+    case XblSocialManagerEventType::LocalUserAdded:
+        // Social graph loaded — safe to display friends list
+        break;
+    case XblSocialManagerEventType::UsersAddedToSocialGraph:
+        // New users added (friends came online, etc.)
+        break;
+    case XblSocialManagerEventType::PresenceChanged:
+        // A friend's presence changed — update your UI
+        break;
+    default:
+        break;
+    }
+}
+```
+
+### Reading the friends list
+
+After the `LocalUserAdded` event fires, you can query the cached friend list:
+
+```cpp
+XblSocialManagerUserGroup* friendGroup = nullptr;
+HRESULT hr = XblSocialManagerCreateSocialUserGroupFromFilters(
+    localUserHandle,
+    XblPresenceFilter::All,
+    XblRelationshipFilter::Friends,
+    &friendGroup
+);
+
+// Enumerate users in the group
+XblSocialManagerUser const** users = nullptr;
+uint32_t userCount = 0;
+XblSocialManagerUserGroupGetUsers(friendGroup, &users, &userCount);
+
+for (uint32_t i = 0; i < userCount; ++i)
+{
+    // users[i]->gamertag, users[i]->presenceRecord, etc.
+}
+```
+
+## The People System
+
+The Xbox People System manages relationships between players using a **Friends and Followers** model:
+
+- A **friend** is a mutual connection — both players have accepted each other's friend request.
+- A **follower** is a one-way relationship — you follow someone without their explicit approval.
+- Each player can have up to **1,000 friends** and an unlimited number of followers.
+- Players can mark up to **100 friends as favorites** for quick access.
+
+When a player launches your game, the Xbox shell filters their social graph to show only friends who have also played your title — reducing noise and highlighting relevant connections.
+
+## Rich Presence
+
+Rich Presence lets you show a descriptive status string in the Xbox shell and friends list that tells other players exactly what your user is doing right now — not just "playing Game X" but "Ranked match on Arcadia Station (round 9/15)".
+
+You define Rich Presence string templates in Partner Center. Templates can include tokens that your game fills in at runtime. Example:
+
+```text
+{0} is playing {1} mode on {2}
+```
+
+At runtime, you update the player's presence by writing the stat events that populate the tokens (for event-based stats) or by calling the presence API directly.
+
+<Note>
+  **Rich Presence is not available for Xbox Creators Program titles.** It requires participation in ID\@Xbox or a managed developer program.
+</Note>
+
+### Configuring presence in Partner Center
+
+<Steps>
+  <Step title="Author presence string templates">
+    In Partner Center, navigate to **Xbox services → Rich Presence**. Create string templates for each distinct state in your game: main menu, lobby, in-match, post-match, etc.
+  </Step>
+  <Step title="Map tokens to stats or events">
+    For event-based presence, map each token to a stat value that your game writes. For title-managed presence, you can supply token values directly via the presence API.
+  </Step>
+  <Step title="Test in your sandbox">
+    Verify the strings appear correctly in the Xbox App and on the Xbox shell by launching your title in your developer sandbox with a test account that has friends also in the sandbox.
+  </Step>
+</Steps>
+
+## Profile, Gamerscore, and Reputation
+
+Every Xbox user has a profile that includes their **gamertag**, **gamerpic**, **Gamerscore** (total achievement points across all games), **presence**, and **reputation**. Your title can read profile information for any Xbox user using the profile APIs:
+
+```cpp
+#include <xsapi-c/profile_c.h>
+
+XblUserProfileResult profile{};
+HRESULT hr = XblProfileGetUserProfileAsync(
+    xblContext,
+    targetXuid,     // XUID of the player to look up
+    asyncBlock
+);
+// On completion, call XblProfileGetUserProfileResult(asyncBlock, &profile)
+```
+
+## Game Hubs
+
+When you integrate Xbox services, your game automatically gets a **Game Hub** — the official destination for your title on the Xbox network. The Game Hub aggregates:
+
+- Achievement lists and completion percentages
+- Player clips and screenshots from your game
+- Community posts and activity feed
+- Groups and Clubs associated with your title
+
+You can appoint a community manager to post to the Game Hub activity feed. Posts on the Game Hub activity feed see significantly higher engagement than equivalent posts on external social media — players subscribed to your hub are already interested in your game.
+
+## Organic growth with the Xbox social network
+
+The social flywheel on Xbox works in your favor: every achievement unlock, every shared clip, and every active game session your players have is surfaced to their friends through the activity feed and trending content sections. A great multiplayer session that results in memorable clips can cascade through the social graph and bring new players to your title organically.
+
+<Tip>
+  Invest in achievement design. Well-designed achievements that encourage exploration, competition, and sharing are one of the highest-ROI features you can build. Players who pursue achievements spend significantly more time in your title and share more content with their friends.
+</Tip>
+
+## Social Manager API quick reference
+
+| Function | Purpose |
+|---|---|
+| `XblSocialManagerAddLocalUser` | Add a local user and begin populating the social graph cache |
+| `XblSocialManagerRemoveLocalUser` | Remove a user and release their social graph cache |
+| `XblSocialManagerDoWork` | Process updates and retrieve events (call once per frame) |
+| `XblSocialManagerCreateSocialUserGroupFromFilters` | Create a filtered view of the social graph (friends, favorites, etc.) |
+| `XblSocialManagerCreateSocialUserGroupFromList` | Create a view from a specific list of XUIDs |
+| `XblSocialManagerUserGroupGetUsers` | Enumerate users in a social user group |
+| `XblSocialManagerDestroyUserGroup` | Release a social user group |
+| `XblSocialManagerUserGroupGetUsersTrackedByGroup` | Get the list of XUIDs tracked by a group |
+
+## See also
+
+- [Player data and achievements](/services/player-data) — Gamerscore, achievement unlocks, and activity feed integration
+- [Multiplayer features](/services/multiplayer) — invites, joins, and LFG via the social graph
+- [Social Manager overview](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/community/social-manager/live-social-manager-overview)
+- [People System](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/community/people-system/live-people-system-nav)
+- [Rich Presence](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/community/presence/live-presence-nav)

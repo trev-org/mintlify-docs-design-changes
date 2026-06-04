@@ -1,0 +1,48 @@
+---
+title: "Dynamic lighting for accessory RGB effects"
+sidebarTitle: "Dynamic Lighting"
+description: "Drive RGB lighting on supported Xbox accessories and gaming peripherals from your GDK title with a single, vendor-neutral API."
+---
+
+Dynamic lighting lets your title control the RGB illumination on supported gaming peripherals — keyboards, mice, headsets, and controllers — through a unified API rather than a per-vendor SDK. The platform brokers between your title and whatever lighting hardware the player has connected, so you write the effect once and it works across compatible devices.
+
+<Note>
+  Detailed device support tables, capability negotiation, and effect-buffer formats live in the NDA-gated [Dynamic Lighting overview](https://learn.microsoft.com/en-us/gaming/gdk/_content/gc/features/common/lighting/gc-lighting-toc). Visit [xbox.com/Developers](https://www.xbox.com/Developers) for access.
+</Note>
+
+## What you can drive
+
+- **Solid colors and color zones** — the most universally supported mode. Use this for HUD-style state cues (low health, ammo type, team color).
+- **Per-key / per-LED arrays** — for keyboards and devices that expose addressable RGB zones, you can paint a 2D color grid.
+- **Effects** — pulse, breathing, color sweep. Implement these as a per-frame color buffer update rather than relying on a built-in effect, so the effect is consistent across vendors.
+
+## Authoring lighting cues
+
+Think of dynamic lighting as a parallel output channel, like audio. Author **cues** tied to game state and let the lighting system render them:
+
+| Game state | Suggested cue |
+| --- | --- |
+| Low health | Slow red pulse |
+| Reload | Brief orange flash |
+| Objective captured | Team-color sweep across zones |
+| Loading screen | Slow color-cycle ambient |
+
+Keep the cues subtle. Players who care about peripheral lighting tend to dislike rapid strobing.
+
+## Player choice
+
+The Windows and Xbox dynamic lighting settings give players a master switch and per-app overrides. Respect these:
+
+- If the player has disabled dynamic lighting globally, your title should not push effects.
+- If the player has assigned a non-game lighting profile to your title in system settings, do not fight it.
+
+The API surfaces both states through capability queries before you commit color buffers.
+
+## Accessibility considerations
+
+Flashing colors can be a seizure or sensory risk for some players. Provide an in-game toggle to disable dynamic lighting effects, independent of the platform-wide setting. Document the toggle in your accessibility menu.
+
+## See also
+
+- [Input](/gdk/input) — the broader peripheral input story
+- [Audio](/gdk/audio) — a closely analogous "feedback channel" API

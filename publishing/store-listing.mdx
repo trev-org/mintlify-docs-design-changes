@@ -1,0 +1,71 @@
+---
+title: "Create localized store listings for your Microsoft Store game"
+sidebarTitle: "Store Listings"
+description: "Author store listings, screenshots, trailers, and feature lists that meet Microsoft Store requirements and convert browsers into players."
+---
+
+Your store listing is the storefront for your game on every Xbox console, Windows PC, and the web. It's the page players see when they search, get a friend's recommendation, or follow a promo link. Partner Center walks you through one listing per language, plus product-wide gaming metadata and marketing assets.
+
+## Anatomy of a listing
+
+<CardGroup cols={2}>
+  <Card title="Title and description" icon="text">
+    Localized name, short summary, full description, and feature list bullets. Required per language.
+  </Card>
+
+  <Card title="Screenshots and trailers" icon="image">
+    1080p\+ screenshots, optional 4K hero images, and one or more trailers. Each market can have its own asset set if needed.
+  </Card>
+
+  <Card title="Store logos" icon="square">
+    Square 1080×1080, wide 1920×1080, and additional tile sizes. Used across the Xbox dash and the web store.
+  </Card>
+
+  <Card title="Gaming metadata" icon="tags">
+    Genre, themes, modes, players supported, accessibility features, devices supported. Powers search and discovery filters.
+  </Card>
+</CardGroup>
+
+## Required assets at a glance
+
+| Asset | Aspect ratio | Min resolution | Notes |
+| --- | --- | --- | --- |
+| Hero / key art | 16:9 | 1920×1080 | The big image at the top of the listing |
+| Screenshots | 16:9 | 1920×1080 | 4 minimum, 8 recommended |
+| Square boxshot | 1:1 | 1080×1080 | Game tile across Xbox dashboards |
+| Trailer | 16:9 | 1080p | Captured in-engine; cinematics allowed only if clearly labeled |
+
+Deliver assets in PNG (lossless) for stills and MP4 (H.264, AAC) for trailers.
+
+## Per-language vs. shared assets
+
+Text is per language. Images can be shared across all markets **unless** they contain text in the image itself (e.g. a screenshot of the UI). If your screenshots have UI text, capture localized versions for every supported language; otherwise expect a cert failure on the corresponding listings.
+
+## Description style guide
+
+- Lead with the gameplay hook in the first sentence — it's the only sentence shown on Xbox tiles.
+- Avoid superlatives that are hard to verify ("the greatest game ever").
+- Don't reference competitor titles or platforms by name.
+- Use the proper trademark forms for Microsoft Store, Xbox Series X|S, Xbox One, and PC Game Pass.
+- Keep feature list bullets short (≤ 80 characters); they're rendered as a list on the listing.
+
+## Gaming metadata
+
+Fill in every applicable field — it directly affects discovery:
+
+- **Genre and category** — used for category browse pages.
+- **Player modes** — single-player, online multiplayer, cooperative campaign, etc.
+- **Accessibility features** — surfaced on the listing's accessibility section.
+- **Devices supported** — console, PC, cloud, handheld. Drives Smart Delivery and Xbox Play Anywhere indicators.
+- **Cross-play / cross-save** — surfaced as badges where supported.
+
+## Cert and review
+
+Store listings go through a separate review step from the package build. They can be updated independently of game code once the title is live; minor copy fixes typically clear within a few hours.
+
+## See also
+
+- [Partner Center](/publishing/partner-center)
+- [Age Ratings](/publishing/ratings)
+- [Pricing & Availability](/publishing/pricing-availability)
+- [Localization](/gdk/localization)

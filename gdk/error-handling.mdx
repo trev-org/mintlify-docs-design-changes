@@ -1,0 +1,79 @@
+---
+title: "Error handling patterns for the Microsoft GDK"
+sidebarTitle: "Error Handling"
+description: "Handle HRESULTs, async errors, and crash reporting in GDK titles. Learn the FACILITY_GAMING codes, retry strategies, and how to log to XBWatson."
+---
+
+GDK APIs follow the standard Win32 convention: synchronous calls return `HRESULT`, async calls deliver `HRESULT` through `XAsyncGetStatus`, and the runtime defines a `FACILITY_GAMING` code range for gaming-specific failures. Robust titles inspect the HRESULT, retry transient failures, and surface user-visible messaging for unrecoverable conditions.
+
+## HRESULT basics
+
+Every GDK API returns an `HRESULT`. Check the success bit with the `SUCCEEDED()` / `FAILED()` macros — never compare against `S_OK` directly, because some APIs return informational success codes such as `S_FALSE`.
+
+```cpp
+HRESULT hr = XPackageEnumeratePackages(/*...*/);
+if (FAILED(hr))
+{
+    LogError("XPackageEnumeratePackages failed: 0x%08X", hr);
+    return hr;
+}
+```
+
+## Gaming HRESULT facility codes
+
+Failures unique to the GDK live in the `FACILITY_GAMING` (0x803) facility. Some common ranges:
+
+| Range | Area | Examples |
+| --- | --- | --- |
+| `E_GAMERUNTIME_*` | XGameRuntime init | Runtime not initialized, wrong process |
+| `E_GAMEUSER_*` | XUser sign-in | User resolution required, no default user |
+| `E_GAMESTORE_*` | XStore | Network unavailable, license check failed |
+| `E_GAMEPACKAGE_*` | XPackage | Chunk not installed, mount failed |
+| `E_GAMESAVE_*` | XGameSave | Quota exceeded, container conflict |
+
+Use `HRESULT_FROM_WIN32` and the `HRESULT_FACILITY` macro to introspect codes in logs and diagnostics.
+
+## Async errors
+
+Async GDK calls report the final `HRESULT` through `XAsyncGetStatus`. Always check the status before reading any output payload:
+
+```cpp
+void CALLBACK OnUserAdded(XAsyncBlock* async)
+{
+    XUserHandle user = nullptr;
+    HRESULT hr = XUserAddResult(async, &user);
+    if (FAILED(hr))
+    {
+        // E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED → resolve UI
+        // E_ABORT                                → user cancelled
+        HandleSignInError(hr);
+        return;
+    }
+
+    // user is valid; proceed.
+}
+```
+
+## Transient vs. terminal failures
+
+Design your retry policy around the failure category:
+
+- **Transient (retry).** Network timeouts, `HTTP_E_STATUS_SERVER_ERROR`, sandbox switch in progress. Back off and retry — usually no more than three attempts with exponential delay.
+- **User actionable (prompt).** Sign-in required, parental controls, no internet. Surface a clear UI and let the player resolve.
+- **Terminal (log and bail).** Programming errors (wrong HRESULT context, missing initialization). Log to your telemetry and fail the operation; do not retry.
+
+## Crash reporting and XBWatson
+
+Unhandled exceptions, fail-fast aborts, and access violations are captured by the platform crash pipeline and uploaded to XBWatson. Use the `XbWatson` portal in Partner Center to triage the top crash buckets for your title.
+
+To get the most signal out of your dumps:
+
+- Always ship symbol files (PDBs) to the symbol server before release.
+- Avoid stripping line information from optimized builds.
+- Use `RaiseFailFastException` for unrecoverable internal errors so the dump captures the right call stack.
+
+## See also
+
+- [Async programming model](/gdk/async-programming)
+- [XBWatson and crash analysis](/tools/xbox-service-tools)
+- [GDK error codes reference](https://learn.microsoft.com/en-us/gaming/gdk/_content/gc/reference/errorcodes)

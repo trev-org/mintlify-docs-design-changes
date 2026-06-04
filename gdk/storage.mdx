@@ -1,0 +1,163 @@
+---
+title: "Xbox console storage options: PLS and DirectStorage"
+sidebarTitle: "Storage"
+description: "Understand Xbox console storage: local storage types, Persistent Local Storage, DirectStorage for NVMe asset streaming, and cloud save options."
+---
+
+Xbox consoles expose several distinct storage areas, each designed for a specific class of data. Choosing the wrong storage type — for example, writing game saves to Temporary Local Storage or caching large assets in Connected Storage — leads to certification failures, poor user experience, or data loss on uninstall. This page explains every option available to your title, when to use each one, and the key APIs and configuration knobs you need.
+
+## Local storage types at a glance
+
+Four local storage locations are accessible on Xbox consoles. Each is exposed as a drive letter or a path you must query at runtime.
+
+| Storage type | Drive | Use case |
+|---|---|---|
+| Installed game data | `G:\` | Read-only access to your packaged title content |
+| Temporary local storage | `T:\` | Short-lived files (logs, telemetry) available only while the title runs |
+| Developer scratch partition | `D:\` | Development-only scratch space — must be compiled out in retail builds |
+| Persistent Local Storage (PLS) | Query via `XPersistentLocalStorageGetPath` | Long-lived non-save data: replays, recordings, generated content |
+| Downloadable content | Mount via `XPackageMount` | DLC packages installed from the store |
+
+<Warning>
+  **XR-133 — Local Storage Write Limitations:** Titles on Xbox Series S, Xbox Series X, or any console in the same family must not write more than **1 GiB of data** to Persistent Local Storage or Temporary Local Storage over any rolling 5-minute window. Titles that exceed this limit will fail certification. Use `XPackageGetWriteStats` at runtime to monitor your write rate, and check PIX timing captures for warnings.
+</Warning>
+
+## Temporary local storage
+
+Temporary storage (`T:\`) gives you 2 GB of space that is available while your title is running. It is ideal for log files, telemetry dumps, and other transient data you may want to retrieve from a development kit using `xbcp`.
+
+Key characteristics:
+- Content **persists** across suspend/resume cycles, including Quick Resume.
+- Content is **deleted** after the title terminates.
+- There is **no guarantee** that data survives between launches.
+
+Do not use temporary storage for anything a player would care about. For persistent player-facing data, use PLS or Connected Storage.
+
+## Persistent Local Storage (PLS)
+
+PLS is an encrypted, integrity-checked partition pre-allocated on the console SSD before your title is allowed to launch. It is designed for non-game-save long-lived data such as replays, custom recordings, and user-generated content.
+
+<Note>
+  **Never store game saves in PLS.** Use Connected Storage (cloud-backed, roaming) or, for online-only titles, Xbox Title Storage or a publisher-hosted cloud service. PLS is console-specific — it cannot be accessed from another console — and is deleted when the title is uninstalled.
+</Note>
+
+### Requesting PLS in MicrosoftGame.config
+
+Declare the size you need as a child of `<Game>` in your `MicrosoftGame.config`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Game configVersion="1">
+  <!-- ... other elements ... -->
+  <PersistentLocalStorage>
+    <SizeMB>1024</SizeMB>
+  </PersistentLocalStorage>
+</Game>
+```
+
+### Querying the PLS path at runtime
+
+Do not hard-code the PLS path. Query it at runtime using `XPersistentLocalStorageGetPathSize` and `XPersistentLocalStorageGetPath`:
+
+```cpp
+#include <XPersistentLocalStorage.h>
+
+size_t pathSize = 0;
+HRESULT hr = XPersistentLocalStorageGetPathSize(&pathSize);
+if (SUCCEEDED(hr) && pathSize > 0)
+{
+    char* path = new char[pathSize];
+    hr = XPersistentLocalStorageGetPath(pathSize, path, nullptr);
+    if (SUCCEEDED(hr))
+    {
+        // Use `path` as the root of your PLS file operations.
+        // Example: std::string replayPath = std::string(path) + "\\replays\\";
+    }
+    delete[] path;
+}
+```
+
+### Growable PLS
+
+If your title has optional scenarios that need significantly more storage (for example, large user-generated content downloads), declare a growable upper bound instead of a fixed reservation:
+
+```xml
+<PersistentLocalStorage>
+  <!-- SizeMB is optional here: only set it if you always want a pre-allocated floor -->
+  <GrowableToMB>20480</GrowableToMB>
+</PersistentLocalStorage>
+```
+
+Before writing to growable PLS, call `XPersistentLocalStorageGetSpaceInfo` to verify that sufficient space is available. If more space is needed and the underlying drive does not have enough room, use `XPersistentLocalStoragePromptUserForSpaceAsync` to show the system UI that asks the player to free space.
+
+### Shareable PLS
+
+You can optionally share your PLS as **read-only** with related titles (for example, franchise game hubs and hub-aware companion apps):
+
+```xml
+<PersistentLocalStorage>
+  <SizeMB>1024</SizeMB>
+  <Shareable>true</Shareable>
+</PersistentLocalStorage>
+```
+
+<Warning>
+  If you mark PLS as shareable, close all file handles to your PLS **before suspending**. Leaving handles open during suspend causes the suspend to fail and terminates your title.
+</Warning>
+
+## DirectStorage
+
+DirectStorage is an API that allows the GPU to load and decompress assets directly from the NVMe SSD, bypassing the CPU and dramatically reducing load times. On Xbox Series X|S, the NVMe controller and the GPU decompression hardware work together so that large texture and geometry packages can stream at hundreds of MB/s with near-zero CPU overhead.
+
+Key benefits on Xbox Series X|S:
+- **GPU decompression:** The GPU's hardware block decompresses BCPack and Zlib assets in parallel with rendering.
+- **Near-zero CPU overhead:** The CPU path is exercised only for metadata and queue management, not for decompression.
+- **Faster level loads:** Streaming world geometry and texture mips becomes a background GPU operation rather than a blocking CPU read.
+
+DirectStorage is documented in its own NDA-gated section. For GDK title integration, see the [DirectStorage documentation](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/console/storage/directstorage-toc).
+
+## Comparing storage options
+
+| | PLS | Connected Storage | Title Storage |
+|---|---|---|---|
+| **Location** | Local SSD | Cloud + local cache | Cloud only |
+| **Roams across consoles** | ❌ | ✅ | ✅ |
+| **Available offline** | ✅ | ✅ (cached) | ❌ |
+| **Fault-tolerant** | Encrypted/integrity-checked | ✅ (full ACID semantics) | Standard HTTPS |
+| **Best for** | Replays, recordings, UGC | Game saves, game state | Leaderboards, shared assets, DLC metadata |
+| **Deleted on uninstall** | ✅ | ❌ (stays in cloud) | ❌ (stays in cloud) |
+| **Per-console** | ✅ | Per-user | Per-user or global |
+
+<Tip>
+  Use **Connected Storage** for anything a player would be upset to lose — save files, unlocked content, settings. Use **PLS** for large locally-generated files the player would be annoyed to re-download but would understand losing on a new console.
+</Tip>
+
+## Downloadable content
+
+After a DLC package is installed, mount it on demand using `XPackageMount` and retrieve the path with `XPackageGetMountPath`. Never hard-code the returned path — it may change between mounts or GDK versions.
+
+```cpp
+#include <XPackage.h>
+
+XPackageMountHandle mountHandle;
+HRESULT hr = XPackageMount("MY_DLC_PACKAGE_ID", &mountHandle);
+if (SUCCEEDED(hr))
+{
+    size_t pathSize = 0;
+    XPackageGetMountPathSize(mountHandle, &pathSize);
+
+    char* mountPath = new char[pathSize];
+    XPackageGetMountPath(mountHandle, pathSize, mountPath);
+
+    // Use mountPath to access DLC content.
+    // When done, close the handle:
+    XPackageCloseMountHandle(mountHandle);
+    delete[] mountPath;
+}
+```
+
+## See also
+
+- [Connected Storage](/services/cloud-storage) — cloud-backed game saves
+- [Title Storage](/services/cloud-storage) — global and per-user cloud assets
+- [Game Saves overview](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/game-save/game-saves-overview)

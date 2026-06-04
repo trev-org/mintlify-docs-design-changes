@@ -1,0 +1,230 @@
+---
+title: "Social Manager C API reference"
+sidebarTitle: "Social Manager"
+description: "Reference for the Social Manager C API: add local users, call DoWork each frame, create social user groups, and process social events efficiently."
+---
+
+The Social Manager API efficiently manages and caches the local user's friends and social graph. Rather than making individual service calls to query presence and profile data for each friend, Social Manager maintains an in-memory snapshot of the social graph and delivers incremental updates through a polling model. Call `XblSocialManagerDoWork` once per game frame to receive a list of change events, then update your UI accordingly.
+
+**Header:** `social_manager_c.h`  
+**Library:** `Microsoft.Xbox.Services.14x.GDK.C.lib`
+
+---
+
+## Core pattern
+
+The Social Manager workflow follows three steps:
+
+1. **Add a local user once** — Call `XblSocialManagerAddLocalUser` at sign-in. Social Manager fetches the initial social graph in the background and delivers a `LocalUserAdded` event when ready.
+2. **Call DoWork every frame** — Call `XblSocialManagerDoWork` in your game loop. It returns a pointer to an array of `XblSocialManagerEvent` records describing what changed since the last call.
+3. **Process events** — Iterate the events, update your social UI (friends list, presence indicators, invite buttons), and free nothing — the array is owned by Social Manager and valid until the next `DoWork` call.
+
+---
+
+## Functions
+
+### XblSocialManagerAddLocalUser
+
+Creates a social graph for the specified local user. The graph is populated asynchronously; listen for the `LocalUserAdded` event in `XblSocialManagerDoWork` before using the graph data.
+
+```c
+HRESULT XblSocialManagerAddLocalUser(
+    XblUserHandle                    user,
+    XblSocialManagerExtraDetailLevel extraLevelDetail,
+    XTaskQueueHandle                 queue
+);
+```
+
+<ParamField path="user" type="XblUserHandle" required>
+  The Xbox Live user handle for the local player whose social graph should be tracked. Obtain this from the XUser API after the player signs in.
+</ParamField>
+
+<ParamField path="extraLevelDetail" type="XblSocialManagerExtraDetailLevel" required>
+  Controls how much extra data is fetched for each friend. Higher detail levels increase bandwidth usage.
+
+  | Value | Description |
+  |---|---|
+  | `NoExtraDetail` | Only basic presence (online/offline) |
+  | `TitleHistory` | Includes recent titles played |
+  | `PreferredColor` | Includes the user's preferred Xbox color |
+  | `TitleHistoryAndPreferredColor` | Both of the above |
+</ParamField>
+
+<ParamField path="queue" type="XTaskQueueHandle">
+  Optional. The task queue used for background service calls for this user. Avoid queues with `XTaskQueueDispatchMode::Immediate` as it can cause poor performance.
+</ParamField>
+
+**Returns:** `HRESULT` — `S_OK` if the request was accepted. The user is not yet ready until the `LocalUserAdded` event fires.
+
+---
+
+### XblSocialManagerDoWork
+
+Advances the Social Manager state machine and returns all social events that occurred since the last call. **Must be called every frame** for the graph to stay up to date.
+
+```c
+HRESULT XblSocialManagerDoWork(
+    const XblSocialManagerEvent** socialEvents,
+    size_t*                       socialEventsCount
+);
+```
+
+<ParamField path="socialEvents" type="const XblSocialManagerEvent**" required>
+  Output pointer to an array of `XblSocialManagerEvent` structs. Valid only until the next call to `XblSocialManagerDoWork`. Do not cache or free this pointer.
+</ParamField>
+
+<ParamField path="socialEventsCount" type="size_t*" required>
+  Output count of events in the array. May be zero if nothing changed this frame.
+</ParamField>
+
+**Returns:** `HRESULT` — `S_OK` on success.
+
+**Remarks:** If `socialEvents` is `nullptr` or `socialEventsCount` is `0`, no events occurred. Always check the count before iterating. The array is automatically cleaned up when `XblCleanup` is called.
+
+---
+
+### XblSocialManagerCreateSocialUserGroupFromFilters
+
+Creates a filtered view of the social graph. Instead of iterating all friends, you can create a group that automatically contains only the friends matching your filter criteria.
+
+```c
+HRESULT XblSocialManagerCreateSocialUserGroupFromFilters(
+    XblUserHandle                          user,
+    XblPresenceFilter                      presenceFilter,
+    XblRelationshipFilter                  relationshipFilter,
+    XblSocialManagerUserGroupHandle*       group
+);
+```
+
+<ParamField path="user" type="XblUserHandle" required>
+  The local user whose graph the group is drawn from.
+</ParamField>
+
+<ParamField path="presenceFilter" type="XblPresenceFilter" required>
+  Filters friends by presence state:
+
+  | Value | Meaning |
+  |---|---|
+  | `AllOnline` | Any friends currently online |
+  | `AllOnlineInGame` | Friends online and in any game |
+  | `TitleOnline` | Friends online in **this** title |
+  | `AllTitle` | Friends who have played this title (online or offline) |
+  | `All` | All friends regardless of presence |
+</ParamField>
+
+<ParamField path="relationshipFilter" type="XblRelationshipFilter" required>
+  Filters by relationship type:
+
+  | Value | Meaning |
+  |---|---|
+  | `Friends` | All friends |
+  | `Favorite` | Only friends marked as favorites |
+</ParamField>
+
+<ParamField path="group" type="XblSocialManagerUserGroupHandle*" required>
+  Output handle to the created group. The group is updated automatically by `XblSocialManagerDoWork`.
+</ParamField>
+
+**Returns:** `HRESULT` — `S_OK` if the group was created.
+
+---
+
+### XblSocialManagerRemoveLocalUser
+
+Removes the social graph for a local user and frees associated resources. Call when the user signs out.
+
+```c
+HRESULT XblSocialManagerRemoveLocalUser(XblUserHandle user);
+```
+
+---
+
+### XblSocialManagerDestroySocialUserGroup
+
+Destroys a social user group created with `XblSocialManagerCreateSocialUserGroupFromFilters` or `XblSocialManagerCreateSocialUserGroupFromList`.
+
+```c
+HRESULT XblSocialManagerDestroySocialUserGroup(
+    XblSocialManagerUserGroupHandle group
+);
+```
+
+---
+
+## Social event types
+
+After each `XblSocialManagerDoWork` call, iterate the returned events by their `eventType` field:
+
+| `XblSocialManagerEventType` | When it fires |
+|---|---|
+| `LocalUserAdded` | Initial graph for `XblSocialManagerAddLocalUser` is ready |
+| `LocalUserRemoved` | User was removed via `XblSocialManagerRemoveLocalUser` |
+| `UsersAddedToSocialGraph` | New friends appeared in the graph |
+| `UsersRemovedFromSocialGraph` | Friends were removed |
+| `PresenceChanged` | One or more friends changed presence state |
+| `ProfilesChanged` | One or more friends updated their profile data |
+| `SocialRelationshipsChanged` | Friend/favorite relationships changed |
+| `SocialUserGroupLoaded` | A filter-based group finished loading |
+| `SocialUserGroupUpdated` | A group's member list was refreshed |
+
+---
+
+## Code example: DoWork game loop pattern
+
+```cpp
+// --- INITIALIZATION (call once at sign-in) ---
+
+XblSocialManagerAddLocalUser(
+    userHandle,
+    XblSocialManagerExtraDetailLevel::NoExtraDetail,
+    taskQueue);
+
+// --- GAME LOOP (call every frame) ---
+
+void Game::UpdateSocial()
+{
+    const XblSocialManagerEvent* events = nullptr;
+    size_t eventCount = 0;
+
+    HRESULT hr = XblSocialManagerDoWork(&events, &eventCount);
+    if (FAILED(hr)) return;
+
+    for (size_t i = 0; i < eventCount; ++i)
+    {
+        const XblSocialManagerEvent& ev = events[i];
+
+        switch (ev.eventType)
+        {
+        case XblSocialManagerEventType::LocalUserAdded:
+            // Graph is ready — populate the friends list UI
+            RefreshFriendsUI();
+            break;
+
+        case XblSocialManagerEventType::PresenceChanged:
+            // Update presence indicators for affected users
+            for (uint32_t u = 0; u < ev.usersAffectedCount; ++u)
+            {
+                UpdatePresenceIndicator(ev.usersAffected[u]);
+            }
+            break;
+
+        case XblSocialManagerEventType::UsersAddedToSocialGraph:
+        case XblSocialManagerEventType::UsersRemovedFromSocialGraph:
+            RefreshFriendsUI();
+            break;
+
+        default:
+            break;
+        }
+    }
+    // Do NOT free the `events` pointer — it is owned by Social Manager.
+}
+
+// --- SHUTDOWN (call at sign-out) ---
+
+XblSocialManagerRemoveLocalUser(userHandle);
+```
+
+<Warning>
+  The `socialEvents` pointer returned by `XblSocialManagerDoWork` is only valid until the next call to `XblSocialManagerDoWork`. Never cache this pointer across frames or pass it to code that runs asynchronously after the current frame ends.
+</Warning>

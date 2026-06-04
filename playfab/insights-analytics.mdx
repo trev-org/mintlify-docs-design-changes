@@ -1,0 +1,67 @@
+---
+title: "Capture telemetry and run live-ops analytics with PlayFab Insights"
+sidebarTitle: "Insights & Analytics"
+description: "Send game events to PlayFab, query them with Insights and Data Explorer, and pipe data out via Data Connections for live-ops dashboards."
+---
+
+PlayFab captures every player action your title reports and stores it in a queryable event store that powers retention, monetization, and engagement analysis. You don't have to stand up your own pipeline — emit events from the client (or, ideally, from a trusted server) and PlayFab handles ingestion, storage, schema management, and ad-hoc query.
+
+## Sending events
+
+Use `WritePlayerEvent` from the client or `WriteTitleEvent` from the server to record a structured event. Each event has a name plus a JSON body of strongly-typed properties.
+
+```cpp
+PlayFab::ClientModels::FWriteClientPlayerEventRequest req;
+req.EventName = "level_completed";
+req.Body.JsonObject = MakeShareable(new FJsonObject());
+req.Body.JsonObject->SetStringField("level_id", "forest_03");
+req.Body.JsonObject->SetNumberField("seconds_to_complete", 184.3);
+req.Body.JsonObject->SetNumberField("deaths", 2);
+
+PlayFab::UPlayFabClientAPI::WritePlayerEvent(req,
+    [](const auto&) {},
+    [](const auto& err) { /* log */ });
+```
+
+Keep event names stable over time. Renaming an event later forks your analytics history.
+
+## Insights
+
+PlayFab Insights is the Kusto-backed query workspace for your event data. Open it from Game Manager and run KQL:
+
+```kusto
+events.all
+| where Timestamp > ago(7d)
+| where FullName_Name == "level_completed"
+| extend level = tostring(EventData.level_id)
+| summarize completions = count(), avg_time = avg(toreal(EventData.seconds_to_complete)) by level
+| order by completions desc
+```
+
+Use Insights for funnel analysis ("how many players who started the tutorial finished it?"), retention cohorts, A/B test analysis, and economy tuning.
+
+## Performance levels
+
+Insights compute is metered. Choose a performance level per title based on event volume:
+
+- **L1 (default)** — free baseline, fine for early development and small live titles.
+- **L2 – L6** — paid tiers with more memory and parallelism. Scale up when query latency or daily volume exceeds the lower tier.
+
+You can change levels without losing data.
+
+## Data Connections
+
+For anything beyond ad-hoc query — pushing into a data lake, BigQuery, Snowflake, or your studio's data warehouse — configure a **Data Connection**. PlayFab streams events to Azure Data Explorer, Azure Storage, or your own endpoint, and from there your existing analytics tooling takes over.
+
+## Best practices
+
+- **Emit from the server when possible.** Client-side events can be spoofed; for any event that influences monetization or live-ops decisions, write from a trusted server.
+- **Version your schema.** When you add a new field to an event, add it as a new optional property rather than renaming an existing one.
+- **Bound free-form text.** Cap user-supplied strings (chat messages, level names) to a reasonable length before sending. Insights queries are not the place for unbounded payloads.
+- **Sample high-volume events.** For events that fire every frame or every shot, sample on the client before sending; raw fire-hose volume burns through Insights tier capacity.
+
+## See also
+
+- [PlayFab Overview](/playfab/overview)
+- [Economy](/playfab/economy)
+- [Player Data (Xbox)](/services/player-data)

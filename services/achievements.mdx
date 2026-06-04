@@ -1,0 +1,180 @@
+---
+title: "Xbox achievements: integrate Gamerscore into your title"
+sidebarTitle: "Achievements"
+description: "Integrate Xbox achievements with title-managed or event-based models, define them in Partner Center, and unlock via XblAchievementsUpdateAchievementAsync."
+---
+
+Achievements are one of the most recognizable and enduring features of the Xbox platform. Players earn Gamerscore by unlocking achievements, compare completion rates with friends, and showcase their gaming history across every title they play. For your game, achievements are a powerful tool for driving engagement: they give players explicit goals to pursue, reward exploration and mastery, and encourage replayability long after the credits roll.
+
+Integrating achievements into a GDK title requires three things: configuring achievement definitions in Partner Center, choosing a processing model (title-managed or event-based), and making the right API calls at the right moments in your game.
+
+<Note>
+  **Achievements require ID\@Xbox or a managed developer program.** The Xbox Creators Program does not have access to achievements or Gamerscore. To unlock this feature, apply to [ID\@Xbox](https://www.xbox.com/Developers/id).
+</Note>
+
+## Title-managed vs. event-based achievements
+
+Microsoft recommends **title-managed Achievements** for all new titles. It uses a simple direct-call model that is easier to configure, easier to debug, and easier to maintain in cross-platform codebases.
+
+<Tabs>
+  <Tab title="Title-Managed (recommended)">
+    Your game code calls an unlock API directly when the player earns an achievement. Xbox services records the unlock and awards the Gamerscore.
+
+    - ✅ Simple configuration — no server-side unlock rules
+    - ✅ Easy to debug — achievement unlocks when your code says so
+    - ✅ Cross-platform friendly — same calling pattern on Xbox and PC
+    - ✅ Supports progression updates (0–100%) via the same API
+    - ✅ Supports offline unlocks — queued and synced when reconnected
+    - ❌ Does not support Challenges (a legacy event-based feature)
+  </Tab>
+  <Tab title="Event-Based (legacy)">
+    Your title fires telemetry events, and server-side rules defined in Partner Center determine when to unlock achievements based on accumulated stat data.
+
+    - ✅ A single event can update stats, presence, and achievements simultaneously
+    - ✅ Supports Challenges
+    - ❌ Complex configuration — requires defining events, stats, and achievement rules
+    - ❌ Harder to debug — unlock logic lives in the cloud
+    - ❌ Requires event-based Stats (cannot use title-managed Stats)
+    - ❌ Cannot be migrated to title-managed after release
+
+    **Note:** If your title has already shipped using event-based Achievements, you cannot migrate to title-managed. All DLC must use the same model as the base game.
+  </Tab>
+</Tabs>
+
+## Achievements Manager
+
+For efficiently reading and displaying achievement data, use the **Achievements Manager API**. Rather than making individual service calls every time you need to show achievement lists or progress, Achievements Manager maintains a local cache that is automatically kept in sync with Xbox services. This reduces latency and service call overhead for your UI.
+
+Key Achievements Manager functions:
+
+| Function | Purpose |
+|---|---|
+| `XblAchievementsManagerAddLocalUser` | Register a signed-in user with the Achievements Manager cache |
+| `XblAchievementsManagerRemoveLocalUser` | Unregister a user and release the cache |
+| `XblAchievementsManagerDoWork` | Process pending events and keep the cache updated (call once per frame) |
+| `XblAchievementsManagerGetAchievements` | Get the full list of achievements for a user |
+| `XblAchievementsManagerGetAchievement` | Get a single achievement by ID |
+
+## Configuring achievements in Partner Center
+
+<Steps>
+  <Step title="Create achievement definitions">
+    In Partner Center, go to your title's **Xbox services → Achievements** page. For each achievement, provide:
+    - **ID** — a unique string identifier used in API calls (for example, `"achievement_first_win"`)
+    - **Name and locked description** — shown to players before unlock
+    - **Unlocked description** — shown after unlock
+    - **Gamerscore value** — must follow Xbox achievement policies (typically 5–100 points per achievement)
+    - **Locked and unlocked artwork** — concept art shown in achievement cards
+  </Step>
+  <Step title="Set progression (optional)">
+    If you want to show incremental progress before unlock (for example, "Kill 100 enemies: 43/100"), set the achievement type to **Progressive** and define the maximum value. You update progress using the same `XblAchievementsUpdateAchievementAsync` API with a value less than 100.
+  </Step>
+  <Step title="Publish to your sandbox">
+    Publish the configuration to your development sandbox. New achievement definitions become available within minutes. Use the `XblPlayerDataReset` tool to reset test data when iterating.
+  </Step>
+</Steps>
+
+## Unlocking an achievement
+
+Call `XblAchievementsUpdateAchievementAsync` to unlock an achievement (pass `percentComplete = 100`) or update its progress (pass a value from 1 to 99).
+
+```cpp
+#include <xsapi-c/achievements_c.h>
+
+// Unlock "First Win" achievement for the local user
+void UnlockAchievement(
+    XblContextHandle xblContext,
+    XTaskQueueHandle queue,
+    const char* achievementId)
+{
+    struct UnlockContext
+    {
+        XblContextHandle xblContext;
+    };
+
+    auto ctx = new UnlockContext{ xblContext };
+
+    auto asyncBlock = new XAsyncBlock{};
+    asyncBlock->queue    = queue;
+    asyncBlock->context  = ctx;
+    asyncBlock->callback = [](XAsyncBlock* async)
+    {
+        HRESULT hr = XblAchievementsUpdateAchievementResult(async);
+        if (SUCCEEDED(hr))
+        {
+            // Achievement successfully unlocked (or was already unlocked).
+        }
+        else if (hr == HTTP_E_STATUS_NOT_MODIFIED)
+        {
+            // Achievement was already unlocked — not an error.
+        }
+        delete static_cast<UnlockContext*>(async->context);
+        delete async;
+    };
+
+    HRESULT hr = XblAchievementsUpdateAchievementAsync(
+        xblContext,
+        XblContextGetXboxUserId(xblContext),
+        achievementId,
+        100,    // percentComplete: 100 = unlock, 1-99 = progress update
+        asyncBlock
+    );
+
+    if (FAILED(hr))
+    {
+        delete ctx;
+        delete asyncBlock;
+    }
+}
+```
+
+## Updating achievement progress
+
+Use the same function to report incremental progress before the full unlock:
+
+```cpp
+// Report that the player has completed 43 out of 100 kills
+// for a "Kill 100 Enemies" achievement
+XblAchievementsUpdateAchievementAsync(
+    xblContext,
+    XblContextGetXboxUserId(xblContext),
+    "achievement_kill_100",
+    43,     // 43% progress
+    asyncBlock
+);
+```
+
+<Tip>
+  Do not spam progress updates on every frame. Batch progress updates to meaningful thresholds (every 10%, on round completion, etc.) to avoid throttling from the Xbox services rate limiter.
+</Tip>
+
+## Offline achievement unlocks
+
+If the player is offline when your code calls `XblAchievementsUpdateAchievementAsync`, XSAPI automatically queues the unlock request locally. When the device reconnects to Xbox services, the queued unlock is synced automatically. The player sees the unlock notification once connectivity is restored.
+
+The offline behavior of title-managed Achievements is equivalent to event-based Achievements — no special handling is required in your game code.
+
+## Frequently asked questions
+
+<Accordion title="Can I add new achievements with DLC after shipping?">
+  Yes. You can add achievements via content updates following Xbox Live policies for Achievements. All DLC achievements must use the same processing model (title-managed or event-based) as the base game's achievements.
+</Accordion>
+
+<Accordion title="Can I reset achievement data during development?">
+  Yes. Use the `XblPlayerDataReset` command-line tool to reset a test user's achievements and other player data in your development sandbox. This tool only works in non-RETAIL sandboxes.
+</Accordion>
+
+<Accordion title="What happens if I switch between event-based and title-managed?">
+  Switching models before your title's release clears all existing achievement data for your test users. You cannot switch models after your title has gone live in RETAIL. Make this decision early and stick with it.
+</Accordion>
+
+<Accordion title="Can I use title-managed Achievements alongside event-based Stats?">
+  Yes — this is the recommended configuration. Use title-managed Achievements for simplicity and event-based Stats for deep shell integration and server-side aggregation.
+</Accordion>
+
+## See also
+
+- [Player data overview](/services/player-data) — stats, leaderboards, and the configuration model decision
+- [Social features](/services/social) — how achievement unlocks appear in the activity feed
+- [Event-based vs. title-managed Achievements](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/player-data/achievements/live-achievements-eb-vs-tm)
+- [XblAchievementsUpdateAchievementAsync reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/live/xsapi-c/atoc-xsapi-c)

@@ -1,0 +1,225 @@
+---
+title: "Xbox multiplayer: MPSD, SmartMatch, and PlayFab Party"
+sidebarTitle: "Multiplayer"
+description: "Explore Xbox multiplayer: MPSD session management, Multiplayer Manager, SmartMatch matchmaking, PlayFab Party, Game Chat 2, and Multiplayer Activity (MPA)."
+---
+
+Multiplayer is one of the most powerful tools you have for extending your title's lifetime and building a lasting player community. Xbox services provides a comprehensive multiplayer stack — from low-level session state management and matchmaking to high-level APIs that handle common scenarios out of the box. Whether you are building a competitive ranked shooter, a cooperative RPG, or a casual party game, the right Xbox multiplayer components can help you ship faster and deliver a better experience.
+
+With over **1 billion multiplayer matches played each month** on Xbox services, the infrastructure is built for performance, reliability, and scale.
+
+## Multiplayer system overview
+
+The Xbox multiplayer stack is composed of several complementary subsystems. You choose which ones to use based on your title's complexity and architecture.
+
+<Tabs>
+  <Tab title="MPSD">
+    **Multiplayer Session Directory (MPSD)** is the foundation of the Xbox multiplayer stack. It is a cloud service that stores and coordinates session state — who is in a lobby, what their connection information is, whether a match is in progress, and what the session's join rules are.
+
+    **Use MPSD when you:**
+    - Need full control over session lifecycle and matchmaking logic
+    - Are building client/server or dedicated-server titles
+    - Have more than 8 players or highly customized session rules
+    - Need deep integration with the Xbox shell (invites, join-in-progress)
+
+    MPSD sessions are defined by **session templates** you configure in Partner Center. Templates specify player counts, timeout behavior, visibility, and capabilities.
+
+    ```cpp
+    // Create an MPSD session using XSAPI C API
+    XblMultiplayerSessionReference sessionRef{};
+    pal::strcpy(sessionRef.Scid, sizeof(sessionRef.Scid), YOUR_SCID);
+    pal::strcpy(sessionRef.SessionTemplateName,
+                sizeof(sessionRef.SessionTemplateName),
+                "GameSession");
+    pal::strcpy(sessionRef.SessionName,
+                sizeof(sessionRef.SessionName),
+                "my-unique-session-guid");
+
+    XblMultiplayerSessionHandle session = nullptr;
+    HRESULT hr = XblMultiplayerSessionCreateHandle(
+        XblContextGetXboxUserId(xblContext),
+        &sessionRef,
+        nullptr,    // initial properties (optional)
+        &session
+    );
+    ```
+  </Tab>
+  <Tab title="Multiplayer Manager">
+    **Multiplayer Manager (MPM)** is a high-level client-side API that implements the most common multiplayer scenarios for you. It manages session creation, join flows, invites, matchmaking, and game lifecycle events with a state-and-event-based programming model.
+
+    **Use MPM when you:**
+    - Have a client-host (peer-to-peer with relay) architecture
+    - Have **8 or fewer players** per session
+    - Want a simpler API surface without writing full MPSD logic
+    - Are new to Xbox multiplayer development
+
+    MPM is **not** suitable for dedicated server titles or sessions with more than 8 players.
+
+    ```cpp
+    #include <xsapi-c/multiplayer_manager_c.h>
+
+    // Initialize Multiplayer Manager
+    HRESULT hr = XblMultiplayerManagerInitialize(
+        "GameSession",    // session template name
+        queue
+    );
+
+    // Add the local user to the lobby
+    hr = XblMultiplayerManagerLobbySessionAddLocalUser(localUser);
+
+    // Set a join-in-progress string visible in the Xbox shell
+    hr = XblMultiplayerManagerLobbySessionSetLocalMemberProperties(
+        localUser,
+        "{ \"status\": \"looking_for_group\" }",
+        nullptr,
+        nullptr
+    );
+
+    // Call DoWork every frame to process state changes
+    // and fire your event handlers
+    uint32_t eventCount = 0;
+    XblMultiplayerEvent* events = nullptr;
+    XblMultiplayerManagerDoWork(&events, &eventCount);
+    ```
+  </Tab>
+  <Tab title="PlayFab Party">
+    **Azure PlayFab Party** is Microsoft's recommended cross-platform real-time networking and communication solution for client-host titles. It replaces the deprecated Xbox Integrated Multiplayer (XIM), which does **not** work in GDK titles.
+
+    **Use PlayFab Party when you:**
+    - Need cross-platform multiplayer (Xbox, PC, PlayStation, Switch, mobile)
+    - Want relay-based P2P without exposing player IP addresses
+    - Need integrated voice and text chat with accessibility features (speech-to-text, text-to-speech)
+    - Are building a client-host (peer-to-peer with relay) title
+
+    Party can also be used as the voice/chat layer for client/server titles, even if the game traffic itself flows through a dedicated server.
+
+    ```cpp
+    #include <Party.h>
+    using namespace Party;
+
+    // Initialize Party and create a network
+    PartyManager& mgr = PartyManager::GetSingleton();
+    mgr.Initialize("YOUR_PLAYFAB_TITLE_ID");
+
+    PartyLocalUser* localUser = nullptr;
+    mgr.CreateLocalUser("ENTITY_ID", "ENTITY_TOKEN", &localUser);
+
+    // Create a new Party network
+    PartyNetworkConfiguration netConfig{};
+    netConfig.maxDeviceCount             = 8;
+    netConfig.maxDevicesPerUserCount     = 1;
+    netConfig.maxEndpointsPerDeviceCount = 1;
+
+    PartyNetwork* network = nullptr;
+    PartyString networkId = nullptr;
+    mgr.CreateNewNetwork(
+        localUser,
+        &netConfig,
+        0, nullptr,           // regions
+        nullptr,              // invitation config
+        nullptr,              // async id
+        &network,
+        &networkId
+    );
+    ```
+
+    <Note>
+      XIM is deprecated and does not work for GDK titles. Do not use XIM in new titles. Existing XDK titles using XIM are supported for their lifetime but should not be migrated to GDK without switching to PlayFab Party.
+    </Note>
+  </Tab>
+</Tabs>
+
+## SmartMatch matchmaking
+
+SmartMatch is Xbox services' matchmaking service. It supports three complementary flows you can mix and match:
+
+<CardGroup cols={3}>
+  <Card title="Quick Match" icon="bolt" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/matchmaking/live-matchmaking-overview">
+    Players submit a matchmaking ticket and SmartMatch finds compatible opponents automatically based on hopper rules you define in Partner Center.
+  </Card>
+  <Card title="Session Browse" icon="list" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/mpsd/live-mpsd-overview">
+    Players browse a list of open sessions and join manually. Good for custom game lobbies or community servers.
+  </Card>
+  <Card title="Looking for Group" icon="users" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/matchmaking/live-matchmaking-overview">
+    Players post an LFG listing describing what they want (mode, skill level, play style). Other players can discover and join them.
+  </Card>
+</CardGroup>
+
+SmartMatch hoppers are configured in Partner Center. Each hopper defines the session template to use, the ticket attributes to match on (skill, region, game mode), and tolerance rules that relax requirements over time to prevent long wait times.
+
+## Multiplayer Activity (MPA)
+
+**Multiplayer Activity (MPA)** is required for any Xbox or Windows PC title that uses custom matchmaking or session management (rather than pure MPM). MPA surfaces the invite/join social experience that the Xbox shell expects:
+
+- The player's current activity (in lobby, in match, idle) is visible to friends.
+- Friends can send and receive game invites.
+- Players can join a friend's game directly from the Xbox shell without being explicitly invited.
+
+```cpp
+#include <xsapi-c/multiplayer_activity_c.h>
+
+// Set the current player activity (e.g., in a lobby)
+XblMultiplayerActivityInfo activityInfo{};
+activityInfo.connectionString    = "your-connection-string";
+activityInfo.joinRestriction     = XblMultiplayerActivityJoinRestriction::Followed;
+activityInfo.maxPlayers          = 8;
+activityInfo.currentPlayers      = 1;
+activityInfo.groupId             = "my-lobby-guid";
+
+HRESULT hr = XblMultiplayerActivitySetActivityAsync(
+    xblContext,
+    &activityInfo,
+    false,     // allowCrossPlatformJoin
+    asyncBlock
+);
+```
+
+<Warning>
+  Titles that ship on Xbox console or Windows PC **must** implement MPA (or equivalent MPSD-based invite/join flows) to meet Xbox certification requirements. A title that cannot properly receive and handle invites will fail cert.
+</Warning>
+
+## Game Chat 2
+
+**Game Chat 2** provides secure, low-latency voice and text chat for Xbox services gamers. It uses Xbox's media services and the Xbox social graph to enforce mute preferences, reputation-based filtering, and communication restrictions.
+
+Key features:
+- Works on Xbox console and Windows PC GDK titles
+- Automatically respects player mute lists and communication preferences set in Xbox settings
+- Supports per-channel audio routing (team channel, all-chat channel)
+- Provides text chat as an accessibility alternative
+
+```cpp
+#include <GameChat2.h>
+using namespace game_chat_2;
+
+// Initialize Game Chat 2
+chat_manager::singleton_instance().initialize(
+    4,      // maxLocalUserCount
+    0.5f,   // defaultAudioRenderVolume
+    communication_relationship_adjuster_none
+);
+
+// Add a local user
+chat_user& localChatUser =
+    chat_manager::singleton_instance().add_local_user("xuid:1234567890");
+```
+
+## Choosing the right multiplayer components
+
+| Scenario | Recommended components |
+|---|---|
+| Simple P2P, ≤8 players, Xbox/PC | MPM + PlayFab Party (networking) + Game Chat 2 |
+| Custom matchmaking, any player count | MPSD + SmartMatch + MPA + PlayFab Party or Game Chat 2 |
+| Dedicated server, large player count | MPSD + MPA + PlayFab Multiplayer Servers + Game Chat 2 |
+| Cross-platform (console + PC + mobile) | MPSD/MPA + PlayFab Party (all networking + chat) |
+| Session browse / LFG | MPSD + SmartMatch (session browse or LFG hopper) |
+
+## See also
+
+- [Multiplayer overview (NDA)](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/overviews/multiplayer-intro)
+- [Multiplayer Session Directory overview](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/mpsd/live-mpsd-overview)
+- [Multiplayer Manager overview](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/mpm/live-multiplayer-manager-overview)
+- [Multiplayer Activity overview](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/mpa/live-mpa-overview)
+- [PlayFab Party overview](https://learn.microsoft.com/en-us/gaming/playfab/features/multiplayer/networking/)
+- [Game Chat 2 intro](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/chat/game-chat2/game-chat-2-intro)
+- [Networking](/gdk/networking) — console-level socket APIs and security requirements

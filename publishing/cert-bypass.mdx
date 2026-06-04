@@ -1,0 +1,62 @@
+---
+title: "Cert Bypass program for faster patch turnaround"
+sidebarTitle: "Cert Bypass"
+description: "Qualify for the Cert Bypass program to publish small patches to your shipped Xbox or PC title without going through full Microsoft certification."
+---
+
+Cert Bypass is an opt-in program that lets approved titles ship **minor updates** to a retail product without going through the full certification process. For live-service teams running weekly hotfixes, it can collapse the patch-to-retail timeline from days to hours.
+
+<Note>
+  Cert Bypass is a privilege for titles in good standing, not a default. Eligibility is reviewed per title, and abuse (shipping a cert-failing build through bypass) can result in being removed from the program.
+</Note>
+
+## Eligibility
+
+To qualify, your title typically needs to:
+
+- Have shipped to retail and been live in the store for a minimum probationary period.
+- Have a low certification-fail rate on recent submissions.
+- Be operated by a team with a Microsoft point of contact in the Managed Partner program.
+- Demonstrate a robust internal QA process.
+
+Apply through Partner Center under **Publishing processes** → **Cert Bypass**. Microsoft reviews the application and approves the title (not the studio) for bypass on a per-product basis.
+
+## What you can ship under bypass
+
+Allowed:
+
+- Bug fixes that do not change ratings-impacting content.
+- Server-side balance tweaks delivered through your back end (Title Storage, PlayFab, CloudScript).
+- Small content drops within the existing rated scope.
+- Critical security patches.
+
+**Not** allowed:
+
+- New age-ratings-impacting content (added violence, new in-game purchases, new chat surfaces).
+- New market launches.
+- Major engine or platform upgrades.
+- DRM or anti-cheat changes that affect retail experience.
+
+When in doubt: submit normally.
+
+## Workflow
+
+1. Build, sign, and validate the package locally with [SubmissionValidator](/tools/xbox-service-tools).
+2. Upload to Partner Center and mark the submission as a **Cert Bypass** update.
+3. Microsoft performs an automated check (scan for obvious cert violations).
+4. If the automated check passes, the build flows directly to retail — typically within hours.
+5. If anything trips the automated check, the build falls back to full certification.
+
+## Maintaining good standing
+
+Keep your bypass privilege by:
+
+- Running every bypass candidate through your own internal cert suite first.
+- Treating bypass like production. The same release-engineering rigor applies.
+- Reverting fast. If a bypass build causes player-impacting issues, ship a follow-up bypass within 24 hours rather than letting the issue persist.
+
+## See also
+
+- [Certification](/publishing/certification)
+- [Pre-release Testing](/publishing/pre-release-testing)
+- [Partner Center](/publishing/partner-center)

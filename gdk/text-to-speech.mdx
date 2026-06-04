@@ -1,0 +1,67 @@
+---
+title: "Text-to-speech and speech-to-text for accessibility"
+sidebarTitle: "Text-to-Speech"
+description: "Integrate the platform text-to-speech and speech-to-text APIs to power accessible chat and narration in GDK titles, including Game Chat 2 transcription."
+---
+
+Text-to-speech (TTS) and speech-to-text (STT) are core accessibility features for Xbox titles, primarily used by players who are deaf, hard of hearing, mute, or speech-impaired. The GDK exposes the platform speech pipeline through Game Chat 2 for voice chat translation, and the Windows speech APIs (`Windows.Media.SpeechSynthesis` and `Windows.Media.SpeechRecognition`) are available for general narration and command input.
+
+## When you must support TTS / STT
+
+If your title supports in-game voice chat, **Game Chat 2 TTS and STT are required by Xbox certification**. Players who type chat messages should have those messages synthesized to speech for other players, and players who speak should have their voice transcribed to text for players who cannot hear.
+
+Game Chat 2 ships with both capabilities built in; you turn them on per local user.
+
+```cpp
+using namespace xbox::services::game_chat_2;
+
+chat_user* localUser = chat_manager::singleton_instance().add_local_user(xuid);
+
+// Enable text-to-speech: synthesize this user's typed messages
+// to audio that other users hear.
+localUser->local()->set_text_to_speech_conversion_preference_enabled(true);
+
+// Enable speech-to-text: transcribe other users' voice to text
+// that this user can read.
+localUser->local()->set_speech_to_text_conversion_preference_enabled(true);
+```
+
+Game Chat 2 routes the synthesized voice through the same chat audio path as real voice, so distance attenuation, muting, and mixer controls Just Work.
+
+## Narration outside of chat
+
+For narrated UI, tutorial voiceover, or accessibility narration of HUD elements, use the Windows speech synthesis API directly. It works the same way on Xbox as on Windows.
+
+```cpp
+#include <winrt/Windows.Media.SpeechSynthesis.h>
+
+using namespace winrt::Windows::Media::SpeechSynthesis;
+
+SpeechSynthesizer synth;
+auto stream = co_await synth.SynthesizeTextToStreamAsync(L"You have unlocked a new ability.");
+// Play 'stream' through your XAudio2 pipeline.
+```
+
+## Voice command input
+
+Use the platform speech recognition API for hands-free menu navigation or command input. The Xbox player must grant microphone access in system settings, and your title must declare the `microphone` capability in `MicrosoftGame.config`.
+
+## Language coverage
+
+Game Chat 2 TTS / STT supports the languages the platform speech service supports, which broadly tracks the Xbox console UI languages. Players whose language is not covered fall back to text-only chat without speech translation. List the supported chat languages in your store listing so players know what to expect.
+
+## Accessibility certification
+
+Xbox requirements include specific tests for:
+
+- Game Chat 2 TTS enabled by default for the local user
+- Game Chat 2 STT enabled by default for the local user
+- Chat transcription visible in the chat UI
+
+Verify with the accessibility test cases before submitting to cert.
+
+## See also
+
+- [Game Chat 2](/services/game-chat)
+- [Audio systems](/gdk/audio) — voice and game audio mixing
+- [Microsoft Gaming Accessibility Testing](/publishing/certification)

@@ -1,0 +1,93 @@
+---
+title: "GDK System API reference overview"
+sidebarTitle: "System Overview"
+description: "Overview of the GDK system API surface: XGameRuntime, XGameSave, XGameStreaming, XPackage, XStore, XGameUI, and how to include and link them."
+---
+
+The GDK System API is a flat C API surface that gives your game access to the core platform features shared across Windows PC and Xbox consoles. Every major subsystem has its own header and library file; you include only what your game needs. All functions return `HRESULT` values, and error constants are declared in `XGameErr.h`.
+
+Before calling any System API, you must initialize the Gaming Runtime by calling `XGameRuntimeInitialize()` at process startup and `XGameRuntimeUninitialize()` just before process exit.
+
+## API categories
+
+<CardGroup cols={2}>
+  <Card title="XGameRuntime" icon="power-off" href="/reference/xgameruntime">
+    Initialize and uninitialize the Gaming Runtime. Must be called before any other GDK API. Header: `XGameRuntimeInit.h`, Library: `xgameruntime.lib`.
+  </Card>
+  <Card title="XGameSave" icon="floppy-disk" href="/reference/xgamesave">
+    Connected Storage for roaming, fault-tolerant per-user cloud saves. Containers and blobs with async read/write. Header: `XGameSave.h`.
+  </Card>
+  <Card title="XGameStreaming" icon="signal-stream" href="/reference/xgamestreaming">
+    Detect Xbox Game Streaming / Remote Play sessions, query client properties, and manage touch control layouts. Header: `XGameStreaming.h`.
+  </Card>
+  <Card title="XPackage" icon="box-open" href="/reference/xpackage">
+    Enumerate, mount, and manage installed packages including DLC. Monitor installation progress and chunk availability. Header: `XPackage.h`.
+  </Card>
+  <Card title="XStore" icon="store" href="/reference/xstore">
+    Query Microsoft Store products, initiate purchases, manage game licenses and DLC entitlements. Header: `XStore.h`.
+  </Card>
+  <Card title="XGameUI" icon="window-restore" href="/reference/system-overview">
+    Show pre-built system UI: user pickers, profile cards, game invites, message dialogs, text entry, and web authentication. Header: `XGameUI.h`.
+  </Card>
+  <Card title="XAppCapture" icon="camera" href="/reference/system-overview">
+    Control Game DVR and screenshot capture behaviour from your title. Part of the system API surface.
+  </Card>
+  <Card title="XMem" icon="memory" href="/reference/system-overview">
+    Memory allocation hooks that let your title control how GDK subsystems allocate memory. Useful for tracking allocations or integrating with a custom memory manager.
+  </Card>
+</CardGroup>
+
+---
+
+## Including headers and linking libraries
+
+The GDK installs headers to `$(GRDKLatest)GameKit\Include` and libraries to `$(GRDKLatest)GameKit\lib\amd64`. When using the `Gaming.Desktop.x64` MSBuild platform these paths are added automatically; otherwise add them manually.
+
+```cpp
+// Minimal includes for a GDK game
+#include <XGameRuntimeInit.h>   // XGameRuntimeInitialize / XGameRuntimeUninitialize
+#include <XGameSave.h>          // Cloud save APIs
+#include <XStore.h>             // Commerce APIs
+#include <XPackage.h>           // Package / DLC APIs
+#include <XGameStreaming.h>     // Game Streaming APIs
+#include <XGameUI.h>            // System UI APIs
+```
+
+Link the corresponding `.lib` files:
+
+```text
+xgameruntime.lib   — Required for all GDK features
+```
+
+Extension libraries (XSAPI, GameChat 2, etc.) are linked separately through their `.props` files.
+
+---
+
+## Error codes
+
+All System API functions return `HRESULT`. Success is `S_OK` (`0`). GDK-specific error codes are prefixed with `E_GAMERUNTIME_` or `E_GAMES_` and declared in `XGameErr.h`.
+
+| Error code | Value | Meaning |
+|---|---|---|
+| `S_OK` | `0x0` | Success |
+| `E_GAMERUNTIME_DLL_NOT_FOUND` | — | `xgameruntime.dll` was not found; Gaming Runtime not installed |
+| `E_GAMERUNTIME_VERSION_MISMATCH` | — | Two binaries in the same process compiled against incompatible GDK versions |
+| `E_GAMERUNTIME_NOT_INITIALIZED` | — | A GDK API was called before `XGameRuntimeInitialize()` |
+
+For the full list of error codes, see the [Error codes reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/errorcodes).
+
+<Tip>
+  Use the `FAILED()` and `SUCCEEDED()` macros from `<winerror.h>` to test HRESULT return values rather than comparing against `S_OK` directly. This correctly handles informational success codes.
+</Tip>
+
+---
+
+## Async programming model
+
+Most System APIs that call network services or perform I/O follow a three-function async pattern:
+
+1. `XFooDoSomethingAsync(context, queue, &asyncBlock)` — starts the operation and returns immediately.
+2. A completion callback fires on the `XTaskQueue` you provide, or you poll with `XAsyncGetStatus`.
+3. `XFooDoSomethingResult(asyncBlock, &result)` — retrieves the result after the callback fires.
+
+This model gives your game full control over which threads perform work and where callbacks fire. Use `XTaskQueueCreate` to create queues and `XTaskQueueDispatch` to drain them on your chosen threads.

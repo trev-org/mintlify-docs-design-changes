@@ -1,0 +1,159 @@
+---
+title: "Xbox service development tools reference"
+sidebarTitle: "Service Tools"
+description: "Reference for every Xbox service CLI tool: sandboxes, player data reset, developer account auth, trace analysis, test accounts, and more."
+---
+
+The GDK ships with a suite of command-line tools for working with Xbox services during development. You can access these tools in two ways: run them directly from the GDK **bin** folder after installation, or download the standalone `XboxLiveTools.zip` package from [aka.ms/xbltools](https://aka.ms/xbltools). The full source for many of these tools is available on GitHub at [github.com/Microsoft/xbox-live-developer-tools](https://github.com/Microsoft/xbox-live-developer-tools).
+
+<Note>
+  To create your own custom tooling that integrates with the same backend services, use **Microsoft.Xbox.Service.DevTools.dll**, which is included in the GDK installation and available as open-source in the [Dev Tools library repository](https://github.com/microsoft/xbox-live-developer-tools/tree/main/Microsoft.Xbox.Service.DevTools).
+</Note>
+
+## Tool reference
+
+<CardGroup cols={2}>
+  <Card title="XblDevAccount.exe" icon="user-lock" href="/tools/xbox-service-tools">
+    **Developer Account tool** — Authenticate your Partner Center account and cache credentials for use across all other Xbox service executables. Required before using tools that call Xbox services on your behalf.
+  </Card>
+  <Card title="XblPCSandbox.exe" icon="shield" href="/tools/xbox-service-tools">
+    **PC Sandbox Switcher** — Show the active sandbox, switch to a development sandbox (e.g. `XDKS.1`), or return to `RETAIL`. Requires elevated (Administrator) privileges to set the sandbox.
+  </Card>
+  <Card title="XblPlayerDataReset.exe" icon="rotate-left" href="/tools/xbox-service-tools">
+    **Player Data Reset tool** — Reset a player's achievements, leaderboards, stats, and title history in test sandboxes. Accepts XUIDs, email addresses, or a delimited file as input.
+  </Card>
+  <Card title="XblTraceAnalyzer.exe" icon="magnifying-glass-chart" href="/tools/xbox-service-tools">
+    **Trace Analyzer** — Offline analysis tool that reviews Xbox service calls made by a title and flags calling pattern violations. Works on Fiddler `.saz` trace files.
+  </Card>
+  <Card title="XblConfig.exe" icon="gear" href="/tools/xbox-service-tools">
+    **Config as Source** — Enables advanced users to integrate their build pipelines with Xbox configuration services using a command-line interface.
+  </Card>
+  <Card title="XblConnectedStorage.exe" icon="cloud-arrow-down" href="/tools/xbox-service-tools">
+    **Connected Storage tool** — Download save data from your titles for inspection or backup during development.
+  </Card>
+  <Card title="GlobalStorage.exe" icon="database" href="/tools/xbox-service-tools">
+    **Global Storage tool** — Manage title global storage in test sandboxes before publishing content to `RETAIL`.
+  </Card>
+  <Card title="MultiplayerSessionHistoryViewer.exe" icon="timeline" href="/tools/xbox-service-tools">
+    **Multiplayer Session History Viewer** — Show a historical timeline of all changes to a multiplayer session document, useful for debugging session state bugs.
+  </Card>
+  <Card title="XblTestAccountGui.exe" icon="users" href="/tools/xbox-service-tools">
+    **Test Account tool** — GUI for setting up existing test accounts and configuring them for specific game scenarios.
+  </Card>
+  <Card title="DevEntitlementTool.exe" icon="ticket" href="/tools/xbox-service-tools">
+    **Store Development Entitlement tool** — Query, add, and remove Microsoft Store entitlements on Xbox test accounts within a sandbox.
+  </Card>
+</CardGroup>
+
+---
+
+## XblDevAccount.exe — Developer Account authentication
+
+Before using tools that make authenticated service calls (such as `XblPlayerDataReset.exe` or `GlobalStorage.exe`), sign in with your Partner Center developer account. The tool caches the token for subsequent tool invocations.
+
+```bash
+# Sign in — displays a browser UI if interactive authentication is needed
+XblDevAccount.exe signin --name yourname@example.com
+
+# Sign in to a specific Microsoft Entra ID tenant
+XblDevAccount.exe signin --name yourname@example.com --tenant <tenant-id>
+
+# Sign out and clear cached tokens
+XblDevAccount.exe signout
+```
+
+<Note>
+  Your Partner Center account must have the **Tools Access** permission granted at the product level before you can reset player data or access other product-scoped APIs. This is set in Partner Center under **Account Settings → Users → Product-level permissions → Xbox Live → Tools access**.
+</Note>
+
+---
+
+## XblPCSandbox.exe — PC Sandbox Switcher
+
+Use `XblPCSandbox.exe` to manage the Xbox Live sandbox on your development PC. Setting or changing the sandbox requires an **elevated (Administrator) command prompt**.
+
+```bash
+# Display the current sandbox
+XblPCSandbox /get
+
+# Switch to a development sandbox
+XblPCSandbox /set XDKS.1
+
+# Switch without relaunching system apps immediately
+XblPCSandbox /set XDKS.1 /noApps
+
+# Relaunch Microsoft Store and Xbox App in sandbox mode
+XblPCSandbox /launchApps
+
+# Return to the consumer RETAIL sandbox
+XblPCSandbox /retail
+```
+
+<Tip>
+  You must switch back to `RETAIL` before updating the Xbox App or Gaming Services from the Microsoft Store. These apps cannot receive updates while your PC is in a development sandbox.
+</Tip>
+
+The tool automatically corrects sandbox name casing (e.g. `xdks.1` becomes `XDKS.1`).
+
+---
+
+## XblPlayerDataReset.exe — Player Data Reset
+
+Reset achievements, leaderboards, stats, and title history for one or more test accounts in a sandbox.
+
+```bash
+# Reset by XUID (requires prior sign-in with XblDevAccount.exe)
+XblPlayerDataReset.exe --scid <SCID> --sandbox <SANDBOX.0> --xuid <XUID1,XUID2>
+
+# Reset by test account email address (prompts for password)
+XblPlayerDataReset.exe --scid <SCID> --sandbox <SANDBOX.0> --user <account@xboxtest.com>
+
+# Reset from a file (delimited list of XUIDs or emails)
+XblPlayerDataReset.exe --scid <SCID> --sandbox <SANDBOX.0> --file /path/to/accounts.txt
+
+# Use a custom delimiter (default is comma)
+XblPlayerDataReset.exe --scid <SCID> --sandbox <SANDBOX.0> --xuid <X1*X2*X3> --delimiter *
+```
+
+---
+
+## XblTraceAnalyzer.exe — Trace Analyzer
+
+The Trace Analyzer is an offline tool that reviews the Xbox service calls your title made and highlights any calling pattern violations.
+
+<Steps>
+  <Step title="Capture a Fiddler trace">
+    Run [Fiddler](https://www.telerik.com/fiddler) on your development machine while your GDK title is running. When you have captured the relevant service calls, save the session as a Fiddler Session file (`.saz`).
+  </Step>
+  <Step title="Run the analyzer">
+    Point `XblTraceAnalyzer.exe` at the `.saz` file:
+
+    ```bash
+    XblTraceAnalyzer.exe -input "C:\Traces\session.saz"
+    ```
+
+    Use `-?` or `-h` to see all available command-line options.
+  </Step>
+  <Step title="Review the output">
+    The tool prints a report of all service calls, call frequencies, and any violations it detected. Address each violation before certification submission.
+  </Step>
+</Steps>
+
+---
+
+## Fiddler — Web service call inspection
+
+Fiddler can be configured to act as an HTTPS proxy for your GDK title, allowing you to inspect raw Xbox Live REST requests and responses. This is especially useful for diagnosing authentication failures, unexpected error codes, or latency spikes.
+
+See the full GDK documentation on [Using Fiddler to inspect web service calls](https://learn.microsoft.com/en-us/gaming/gdk/docs/tools/tools-services/live-fiddler-inspect-web-calls) for setup instructions specific to GDK titles.
+
+---
+
+## Building custom tooling
+
+If the built-in tools do not cover your workflow, you can build your own using **Microsoft.Xbox.Service.DevTools.dll**, which ships in the GDK `bin` folder and is also available as open-source:
+
+- NuGet package: included in the GDK installation
+- Source: [github.com/microsoft/xbox-live-developer-tools](https://github.com/microsoft/xbox-live-developer-tools/tree/main/Microsoft.Xbox.Service.DevTools)
+
+The library provides the same authenticated HTTP client and service abstractions used by the built-in tools, so you can integrate Xbox service operations directly into your CI/CD pipelines.

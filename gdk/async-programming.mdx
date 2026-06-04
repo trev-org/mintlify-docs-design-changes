@@ -1,0 +1,181 @@
+---
+title: "Asynchronous programming model in the Microsoft GDK"
+sidebarTitle: "Async Model"
+description: "Understand the GDK async pattern built on XTaskQueue and XAsyncBlock, and learn how to control threading for background work and completion callbacks."
+---
+
+The GDK introduces a purpose-built asynchronous programming model designed to fit naturally into game architectures. Unlike the Xbox One ERA approach, where async patterns were difficult to integrate with real-time game loops, the GDK async model gives you fine-grained control over which threads perform background work and which threads receive completion callbacks — without imposing hidden threading behavior on your engine.
+
+## Core concepts: tasks and task queues
+
+The GDK async model is built around two primitives:
+
+<CardGroup cols={2}>
+  <Card title="Task" icon="list-check" href="/reference/xgameruntime">
+    A single unit of asynchronous work composed of two phases: a **work callback** that performs the operation on a background thread, and a **completion callback** that delivers the result. The GDK always implements the work callback internally for its own async APIs; you only provide the completion callback.
+  </Card>
+  <Card title="Task Queue (XTaskQueue)" icon="layer-group" href="/reference/xgameruntime">
+    A container with two internal ports — a **work port** and a **completion port** — that hold callbacks for later execution. Each port is configured independently at creation time to control how callbacks are dispatched (thread pool, serialized thread pool, manual, or immediate).
+  </Card>
+</CardGroup>
+
+The task queue does not manage threading directly. An outside caller dispatches each port, giving you complete control over concurrency. The task queue itself is fully thread-safe.
+
+## The XAsyncBlock structure
+
+Every GDK async call revolves around `XAsyncBlock`, a caller-allocated structure that ties together the task queue, an optional context pointer, and an optional completion callback:
+
+```cpp
+typedef void CALLBACK XAsyncCompletionRoutine(struct XAsyncBlock* asyncBlock);
+
+struct XAsyncBlock
+{
+    XTaskQueueHandle queue;          // Which task queue to use (null = process default)
+    void*            context;        // Caller context passed to the callback
+    XAsyncCompletionRoutine* callback; // Called when the operation completes
+    unsigned char    internal[sizeof(void*) * 4]; // Reserved — do not touch
+};
+```
+
+<Warning>
+  The `XAsyncBlock` must remain in memory for the **entire lifetime** of the async operation. If you allocate it on the heap, the earliest you can safely delete it is inside the completion callback.
+</Warning>
+
+## Using the async pattern
+
+All GDK async APIs follow a consistent three-step pattern:
+
+<Steps>
+  <Step title="Allocate and configure an XAsyncBlock">
+    Zero-initialize an `XAsyncBlock`, set the task queue and context pointer, and provide a completion callback lambda or function pointer.
+  </Step>
+  <Step title="Call the Async function">
+    Pass the `XAsyncBlock*` to the async initiation function (e.g., `XGameSaveGetRemainingQuotaAsync`). The function returns `S_OK` immediately if the call was successfully queued.
+  </Step>
+  <Step title="Retrieve the result in the callback">
+    Inside your completion callback, call the corresponding `Result` function (e.g., `XGameSaveGetRemainingQuotaResult`) to retrieve the return value and release internal async state.
+  </Step>
+</Steps>
+
+### Full example
+
+```cpp
+// providerHandle is a previously obtained XGameSaveProviderHandle.
+
+XAsyncBlock* asyncBlock = new XAsyncBlock{};
+asyncBlock->context = this;
+asyncBlock->queue   = m_taskQueue;
+asyncBlock->callback = [](XAsyncBlock* async)
+{
+    int64_t remainingQuota = 0;
+    HRESULT hr = XGameSaveGetRemainingQuotaResult(async, &remainingQuota);
+
+    if (SUCCEEDED(hr))
+    {
+        printf("Remaining quota: %lld bytes\n", remainingQuota);
+    }
+    delete async; // Safe to delete here — inside the completion callback
+};
+
+// Kick off the async operation
+XGameSaveGetRemainingQuotaAsync(providerHandle, asyncBlock);
+```
+
+<Note>
+  `XGameSaveGetRemainingQuotaResult` releases internal state inside `asyncBlock`. Do not call the `Result` function more than once for a given async operation, and never reuse an `XAsyncBlock` for two concurrent operations.
+</Note>
+
+## Checking status and cancellation
+
+You can poll an in-flight operation at any time using the helper functions below:
+
+| Function | Purpose |
+|---|---|
+| `XAsyncGetStatus(asyncBlock, wait)` | Returns `E_PENDING` while running, `S_OK` on success, or an error code on failure. Pass `wait = true` to block until completion. |
+| `XAsyncGetResultSize(asyncBlock, &size)` | Returns the buffer size needed to retrieve the result payload. |
+| `XAsyncCancel(asyncBlock)` | Requests cancellation. Cancellation is best-effort; the operation may not stop immediately. The completion callback is still invoked with `E_ABORT`. |
+
+## Controlling work dispatching with task queues
+
+Each port of an `XTaskQueue` has one of four dispatch modes:
+
+<Accordion title="Thread pool (default)">
+  Callbacks are dispatched on the system thread pool in parallel. This is the default mode for both the work and completion ports of the process task queue. It is the simplest setup but gives you the least control over which thread runs your completion callback.
+</Accordion>
+
+<Accordion title="Serialized thread pool">
+  Callbacks run on the thread pool but are serialized — only one runs at a time. Useful when callbacks share mutable state.
+</Accordion>
+
+<Accordion title="Manual">
+  Callbacks are never dispatched automatically. You call `XTaskQueueDispatch` yourself on any thread you choose. This is the mode most game studios prefer because it lets you drive completions from your game loop thread.
+
+  ```cpp
+  // In your game loop, drain completions on the main thread:
+  while (XTaskQueueDispatch(m_taskQueue, XTaskQueuePort::Completion, 0)) {}
+  ```
+</Accordion>
+
+<Accordion title="Immediate">
+  The callback is invoked synchronously on the thread that submits it, with no queuing. Use with caution — this can cause unexpected reentrancy.
+</Accordion>
+
+<Tip>
+  Many studios configure the work port as **Thread pool** (background work runs automatically) and the completion port as **Manual** (completions are drained on the game loop thread). This avoids threading surprises in completion callbacks that touch game state.
+</Tip>
+
+## Notifications
+
+Notifications differ from one-shot async calls — they fire repeatedly with no defined end. GDK notification APIs use `Register` / `Unregister` pairs and accept a task queue to control the callback thread, but they do not use `XAsyncBlock`:
+
+```cpp
+XTaskQueueRegistrationToken token{};
+
+// Register for user state changes on the task queue
+XUserRegisterForChangeEvent(
+    m_taskQueue,
+    this,
+    [](void* context, XUserLocalId userId, XUserChangeEvent event)
+    {
+        auto* game = static_cast<Game*>(context);
+        game->OnUserChanged(userId, event);
+    },
+    &token);
+
+// Later, to unregister:
+XUserUnregisterForChangeEvent(token, false);
+```
+
+## Implementing your own async APIs
+
+If you want to expose async APIs in your own engine systems, the GDK provides `XAsyncBegin`, `XAsyncSchedule`, `XAsyncComplete`, and `XAsyncGetResult` to handle the "async plumbing." Your provider callback is invoked with operation codes (`Begin`, `DoWork`, `GetResult`, `Cancel`, `Cleanup`) so you can implement only the operations you need:
+
+```cpp
+HRESULT MyOperationAsync(uint32_t input, XAsyncBlock* async)
+{
+    struct Context { uint32_t input; uint32_t result; };
+    auto* ctx = new Context{ input, 0 };
+
+    return XAsyncBegin(async, ctx, MyOperationAsync, __FUNCTION__,
+        [](XAsyncOp op, XAsyncProviderData* data)
+        {
+            auto* ctx = static_cast<Context*>(data->context);
+            switch (op)
+            {
+            case XAsyncOp::Begin:
+                return XAsyncSchedule(data->async, 0);
+            case XAsyncOp::DoWork:
+                ctx->result = ctx->input * 2; // example work
+                XAsyncComplete(data->async, S_OK, sizeof(uint32_t));
+                break;
+            case XAsyncOp::GetResult:
+                memcpy(data->buffer, &ctx->result, sizeof(uint32_t));
+                break;
+            case XAsyncOp::Cleanup:
+                delete ctx;
+                break;
+            }
+            return S_OK;
+        });
+}
+```

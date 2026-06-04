@@ -1,0 +1,119 @@
+---
+title: "PlayFab Party for cross-platform voice and data"
+sidebarTitle: "Party & Voice"
+description: "Use PlayFab Party for low-latency P2P voice and data networking that works across Xbox, PC, and mobile with built-in transcription and translation."
+---
+
+PlayFab Party is the cross-platform voice chat and data networking library Microsoft recommends for new GDK titles. It provides a P2P-with-relay transport, built-in voice capture and playback, automatic transcription, and real-time translation — all on a single API surface that ships on Xbox, Windows, Android, iOS, and Switch.
+
+Think of PlayFab Party as the **data plane** companion to PlayFab Lobby / Matchmaking and to [Multiplayer Activity](/services/multiplayer-activity) on the Xbox side.
+
+## What you get
+
+<CardGroup cols={2}>
+  <Card title="Voice chat" icon="microphone">
+    Capture, encode (Opus), mix, transport, and play back voice from up to 32 endpoints with platform mute and privacy enforced automatically.
+  </Card>
+
+  <Card title="Reliable and unreliable data" icon="network-wired">
+    Send arbitrary game data over the same network as voice. Choose per-message reliability and ordering semantics.
+  </Card>
+
+  <Card title="Transcription" icon="closed-captioning">
+    Speech-to-text for every voice stream. Required for Xbox accessibility certification — you turn it on with one call.
+  </Card>
+
+  <Card title="Translation" icon="language">
+    Real-time translation of transcribed voice into the listener's preferred language for cross-region matches.
+  </Card>
+</CardGroup>
+
+## Concepts
+
+- **Network** — a logical multiplayer session in Party. Created by one client and joined by others using a network descriptor.
+- **Local user** — a signed-in player on this device. Authenticated against PlayFab.
+- **Endpoint** — the data sender on a device. One per local user for typical voice \+ data flow.
+- **Chat control** — the voice capture / playback object owned by each endpoint.
+
+## Creating and joining a network
+
+```cpp
+#include <Party.h>
+using namespace Party;
+
+PartyManager& mgr = PartyManager::GetSingleton();
+mgr.Initialize(playFabTitleId);
+
+PartyLocalUserHandle localUser;
+mgr.CreateLocalUser(playFabEntityId, entityToken, &localUser);
+
+PartyNetworkConfiguration cfg = {};
+cfg.maxUserCount    = 8;
+cfg.maxDeviceCount  = 8;
+cfg.maxEndpointsPerDeviceCount = 1;
+cfg.maxDirectPeerConnectionsPerDevice = 7;
+
+PartyNetworkDescriptor descriptor;
+mgr.CreateNewNetwork(localUser, &cfg, 0, nullptr, nullptr, nullptr, &descriptor);
+
+// Distribute 'descriptor' (compact binary blob) to other players
+// via Multiplayer Activity, PlayFab Lobby, or your own service.
+```
+
+Remote players call `ConnectToNetwork` with the descriptor, then `AuthenticateLocalUser` and `ConnectChatControl` to join voice.
+
+## Per-frame work
+
+Each frame:
+
+```cpp
+uint32_t count;
+PartyStateChangeArray changes;
+mgr.StartProcessingStateChanges(&count, &changes);
+for (uint32_t i = 0; i < count; ++i) {
+    // Dispatch ChatControlCreated, EndpointMessageReceived, etc.
+}
+mgr.FinishProcessingStateChanges(count, changes);
+```
+
+Party drives its own threads under the hood; your job on the game thread is to drain the state-change queue and react.
+
+## Sending data
+
+```cpp
+PartyDataBuffer buffer = { payload, payloadSize };
+localEndpoint->SendMessage(
+    /*targetCount*/ 0,
+    /*targets*/ nullptr,                       // null = all remote endpoints
+    PartySendMessageOptions::GuaranteedDelivery,
+    /*queuingConfig*/ nullptr,
+    /*dataBufferCount*/ 1,
+    &buffer,
+    /*identifier*/ 0);
+```
+
+## Voice configuration
+
+Once chat controls are connected, configure listening preferences per peer:
+
+```cpp
+localChatControl->SetPermissions(remoteChatControl,
+    PartyChatPermissionOptions::SendMicrophoneAudio |
+    PartyChatPermissionOptions::ReceiveAudio |
+    PartyChatPermissionOptions::ReceiveText);
+
+localChatControl->SetTranscriptionOptions(
+    PartyVoiceChatTranscriptionOptions::TranscribeSelf |
+    PartyVoiceChatTranscriptionOptions::TranscribeOtherChatControlsWithMatchingLanguages,
+    nullptr);
+```
+
+## Party vs. Game Chat 2
+
+[Game Chat 2](/services/game-chat) is voice-only and transport-agnostic; Party combines voice and data on a single transport. For new GDK titles that need cross-platform play, **Party is recommended**. Use Game Chat 2 if you already ship on Xbox-only and have an existing voice stack to keep.
+
+## See also
+
+- [Lobby & Matchmaking](/playfab/multiplayer-lobby)
+- [Multiplayer (Xbox)](/services/multiplayer)
+- [Game Chat 2](/services/game-chat)

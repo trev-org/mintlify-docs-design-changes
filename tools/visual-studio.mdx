@@ -1,0 +1,161 @@
+---
+title: "Visual Studio integration for GDK development"
+sidebarTitle: "Visual Studio"
+description: "Set up GDK project templates, custom MSBuild platforms, Xbox Gaming Project Control, and F5 debugging in Visual Studio 2019 and 2022."
+---
+
+The GDK installer adds first-class Visual Studio support including C++ project templates, three custom MSBuild platforms, the Xbox Gaming Project Control tool window, and a seamless F5 debug experience that handles game registration and launch automatically. Visual Studio 2019 and Visual Studio 2022 are both supported, with VS 2022 recommended for new projects.
+
+## Supported platforms and toolsets
+
+The GDK registers the following custom MSBuild platforms inside Visual Studio:
+
+| Platform | Target |
+|---|---|
+| `Gaming.Desktop.x64` | Windows PC (GDK) game development |
+| `Gaming.Xbox.XboxOne.x64` | Xbox One family consoles |
+| `Gaming.Xbox.Scarlett.x64` | Xbox Series X\|S consoles |
+
+Each platform automatically sets the correct preprocessor defines (e.g. `_GAMING_DESKTOP`), include paths, and library paths under the GDK installation directory. You do not need to manually configure these settings when using the provided project templates.
+
+<Note>
+  When building for PC without the `Gaming.Desktop.x64` custom platform (for example using the standard `x64` platform), you must manually add the GDK include and library paths and set `_GAMING_DESKTOP` in your preprocessor defines. See the **Using x64 platform** section below for the required MSBuild property settings.
+</Note>
+
+---
+
+## Project templates
+
+Install the GDK and then open **File → New → Project** in Visual Studio. Filter by **C++**, **Windows**, and **Games** to find the GDK templates.
+
+<CardGroup cols={2}>
+  <Card title="Direct3D 12 Desktop Game" icon="gamepad" href="/tools/visual-studio">
+    A C++ project using Direct3D 12 with the `Gaming.Desktop.x64` MSBuild platform. This is the recommended starting point for new PC GDK titles.
+  </Card>
+  <Card title="Direct3D 12 Desktop Game (Classic)" icon="gamepad" href="/tools/visual-studio">
+    The same Direct3D 12 setup but using the standard `x64` MSBuild platform instead of the GDK custom platform. Useful for teams that manage build system configuration manually.
+  </Card>
+  <Card title="Direct3D 12 Desktop Game Makefile" icon="terminal" href="/tools/visual-studio">
+    A project that invokes an external build system (CMake, custom Makefile, etc.) while still integrating with Visual Studio's debugger and F5 launch.
+  </Card>
+  <Card title="Desktop Static Library / Desktop DLL" icon="puzzle-piece" href="/tools/visual-studio">
+    Static library and DLL project templates configured with the `Gaming.Desktop.x64` platform, suitable for middleware or modular game code.
+  </Card>
+</CardGroup>
+
+### Standalone template (Visual Studio Marketplace)
+
+As an alternative to the installed templates, a fully standalone template is available on the [Visual Studio Marketplace](https://aka.ms/gdktemplates). It uses **vcpkg** to pull in the GDK, DirectX 12 Agility SDK, and other dependencies — no GDK installation required. It includes both MSBuild and CMake variants and requires Visual Studio 2022 v17.6 or later.
+
+---
+
+## Using the x64 platform with the GDK
+
+If you cannot use the `Gaming.Desktop.x64` custom platform, add the following MSBuild settings to your `.vcxproj` file to replicate its behaviour:
+
+```xml
+<!-- Select the GDK edition (defaults to latest installed) -->
+<PropertyGroup Label="Globals">
+  <GDKPCEditionPath>$(GRDKLatest)</GDKPCEditionPath>
+  <!-- Force x64 native tools (required for VS 2019; optional for VS 2022) -->
+  <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+</PropertyGroup>
+
+<!-- Add GDK include, lib, and executable paths -->
+<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ExecutablePath>$(GameDK)bin;$(ExecutablePath)</ExecutablePath>
+  <IncludePath>$(GDKPCEditionPath)GameKit\Include;$(Console_SdkIncludeRoot);$(IncludePath);</IncludePath>
+  <LibraryPath>$(GDKPCEditionPath)GameKit\lib\amd64;$(Console_SdkLibPath);$(LibraryPath)</LibraryPath>
+</PropertyGroup>
+```
+
+Add the required preprocessor define and library dependencies in your `ItemDefinitionGroup`:
+
+```xml
+<ClCompile>
+  <PreprocessorDefinitions>_GAMING_DESKTOP;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+</ClCompile>
+<Link>
+  <AdditionalDependencies>xgameruntime.lib;gameinput.lib;d3d12.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+</Link>
+```
+
+Add the `MicrosoftGame.config` compilation step as a custom build action:
+
+```xml
+<CustomBuild Include="MicrosoftGameConfig.mgc">
+  <Command>copy %(Identity) "$(OutDir)MicrosoftGame.config"
+makepkg.exe localize /d "$(OutDir)" /pd "$(OutDir)" /gc "%(Identity)"</Command>
+  <Message>MGC Compile</Message>
+  <Outputs>$(OutDir)MicrosoftGame.config</Outputs>
+</CustomBuild>
+```
+
+---
+
+## Xbox Gaming Project Control
+
+The **Xbox Gaming Project Control** tool window provides a guided interface for editing `MicrosoftGame.config` directly inside Visual Studio, including field validation, IntelliSense-style completion for known element values, and quick links to relevant documentation.
+
+Open it from **View → Other Windows → Xbox Gaming Project Control** (available after installing the GDK Visual Studio extension).
+
+Key features:
+
+- **Config editor** — Edit `Identity`, `ShellVisuals`, `ExecutableList`, `StoreId`, `TitleId`, `MSAAppId`, and other elements without editing raw XML.
+- **IntelliSense for MicrosoftGame.config** — When editing the `.mgc` source file in the XML editor, the GDK extension provides schema-driven IntelliSense so you see valid element names and attribute values.
+- **Validation** — The tool window highlights configuration errors and missing required fields before you build or register.
+
+---
+
+## F5 debugging workflow
+
+The GDK Visual Studio extension hooks into the F5 launch pipeline so that pressing **Start Debugging** automatically:
+
+<Steps>
+  <Step title="Builds your project">
+    Compiles the game binary and runs the `MicrosoftGame.config` compilation step to produce the final config in the output directory.
+  </Step>
+  <Step title="Registers the title">
+    Calls `wdapp.exe register` on the output directory, making the title known to the Gaming Runtime.
+  </Step>
+  <Step title="Launches with the debugger attached">
+    Invokes the game through the Gaming Runtime and attaches the Visual Studio debugger to the process, so breakpoints, watch windows, and all standard debug tools work as expected.
+  </Step>
+</Steps>
+
+You can pass command-line arguments to your game via **Project Properties → Debugging → Command Arguments**.
+
+<Note>
+  Visual Studio 2019 requires `<PreferredToolArchitecture>x64</PreferredToolArchitecture>` in your project file to use the 64-bit compiler toolchain. Visual Studio 2022 defaults to x64 native tools, so this setting is optional.
+</Note>
+
+---
+
+## Extension libraries in .vcxproj files
+
+For GDK extension libraries (XSAPI, GameChat 2, PlayFab, etc.) with the `Gaming.Desktop.x64` platform, reference them through the `ExtensionSettings` import group. The import path changed between GDK releases:
+
+<Tabs>
+  <Tab title="October 2024 GDK and later">
+    ```xml
+    <ImportGroup Label="ExtensionSettings">
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.Services.API.C\ExtensionLibrary.props" />
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.XCurl.API\ExtensionLibrary.props" />
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.LibHttpClient\ExtensionLibrary.props" />
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.Game.Chat.2.Cpp.API\ExtensionLibrary.props" />
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\PlayFab.Multiplayer.Cpp\ExtensionLibrary.props" />
+    </ImportGroup>
+    ```
+  </Tab>
+  <Tab title="June 2024 GDK and earlier">
+    ```xml
+    <ImportGroup Label="ExtensionSettings">
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.Services.API.C\DesignTime\CommonConfiguration\Neutral\ExtensionLibrary.props" />
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.XCurl.API\DesignTime\CommonConfiguration\Neutral\ExtensionLibrary.props" />
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.LibHttpClient\DesignTime\CommonConfiguration\Neutral\ExtensionLibrary.props" />
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\Xbox.Game.Chat.2.Cpp.API\DesignTime\CommonConfiguration\Neutral\ExtensionLibrary.props" />
+      <Import Project="$(GDKPCEditionPath)ExtensionLibraries\PlayFab.Multiplayer.Cpp\DesignTime\CommonConfiguration\Neutral\ExtensionLibrary.props" />
+    </ImportGroup>
+    ```
+  </Tab>
+</Tabs>

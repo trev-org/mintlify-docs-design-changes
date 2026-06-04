@@ -1,0 +1,142 @@
+---
+title: "GDK user model and XUser API for managing player sign-in"
+sidebarTitle: "User Model"
+description: "Learn how the GDK tracks player identity with XUserHandle, how to sign users in with XUserAddAsync, and how to handle multi-user and guest scenarios."
+---
+
+The GDK user model defines how your game tracks the identity and activity of the people playing it. Every player interacting with your game is represented by an `XUserHandle` — an opaque handle you use to query sign-in state, retrieve gamer tags and pictures, check age groups and privileges, and obtain authenticated tokens for Xbox Live services. Understanding how to obtain, manage, and react to changes in these handles is fundamental to building a well-behaved GDK title.
+
+## XUser identifiers
+
+Each `XUser` has two distinct identifiers that serve different purposes:
+
+<CardGroup cols={2}>
+  <Card title="Local ID" icon="house" href="/reference/xgameruntime">
+    A session-scoped identifier that persists for the lifetime of the user within the current game session. Use it across any child processes your game spawns, or when calling `XLaunchNewGame`. Do **not** use it to identify a user across gaming sessions. Retrieve it with `XUserGetLocalId`.
+  </Card>
+  <Card title="Xbox services ID (XUID)" icon="globe" href="/reference/xsapi-overview">
+    The persistent identifier required when communicating with Xbox services or invoking title-callable UI (TCUI). Retrieve it with `XUserGetId`. User consent may be required; if `XUserGetId` returns `E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED`, call `XUserResolveIssueWithUiAsync` to collect consent.
+  </Card>
+</CardGroup>
+
+<Note>
+  Different `XUserHandle` values can point to the same user. To compare two handles for user equality, use `XUserCompare` rather than comparing handle values directly.
+</Note>
+
+## User states
+
+A user can be in one of three states: signed in to Xbox services, signing out, or fully signed out. You can query the current state with `XUserGetState` and register for change notifications with `XUserRegisterForChangeEvent`.
+
+<Warning>
+  Do not use `XUserState` to infer network connectivity. A state of `SignedIn` means the user was authenticated at some point during the session — not that the network is currently available.
+</Warning>
+
+## Adding users with XUserAddAsync
+
+Unlike the Xbox One ERA model, your game only interacts with users it explicitly requests. You add users to your game by calling `XUserAddAsync`. There are two primary patterns for establishing the initial user:
+
+<Tabs>
+  <Tab title="Silent (no UI)">
+    Call `XUserAddAsync` with `AddDefaultUserSilently` to attempt to resolve the user who launched the game without displaying any UI. If no default user can be determined, the call fails with `E_GAMEUSER_NO_DEFAULT_USER`, at which point you should call `XUserAddAsync` without the silent flag to show the account picker.
+
+    ```cpp
+    XAsyncBlock* asyncBlock = new XAsyncBlock{};
+    asyncBlock->context = this;
+    asyncBlock->queue = m_taskQueue;
+    asyncBlock->callback = [](XAsyncBlock* async)
+    {
+        auto* game = static_cast<Game*>(async->context);
+        XUserHandle userHandle = nullptr;
+        HRESULT hr = XUserAddResult(async, &userHandle);
+
+        if (SUCCEEDED(hr))
+        {
+            // Store userHandle and proceed
+            game->OnUserAdded(userHandle);
+        }
+        else if (hr == E_GAMEUSER_NO_DEFAULT_USER)
+        {
+            // Fall back to showing the account picker UI
+            game->AddUserWithUI();
+        }
+        delete async;
+    };
+
+    XUserAddAsync(XUserAddOptions::AddDefaultUserSilently, asyncBlock);
+    ```
+  </Tab>
+  <Tab title="With UI">
+    Call `XUserAddAsync` with `AddDefaultUserAllowingUI`. This attempts to determine the default user silently first. If that fails, it automatically shows the account picker UI so the player can sign in or select themselves. When `XUserAddResult` succeeds, the user is fully signed in to Xbox services.
+
+    ```cpp
+    XAsyncBlock* asyncBlock = new XAsyncBlock{};
+    asyncBlock->context = this;
+    asyncBlock->queue = m_taskQueue;
+    asyncBlock->callback = [](XAsyncBlock* async)
+    {
+        auto* game = static_cast<Game*>(async->context);
+        XUserHandle userHandle = nullptr;
+        HRESULT hr = XUserAddResult(async, &userHandle);
+
+        if (SUCCEEDED(hr))
+        {
+            game->OnUserAdded(userHandle);
+        }
+        delete async;
+    };
+
+    XUserAddAsync(XUserAddOptions::AddDefaultUserAllowingUI, asyncBlock);
+    ```
+  </Tab>
+</Tabs>
+
+## Types of users
+
+<Accordion title="Xbox players">
+  Xbox players are full-capability accounts. They are created by adding an account through the Account Picker and persist on the console until explicitly removed through the Settings app. Most of your users will be Xbox players.
+</Accordion>
+
+<Accordion title="Guest users">
+  Xbox guests have a single session on the console. They are created when a player chooses to play as a guest and are sponsored by a signed-in Xbox player. A guest's session ends when they sign out, when their sponsoring player signs out, or when the console is powered off.
+
+  To allow guests, pass the `AllowGuest` option when calling `XUserAddAsync`:
+
+  ```cpp
+  XUserAddAsync(XUserAddOptions::AllowGuest, asyncBlock);
+  ```
+</Accordion>
+
+## Controller-to-user association
+
+On Xbox, input devices are associated with specific users. You can retrieve the user associated with a given gamepad reading to ensure that game actions are attributed to the correct player. Use `XUserFindForDevice` to look up the `XUserHandle` for a given device.
+
+## Managing XUserHandle
+
+Follow this pattern for robust user management throughout your game:
+
+<Steps>
+  <Step title="Maintain a user collection">
+    Keep a collection of `XUserHandle` instances representing all users currently in your game.
+  </Step>
+  <Step title="Register for state changes">
+    Call `XUserRegisterForChangeEvent` to receive notifications when users begin signing out or complete sign-out. Update your collection in the callback.
+  </Step>
+  <Step title="Deduplicate handles">
+    When you receive a new `XUserHandle` from `XUserAddAsync`, check whether it represents a new user by comparing it against existing handles with `XUserCompare`, or by comparing local IDs from `XUserGetLocalId`.
+  </Step>
+  <Step title="Close extra handles">
+    If you hold multiple `XUserHandle` instances for the same user, call `XUserCloseHandle` to release the extras and avoid resource leaks.
+  </Step>
+</Steps>
+
+## Simplified user model
+
+By default, your game uses the **Advanced User Model**, which allows the active user to change without requiring a game restart. If your game architecture assumes a single, stable user for the entire session, you can opt into the **Simplified User Model** by setting `AdvancedUserModel` to `false` in your `MicrosoftGame.config`:
+
+```xml
+<AdvancedUserModel>false</AdvancedUserModel>
+```
+
+<Note>
+  The Simplified User Model guarantees that the active user at launch remains the active user for the entire session. It also requires both `MSAAppId` and `TitleId` to be present in your `MicrosoftGame.config` when using `configVersion="1"`.
+</Note>

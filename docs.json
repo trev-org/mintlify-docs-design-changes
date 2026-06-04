@@ -1,0 +1,189 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "XBOX Game Development Kit",
+  "theme": "palm",
+  "favicon": "https://media.brand.dev/1cc7d407-f23a-4b9b-b989-9f91593a9123.png",
+  "colors": {
+    "primary": "#107C10",
+    "light": "#10B25C",
+    "dark": "#107C10"
+  },
+  "navbar": {
+    "links": [
+      {
+        "href": "https://github.com/edigonzales-microsoft/docs",
+        "label": "Collaborate with us in GitHub"
+      }
+    ]
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Xbox Developer Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "onboarding",
+              "introduction",
+              "gdk/get-started",
+              "gdk/download-install"
+            ]
+          },
+          {
+            "group": "Build and Develop (Core Features)",
+            "pages": [
+              "gdk/game-config",
+              "gdk/user-model",
+              "gdk/async-programming",
+              "gdk/packaging",
+              "gdk/game-saves",
+              "gdk/game-streaming",
+              "gdk/input",
+              "gdk/memory",
+              "gdk/localization",
+              "gdk/error-handling",
+              "gdk/text-to-speech"
+            ]
+          },
+          {
+            "group": "Xbox Console Features",
+            "pages": [
+              "gdk/console-overview",
+              "gdk/audio",
+              "gdk/storage",
+              "gdk/networking",
+              "gdk/game-dvr",
+              "gdk/cross-gen",
+              "gdk/directstorage",
+              "gdk/dynamic-lighting"
+            ]
+          },
+          {
+            "group": "Xbox Services",
+            "pages": [
+              "services/overview",
+              "services/player-data",
+              "services/achievements",
+              "services/multiplayer",
+              "services/social",
+              "services/cloud-storage",
+              "services/game-chat",
+              "services/rich-presence",
+              "services/multiplayer-activity",
+              "services/people-system"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "tools/overview",
+              "tools/pc-tools",
+              "tools/xbox-service-tools",
+              "tools/visual-studio"
+            ]
+          },
+          {
+            "group": "PlayFab",
+            "pages": [
+              "playfab/overview",
+              "playfab/player-sign-in",
+              "playfab/microsoft-store",
+              "playfab/economy",
+              "playfab/multiplayer-lobby",
+              "playfab/leaderboards-stats",
+              "playfab/party-voice",
+              "playfab/analytics"
+            ]
+          },
+          {
+            "group": "Publishing & Commerce",
+            "pages": [
+              "publishing/overview",
+              "publishing/partner-center",
+              "publishing/certification",
+              "publishing/commerce",
+              "publishing/dlc-add-ons",
+              "publishing/age-ratings",
+              "publishing/store-listings",
+              "publishing/pricing-availability",
+              "publishing/pre-release-testing",
+              "publishing/cert-bypass",
+              "publishing/game-hubs"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "System APIs",
+            "pages": [
+              "reference/system-overview",
+              "reference/xgameruntime",
+              "reference/xgamesave",
+              "reference/xgamestreaming",
+              "reference/xpackage",
+              "reference/xstore",
+              "reference/xuser",
+              "reference/gameinput",
+              "reference/networking",
+              "reference/chat",
+              "reference/lighting",
+              "reference/tools-api",
+              "reference/wdp-rest",
+              "reference/error-codes"
+            ]
+          },
+          {
+            "group": "Xbox Services API",
+            "pages": [
+              "reference/xsapi-overview",
+              "reference/social-manager",
+              "reference/microsoftgameconfig-schema"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "description": "XBOX Game Development Kit",
+  "logo": {
+    "light": "/images/We_Are_Xbox_Email-Signature_200x200.png",
+    "dark": "/images/We_Are_Xbox_Email-Signature_200x200.png"
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "background": {
+    "decoration": "windows",
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#1A1B1E"
+    }
+  },
+  "fonts": {
+    "heading": {
+      "family": "Rubik",
+      "weight": 700
+    },
+    "body": {
+      "family": "Albert Sans",
+      "weight": 400
+    }
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
+  },
+  "footer": {
+    "socials": {
+      "discord": "https://developer.microsoft.com/en-us/games",
+      "youtube": "https://www.youtube.com/msftgamedev",
+      "github": "https://github.com/microsoft/Xbox-GDK-Samples"
+    }
+  },
+  "metadata": {
+    "timestamp": true
+  }
+}

@@ -1,0 +1,36 @@
+---
+title: "Microsoft GDK development tools overview and guide"
+sidebarTitle: "Overview"
+description: "Explore the full GDK toolset: PC development utilities, Xbox service tools, and Visual Studio extensions for building and debugging your game."
+---
+
+The Microsoft Game Development Kit (GDK) ships with a comprehensive set of development tools spanning three categories: PC-side utilities for registering and launching titles, Xbox service tools for managing sandboxes and player data, and deep Visual Studio integration for building, debugging, and profiling. Whether you are iterating on a loose-file desktop build or diagnosing Xbox Live service call patterns, these tools cover the full development lifecycle.
+
+<CardGroup cols={2}>
+  <Card title="PC Tools" icon="computer" href="/tools/pc-tools">
+    Register and launch PC titles with **wdapp.exe**, profile DirectX 12 performance with **PIX for Windows**, and manage devices through **Windows Device Portal**.
+  </Card>
+  <Card title="Xbox Service Tools" icon="server" href="/tools/xbox-service-tools">
+    Manage sandboxes, reset player data, inspect web calls with Fiddler, and authenticate developer accounts using the full suite of Xbox service CLI tools.
+  </Card>
+  <Card title="Visual Studio" icon="code" href="/tools/visual-studio">
+    Use GDK project templates, custom MSBuild platforms, and the Xbox Gaming Project Control window for a streamlined F5 debug experience in Visual Studio 2019 and 2022.
+  </Card>
+</CardGroup>
+
+## Choosing the right tool
+
+| Scenario | Tool |
+|---|---|
+| Register a loose-file build and launch from the command line | `wdapp.exe register` / `wdapp.exe launch` |
+| Profile GPU frame time and DirectX 12 draw calls | PIX for Windows |
+| Switch your PC to a development Xbox Live sandbox | `XblPCSandbox.exe` |
+| Reset achievement and stats data for a test account | `XblPlayerDataReset.exe` |
+| Authenticate your Partner Center developer account | `XblDevAccount.exe` |
+| Analyze Xbox Live service call patterns for violations | `XblTraceAnalyzer.exe` |
+| Create a new GDK C++ game project in Visual Studio | GDK project templates |
+| Edit `MicrosoftGame.config` with guided validation | Xbox Gaming Project Control |
+
+<Note>
+  All Xbox service tools are available from the GDK **bin** folder after installation, or you can download the standalone `XboxLiveTools.zip` package from [aka.ms/xbltools](https://aka.ms/xbltools).
+</Note>

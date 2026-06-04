@@ -1,0 +1,225 @@
+---
+title: "XGameStreaming API reference for cloud gaming"
+sidebarTitle: "XGameStreaming"
+description: "Reference for the XGameStreaming API: detect streaming sessions, query client properties, manage touch control layouts, and handle latency."
+---
+
+The XGameStreaming API lets your game detect and respond to Xbox Game Streaming and Remote Play sessions. When a player streams your game to a phone, tablet, or PC, the game itself runs on a server or console and the video is sent to the client device. Your game can use XGameStreaming to determine whether it is currently being streamed, query display and touch capabilities of the streaming client, and dynamically show or hide touch control layouts.
+
+**Header:** `XGameStreaming.h`  
+**Supported platforms:** Xbox One family consoles, Xbox Series consoles, Windows PC
+
+---
+
+## Initialization
+
+Before using any XGameStreaming API, you must initialize the subsystem after calling `XGameRuntimeInitialize`.
+
+<ResponseField name="XGameStreamingInitialize" type="HRESULT">
+  Initializes the Game Streaming APIs. Call once at startup, after `XGameRuntimeInitialize`.
+
+  ```c
+  HRESULT XGameStreamingInitialize(void);
+  ```
+
+  Returns `S_OK` on success.
+</ResponseField>
+
+<ResponseField name="XGameStreamingUninitialize" type="void">
+  Uninitializes the Game Streaming APIs. Call during shutdown before `XGameRuntimeUninitialize`.
+</ResponseField>
+
+---
+
+## Connection state
+
+### Detecting streaming
+
+<ResponseField name="XGameStreamingIsStreaming" type="bool">
+  Returns `true` if the game is currently being streamed to at least one client. This is the simplest way to check whether streaming mode is active.
+
+  ```c
+  bool XGameStreamingIsStreaming(void);
+  ```
+
+  Use this to branch on streaming-specific code paths, such as enabling a simplified HUD or adjusting bitrate-sensitive rendering.
+</ResponseField>
+
+<ResponseField name="XGameStreamingGetClientCount" type="HRESULT">
+  Returns the number of streaming client devices currently connected.
+</ResponseField>
+
+<ResponseField name="XGameStreamingGetClients" type="HRESULT">
+  Returns an array of `XGameStreamingClientId` handles for each connected client. Use these handles to query per-client properties.
+</ResponseField>
+
+### Connection state changes
+
+<ResponseField name="XGameStreamingRegisterConnectionStateChanged" type="HRESULT">
+  Registers a callback (`XGameStreamingConnectionStateChangedCallback`) that fires whenever a streaming client connects or disconnects.
+
+  ```c
+  HRESULT XGameStreamingRegisterConnectionStateChanged(
+      XTaskQueueHandle                           queue,
+      void*                                      context,
+      XGameStreamingConnectionStateChangedCallback* callback,
+      XTaskQueueRegistrationToken*               token
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XGameStreamingUnregisterConnectionStateChanged" type="void">
+  Unregisters a previously registered connection state callback using the token returned at registration time.
+</ResponseField>
+
+<ResponseField name="XGameStreamingGetConnectionState" type="HRESULT">
+  Returns the current `XGameStreamingConnectionState` enum value for a specific client.
+</ResponseField>
+
+---
+
+## Client properties
+
+### Querying display details
+
+<ResponseField name="XGameStreamingGetDisplayDetails" type="HRESULT">
+  Returns an `XGameStreamingDisplayDetails` struct describing the streaming client's display: resolution, safe area, and video feature flags.
+
+  ```c
+  HRESULT XGameStreamingGetDisplayDetails(
+      XGameStreamingClientId        client,
+      XGameStreamingDisplayDetails* details
+  );
+  ```
+
+  Use this to adapt your rendering resolution or UI layout to the actual display your player sees.
+</ResponseField>
+
+<ResponseField name="XGameStreamingGetStreamPhysicalDimensions" type="HRESULT">
+  Gets the physical size (in millimetres) of the video stream as it is currently being rendered on the client device.
+</ResponseField>
+
+### Property change notifications
+
+<ResponseField name="XGameStreamingRegisterClientPropertiesChanged" type="HRESULT">
+  Registers a callback that fires whenever any tracked property of a streaming client changes (display resolution, touch availability, etc.).
+
+  ```c
+  HRESULT XGameStreamingRegisterClientPropertiesChanged(
+      XGameStreamingClientId                       client,
+      XTaskQueueHandle                             queue,
+      void*                                        context,
+      XGameStreamingClientPropertiesChangedCallback* callback,
+      XTaskQueueRegistrationToken*                 token
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XGameStreamingUnregisterClientPropertiesChanged" type="void">
+  Unregisters a previously registered client properties callback.
+</ResponseField>
+
+---
+
+## Touch adaptation
+
+When a player streams to a touch-enabled device, you can display on-screen touch controls defined in your **Touch Adaptation Kit** bundle. Use these APIs to show, hide, and dynamically update touch control state.
+
+<ResponseField name="XGameStreamingIsTouchInputEnabled" type="HRESULT">
+  Returns whether the specified client will send touch inputs to the game.
+
+  ```c
+  HRESULT XGameStreamingIsTouchInputEnabled(
+      XGameStreamingClientId client,
+      bool*                  isTouchInputEnabled
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XGameStreamingShowTouchControlLayout" type="HRESULT">
+  Requests that all connected streaming clients show a named touch layout from your Touch Adaptation Kit.
+
+  ```c
+  HRESULT XGameStreamingShowTouchControlLayout(const char* layoutName);
+  ```
+</ResponseField>
+
+<ResponseField name="XGameStreamingHideTouchControls" type="HRESULT">
+  Requests that all connected clients hide the touch control overlay. Call this when entering a cutscene, menu, or any state where touch controls are inappropriate.
+</ResponseField>
+
+<ResponseField name="XGameStreamingUpdateTouchControlsState" type="HRESULT">
+  Pushes an array of `XGameStreamingTouchControlsStateOperation` updates to all connected clients, allowing you to show/hide individual control elements or update their visual state.
+</ResponseField>
+
+<ResponseField name="XGameStreamingShowTouchControlsWithStateUpdate" type="HRESULT">
+  Atomically updates touch control state and switches to a named layout on all connected clients in a single call.
+</ResponseField>
+
+---
+
+## Latency
+
+<ResponseField name="XGameStreamingGetStreamAddedLatency" type="HRESULT">
+  Gets the recent average of the additional latency introduced by the streaming pipeline (in milliseconds). Use this to decide whether to reduce game simulation complexity or adjust input prediction.
+
+  ```c
+  HRESULT XGameStreamingGetStreamAddedLatency(
+      XGameStreamingClientId client,
+      uint32_t*              latencyMs
+  );
+  ```
+</ResponseField>
+
+---
+
+## Key types
+
+| Type | Description |
+|---|---|
+| `XGameStreamingClientId` | Opaque handle identifying a connected streaming client |
+| `XGameStreamingConnectionState` | Enum: `Connected`, `Disconnected` |
+| `XGameStreamingDisplayDetails` | Struct: resolution, safe area margins, `XGameStreamingVideoFlags` |
+| `XGameStreamingClientProperty` | Enum of queryable client properties (display, touch, latency, etc.) |
+| `XGameStreamingTouchControlsStateOperation` | Struct: path to a touch control state variable and the new value to apply |
+| `XGameStreamingTouchControlsStateValue` | Union struct: the type and value of a touch control state element |
+| `XGameStreamingTouchControlsStateOperationKind` | Enum: `Set`, `Remove` |
+
+---
+
+## Code example: detect streaming and adapt UI
+
+```cpp
+void Game::Update()
+{
+    if (XGameStreamingIsStreaming())
+    {
+        // Streaming is active — show a simplified HUD
+        m_hudMode = HudMode::Streaming;
+
+        // Query the first connected client's display
+        XGameStreamingClientId clients[8];
+        uint32_t clientCount = 0;
+        if (SUCCEEDED(XGameStreamingGetClients(clients, 8, &clientCount)) && clientCount > 0)
+        {
+            XGameStreamingDisplayDetails display = {};
+            if (SUCCEEDED(XGameStreamingGetDisplayDetails(clients[0], &display)))
+            {
+                m_streamWidth  = display.preferredWidth;
+                m_streamHeight = display.preferredHeight;
+            }
+
+            bool touchEnabled = false;
+            XGameStreamingIsTouchInputEnabled(clients[0], &touchEnabled);
+            if (touchEnabled)
+            {
+                XGameStreamingShowTouchControlLayout("in-game");
+            }
+        }
+    }
+    else
+    {
+        m_hudMode = HudMode::Normal;
+    }
+}
+```

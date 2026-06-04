@@ -1,0 +1,81 @@
+---
+title: "Build in-game economies with PlayFab Economy v2"
+sidebarTitle: "Economy"
+description: "Use PlayFab Economy v2 to model items, currencies, bundles, and player inventories, and grant rewards from your GDK title."
+---
+
+PlayFab Economy v2 is the recommended back end for any in-game economy your title runs outside of the Microsoft Store — soft currencies, crafting materials, character unlocks, time-limited drops, and the player inventory itself. It complements (rather than replaces) the Microsoft Store: Store transactions handle real-money payment and platform entitlements; Economy v2 models everything that happens **after** the player owns the game.
+
+## Core concepts
+
+<CardGroup cols={2}>
+  <Card title="Catalog" icon="book">
+    The author-time definition of every item, bundle, and virtual currency in your title. Versioned and published per title.
+  </Card>
+
+  <Card title="Inventory" icon="boxes-stacked">
+    The runtime collection of items and currency balances owned by a specific player.
+  </Card>
+
+  <Card title="Items" icon="gem">
+    Catalog entries with metadata, images, prices, and stack rules. Includes durable goods, consumables, bundles, and UGC.
+  </Card>
+
+  <Card title="Stores" icon="shop">
+    Curated, time-limited subsets of the catalog. Use stores to power in-game shops with rotating offers.
+  </Card>
+</CardGroup>
+
+## Querying a player's inventory
+
+From the client, call `GetInventoryItems` with a PlayFab login token (see [Player Sign-In](/playfab/player-sign-in)):
+
+```cpp
+PlayFab::EconomyModels::FGetInventoryItemsRequest request;
+request.Count = 100;
+request.Filter = "";  // OData filter, optional
+
+PlayFab::UEconomyAPI::GetInventoryItems(request,
+    [](const PlayFab::EconomyModels::FGetInventoryItemsResponse& resp) {
+        for (const auto& item : resp.Items) {
+            // resp.Items contains item Id, quantity, stack metadata
+        }
+    },
+    [](const PlayFab::FPlayFabCppError& err) {
+        // handle error
+    });
+```
+
+## Granting items
+
+For anything that affects a player's balance — quest rewards, in-game purchase fulfillment, daily login bonuses — grant from a **server-authoritative** context, not the client. Either:
+
+1. Use a CloudScript / Azure Functions handler with a server entity token.
+2. Use a trusted game server with the title secret.
+
+Granting from the client opens your economy to trivial exploitation.
+
+```cpp
+// CloudScript handler (TypeScript)
+await economyApi.AddInventoryItems({
+    Entity: { Id: playerEntityId, Type: "title_player_account" },
+    Item: { Id: "gold_coin" },
+    Amount: 100
+});
+```
+
+## Connecting Economy to Microsoft Store purchases
+
+When the player buys a hard-currency pack on the Microsoft Store, your title fulfills the in-game soft currency by:
+
+1. Verifying the purchase via [XStore](/publishing/commerce) and Microsoft.StoreServices.
+2. Calling Economy from a trusted back end to grant the corresponding soft-currency bundle.
+3. Marking the consumable purchase as fulfilled with `XStoreReportConsumableFulfillment`.
+
+See [Store Integration](/playfab/microsoft-store) for the full pattern.
+
+## See also
+
+- [Store Integration](/playfab/microsoft-store)
+- [Player Sign-In](/playfab/player-sign-in)
+- [Commerce](/publishing/commerce) — the Microsoft Store side of the equation

@@ -1,0 +1,234 @@
+---
+title: "Xbox cloud storage: Connected Storage and Title Storage"
+sidebarTitle: "Cloud Storage"
+description: "Learn when to use Xbox Connected Storage for roaming game saves vs. Title Storage for shared global assets, with code examples and a feature comparison."
+---
+
+Xbox services provides two complementary cloud storage services that solve different problems. **Connected Storage** is purpose-built for game saves: it roams across all of a player's consoles and PCs, works offline, and is fault-tolerant against network and power failures mid-save. **Title Storage** is a general-purpose blob store for global or per-user data that you want to share across players or platforms — leaderboard data, unlockable artwork, downloadable maps, or per-title configuration.
+
+Understanding which service to use for which data type will save you from building workarounds later. The two services are complementary, not competing: most titles that need both game saves and shared assets will use both.
+
+## Connected Storage
+
+Connected Storage saves game state per user and automatically roams it across every device where the player signs in. A player who saves their progress on Xbox Series X can pick up exactly where they left off on a Windows PC or another console — without manual cloud upload steps.
+
+**Key characteristics:**
+- **Per-user** — each signed-in Xbox account has its own save containers
+- **Roaming** — data is synced to the cloud and pulled down when the player signs in elsewhere
+- **Offline-capable** — saves work when the device is offline; sync happens when connectivity is restored
+- **Fault-tolerant** — the service uses ACID-style semantics to protect against power loss or network interruption mid-save. A save either fully commits or fully rolls back.
+- **Available on Xbox console and Windows PC** — use the same API on both platforms
+
+Use Connected Storage for:
+- Game save files (level progress, inventory, unlocked content)
+- Player settings that should follow them across devices
+- Any game state the player would be upset to lose
+
+### Connected Storage vs. local game saves
+
+| | Connected Storage | Local PLS (Xbox console) |
+|---|---|---|
+| Roams across devices | ✅ | ❌ |
+| Available offline | ✅ (cached locally) | ✅ |
+| Fault-tolerant | ✅ (ACID semantics) | Encrypted + integrity-checked |
+| Deleted on uninstall | ❌ (stays in cloud) | ✅ |
+| Console-specific | ❌ | ✅ |
+| Best for | Game saves, player state | Replays, large local recordings |
+
+### Reading a Connected Storage save
+
+```cpp
+#include <XGameSave.h>
+
+// 1. Initialize Connected Storage for the signed-in user
+XGameSaveProviderHandle provider = nullptr;
+HRESULT hr = XGameSaveInitializeProvider(
+    userHandle,
+    "YOUR_SCID",
+    false,          // syncOnDemand: false = sync at open
+    &provider
+);
+
+// 2. Open or create a save container
+XGameSaveContainerHandle container = nullptr;
+hr = XGameSaveCreateContainer(
+    provider,
+    "SaveSlot1",    // container name
+    &container
+);
+
+// 3. Read a blob from the container
+XGameSaveBlob blobs[1] = {};
+blobs[0].info.name = "GameState";
+
+hr = XGameSaveReadBlobData(
+    container,
+    blobs,
+    1,      // blob count
+    nullptr // completion callback context
+);
+
+// 4. Access the data (after async completion)
+// blobs[0].data and blobs[0].size contain the raw bytes
+
+// 5. Clean up
+XGameSaveCloseContainer(container);
+XGameSaveCloseProvider(provider);
+```
+
+### Writing a Connected Storage save
+
+```cpp
+// Prepare the data to save
+uint8_t saveData[] = { /* your serialized game state */ };
+size_t saveDataSize = sizeof(saveData);
+
+// 1. Start an update operation
+XGameSaveUpdateHandle updateHandle = nullptr;
+HRESULT hr = XGameSaveCreateUpdate(container, "SaveSlot1", &updateHandle);
+
+// 2. Submit the blob write
+hr = XGameSaveSubmitBlobWrite(
+    updateHandle,
+    "GameState",    // blob name
+    saveData,
+    saveDataSize
+);
+
+// 3. Commit the update (all blob writes in this update are atomic)
+auto asyncBlock = new XAsyncBlock{ queue, nullptr, [](XAsyncBlock* async)
+{
+    HRESULT result = XGameSaveSubmitUpdateResult(async);
+    // result == S_OK: save committed successfully
+    // result == E_GS_QUOTA_EXCEEDED: not enough storage quota
+    delete async;
+}};
+
+hr = XGameSaveSubmitUpdateAsync(updateHandle, asyncBlock);
+XGameSaveCloseUpdate(updateHandle);
+```
+
+<Tip>
+  Always handle `E_GS_QUOTA_EXCEEDED` from save operations. Each title has a storage quota in Connected Storage. If the player's save data exceeds the quota, prompt them to manage their saves rather than silently failing.
+</Tip>
+
+## Title Storage
+
+Title Storage is a cloud blob store for data that you want to share globally across players or make available to your title on any platform. Unlike Connected Storage — which is per-user game state — Title Storage is designed for assets and data that either belong to the title as a whole or are intentionally shared.
+
+**Key characteristics:**
+- **Available on all platforms** — Xbox console, Windows PC, iOS, Android (via REST)
+- **Global or per-user** — store per-title global data or per-user data with configurable visibility
+- **Multiple data types** — binary blobs, JSON, and binary config (read-only in the game package)
+- **Access control** — configure per-blob read/write permissions (title-only write, public read, etc.)
+
+Use Title Storage for:
+- User statistics intended for server-side leaderboards
+- User rankings and shared competitive data
+- Unlockable artwork and in-game assets available to all players
+- Downloadable maps, missions, or content packs
+- Per-title configuration data you want to update without a game patch
+
+<Note>
+  **Title Storage is available on all platforms**, including PC and mobile. It is not restricted to Xbox console. This makes it particularly useful for cross-platform titles that need a shared cloud data layer.
+</Note>
+
+### Title Storage data types
+
+| Data type | Use case |
+|---|---|
+| `Binary` | Raw binary blobs: save data, serialized structs, level files |
+| `Json` | JSON-encoded data: stats, rankings, user preferences |
+| `Config` | Read-only binary config embedded in your game package (version-controlled by your title) |
+
+### Uploading a JSON blob to Title Storage
+
+```cpp
+#include <xsapi-c/title_storage_c.h>
+
+const char* jsonData = "{\"wins\": 42, \"rank\": \"Gold\"}";
+size_t jsonSize = strlen(jsonData);
+
+auto asyncBlock = new XAsyncBlock{ queue, nullptr, [](XAsyncBlock* async)
+{
+    XblTitleStorageBlobMetadata resultMetadata{};
+    HRESULT hr = XblTitleStorageUploadBlobResult(async, &resultMetadata);
+    delete async;
+}};
+
+XblTitleStorageBlobMetadata metadata{};
+metadata.storageType  = XblTitleStorageType::TrustedPlatform;
+metadata.blobType     = XblTitleStorageBlobType::Json;
+pal::strcpy(metadata.blobPath, sizeof(metadata.blobPath), "user/stats.json");
+
+HRESULT hr = XblTitleStorageUploadBlobAsync(
+    xblContext,
+    metadata,
+    reinterpret_cast<const uint8_t*>(jsonData),
+    jsonSize,
+    XblTitleStorageETagMatchCondition::NotUsed,
+    nullptr,    // selectiveSync context
+    asyncBlock
+);
+```
+
+### Downloading a blob from Title Storage
+
+```cpp
+auto asyncBlock = new XAsyncBlock{ queue, nullptr, [](XAsyncBlock* async)
+{
+    size_t bufferSize = 0;
+    HRESULT hr = XblTitleStorageDownloadBlobResultSize(async, &bufferSize);
+    if (SUCCEEDED(hr))
+    {
+        std::vector<uint8_t> buffer(bufferSize);
+        XblTitleStorageBlobMetadata resultMetadata{};
+        hr = XblTitleStorageDownloadBlobResult(
+            async,
+            buffer.data(),
+            bufferSize,
+            &resultMetadata
+        );
+        // buffer now contains the downloaded blob data
+    }
+    delete async;
+}};
+
+XblTitleStorageBlobMetadata metadata{};
+metadata.storageType = XblTitleStorageType::TrustedPlatform;
+metadata.blobType    = XblTitleStorageBlobType::Json;
+pal::strcpy(metadata.blobPath, sizeof(metadata.blobPath), "user/stats.json");
+
+uint8_t* buffer = nullptr; // Will be allocated by the async result
+HRESULT hr = XblTitleStorageDownloadBlobAsync(
+    xblContext,
+    metadata,
+    nullptr, 0,     // pre-allocated buffer (nullptr = allocate automatically)
+    XblTitleStorageETagMatchCondition::NotUsed,
+    nullptr,
+    asyncBlock
+);
+```
+
+## Choosing between Connected Storage and Title Storage
+
+| Question | Connected Storage | Title Storage |
+|---|---|---|
+| Is this per-user game state? | ✅ Yes | ❌ |
+| Does it need to roam across devices? | ✅ Yes | ❌ (but accessible from any device) |
+| Is this shared across all players globally? | ❌ | ✅ Yes |
+| Do other players need read access? | ❌ | ✅ Yes |
+| Is this a large asset file (artwork, map)? | ❌ | ✅ Yes |
+| Does it need offline availability? | ✅ Yes | ❌ |
+| Does it need ACID save semantics? | ✅ Yes | ❌ |
+
+<Note>
+  Never use Persistent Local Storage (PLS) on Xbox console as a substitute for Connected Storage for game saves. PLS is console-specific and is deleted when your title is uninstalled. Players expect their saves to survive uninstall/reinstall cycles and device switches — only Connected Storage provides that guarantee.
+</Note>
+
+## See also
+
+- [Storage options for Xbox console games](/gdk/storage) — local storage types and PLS
+- [Connected Storage documentation](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/storage/connected-storage/live-connected-storage-nav)
+- [Title Storage documentation](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/storage/live-connected-storage-vs-title-storage)
+- [Game Saves overview](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/game-save/game-saves-overview)

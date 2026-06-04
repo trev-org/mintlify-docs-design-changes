@@ -1,0 +1,62 @@
+---
+title: "Rich Presence strings for Xbox social features"
+sidebarTitle: "Rich Presence"
+description: "Show what a player is doing right now with Rich Presence strings configured in Partner Center and updated via XSAPI from your GDK title."
+---
+
+Rich Presence is the localized status string that appears under a player's gamertag everywhere on Xbox — friends lists, the guide, profile cards, and the Xbox mobile app. It's a small surface, but it's one of the highest-visibility places your title shows up outside of the game itself.
+
+A Rich Presence string is composed of three parts: a **template** authored in Partner Center, **named parameters** filled in by your title at runtime, and the **localized translations** for every market your title supports.
+
+## Template authoring
+
+In Partner Center, under the **Xbox services** → **Rich Presence** node for your title, define one or more presence templates:
+
+```text
+PlayingMap     : "Playing {gameMode} on {mapName}"
+InMenu         : "In the menu"
+Matchmaking    : "Searching for a match"
+```
+
+Each template is a key plus a localizable format string with `{parameter}` placeholders. Translate the format strings for every market in Partner Center; the placeholders stay the same across languages.
+
+## Setting Rich Presence at runtime
+
+Use the XSAPI `XblPresenceSetPresenceAsync` API to push a presence update. Provide the template key and a list of name / value pairs for the parameters.
+
+```cpp
+XblPresenceRichPresenceIds ids = {};
+ids.scid = "00000000-0000-0000-0000-0000610440a5";   // service config ID
+ids.presenceId = "PlayingMap";
+
+const char* tokens[] = { "gameMode", "mapName" };
+const char* values[] = { "Capture the Flag", "Verdant Skies" };
+ids.presenceTokenIds = tokens;
+ids.presenceTokenValues = values;
+ids.presenceTokenIdsCount = 2;
+
+XAsyncBlock* async = new XAsyncBlock{};
+async->callback = OnPresenceSet;
+XblPresenceSetPresenceAsync(xblContext, /*isUserActiveInTitle*/ true, &ids, async);
+```
+
+Update presence whenever the player's high-level activity changes — entering a match, opening the menu, joining matchmaking. Avoid spamming updates on every map tick; once every few seconds is plenty.
+
+## Best-practice templates
+
+| State | Template key | Example output |
+| --- | --- | --- |
+| Main menu | `InMenu` | "In the menu" |
+| Loading | `LoadingLevel` |
+| Solo gameplay | `PlayingMode` |
+| Multiplayer | `PlayingMap` |
+| In matchmaking | `Matchmaking` | "Searching for a match" |
+| Idle | `Idle` | "Idle" |
+
+These cover the vast majority of titles and keep your translation surface manageable.
+
+## See also
+
+- [Social](/services/social) — Social Manager, friends, Game Hubs
+- [Multiplayer Activity](/services/multiplayer-activity) — invite-driven join flows
+- [XSAPI Overview](/reference/xsapi-overview)

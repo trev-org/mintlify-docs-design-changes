@@ -1,0 +1,80 @@
+---
+title: "XUser API reference for player identity and sign-in"
+sidebarTitle: "XUser"
+description: "Reference for the XUser API: add users, resolve sign-in issues, query gamertags and XUIDs, listen for user state changes, and clean up handles."
+---
+
+The **XUser** API is the GDK surface for player identity. Every signed-in player is represented by an `XUserHandle` that you use to call user-scoped APIs across Xbox services, Connected Storage, Store, and Game Chat. This page is a quick reference; the conceptual walkthrough lives in [User Model](/gdk/user-model).
+
+## Header and library
+
+```cpp
+#include <XUser.h>
+// Link: GameRuntime.lib (already pulled by XGameRuntime)
+```
+
+## Sign-in functions
+
+| Function | Purpose |
+| --- | --- |
+| `XUserAddAsync` | Asynchronously add (sign in) a user. Honors `XUserAddOptions` for default-user vs. picker. |
+| `XUserAddResult` | Complete `XUserAddAsync` and receive an `XUserHandle`. |
+| `XUserResolveIssueWithUiAsync` | Surface platform UI to resolve sign-in issues (privacy, parental controls, etc.). |
+| `XUserResolveIssueWithUiResult` | Complete the issue-resolution flow. |
+| `XUserCloseHandle` | Release a user handle. Pair with every `XUserAddResult`. |
+
+## User properties
+
+| Function | Returns |
+| --- | --- |
+| `XUserGetId` | The 64-bit XUID for the user. |
+| `XUserGetGamertag` | The classic, modern, or unique modern gamertag string. |
+| `XUserGetState` | `XUserState`: `SignedIn`, `SigningIn`, `SignedOut`, `Unknown`. |
+| `XUserGetAgeGroup` | `Child`, `Teen`, or `Adult`. Honor for privacy and chat rules. |
+| `XUserGetIsGuest` | Whether the user is a guest profile. |
+| `XUserGetLocalId` | Stable opaque local identifier for the user on this console. |
+
+## Tokens and authentication
+
+| Function | Purpose |
+| --- | --- |
+| `XUserGetTokenAndSignatureAsync` | Acquire an XSTS token and request signature for an Xbox services REST call. |
+| `XUserGetTokenAndSignatureResult` | Complete the token request and read the token / signature buffers. |
+
+The XSAPI C library calls this internally; you typically use it directly only when calling Xbox services REST endpoints from your own code.
+
+## Change notifications
+
+| Function | Purpose |
+| --- | --- |
+| `XUserRegisterForChangeEvent` | Register a callback for any user state change on any user. |
+| `XUserUnregisterForChangeEvent` | Remove the callback registration. |
+| `XUserRegisterForDefaultUserChangeEvent` | Specifically observe when the default user changes (controller-driven). |
+
+Process change events on the task queue you registered — they fire when a user signs in, signs out, or transitions between states.
+
+## Sign-in code skeleton
+
+```cpp
+XAsyncBlock* async = new XAsyncBlock{};
+async->context = this;
+async->callback = [](XAsyncBlock* a) {
+    XUserHandle user = nullptr;
+    HRESULT hr = XUserAddResult(a, &user);
+    if (SUCCEEDED(hr)) {
+        // Cache 'user', call other XUser_* APIs to read gamertag, XUID, etc.
+        XUserCloseHandle(user);
+    } else if (hr == E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED) {
+        // Call XUserResolveIssueWithUiAsync
+    }
+    delete a;
+};
+
+XUserAddAsync(XUserAddOptions::AddDefaultUserSilently, async);
+```
+
+## See also
+
+- [User Model](/gdk/user-model) — conceptual overview and best practices
+- [Async programming model](/gdk/async-programming)
+- [Error handling](/gdk/error-handling) — XUser HRESULT codes

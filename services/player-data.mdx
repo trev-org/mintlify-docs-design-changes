@@ -1,0 +1,119 @@
+---
+title: "Player data: stats, leaderboards, and achievements"
+sidebarTitle: "Player Data"
+description: "Learn about Xbox player data: stats, leaderboards, and achievements. Compare event-based and title-managed models and configure them in Partner Center."
+---
+
+Xbox Player Data is the engine behind the competitive and social dimensions of your title. Stats track quantitative player progress — kills, distance traveled, wins, high scores — while leaderboards surface those stats in ranked comparisons against friends and the global player base. Achievements reward specific in-game milestones and contribute to each player's Gamerscore, one of the most enduring features on Xbox. Together, these systems give players reasons to keep playing, keep competing, and keep exploring everything your title has to offer.
+
+Player Data also powers ambient social features in the Xbox shell and Xbox App — Game Hubs, Rich Presence strings, and Featured Stats surfaces all draw from the same underlying data.
+
+## Configuration models: event-based vs. title-managed
+
+There are two supported processing models for Stats and Achievements. You choose per-system — you can use one model for Stats and the other for Achievements — and you configure your choice in **Partner Center** under your title's Xbox services settings.
+
+<Warning>
+  You can switch configuration models before your title's public release, but **doing so clears all existing data for that system**. Make your model decision early in development and treat it as permanent once players are engaged with your title.
+</Warning>
+
+<Tabs>
+  <Tab title="Event-Based (recommended for Stats)">
+    In the event-based model, your title fires telemetry events from game code. These events are queued and uploaded to Xbox services, where server-side aggregation rules you define in Partner Center process them into stat values.
+
+    **Advantages:**
+    - A single event can update multiple Xbox services features simultaneously (stats, Rich Presence, multiplayer).
+    - Aggregation logic lives on the server — you do not maintain custom accumulator code in the client.
+    - Deep integration with other Xbox services: Featured Stats, Real-Time Activity (RTA), and shell surfaces.
+
+    **Tradeoffs:**
+    - Configuration in Partner Center is more complex (you must define events, stats, and aggregation rules).
+    - Unlock logic for event-based achievements is defined server-side, which can be harder to troubleshoot.
+
+    **Recommended for:** Stats and Leaderboards.
+
+    **Note:** Event-based Achievements (the "Achievements 2013" system) **requires** event-based Stats. However, you can use event-based Stats with title-managed Achievements.
+  </Tab>
+  <Tab title="Title-Managed (recommended for Achievements)">
+    In the title-managed model, your game code directly controls when data is sent to Xbox services and what action the server takes. For achievements, your code calls an unlock API directly when the player earns it.
+
+    **Advantages:**
+    - Simpler game code: one API call unlocks an achievement.
+    - Easier to debug — unlock happens when and only when your code says so.
+    - No server-side unlock rules to configure or maintain.
+    - Cross-platform friendly: the direct-call pattern works cleanly in multi-platform codebases.
+
+    **Tradeoffs:**
+    - Your code is responsible for determining when conditions are met.
+    - No server-side aggregation for stats; you must compute and upload final values yourself.
+
+    **Recommended for:** Achievements.
+  </Tab>
+</Tabs>
+
+## Mixing and matching models
+
+You are **not** required to use the same model for both Stats and Achievements. The most common and recommended pattern is:
+
+| System | Recommended model | Reason |
+|---|---|---|
+| Stats & Leaderboards | Event-based | Server aggregation, deep shell integration, Featured Stats |
+| Achievements | Title-managed | Simpler code, easier debugging, cross-platform portability |
+
+This is explicitly supported by Xbox services — configure each system independently in Partner Center.
+
+## Stats and leaderboards
+
+Stats are the foundation of leaderboards. Each stat has a name, a data type (integer, double), and an aggregation rule (sum, max, min, last-write). The system automatically populates global and friends leaderboards from the most recent stat values.
+
+Featured Stats are a curated subset that appear prominently in your Game Hub on the Xbox shell — for example, "Total Wins: 1,204" shown on a player's profile card inside your hub.
+
+## Achievements
+
+Achievements are one of Xbox's most recognizable and beloved features. Each achievement has:
+- A name and description
+- A locked/unlocked icon (concept art reward)
+- A Gamerscore value
+- Optional unlock progression (0–100%)
+
+Players can compare achievements with friends, share unlocks to their activity feed, and track progress toward full completion. Achievements are displayed in your Game Hub and on each player's Xbox profile.
+
+<Note>
+  **Xbox Creators Program titles cannot use Achievements.** Achievements and Gamerscore require participation in a managed developer program such as ID\@Xbox. If you want to add achievements to a Creators Program title, apply to [ID\@Xbox](https://www.xbox.com/Developers/id).
+</Note>
+
+## Configuring Player Data in Partner Center
+
+<Steps>
+  <Step title="Choose your configuration models">
+    In Partner Center, navigate to your title's **Xbox services** configuration and select the processing model for Stats and for Achievements separately. Remember: this choice is hard to reverse after launch.
+  </Step>
+  <Step title="Define stats (event-based)">
+    If you chose event-based Stats, define your telemetry events and stat rules. Each rule maps an event field (for example, `roundsWon`) to a stat aggregation (for example, `Sum`). You can also map events to Rich Presence string tokens and multiplayer features here.
+  </Step>
+  <Step title="Define achievements">
+    Create achievement definitions: name, description, Gamerscore value, locked/unlocked artwork, and (for event-based) the unlock rules. For title-managed achievements, you only define the metadata — the unlock trigger comes from your game code.
+  </Step>
+  <Step title="Publish to your sandbox">
+    Publish your service configuration to your development sandbox. Changes take effect within a few minutes. Use the `XblPlayerDataReset` tool to reset test user data when iterating on your configuration.
+  </Step>
+  <Step title="Test and promote to RETAIL">
+    Validate achievements, stats, and leaderboards in your sandbox. Once everything looks correct, promote the service configuration to RETAIL as part of your title submission.
+  </Step>
+</Steps>
+
+## Xbox Creators Program differences
+
+| Feature | Creators Program | ID@Xbox |
+|---|---|---|
+| Title-Managed Stats | ✅ Available | ✅ Available |
+| Event-Based Stats | ❌ Not available | ✅ Available |
+| Achievements & Gamerscore | ❌ Not available | ✅ Available |
+| Leaderboards | ✅ Available | ✅ Available |
+
+If you are in the Creators Program and want richer engagement features, consider applying to [ID\@Xbox](https://www.xbox.com/Developers/id).
+
+## See also
+
+- [Achievements](/services/achievements) — detailed achievement integration guide
+- [Social features](/services/social) — how stats and achievements surface in the Xbox shell
+- [Event-based vs. title-managed Achievements](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/player-data/achievements/live-achievements-eb-vs-tm)

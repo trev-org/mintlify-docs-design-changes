@@ -1,0 +1,88 @@
+---
+title: "Integrate PlayFab Economy with Microsoft Store purchases"
+sidebarTitle: "Store Integration"
+description: "Connect Microsoft Store in-app purchases to PlayFab Economy v2, granting items to player inventory after a verified XStore transaction."
+---
+
+When you combine the Microsoft Store's commerce infrastructure with PlayFab's Economy v2 services, you get a powerful end-to-end monetization pipeline. Players purchase real-money products through the familiar Microsoft Store checkout flow, and your title translates those purchases into PlayFab catalog items, virtual currency, or inventory grants — all tracked server-side by PlayFab. This page describes how the two systems connect and what you need to implement the integration.
+
+<Note>
+  Integrating PlayFab with the Microsoft Store requires both the **XStore APIs** (from the GDK) and the **PlayFab Services SDK**. Both must be initialized before you can verify a purchase and grant items to a player's PlayFab inventory.
+</Note>
+
+## Overview of the integration flow
+
+The integration follows a straightforward verify-then-grant pattern:
+
+<Steps>
+  <Step title="Player initiates a purchase">
+    Your in-game store calls `XStoreShowPurchaseUIAsync` (or a similar XStore API) to present the Microsoft Store purchase dialog. The player completes checkout using their Microsoft account payment method.
+  </Step>
+  <Step title="Retrieve and validate the entitlement">
+    After the purchase succeeds, call `XStoreQueryEntitledProductsAsync` to confirm the entitlement is present on the player's account. For consumable products, you can also call `XStoreQueryConsumableBalanceRemainingAsync` to check quantity.
+  </Step>
+  <Step title="Send the receipt to your game service">
+    Pass the Microsoft Store receipt or a User Store ID token to your backend service. Your service uses the Microsoft Store Collections API to perform server-side verification, confirming the purchase is genuine before granting anything.
+  </Step>
+  <Step title="Grant the PlayFab item">
+    Once verified, your backend calls the PlayFab Economy v2 `AddInventoryItems` or `GrantItemsToUsers` API to add the appropriate catalog item, bundle, or currency amount to the player's PlayFab inventory.
+  </Step>
+  <Step title="Fulfill the consumable (if applicable)">
+    For consumable products, call the Microsoft Store Collections service to mark the consumable as fulfilled, preventing duplicate grants on future entitlement checks.
+  </Step>
+</Steps>
+
+## PlayFab Economy v2 concepts
+
+PlayFab Economy v2 is the system that manages your game's virtual catalog and player inventories. Key building blocks include:
+
+<CardGroup cols={2}>
+  <Card title="Virtual Currencies" icon="coins" href="https://learn.microsoft.com/en-us/gaming/playfab/economy-monetization/economy/economy-v2-currencies">
+    Define currencies like Gold or Gems that players earn or purchase. Microsoft Store consumables map naturally to currency top-ups.
+  </Card>
+  <Card title="Item Catalog" icon="list" href="https://learn.microsoft.com/en-us/gaming/playfab/economy-monetization/economy/economy-v2-catalog">
+    A catalog contains every purchasable or grantable item in your game — weapons, skins, bundles, season passes — each with metadata and pricing.
+  </Card>
+  <Card title="Player Inventory" icon="box" href="https://learn.microsoft.com/en-us/gaming/playfab/economy-monetization/economy/economy-v2-inventory">
+    Each player has an inventory scoped to your title. When a purchase is verified, items are added here and are accessible from any platform the player uses.
+  </Card>
+  <Card title="Stacks & Quantities" icon="layer-group" href="https://learn.microsoft.com/en-us/gaming/playfab/economy-monetization/economy/economy-v2-inventory">
+    Consumable items stack in inventory with a quantity field. When players spend currency or use consumables in-game, your title decrements the stack.
+  </Card>
+</CardGroup>
+
+## Mapping Microsoft Store product types to PlayFab
+
+| Microsoft Store Product Type | PlayFab Economy v2 Equivalent |
+|---|---|
+| Durable (no package) | Durable catalog item, granted once |
+| Consumable | Currency top-up or stackable inventory item |
+| Subscription | Time-limited entitlement checked via Collections API |
+| Bundle | Multiple catalog items granted together |
+
+## XStore and PlayFab SDK requirements
+
+Your GDK project needs two extension libraries:
+
+1. **Microsoft.Xbox.Services** — provides `XStoreCreateContext`, `XStoreShowPurchaseUIAsync`, and related commerce APIs.
+2. **PlayFab.Services.C** — provides `PFAuthenticationLoginWithXUserAsync` and the Economy v2 client APIs.
+
+Add both via **Project → Properties → Gaming Extension Libraries** in Visual Studio.
+
+<Tip>
+  For server-side verification you should also integrate the [Microsoft.StoreServices library](https://github.com/microsoft/Microsoft-Store-Services) on your backend. It wraps the Collections and Clawback service APIs and manages Microsoft Entra ID token refresh automatically.
+</Tip>
+
+## Handling refunds with the Clawback service
+
+Microsoft Store purchases can be refunded. The **Clawback** service lets your backend detect refunded transactions so you can revoke the corresponding PlayFab item or currency from the player's inventory. Poll the Clawback service periodically and reconcile any refunded consumables to maintain inventory integrity.
+
+<Warning>
+  If you do not implement Clawback handling, players who receive a refund from Microsoft may retain the PlayFab items that were granted for that purchase.
+</Warning>
+
+## Next steps
+
+- [Player Sign-In](/playfab/player-sign-in) — ensure players are authenticated with both Xbox services and PlayFab before any commerce flow
+- [Commerce overview](/publishing/commerce) — configure products in Partner Center and set up your XStore integration
+- [GDK In-Game Store sample](https://github.com/microsoft/Xbox-GDK-Samples/tree/main/Samples/Live/InGameStore) — a fully functional reference implementation

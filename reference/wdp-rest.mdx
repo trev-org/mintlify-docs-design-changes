@@ -1,0 +1,84 @@
+---
+title: "Windows Device Portal REST API reference"
+sidebarTitle: "WDP REST API"
+description: "Reference for the Windows Device Portal REST API on Xbox devkits and Windows: automate sandbox switching, package install, screenshot capture, and process control."
+---
+
+The **Windows Device Portal (WDP)** is the HTTPS service that runs on every Xbox devkit and Windows dev PC. Beyond the web UI, WDP exposes a REST API that you can call from CI scripts, test harnesses, or your own dev-ops tooling.
+
+Use WDP REST to automate everything you would otherwise do by hand in the portal: install packages, switch sandbox, capture screenshots, watch processes, pull crash dumps, and toggle dev-only settings.
+
+## Endpoint
+
+WDP listens on HTTPS port 11443 on Xbox devkits and on Windows. Authentication is HTTP Basic with the devkit's WDP credentials (configured during devkit setup).
+
+```text
+https://<console-ip>:11443/api/...
+```
+
+The devkit's TLS certificate is self-signed. Either install it as trusted on your CI agents or disable cert validation on the request — do **not** disable validation for any non-WDP endpoint.
+
+## Common endpoint families
+
+| Family | Example endpoints | Purpose |
+| --- | --- | --- |
+| **App management** | `/api/app/packagemanager/package`, `/api/app/packagemanager/packages` | List, install, uninstall packages |
+| **App lifecycle** | `/api/taskmanager/app`, `/api/taskmanager/process` | Launch, terminate, suspend processes |
+| **Sandboxes** | `/ext/xboxlive/sandbox` | Switch the devkit's active sandbox |
+| **Device info** | `/api/os/info`, `/api/os/machinename`, `/api/networking/ipconfig` | Identity and network state |
+| **Capture** | `/ext/screenshot`, `/api/iot/screenshot` | Pull a screenshot of the current dashboard / title |
+| **Telemetry** | `/api/etw/sessions`, `/api/etw/session/realtime` | Manage ETW trace sessions |
+| **System** | `/api/control/restart`, `/api/control/shutdown` | Reboot or shut down the devkit |
+
+## Example: install a package from CI
+
+```bash
+# 1. Upload the MSIXVC
+curl -k -u WDPUser:WDPPass \
+     -X POST \
+     -F "package=@MyGame.msixvc" \
+     "https://10.0.0.42:11443/api/app/packagemanager/package?package=MyGame.msixvc"
+
+# 2. Poll for completion
+curl -k -u WDPUser:WDPPass \
+     "https://10.0.0.42:11443/api/app/packagemanager/state"
+
+# 3. Launch
+curl -k -u WDPUser:WDPPass \
+     -X POST \
+     "https://10.0.0.42:11443/api/taskmanager/app?appid=<base64-AppId>&package=<base64-PackageFullName>"
+```
+
+## Example: switch sandbox
+
+```bash
+curl -k -u WDPUser:WDPPass \
+     -X PUT \
+     -H "Content-Type: application/json" \
+     -d '{"Sandbox":"XDKS.1"}' \
+     "https://10.0.0.42:11443/ext/xboxlive/sandbox"
+```
+
+The console will reboot to apply the sandbox change.
+
+## WebSocket streams
+
+A handful of endpoints upgrade to WebSocket for real-time data:
+
+- `/api/etw/session/realtime` — stream ETW events live
+- `/ws/processdiag` — stream per-process CPU / GPU / memory samples
+- `/ws/networkdiag` — stream network throughput counters
+
+Use the standard `Sec-WebSocket-*` headers; WDP responds with the same basic-auth gate as the HTTPS endpoints.
+
+## Security
+
+- Bind WDP credentials per devkit; never reuse credentials across the studio.
+- Run WDP automation on an isolated dev network. The REST surface is broad enough that an attacker on the same subnet can ship arbitrary packages or pull binaries.
+- Rotate the WDP password if a devkit changes hands.
+
+## See also
+
+- [PC Tools](/tools/pc-tools) — Windows Device Portal section
+- [Tools API reference](/reference/tools-api)
+- [Windows Device Portal REST API reference (Microsoft Learn)](https://learn.microsoft.com/en-us/gaming/gdk/_content/gc/reference/deviceportal/atoc-deviceportal-reference) — full per-endpoint documentation

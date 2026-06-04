@@ -1,0 +1,254 @@
+---
+title: "XStore API reference for in-game commerce"
+sidebarTitle: "XStore"
+description: "Reference for the XStore API: create a store context, query products, initiate purchases, manage game licenses, and acquire DLC package licenses."
+---
+
+The XStore API provides in-game commerce functionality: querying the Microsoft Store catalog, initiating purchases through the system UI, verifying game licenses, and acquiring licenses for owned DLC packages. All XStore operations are asynchronous and follow the standard GDK `XAsyncBlock` pattern.
+
+**Header:** `XStore.h`  
+**Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
+
+---
+
+## Key types
+
+| Type | Description |
+|---|---|
+| `XStoreContextHandle` | Opaque handle to a store context for a specific user. Required for all store queries and purchases. |
+| `XStoreProduct` | Struct describing a Store product: store ID, title, description, price, images, and type flags |
+| `XStoreSku` | A SKU within a product (e.g. the standard edition vs. deluxe edition) |
+| `XStoreGameLicense` | Struct describing the active game license: is it a trial, active subscription, etc. |
+| `XStoreAddonLicense` | Struct describing a license for a durable add-on without downloadable bits |
+| `XStoreProductKind` | Enum: `Game`, `Durable`, `Consumable`, `UnmanagedConsumable`, `Pass` |
+| `XStoreProductsQueryHandle` | Handle to a paged product query result set |
+
+---
+
+## Creating a store context
+
+Every XStore function requires an `XStoreContextHandle` associated with the user making the request. Create one early in your game session and close it when done.
+
+<ResponseField name="XStoreCreateContext" type="HRESULT">
+  Creates a store context for the specified user.
+
+  ```c
+  HRESULT XStoreCreateContext(
+      XUserHandle          user,
+      XStoreContextHandle* storeContext
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XStoreCloseContextHandle" type="void">
+  Releases an `XStoreContextHandle`. Call when you no longer need to make store requests for this user.
+</ResponseField>
+
+---
+
+## Querying products
+
+<ResponseField name="XStoreQueryAssociatedProductsAsync" type="HRESULT">
+  Gets store listing information for all products purchasable from within the current game (DLC, consumables, passes, etc.).
+
+  ```c
+  HRESULT XStoreQueryAssociatedProductsAsync(
+      XStoreContextHandle storeContext,
+      XStoreProductKind   productKinds,   // bitmask of kinds to return
+      uint32_t            maxItemsPerPage,
+      XAsyncBlock*        asyncBlock
+  );
+  ```
+
+  Retrieve results with `XStoreQueryAssociatedProductsResult`, then check for additional pages with `XStoreProductsQueryHasMorePages` and `XStoreProductsQueryNextPageAsync`.
+</ResponseField>
+
+<ResponseField name="XStoreQueryAssociatedProductsResult" type="HRESULT">
+  Returns an `XStoreProductsQueryHandle` after `XStoreQueryAssociatedProductsAsync` completes. Use `XStoreEnumerateProductsQuery` to iterate over `XStoreProduct` records.
+</ResponseField>
+
+<ResponseField name="XStoreEnumerateProductsQuery" type="HRESULT">
+  Iterates over the products in a query result, invoking `XStoreProductQueryCallback` for each `XStoreProduct`.
+</ResponseField>
+
+<ResponseField name="XStoreProductsQueryHasMorePages" type="bool">
+  Returns `true` if the query result has additional pages of products.
+</ResponseField>
+
+<ResponseField name="XStoreProductsQueryNextPageAsync" type="HRESULT">
+  Fetches the next page of a paged product query result.
+</ResponseField>
+
+<ResponseField name="XStoreCloseProductsQueryHandle" type="void">
+  Releases an `XStoreProductsQueryHandle`.
+</ResponseField>
+
+<ResponseField name="XStoreQueryProductForCurrentGameAsync" type="HRESULT">
+  Retrieves store product information (SKUs, availabilities, images) for the currently running game itself.
+</ResponseField>
+
+<ResponseField name="XStoreQueryEntitledProductsAsync" type="HRESULT">
+  Returns store product information for all add-ons the user has already purchased.
+</ResponseField>
+
+---
+
+## Purchasing products
+
+<ResponseField name="XStoreShowPurchaseUIAsync" type="HRESULT">
+  Initiates a purchase flow for a specific store product, showing the standard Microsoft Store purchase dialog.
+
+  ```c
+  HRESULT XStoreShowPurchaseUIAsync(
+      XStoreContextHandle storeContext,
+      const char*         storeProductId,
+      const char*         name,           // optional override for display name
+      const char*         extendedJsonData,
+      XAsyncBlock*        asyncBlock
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XStoreShowPurchaseUIResult" type="HRESULT">
+  Gets the result of `XStoreShowPurchaseUIAsync`. Returns `S_OK` if the user completed the purchase.
+</ResponseField>
+
+<ResponseField name="XStoreShowAssociatedProductsUIAsync" type="HRESULT">
+  Opens the Microsoft Store app and shows the set of add-ons associated with the game, optionally filtered by product type.
+</ResponseField>
+
+---
+
+## Game license management
+
+<ResponseField name="XStoreQueryGameLicenseAsync" type="HRESULT">
+  Retrieves information about the license that permitted the game to launch: whether it is a full purchase, a trial, an active Game Pass subscription, etc.
+
+  ```c
+  HRESULT XStoreQueryGameLicenseAsync(
+      XStoreContextHandle storeContext,
+      XAsyncBlock*        asyncBlock
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XStoreQueryGameLicenseResult" type="HRESULT">
+  Returns an `XStoreGameLicense` struct after `XStoreQueryGameLicenseAsync` completes.
+
+  ```c
+  HRESULT XStoreQueryGameLicenseResult(
+      XAsyncBlock*      asyncBlock,
+      XStoreGameLicense* license
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XStoreRegisterGameLicenseChanged" type="HRESULT">
+  Registers a callback (`XStoreGameLicenseChangedCallback`) that fires when the game license changes — for example when a Game Pass subscription expires or a trial converts to a full purchase.
+</ResponseField>
+
+<ResponseField name="XStoreIsLicenseValid" type="bool">
+  Returns `true` if the provided `XStoreLicenseHandle` is still valid.
+</ResponseField>
+
+---
+
+## DLC package license acquisition
+
+<ResponseField name="XStoreAcquireLicenseForPackageAsync" type="HRESULT">
+  Acquires a runtime license for a DLC package the user is entitled to. Call this before mounting the DLC package via `XPackageMountWithUiAsync`.
+
+  ```c
+  HRESULT XStoreAcquireLicenseForPackageAsync(
+      XStoreContextHandle storeContext,
+      const char*         packageIdentifier,
+      XAsyncBlock*        asyncBlock
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XStoreAcquireLicenseForPackageResult" type="HRESULT">
+  Returns an `XStoreLicenseHandle` after `XStoreAcquireLicenseForPackageAsync` completes. Hold this handle open for as long as the DLC is in use; closing it relinquishes the license.
+</ResponseField>
+
+<ResponseField name="XStoreQueryAddOnLicensesAsync" type="HRESULT">
+  Enumerates the licenses the user has been granted for durable add-ons without downloadable bits (i.e. in-game currency packages, unlock keys, etc.).
+</ResponseField>
+
+---
+
+## Consumables
+
+<ResponseField name="XStoreQueryConsumableBalanceRemainingAsync" type="HRESULT">
+  Gets the remaining balance for a consumable product (e.g. in-game currency). Always check the balance server-side for authoritative results.
+</ResponseField>
+
+<ResponseField name="XStoreReportConsumableFulfillmentAsync" type="HRESULT">
+  Reports to the Store that you have fulfilled a specified quantity of a consumable, reducing the pending balance.
+</ResponseField>
+
+---
+
+## Code example: query add-ons and purchase one
+
+```cpp
+struct QueryContext
+{
+    std::vector<std::string> storeIds;
+};
+
+bool CALLBACK OnProduct(
+    const XStoreProduct* product,
+    void*                context)
+{
+    auto* ctx = static_cast<QueryContext*>(context);
+    if (!product->isInUserCollection) // not yet purchased
+    {
+        ctx->storeIds.push_back(product->storeId);
+        printf("Available: %s — %s\n", product->title, product->price.formattedPrice);
+    }
+    return true; // continue enumeration
+}
+
+void QueryAndPurchase(XStoreContextHandle store, XUserHandle user)
+{
+    // 1. Query DLC associated with this game
+    XAsyncBlock queryAsync = {};
+    queryAsync.callback = [](XAsyncBlock* ab)
+    {
+        XStoreProductsQueryHandle queryHandle = nullptr;
+        if (SUCCEEDED(XStoreQueryAssociatedProductsResult(ab, &queryHandle)))
+        {
+            QueryContext ctx = {};
+            XStoreEnumerateProductsQuery(queryHandle, &ctx, OnProduct);
+            XStoreCloseProductsQueryHandle(queryHandle);
+
+            // 2. Purchase the first available add-on
+            if (!ctx.storeIds.empty())
+            {
+                XAsyncBlock* purchaseAsync = new XAsyncBlock{};
+                purchaseAsync->callback = [](XAsyncBlock* pab)
+                {
+                    HRESULT hr = XStoreShowPurchaseUIResult(pab);
+                    if (SUCCEEDED(hr))
+                        printf("Purchase complete!\n");
+                    delete pab;
+                };
+
+                // storeContext and storeId need to be captured appropriately
+                // in a real title; simplified here for clarity.
+            }
+        }
+    };
+
+    XStoreQueryAssociatedProductsAsync(
+        store,
+        XStoreProductKind::Durable,
+        25,         // items per page
+        &queryAsync);
+}
+```
+
+<Note>
+  Always verify game licenses and entitlements server-side for any security-sensitive decisions. Client-side license checks are suitable for UX gating (showing locked content) but should not be the sole authority for granting access to protected content or services.
+</Note>

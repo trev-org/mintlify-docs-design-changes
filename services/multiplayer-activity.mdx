@@ -1,0 +1,69 @@
+---
+title: "Multiplayer Activity (MPA) for invites and joinable sessions"
+sidebarTitle: "Multiplayer Activity"
+description: "Use Multiplayer Activity (MPA) to publish joinable sessions for the Xbox guide, party invites, and cross-platform join-game flows."
+---
+
+Multiplayer Activity (MPA) is the Xbox service that makes your in-game multiplayer session **discoverable and joinable** to friends. When a player launches your title and enters a lobby, you publish an MPA "activity"; their friends then see a Join Game option in the guide, on profile cards, and inside Xbox parties.
+
+Think of MPA as the **connective tissue** between the rest of the social surface (presence, friend lists, parties) and your underlying multiplayer transport (MPSD, PlayFab Party, or your own backend).
+
+## When to use MPA
+
+Use MPA any time the player is in a session that another player could join:
+
+- Open lobby in the main menu
+- Mid-match in a join-in-progress mode
+- Pre-game with friends
+
+Do **not** publish an activity when the player is in a fixed solo experience (a single-player campaign mission, an unjoinable cinematic).
+
+## Publishing an activity
+
+```cpp
+XblMultiplayerActivityInfo info = {};
+info.connectionString = "lobby:abc-123";  // your title-specific join target
+info.joinRestriction  = XblMultiplayerActivityJoinRestriction::Followed;
+info.maxPlayers       = 8;
+info.currentPlayers   = 3;
+info.groupId          = "";               // optional: cohort grouping
+
+XAsyncBlock* async = new XAsyncBlock{};
+async->callback = OnActivitySet;
+XblMultiplayerActivitySetActivityAsync(
+    xblContext,
+    &info,
+    /*allowCrossPlatformJoin*/ true,
+    async);
+```
+
+The `connectionString` is opaque to the platform: it's whatever your title needs to reconstruct or rejoin the session (an MPSD session reference, a PlayFab Party network descriptor, etc.).
+
+## Handling join intents
+
+When a friend uses **Join Game**, the platform launches your title (or wakes it) and passes the connection string. Read it at startup with `XGameInviteRegisterForEvent` and immediately route the player into the session.
+
+```cpp
+void CALLBACK OnInvite(void* context, const char* inviteUri)
+{
+    // Parse 'inviteUri' to extract the connection string,
+    // then route the player to the lobby.
+}
+
+XTaskQueueRegistrationToken token = {};
+XGameInviteRegisterForEvent(taskQueue, nullptr, OnInvite, &token);
+```
+
+## Send / receive invites
+
+In addition to activities visible on profiles, your title can send a targeted invite to a specific friend with `XblMultiplayerActivitySendInvitesAsync`. The recipient gets a guide toast and, on accept, the platform delivers the same join intent.
+
+## Cross-platform considerations
+
+MPA supports cross-platform join when both the inviting and receiving title declare it. PlayFab Party combines well with MPA: use MPA for the discovery surface and Party for the actual data plane.
+
+## See also
+
+- [Multiplayer](/services/multiplayer) — MPSD and matchmaking
+- [Rich Presence](/services/rich-presence)
+- [Social](/services/social)

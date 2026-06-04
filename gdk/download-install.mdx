@@ -1,0 +1,165 @@
+---
+title: "Download and Install the Microsoft Game Development Kit"
+sidebarTitle: "Download & Install"
+description: "Download the Microsoft GDK, verify system requirements, install Visual Studio platform toolsets, and create your first GDK project from a template."
+---
+
+Installing the Microsoft Game Development Kit (GDK) is a straightforward process, but it has a few prerequisites that must be in place before you run the installer. This guide walks you through downloading the right version of the GDK, confirming your system meets the requirements, installing the Visual Studio extensions that power the GDK build system, and verifying your installation by creating a new project from a GDK template.
+
+<Note>
+  The current generally available release is **GDK 2604** (April 2026). Always use the latest release for new projects — older GDK versions are supported for building existing titles but may lack current platform features and bug fixes. You can find release notes and what's new in each release in the [GDK documentation](https://learn.microsoft.com/en-us/gaming/gdk).
+</Note>
+
+## System requirements
+
+Before you download or install anything, verify that your development PC meets the following requirements.
+
+### Operating system
+
+| Requirement | Minimum |
+|---|---|
+| Windows version | Windows 10 (May 2019 Update, version 1903) 64-bit or Windows 11 64-bit |
+| Architecture | x64 only — GDK Visual Studio extensions are **not** supported on ARM-based devices |
+
+<Warning>
+  You cannot install the GDK on a 32-bit version of Windows, nor on ARM-based PCs. The GDK Visual Studio extension (VSIX) components — including project templates, property pages, and debugging extensions — require an x64 host.
+</Warning>
+
+### Software
+
+| Requirement | Supported versions |
+|---|---|
+| Visual Studio | Visual Studio 2019 (16.x) or Visual Studio 2022 (17.x) — Community, Professional, or Enterprise |
+| Visual Studio workload | **Game development with C++** (install via the Visual Studio Installer) |
+| Windows SDK | Included with the GDK installer; no separate install required |
+
+### Disk space
+
+The GDK requires at least **30 GB of free disk space** for a full installation, including console extensions. A PC-only installation is smaller but a full install is recommended if you plan to target both platforms.
+
+---
+
+## Step 1 — Download the GDK
+
+The GDK is available from two sources depending on your developer program status:
+
+**Public GDK (no program membership required):**
+The [public Microsoft GDK on GitHub](https://aka.ms/gdk) contains the common tools, libraries, headers, and documentation needed to build Xbox Game Pass for PC titles on Windows 10/11, and to target Xbox consoles using the publicly available APIs.
+
+**Secure GDK download (program membership required):**
+Partners enrolled in a Microsoft managed Xbox developer program can download the full GDK — including NDA console extensions, offline documentation, the Submission Validator, and NDA samples — from [aka.ms/gdkdl](https://aka.ms/gdkdl).
+
+<Steps>
+  <Step title="Open the download portal">
+    Navigate to [aka.ms/gdkdl](https://aka.ms/gdkdl). Sign in with the Microsoft Entra ID account associated with your organization's Partner Center account. If you're using the public GDK, clone the repository from [aka.ms/gdk](https://aka.ms/gdk) instead.
+  </Step>
+  <Step title="Select the GDK release">
+    On the secure download portal, locate the **GDK 2604** release (or the latest available). Download the GDK installer package (`.exe`). If you're targeting Xbox consoles, also download the **GDK with Xbox Extensions (GDKx)** package.
+  </Step>
+  <Step title="Save the installer">
+    Save the installer to a local drive with at least 30 GB of available space. Avoid network shares or paths with spaces or special characters to prevent installer issues.
+  </Step>
+</Steps>
+
+---
+
+## Step 2 — Install Visual Studio
+
+If you don't already have Visual Studio 2019 or 2022 installed, install it before running the GDK installer.
+
+<Steps>
+  <Step title="Download Visual Studio">
+    Download [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) (recommended) or Visual Studio 2019 from the Microsoft Visual Studio website.
+  </Step>
+  <Step title="Select the Game development with C++ workload">
+    In the Visual Studio Installer, select the **Game development with C++** workload. This installs the C++ compiler toolchain, Windows SDK, and DirectX components that the GDK depends on.
+  </Step>
+  <Step title="Complete the Visual Studio installation">
+    Click **Install** and wait for Visual Studio to finish. You do not need to launch Visual Studio before running the GDK installer.
+  </Step>
+</Steps>
+
+---
+
+## Step 3 — Install the GDK
+
+<Steps>
+  <Step title="Run the GDK installer">
+    Right-click the GDK installer executable and select **Run as administrator**. Accept the license agreement when prompted.
+  </Step>
+  <Step title="Choose your installation components">
+    The installer presents a component selection screen. Select the components relevant to your target platform:
+
+    | Component | Platform | MSBuild Platform Toolset |
+    |---|---|---|
+    | Gaming Runtime (PC) | Windows 10/11 PC | `Gaming.Desktop.x64` |
+    | Xbox One Extensions | Xbox One console | `Gaming.Xbox.XboxOne.x64` |
+    | Xbox Series X\|S Extensions | Xbox Series X\|S console | `Gaming.Xbox.Scarlett.x64` |
+
+    If you're targeting PC only, selecting Gaming Runtime is sufficient. For console development, select the corresponding Xbox extension(s) as well.
+  </Step>
+  <Step title="Complete the installation">
+    Click **Install** and wait for the installer to finish. The GDK installs into `C:\Program Files (x86)\Microsoft GDK\` by default. The Visual Studio extensions (VSIX) are registered automatically for all installed supported versions of Visual Studio.
+  </Step>
+  <Step title="Restart if prompted">
+    The installer may ask you to restart your PC to finish registering system components and environment variables. Restart before proceeding to verify the installation.
+  </Step>
+</Steps>
+
+---
+
+## Step 4 — Verify the installation in Visual Studio
+
+After the GDK is installed, confirm that the platform toolsets and project templates are available in Visual Studio.
+
+<Steps>
+  <Step title="Open Visual Studio and create a new project">
+    Launch Visual Studio. From the start screen, click **Create a new project**, or go to **File → New → Project** from the menu bar.
+  </Step>
+  <Step title="Filter by GDK templates">
+    In the **New Project** dialog, set the language filter to **C++**, the platform filter to **Xbox** or **Windows**, and the project type to **Games**. You should see the GDK project templates listed below.
+  </Step>
+  <Step title="Select a template">
+    Choose the template that matches your target platform:
+
+    | Template | Target | Description |
+    |---|---|---|
+    | Direct3D 12 Desktop Game | PC | Standalone PC game using `Gaming.Desktop.x64` and the full Win32 API surface |
+    | Direct3D 12 Desktop Game (Classic) | PC | PC game using the stock x64 MSBuild platform (no custom toolset) |
+    | Direct3D 12 Xbox Game | Xbox console | Xbox console game using `Gaming.Xbox.Scarlett.x64` or `Gaming.Xbox.XboxOne.x64` |
+    | Desktop Static Library | PC | Static library for inclusion in a `Gaming.Desktop.x64` project |
+    | Desktop DLL | PC | Dynamic-link library for inclusion in a `Gaming.Desktop.x64` project |
+    | Xbox Static Library | Xbox | Static library for inclusion in a GDK Xbox console project |
+    | Xbox DLL | Xbox | DLL for inclusion in a GDK Xbox console project |
+
+    For your first project, **Direct3D 12 Desktop Game** (PC) or **Direct3D 12 Xbox Game** (console) is the recommended starting point.
+  </Step>
+  <Step title="Name and create your project">
+    Enter a project name and location, then click **Create**. Visual Studio scaffolds a new project including a `MicrosoftGame.config` file with placeholder identity values, a basic Direct3D 12 device and swapchain, and a simple game update-and-render loop — ready for you to build and run immediately.
+  </Step>
+</Steps>
+
+<Tip>
+  If you don't see the GDK templates after installation, try restarting Visual Studio or running **Repair** from the GDK installer. Also ensure the Visual Studio extension components were installed for the correct Visual Studio version.
+</Tip>
+
+---
+
+## Next steps
+
+With the GDK installed and your first project created, you're ready to move on to the key development tasks:
+
+<CardGroup cols={2}>
+  <Card title="Get Started" icon="rocket" href="/gdk/get-started">
+    Understand the Xbox console vs. PC development paths and choose the right setup for your title.
+  </Card>
+  <Card title="MicrosoftGame.config" icon="file-code" href="/gdk/game-config">
+    Replace the placeholder values in your project's config file with your Partner Center identity details.
+  </Card>
+  <Card title="Xbox Services" icon="trophy" href="/services/overview">
+    Set up a development sandbox and test account to start integrating achievements, saves, and multiplayer.
+  </Card>
+  <Card title="Packaging" icon="box-archive" href="/gdk/packaging">
+    Learn how to create an MSIXVC package for Store submission and side-load testing.
+  </Card>
+</CardGroup>

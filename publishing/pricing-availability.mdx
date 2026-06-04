@@ -1,0 +1,57 @@
+---
+title: "Set pricing, markets, and availability for your game"
+sidebarTitle: "Pricing & Availability"
+description: "Choose markets, base prices, regional overrides, sales, and visibility settings for your Microsoft Store game in Partner Center."
+---
+
+Pricing and availability covers everything about **who** can buy your game, **where**, **when**, and for **how much**. Partner Center centralizes all of it; the right configuration here protects launch-week revenue and avoids surprise cert blockers in regulated markets.
+
+## Choosing markets
+
+Microsoft Store distributes to 200\+ markets. Partner Center lets you opt in to all markets at once (the typical choice) or hand-pick a subset. Common reasons to exclude markets:
+
+- The title is not localized for that region's primary language.
+- A specific market requires a content rating you haven't obtained (China, South Korea).
+- The title's content is illegal or restricted in a specific market.
+
+Review the [Age Ratings](/publishing/age-ratings) page first; markets without an accepted rating are unavailable automatically.
+
+## Base price
+
+Set a base price in your chosen currency (typically USD). Partner Center converts to every market's local currency using Microsoft's standard tier table. The tier table is anchored to USD price tiers — you cannot set arbitrary local prices, but you can **override** the tier per market.
+
+## Regional overrides
+
+For markets with very different purchasing power or competitive dynamics, override the tier:
+
+| Region | Strategy |
+| --- | --- |
+| LATAM, India, Turkey | Lower price tier improves conversion. |
+| Japan | Often higher tier matches market expectations. |
+| Western Europe | Same or slightly higher tier than US. |
+
+## Sales and discounts
+
+Schedule timed discounts in Partner Center: pick the markets, the discount percentage (or absolute price), and the start / end window. The Microsoft Store badges discounted titles in search results automatically. Plan major sales (summer, holiday, anniversary) ahead of cert turnaround time so promotional builds and store metadata land together.
+
+## Visibility settings
+
+Independent of price, control discoverability:
+
+- **Hidden** — not listed in search or browse. Only direct-link purchases. Use for pre-release internal testing.
+- **Available** — visible everywhere.
+- **Stop selling** — not listed and not purchasable, but existing owners retain access. Use when sunsetting a SKU.
+
+## Pre-orders
+
+Configure a pre-order window with its own price (often higher than launch base price for limited editions). Players are charged on the release date, not at pre-order time. See the pre-order workflow in [Pre-release testing](/publishing/pre-release-testing).
+
+## Release date
+
+Pick a single global release date / time (UTC). Partner Center ensures the store flips your title to **available** simultaneously across markets. Coordinate with marketing milestones; do not set the date inside the cert turnaround window.
+
+## See also
+
+- [Partner Center](/publishing/partner-center)
+- [Store Listings](/publishing/store-listings)
+- [Pre-release Testing](/publishing/pre-release-testing)

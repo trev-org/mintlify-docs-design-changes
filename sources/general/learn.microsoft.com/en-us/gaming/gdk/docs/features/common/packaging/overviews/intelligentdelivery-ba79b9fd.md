@@ -1,0 +1,119 @@
+# Source: https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/overviews/intelligentdelivery?view=gdk-2604
+
+Table of contents Exit editor mode
+
+Ask Learn Ask Learn
+
+Reading mode Table of contents [Read in English](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/overviews/intelligentdelivery?view=gdk-2604) Add to Collections Add to plan [Edit]()
+
+---
+
+Copy Markdown Print
+
+---
+
+Note
+
+Access to this page requires authorization. You can try [signing in](https://learn.microsoft.com/#) or [changing directories]().
+
+Access to this page requires authorization. You can try [changing directories]().
+
+# Intelligent Delivery
+
+Feedback
+
+Summarize this article for me
+
+Intelligent Delivery is a set of features whose purpose is to reduce the size of game installs on customer devices. This is accomplished by segmenting content into different logical chunks and applying specifiers to those chunks to set up rules for when those chunks will be installed.
+
+With the Microsoft Game Development Kit (GDK), Intelligent Delivery has been updated to allow developer defined Features, which represent groupings of content that end users can select, either at install time or after a game has been installed, from within the Shell.
+
+When creating packages, you use Features and specifiers to annotate chunks in the package layout .xml file.
+
+The [Deployment Schema](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/deployment/atoc-deployment-schema?view=gdk-2604) article contains examples for using Intelligent Delivery to define Chunks with specifiers and Features that control their installation.
+
+Intelligent Delivery offers the following capabilities to group content and control when it's installed.
+
+- [Features and recipes](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-features-recipes?view=gdk-2604) 
+ Features represent independently addable and removable functionality within a base game. For example, a game can make its campaign and multiplayer functionality independently addable and removable to allow users to recover space for Features they don't want. A Recipe is a list of Features to be installed.
+ 
+- [Device specifiers](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-device?view=gdk-2604) 
+ Declares the types of devices to which the content in a specific chunk applies.
+ 
+- [Language specifiers](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-language?view=gdk-2604) 
+ Declares the language to which the content in a chunk applies.
+ 
+- [Custom tags](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-custom?view=gdk-2604) 
+ Allows you to mark groups of chunks as related, which simplifies checking whether the chunks needed to run a title are all present on the user's system.
+ 
+- [OnDemand content](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-ondemand?view=gdk-2604) 
+ Allows titles to designate content that isn't installed by default but can be installed at the request of the user or title. We no longer recommend the use of the OnDemand specifier. For more information, see the following Note.
+ 
+
+Note
+
+ContentType specifiers and OnDemand tags have been deprecated in favor of Features, which provide a richer ability to group content that users can add and remove as logical units within your base game package.
+
+Important
+
+Because Intelligent Delivery data such as Features, Recipes, and custom tags can be used as part of installation calculations, this data isn't encrypted within the XVC. Sensitive data shouldn't be used for specifier names, because it could be gleaned from a package file that's stored on a content delivery network (CDN)—even during prerelease time frames.
+
+## In this section
+
+### Intelligent Delivery overviews
+
+[Intelligent Delivery: Features and Recipes](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-custom?view=gdk-2604) 
+Describes how to use Intelligent Delivery Features to allow end users to choose which parts of your game to install.
+
+[Intelligent Delivery: Custom tag specifiers](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-custom?view=gdk-2604) 
+Describes how to use Intelligent Delivery to support multi-disc and other complex installation scenarios.
+
+[Intelligent Delivery: devices specifiers](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-device?view=gdk-2604) 
+Describes how to use Intelligent Delivery to specify the devices on which a chunk is to be installed.
+
+[Intelligent Delivery: language specifiers](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-language?view=gdk-2604) 
+Describes how to use Intelligent Delivery to specify the language-specific assets to be installed on a console.
+
+[Intelligent Delivery: OnDemand content](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/intelligentdelivery-ondemand?view=gdk-2604) 
+Describes how to use Intelligent Delivery to designate content that isn't installed by default but can be installed at the request of the user or title.
+
+### Intelligent Delivery implementation
+
+[Dynamic chunk reordering](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/packaging-chunkreordering?view=gdk-2604) 
+Describes how to change the order in which chunks are installed after the chunks required for the game to run have finished installing.
+
+[Streaming installation: debugging](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/packaging-debugging?view=gdk-2604) 
+Describes how to connect a debugger to your installation process.
+
+[Streaming installation: status](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/packaging-installstatus?view=gdk-2604) 
+Describes how to check the status of chunks associated with certain aspects of gameplay to see if they've been installed.
+
+[Multi-disc functionality](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/packaging-multi-disc?view=gdk-2604) 
+Describes how to package your title so that it can be stored on more than one disc.
+
+[Creating a disc subset](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/common/packaging/packaging-disc-subset?view=gdk-2604) 
+Describes how to create a disc that has a subset of the game’s content so that it fits on one disc.
+
+---
+
+## Feedback
+
+Was this page helpful?
+
+Yes No No
+
+Need help with this topic?
+
+Want to try using Ask Learn to clarify or guide you through this topic?
+
+Ask Learn Ask Learn
+
+Suggest a fix?
+
+---
+
+## Additional resources
+
+---
+
+- Last updated on 11/06/2025

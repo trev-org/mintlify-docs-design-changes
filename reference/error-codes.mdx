@@ -1,0 +1,94 @@
+---
+title: "GDK error codes reference (XGameErr.h)"
+sidebarTitle: "Error Codes"
+description: "Reference for FACILITY_GAMING HRESULT ranges defined in XGameErr.h: how to decode codes, common values per area, and retry guidance."
+---
+
+GDK-specific failures are returned as `HRESULT` values in the **`FACILITY_GAMING` (0x803)** facility. The constants are declared in `XGameErr.h` and follow the standard Win32 HRESULT layout: severity, facility, customer bit, and a per-area code.
+
+For the conceptual side of error handling — retries, async patterns, crash reporting — see [Error handling](/gdk/error-handling).
+
+## Header
+
+```cpp
+#include <XGameErr.h>
+```
+
+## Layout
+
+GDK HRESULTs follow the standard 32-bit Win32 HRESULT structure:
+
+```text
+31  30..28   27   26..16    15..0
+ S   reserved C   Facility  Code
+```
+
+- **S** — severity (1 = failure)
+- **Facility** — `FACILITY_GAMING` (0x803) for GDK codes
+- **Code** — per-area integer
+
+Use the `HRESULT_FACILITY` and `HRESULT_CODE` macros to inspect a returned value.
+
+```cpp
+HRESULT hr = XUserAddResult(async, &user);
+if (FAILED(hr) && HRESULT_FACILITY(hr) == FACILITY_GAMING) {
+    LogGdkError(hr);
+}
+```
+
+## Code ranges by area
+
+| Range | Area | Examples |
+| --- | --- | --- |
+| `E_GAMERUNTIME_*` | XGameRuntime init | `E_GAMERUNTIME_NOT_INITIALIZED`, `E_GAMERUNTIME_DLL_NOT_FOUND` |
+| `E_GAMEUSER_*` | XUser sign-in | `E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED`, `E_GAMEUSER_NO_DEFAULT_USER`, `E_GAMEUSER_NO_TITLE_ID` |
+| `E_GAMEPACKAGE_*` | XPackage | `E_GAMEPACKAGE_CHUNK_NOT_AVAILABLE`, `E_GAMEPACKAGE_NO_PACKAGE_INSTALLED` |
+| `E_GAMESTORE_*` | XStore | `E_GAMESTORE_NETWORK_ERROR`, `E_GAMESTORE_LICENSE_ACTION_NOT_APPLICABLE` |
+| `E_GAMESAVE_*` | XGameSave | `E_GAMESAVE_QUOTA_EXCEEDED`, `E_GAMESAVE_CONTAINER_NOT_IN_SYNC`, `E_GAMESAVE_BLOB_NOT_FOUND` |
+| `E_GAMESTREAMING_*` | XGameStreaming | `E_GAMESTREAMING_NOT_INITIALIZED`, `E_GAMESTREAMING_CLIENT_NOT_CONNECTED` |
+| `E_GAMEMSAA_*` | Microsoft Account auth | `E_GAMEMSAA_UI_REQUIRED` |
+
+<Note>
+  The exact set of constants changes per GDK release. Always check `XGameErr.h` in the GDK version you're shipping against for the authoritative list.
+</Note>
+
+## Decoding at runtime
+
+For a developer-friendly log entry, decode the facility and code parts explicitly:
+
+```cpp
+void LogHResult(const char* call, HRESULT hr)
+{
+    if (SUCCEEDED(hr)) return;
+
+    fprintf(stderr,
+        "%s failed: HRESULT 0x%08X (facility=%d code=%u)\n",
+        call, hr, HRESULT_FACILITY(hr), HRESULT_CODE(hr));
+}
+```
+
+## Standard Win32 codes
+
+GDK APIs also surface plain Win32 HRESULTs where appropriate:
+
+| Code | Meaning in GDK context |
+| --- | --- |
+| `E_INVALIDARG` | Bad parameter — fix in code, do not retry |
+| `E_OUTOFMEMORY` | Allocation failed — check title budget |
+| `E_ABORT` | Async cancelled — user backed out of UI |
+| `HRESULT_FROM_WIN32(ERROR_CANCELLED)` | Player cancelled an OS dialog |
+| `HTTP_E_STATUS_*` | Wraps an HTTP status from a network call — retry-with-backoff |
+
+## Retry classification
+
+A pragmatic mapping for retry policy:
+
+- **Always retry** (transient): `HTTP_E_STATUS_SERVER_ERROR`, `WININET_E_*` timeouts, `E_GAMESTORE_NETWORK_ERROR`.
+- **Surface to UI**: `E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED`, `E_GAMEUSER_NO_DEFAULT_USER`, `E_GAMEMSAA_UI_REQUIRED`. These need the player to act.
+- **Log and fail**: `E_INVALIDARG`, `E_GAMERUNTIME_NOT_INITIALIZED`, `E_GAMERUNTIME_DLL_NOT_FOUND`. These are programming errors — do not retry.
+
+## See also
+
+- [Error handling](/gdk/error-handling) — patterns and retry strategies
+- [Async programming model](/gdk/async-programming) — where `HRESULT` shows up in callbacks
+- [Error codes (Microsoft Learn)](https://learn.microsoft.com/en-us/gaming/gdk/_content/gc/reference/errorcodes) — authoritative per-code listing

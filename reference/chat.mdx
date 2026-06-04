@@ -1,0 +1,110 @@
+---
+title: "Chat API reference for Game Chat 2"
+sidebarTitle: "Chat (Game Chat 2)"
+description: "Reference for the Game Chat 2 C++ API: chat_manager, chat_user, channels, communication relationships, TTS/STT, and per-frame state and data processing."
+---
+
+The Game Chat 2 C\+\+ API lives in the `xbox::services::game_chat_2` namespace. It exposes a single `chat_manager` singleton plus per-user `chat_user` objects that the manager owns. Your title polls state changes and encoded audio frames each frame, and ferries those frames to and from your network transport.
+
+For a conceptual walkthrough see [Game Chat 2](/services/game-chat).
+
+## Header and library
+
+```cpp
+#include <GameChat2.h>
+using namespace xbox::services::game_chat_2;
+```
+
+Link against `Microsoft.Xbox.Game.Chat.2.Cpp.API.lib` (debug variant available).
+
+## Top-level types
+
+| Type | Purpose |
+| --- | --- |
+| `chat_manager` | Process-wide singleton. Owns users, channels, and the audio pipeline. |
+| `chat_user` | A participating player. Local users own a microphone; remote users represent network peers. |
+| `chat_user::local` / `chat_user::remote` | Sub-interfaces for the local-only and remote-only knobs. |
+| `game_chat_data_frame` | Encoded audio packet — ferry across your network. |
+| `chat_state_change` | Base class for the event union (text, transcription, voice level, etc.). |
+
+## Lifecycle
+
+```cpp
+chat_manager::singleton_instance().initialize(
+    /*maxChatUsers*/ 16,
+    /*chatVolume*/ 1.0f,
+    communication_relationship::send_and_receive_microphone_audio,
+    communication_relationship::send_and_receive_text,
+    shared_device_communication_relationship_resolution_mode::permissive);
+
+// Add the local player
+chat_user* localUser =
+    chat_manager::singleton_instance().add_local_user(localXuid);
+localUser->local()->set_channel_index(0);
+
+// Add a remote peer
+chat_user* remoteUser =
+    chat_manager::singleton_instance().add_remote_user(remoteXuid);
+remoteUser->set_channel_index(0);
+
+// ... per-frame loop ...
+
+chat_manager::singleton_instance().cleanup();
+```
+
+## Per-frame work
+
+Drain two queues every frame: **state changes** (events) and **data frames** (outgoing encoded audio).
+
+```cpp
+// 1. State changes — events to react to
+uint32_t stateChangeCount = 0;
+chat_state_change const* const* stateChanges = nullptr;
+chat_manager::singleton_instance().start_processing_state_changes(
+    &stateChangeCount, &stateChanges);
+
+for (uint32_t i = 0; i < stateChangeCount; ++i) {
+    switch (stateChanges[i]->state_change_type) {
+        case chat_state_change_type::text_chat_received:
+            // Cast and render incoming chat text
+            break;
+        case chat_state_change_type::transcribed_chat_received:
+            // Cast and render speech-to-text transcript
+            break;
+        // ... others ...
+    }
+}
+
+chat_manager::singleton_instance().finish_processing_state_changes(stateChanges);
+
+// 2. Outgoing data frames — send over network
+uint32_t dataFrameCount = 0;
+game_chat_data_frame const* const* dataFrames = nullptr;
+chat_manager::singleton_instance().start_processing_data_frames(
+    &dataFrameCount, &dataFrames);
+
+for (uint32_t i = 0; i < dataFrameCount; ++i) {
+    SendOverNetwork(dataFrames[i]);  // Your transport
+}
+
+chat_manager::singleton_instance().finish_processing_data_frames(dataFrames);
+```
+
+When a packet arrives from the network, call `process_incoming_data` on the receiving `chat_user`.
+
+## Common per-user calls
+
+| Call | Purpose |
+| --- | --- |
+| `set_channel_index(index)` | Move user to a channel — same index = can hear each other |
+| `local()->set_microphone_muted(bool)` | Local push-to-talk / hard mute |
+| `local()->set_text_to_speech_conversion_preference_enabled(bool)` | Enable TTS for typed messages |
+| `local()->set_speech_to_text_conversion_preference_enabled(bool)` | Enable STT transcripts of remote voice |
+| `local()->send_chat_text(text)` | Send a typed chat message to channelmates |
+| `set_communication_relationship(other, relationship)` | Override platform mute relationship pairwise |
+
+## See also
+
+- [Game Chat](/services/game-chat) — conceptual guide
+- [Text-to-Speech](/gdk/text-to-speech) — accessibility certification requirements
+- [Chat API reference (Microsoft Learn)](https://learn.microsoft.com/en-us/gaming/gdk/_content/gc/reference/chat/gc-reference-chat-toc) — full per-function documentation

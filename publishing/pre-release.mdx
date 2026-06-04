@@ -1,0 +1,56 @@
+---
+title: "Pre-release testing programs for Xbox titles"
+sidebarTitle: "Pre-release Testing"
+description: "Run closed and open betas with Sandboxes, Flighting, Game Preview, and the Game Test Studio program before your game ships to retail."
+---
+
+Before your game ships to retail, you have several tools for getting it into the hands of real players in a controlled way: developer sandboxes for internal testing, Flighting for staged beta rollout, Game Preview for paid early-access, and Microsoft Gaming Accessibility Testing for an outside-in accessibility pass.
+
+## Developer sandboxes
+
+A sandbox is an isolated Xbox services environment scoped to your title. Within a sandbox you can:
+
+- Mint and assign developer / test accounts
+- Push pre-release packages without affecting retail players
+- Run isolated leaderboards, achievements, and economy state
+
+Your studio gets one default sandbox per Xbox services title and can request additional sandboxes for branch isolation. Use the [Sandbox Switcher tool](/tools/xbox-service-tools) to move devkits and PCs between sandboxes.
+
+## Flighting (closed and open beta)
+
+Flighting is Microsoft's staged-rollout system. From Partner Center you publish a build to a **flight ring**, then add specific Microsoft Account email addresses (closed) or open the ring to anyone with a sign-up code (open).
+
+Flighting characteristics:
+
+- Flights are real Microsoft Store packages — they install through the dashboard, not via devkit deploy.
+- Each flight ring is independent. You can run a closed alpha and an open beta in parallel.
+- Player feedback comes back through Xbox Insider Hub.
+
+Flighting is the recommended path for any beta with more than a couple dozen testers.
+
+## Game Preview
+
+Game Preview lets you sell an unfinished game on the Microsoft Store with a clear "Game Preview" label and a separate cert track. Players know the title is in development; the listing carries the right disclosures and skipping certain XRs is allowed.
+
+Game Preview is appropriate when you want:
+
+- Real-money testing at scale
+- A retail listing in front of search and store browse
+- A planned road to a 1.0 release later in the lifecycle
+
+It is _not_ the right tool for a free closed beta — use Flighting for that.
+
+## Microsoft Gaming Accessibility Testing (MGATS)
+
+Microsoft offers a free accessibility testing pass against the Xbox Accessibility Guidelines. Request it via your Microsoft contact. MGATS testers evaluate your build against XAG 101 – 123 and return a structured report with screenshots and remediation suggestions. Run MGATS before your final cert submission.
+
+## Friends & Family
+
+For truly small private tests (single-digit testers), you can deploy a sandbox build directly to your testers' devkits without involving Flighting at all. This is the fastest path for early prototyping.
+
+## See also
+
+- [Certification](/publishing/certification)
+- [Cert Bypass](/publishing/cert-bypass)
+- [Xbox Service Tools](/tools/xbox-service-tools)
+- [Accessibility Guidelines](/accessibility/guidelines)

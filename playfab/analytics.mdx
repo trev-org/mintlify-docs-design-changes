@@ -1,0 +1,72 @@
+---
+title: "PlayFab Insights and Data analytics for live games"
+sidebarTitle: "Insights & Analytics"
+description: "Send custom events to PlayFab, build live operations dashboards with Insights, and combine PlayFab telemetry with Xbox player data for retention."
+---
+
+PlayFab's analytics stack gives you a centralized place to instrument gameplay, retention, and monetization without standing up your own pipeline. Custom events flow from the client (and from your servers) into PlayFab's data warehouse; **Insights** is the SQL- and dashboard-based query surface over that warehouse.
+
+## Send a custom event
+
+From the client, log a typed event:
+
+```cpp
+PlayFab::EventsModels::FWriteEventsRequest req;
+PlayFab::EventsModels::FEventContents evt;
+evt.Name = "level_complete";
+evt.OriginalTimestamp = FDateTime::UtcNow();
+evt.Payload = R"({
+    "level": "caverns_2",
+    "durationSeconds": 142,
+    "deaths": 3,
+    "completed": true
+})";
+req.Events.Add(evt);
+
+PlayFab::UEventsAPI::WriteEvents(req,
+    [](const auto&) { /* success */ },
+    [](const auto& err) { /* handle */ });
+```
+
+For authoritative metrics (revenue, fraud-sensitive flags), log from a trusted server instead of the client.
+
+## Event schema design
+
+A few rules of thumb:
+
+- **One event = one player action.** Don't batch unrelated payloads into a single event — you can't decompose them later in SQL.
+- **Stable property names.** Insights treats `levelDurationSeconds` and `LevelDurationSeconds` as different columns.
+- **Include identifiers.** Player entity ID, session ID, build version, and platform belong on every event for slicing.
+- **Use numeric types for numbers.** Strings like `"142"` are painful to aggregate.
+
+## Querying with Insights
+
+Insights exposes a Kusto-compatible query interface over your event stream. Build dashboards for:
+
+- DAU / MAU and retention curves
+- Funnel conversion through tutorial and onboarding
+- Average revenue per paying user (ARPPU)
+- Crash and error rate by build
+- Matchmaking time and queue health
+
+Pin queries to the PlayFab Game Manager dashboard so the whole team sees the same KPIs.
+
+## Segmentation
+
+Define **segments** — named filters over player attributes — to power targeted live ops:
+
+- New players (created in last 7 days)
+- High-value spenders (lifetime spend \> \$50)
+- Lapsed players (last login \> 30 days ago)
+
+Segments drive A/B experiments, push notifications, and economy-side promotions.
+
+## Combining with Xbox telemetry
+
+Xbox event-based stats and achievements (see [Player Data](/services/player-data)) live in the Xbox services pipeline, not in PlayFab. If you need both — say, Xbox achievement counts joined to PlayFab revenue — export PlayFab events to your own data warehouse and join there. Avoid trying to query Xbox stats from inside Insights.
+
+## See also
+
+- [Overview (PlayFab)](/playfab/overview)
+- [Player Data (Xbox)](/services/player-data)
+- [Economy](/playfab/economy)

@@ -1,0 +1,99 @@
+---
+title: "Networking API reference for GDK titles"
+sidebarTitle: "Networking"
+description: "Reference for the GDK networking API surface: Winsock2, WinHTTP, secure socket usage on Xbox, and the XNetworking helper API for connectivity diagnostics."
+---
+
+The GDK exposes networking through familiar Win32 APIs (Winsock2 and WinHTTP) plus a small **XNetworking** helper API for connectivity state, NAT type, and approved-socket diagnostics on Xbox. There is no GDK-specific socket replacement — you write standard sockets code, but on Xbox console you must register every socket descriptor with the platform via `MicrosoftGame.config`.
+
+## Headers and libraries
+
+```cpp
+#include <winsock2.h>      // Sockets
+#include <ws2tcpip.h>      // IPv6 + extended address helpers
+#include <winhttp.h>       // HTTP client
+#include <XNetworking.h>   // Connectivity hints, NAT, secure socket diagnostics
+```
+
+Link against `ws2_32.lib`, `winhttp.lib`, and `xgameruntime.lib`.
+
+## XNetworking API
+
+| Function | Purpose |
+| --- | --- |
+| `XNetworkingGetConnectivityHint` | Snapshot of current network reachability (none / local / internet) |
+| `XNetworkingRegisterConnectivityHintChanged` | Subscribe to connectivity-state change events |
+| `XNetworkingUnregisterConnectivityHintChanged` | Stop receiving change events |
+| `XNetworkingGetPreferredLocalUdpMultiplayerPort` | Recommended local port for peer multiplayer |
+| `XNetworkingVerifyServerCertificate` | Verify a server cert against the platform trust store |
+| `XNetworkingQueryPreferredLocalUdpMultiplayerPortResult` | Async result for preferred-port query |
+
+Use the connectivity hint to drive UI: show "reconnecting…" messaging instead of error spam when the player walks out of Wi-Fi range.
+
+## Sockets on Xbox
+
+On Xbox console, every socket descriptor your title uses must be declared up front in `MicrosoftGame.config`. The platform's secure socket layer enforces this at `socket()` / `connect()` time, and certification will reject titles that try to open undeclared sockets.
+
+```xml
+<NetworkManifest>
+  <SocketDescriptions>
+    <SocketDescription Name="GameUdp" SecureIpProtocol="Udp">
+      <AssociatedTemplates>
+        <SocketDescriptionTemplateRef Name="MultiplayerSession" />
+      </AssociatedTemplates>
+    </SocketDescription>
+  </SocketDescriptions>
+</NetworkManifest>
+```
+
+## Winsock2 and IPv6
+
+Use address-family-agnostic APIs throughout. The platform requires IPv6 readiness for cert.
+
+```cpp
+addrinfo hints = {};
+hints.ai_family = AF_UNSPEC;        // IPv4 or IPv6
+hints.ai_socktype = SOCK_DGRAM;
+hints.ai_protocol = IPPROTO_UDP;
+
+addrinfo* result = nullptr;
+int rc = getaddrinfo("game.example.com", "3478", &hints, &result);
+
+for (auto* a = result; a; a = a->ai_next) {
+    SOCKET s = socket(a->ai_family, a->ai_socktype, a->ai_protocol);
+    if (s != INVALID_SOCKET && connect(s, a->ai_addr, (int)a->ai_addrlen) == 0) {
+        // connected
+        break;
+    }
+    closesocket(s);
+}
+freeaddrinfo(result);
+```
+
+## WinHTTP for REST calls
+
+```cpp
+HINTERNET session = WinHttpOpen(L"MyGame/1.0",
+    WINHTTP_ACCESS_TYPE_DEFAULT_PROXY,
+    WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+
+HINTERNET connect = WinHttpConnect(session, L"api.example.com",
+    INTERNET_DEFAULT_HTTPS_PORT, 0);
+
+HINTERNET request = WinHttpOpenRequest(connect, L"GET", L"/v1/leaderboard",
+    nullptr, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES,
+    WINHTTP_FLAG_SECURE);
+
+WinHttpSendRequest(request, WINHTTP_NO_ADDITIONAL_HEADERS, 0,
+    WINHTTP_NO_REQUEST_DATA, 0, 0, 0);
+WinHttpReceiveResponse(request, nullptr);
+```
+
+For anything beyond simple requests, **prefer libHttpClient** (bundled with XSAPI) — it gives you retry, timeout, mocking, and platform-correct threading out of the box.
+
+## See also
+
+- [Networking](/gdk/networking) — conceptual guide and cert requirements
+- [XSAPI Overview](/reference/xsapi-overview) — libHttpClient lives here
+- [MicrosoftGame.config Schema](/reference/microsoftgameconfig-schema) — socket declarations
+- [Networking API reference (Microsoft Learn)](https://learn.microsoft.com/en-us/gaming/gdk/_content/gc/reference/networking/gc-reference-networking-toc) — full per-function documentation

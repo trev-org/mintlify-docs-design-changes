@@ -1,0 +1,128 @@
+---
+title: "XGameRuntime initialization API reference"
+sidebarTitle: "XGameRuntime"
+description: "Reference for XGameRuntimeInitialize and XGameRuntimeUninitialize: call these at process startup and exit before using any other GDK feature."
+---
+
+The XGameRuntime API is the entry point for all GDK functionality. Before your game calls any other GDK function, it must call `XGameRuntimeInitialize()` to load and version-check the Gaming Runtime (`xgameruntime.dll`). When the process is about to exit, call `XGameRuntimeUninitialize()` to cleanly shut down all runtime services.
+
+**Header:** `XGameRuntimeInit.h`  
+**Library:** `xgameruntime.lib`  
+**Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
+
+---
+
+## XGameRuntimeInitialize
+
+Initializes the Gaming Runtime. Call this as early as possible — typically the first statement inside your entry-point function — before any other GDK API.
+
+```c
+HRESULT XGameRuntimeInitialize(void);
+```
+
+### Parameters
+
+This function takes no parameters.
+
+### Return value
+
+<ResponseField name="HRESULT" type="HRESULT">
+  `S_OK` if the Gaming Runtime initialized successfully.
+
+  `E_GAMERUNTIME_DLL_NOT_FOUND` if `xgameruntime.dll` could not be located. This typically means the Gaming Runtime Services package is not installed on the target machine.
+
+  `E_GAMERUNTIME_VERSION_MISMATCH` if the binary calling `XGameRuntimeInitialize` was compiled against a different and incompatible version of the GDK than another binary already loaded in the same process. Ensure all DLLs and middleware linked against the GDK use the same GDK edition.
+</ResponseField>
+
+### Remarks
+
+Every binary that uses GDK features must call `XGameRuntimeInitialize` independently — this includes your main game executable and any middleware DLLs that call GDK APIs. Internally the function checks the interface versions all binaries compiled against and detects mismatches across DLL boundaries.
+
+---
+
+## XGameRuntimeUninitialize
+
+Uninitializes the Gaming Runtime and releases all resources held by the runtime. Call this as late as possible — after all game logic has completed and all GDK async operations have been cancelled or drained — but before the process exits.
+
+```c
+void XGameRuntimeUninitialize(void);
+```
+
+### Parameters
+
+This function takes no parameters.
+
+### Return value
+
+`void` — no return value.
+
+---
+
+## Code example
+
+The following example is taken from the **Direct3D 12 Desktop Game** Visual Studio template. It shows the recommended pattern: initialize at the top of `wWinMain` before any game objects are created, and uninitialize after the game object is destroyed.
+
+```cpp
+// Entry point
+int WINAPI wWinMain(
+    _In_     HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_     LPWSTR    lpCmdLine,
+    _In_     int       nCmdShow)
+{
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+
+    // Initialize the Gaming Runtime before performing any other activity.
+    if (FAILED(XGameRuntimeInitialize()))
+        return 1;
+
+    // Verify DirectXMath CPU support (required for Direct3D 12).
+    if (!XMVerifyCPUSupport())
+        return 1;
+
+    // Create the game object — safe to use GDK APIs from here on.
+    g_game = std::make_unique<Game>();
+
+    // Register window class and create the main window.
+    {
+        // ... window creation code omitted for brevity ...
+    }
+
+    // Main message loop.
+    MSG msg = {};
+    while (WM_QUIT != msg.message)
+    {
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+        else
+        {
+            g_game->Tick();
+        }
+    }
+
+    // Destroy the game object before uninitializing the runtime.
+    g_game.reset();
+
+    // Uninitialize the Gaming Runtime after all other activity is complete.
+    XGameRuntimeUninitialize();
+
+    return static_cast<int>(msg.wParam);
+}
+```
+
+<Warning>
+  If any other DLL in your process also calls `XGameRuntimeInitialize`, ensure all DLLs were compiled against the same GDK edition. Mixing incompatible GDK editions within a single process results in `E_GAMERUNTIME_VERSION_MISMATCH` and the title will fail to start.
+</Warning>
+
+---
+
+## See also
+
+- [XGameRuntimeUninitialize](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/system/xgameruntimeinit/functions/xgameruntimeuninitialize)
+- [XGameRuntimeInitializeWithOptions](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/system/xgameruntimeinit/functions/xgameruntimeinitializewithoptions)
+- [Error codes reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/errorcodes)
+- [Developing new titles using Gaming Runtime](https://learn.microsoft.com/en-us/gaming/gdk/docs/gdk-dev/pc-dev/overviews/gr-developing-new-titles-on-gamecore)

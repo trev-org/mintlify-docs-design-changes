@@ -1,0 +1,162 @@
+---
+title: "Game DVR and broadcasting with Xbox XAppCapture APIs"
+sidebarTitle: "Game DVR"
+description: "Integrate Xbox Game DVR and broadcasting using XAppCapture APIs, configure capture defaults in MicrosoftGame.config, and handle privacy for voice chat."
+---
+
+Xbox Game DVR is the system-level video capture and broadcasting service built into every Xbox console. It automatically records the last few minutes of gameplay in the background, lets players save clips manually with the controller, and integrates with streaming services to broadcast live gameplay. As a developer, the GDK's `XAppCapture` API family gives you programmatic control over this pipeline — you can mark significant moments, block recording when content is sensitive, attach searchable metadata, and trigger clip saves at key moments in your game.
+
+## What Game DVR captures
+
+The system continuously records a rolling buffer of your title's rendered output (video + audio). When the player presses the controller capture button or you call a clip-save API, the system writes the buffered frames to the player's capture storage. Separately, the broadcasting pipeline can stream that same rendered output to a streaming service in real time.
+
+Game DVR captures:
+- **Video** — the rendered frame buffer, encoded as H.264 (AVC) or H.265 (HEVC) depending on the player's settings and console generation.
+- **Audio** — the title's audio output, **excluding** any stream marked as `AudioCategory_GameChat` (see [Privacy considerations](#privacy-considerations)).
+- **Screenshots** — still frames captured on demand or by the player.
+
+## Controlling capture with MicrosoftGame.config
+
+You can configure default capture behavior in your `MicrosoftGame.config` manifest. Add the following elements as children of `<Game>`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Game configVersion="1">
+  <!-- ... other elements ... -->
+
+  <!-- Prevent the system from saving DVR clips for this title by default.
+       Players can still enable it in their settings. -->
+  <ExtendedAttributeList>
+    <ExtendedAttribute Name="BlockGameDVR" Value="true" />
+    <ExtendedAttribute Name="BlockBroadcast" Value="true" />
+  </ExtendedAttributeList>
+</Game>
+```
+
+<Note>
+  `BlockGameDVR` and `BlockBroadcast` set the **default** behavior. The player can override these restrictions in the Xbox system settings. You cannot fully prevent a determined user from capturing content, so design your title with the assumption that all rendered output may be recorded.
+</Note>
+
+## XAppCapture APIs
+
+The `XAppCapture` namespace provides the following capabilities:
+
+| API | Purpose |
+|---|---|
+| `XAppBroadcastGetStatus` | Query whether a broadcast can start; returns detailed status flags |
+| `XAppBroadcastShowUI` | Show the system broadcasting UI so the player can start a broadcast |
+| `XAppBroadcastIsAppBroadcasting` | Check whether the current title is actively being broadcast |
+| `XAppBroadcastUnregisterIsAppBroadcasting` | Unregister from broadcast status change events |
+| `XAppCaptureRecordDiagnosticScreenshot` | Capture a diagnostic screenshot (dev kits only) |
+| `XAppCaptureRecordDiagnosticVideoClip` | Capture a diagnostic video clip (dev kits only) |
+| `XAppCaptureOpenScreenshotStream` | Open a stream to read a captured screenshot |
+| `XAppCaptureMetadata*` | Attach metadata strings, integers, or doubles to the current capture |
+
+## Broadcasting flow
+
+<Steps>
+  <Step title="Check broadcast status">
+    Call `XAppBroadcastGetStatus` to determine whether a broadcast can begin. This checks for capture resource availability, per-game broadcast permissions, and user/system broadcast settings.
+
+    ```cpp
+    #include <XAppCapture.h>
+
+    XAppBroadcastStatus status = {};
+    HRESULT hr = XAppBroadcastGetStatus(&status);
+    if (SUCCEEDED(hr) && status.canStartBroadcast)
+    {
+        // Broadcasting is possible.
+    }
+    ```
+  </Step>
+  <Step title="Show broadcasting UI">
+    If broadcasting is possible, call `XAppBroadcastShowUI` to open the system broadcast UI for the current user. The player must manually start the broadcast — your title cannot start a broadcast without explicit user consent.
+
+    ```cpp
+    XUserHandle userHandle = /* your signed-in user handle */;
+    hr = XAppBroadcastShowUI(userHandle);
+    ```
+  </Step>
+  <Step title="Monitor broadcast state">
+    Register for broadcast status changes to update your in-game UI (for example, a "LIVE" indicator):
+
+    ```cpp
+    XTaskQueueHandle queue = /* your task queue */;
+    XAppBroadcastMonitorHandle monitorHandle = nullptr;
+
+    hr = XAppBroadcastRegisterIsAppBroadcasting(
+        queue,
+        nullptr,               // context
+        [](void*, bool isBroadcasting)
+        {
+            // Update your UI to show/hide "LIVE" badge.
+        },
+        &monitorHandle
+    );
+    ```
+
+    When you no longer need status updates, call `XAppBroadcastUnregisterIsAppBroadcasting(monitorHandle)`.
+  </Step>
+</Steps>
+
+## Attaching metadata to clips
+
+Metadata makes it easier for players to search and organize their recordings. You can attach string, integer, or double values to the current capture session. When available storage for metadata runs low, the system uses `XAppCaptureMetadataPriority` to decide which items to purge first.
+
+```cpp
+// Add a string metadata item with high priority
+XAppCaptureMetadataAddStringEvent(
+    "MapName",          // key
+    "Arcadia Station",  // value
+    XAppCaptureMetadataPriority_Important
+);
+
+// Add an integer metadata item
+XAppCaptureMetadataAddInt32Event(
+    "PlayerLevel",
+    42,
+    XAppCaptureMetadataPriority_Informational
+);
+```
+
+## Triggering a clip save programmatically
+
+You can mark the current moment as significant so the system saves the recent rolling buffer as a clip in normal user storage:
+
+```cpp
+// Save the last 30 seconds as a clip in the player's capture library.
+// The second parameter is the duration in seconds to include before
+// the current moment (0 = use the system default).
+hr = XAppCaptureSaveScreenshotToLibrary(userHandle);
+// For video clips, use XAppCaptureRecordDiagnosticVideoClip on dev kits
+// or platform-level clip save APIs per your GDK version.
+```
+
+<Tip>
+  Use clip saves sparingly and only on genuinely meaningful moments — an epic kill, a level completion, a unique narrative beat. Frequent unsolicited clip saves annoy players and consume capture storage.
+</Tip>
+
+## Diagnostic screenshots and video (dev kits only)
+
+The diagnostic capture APIs (`XAppCaptureRecordDiagnosticScreenshot`, `XAppCaptureRecordDiagnosticVideoClip`) work **only on Development Kits**. Calling them on a retail console returns an immediate error. Diagnostic captures go to the local game partition, not to user storage. Use them for automated testing and bug capture workflows during development.
+
+If your title runs in HDR, the diagnostic screenshot API can return an SDR screenshot, an HDR screenshot, or both simultaneously.
+
+## Privacy considerations
+
+<Warning>
+  **You must never include player voice chat in Game DVR clips or broadcasts.** Voice chat is user-generated content that may contain personally identifiable information or sensitive data.
+</Warning>
+
+To exclude voice chat from all capture pipelines, assign the `AudioCategory_GameChat` audio category to every render stream that carries player microphone output. The system then ignores those streams during recording and broadcasting automatically. See [Audio systems for Xbox console development](/gdk/audio) for implementation details.
+
+Additionally, be aware that:
+- The `BlockGameDVR` and `BlockBroadcast` config flags are defaults, not hard locks — players can override them.
+- All rendered video output (excluding game chat audio) is fair game for capture from the player's perspective.
+- Screenshots are stored in a partition separate from your game partition; use the provided stream APIs (`XAppCaptureOpenScreenshotStream`) to read them from your title if needed.
+
+## See also
+
+- [XAppCapture API reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/system/xappcapture/xappcapture_members)
+- [Audio systems for Xbox console development](/gdk/audio) — setting `AudioCategory_GameChat`
+- [Social features](/services/social) — activity feeds and clip sharing with Xbox services

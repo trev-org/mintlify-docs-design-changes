@@ -1,0 +1,213 @@
+---
+title: "Handle player input with the GameInput API in the GDK"
+sidebarTitle: "Input"
+description: "Learn how to use the GameInput API to read gamepad, keyboard, mouse, and other input devices in GDK titles across Xbox consoles and Windows PC."
+---
+
+GameInput is the unified input API for GDK titles. It provides a consistent interface for reading state from gamepads, keyboards, mice, flight sticks, racing wheels, and other peripherals — on both Xbox and PC — without requiring different code paths per device class. GameInput is designed to be time-sensitive–safe and supports multiple simultaneous devices and multi-user scenarios through a single API surface.
+
+## Core interface: IGameInput
+
+All GameInput operations flow through the `IGameInput` interface. You obtain the singleton instance at startup:
+
+```cpp
+#include <GameInput.h>
+
+IGameInput* gameInput = nullptr;
+
+HRESULT hr = GameInputCreate(&gameInput);
+if (FAILED(hr))
+{
+    // GameInput is unavailable — handle error
+}
+```
+
+`IGameInput` is the root object for obtaining readings, enumerating devices, and registering callbacks.
+
+## Reading controller state
+
+The most common pattern is to call `GetCurrentReading` each frame to retrieve the latest input snapshot for a given device class:
+
+```cpp
+void PollGamepadInput(IGameInput* gameInput)
+{
+    IGameInputReading* reading = nullptr;
+
+    // Get the most recent gamepad reading from any connected gamepad
+    HRESULT hr = gameInput->GetCurrentReading(
+        GameInputKindGamepad,
+        nullptr,  // nullptr = any device
+        &reading);
+
+    if (SUCCEEDED(hr) && reading != nullptr)
+    {
+        GameInputGamepadState state{};
+        if (reading->GetGamepadState(&state))
+        {
+            // Inspect button state
+            if (state.buttons & GameInputGamepadA)
+            {
+                // A button is held
+            }
+
+            // Read analog axes
+            float leftStickX  = state.leftThumbstickX;
+            float leftStickY  = state.leftThumbstickY;
+            float rightTrigger = state.rightTrigger;
+        }
+
+        reading->Release();
+    }
+}
+```
+
+<Tip>
+  `GetCurrentReading` is time-sensitive–safe and can be called from your render or game-update thread without stalling. Call it once per frame and cache the result for the duration of that frame's input processing.
+</Tip>
+
+## IGameInputReading
+
+An `IGameInputReading` snapshot represents the complete input state of a device at a specific point in time. Key methods include:
+
+| Method | Description |
+|---|---|
+| `GetGamepadState` | Reads buttons, thumbsticks, and triggers from a gamepad. |
+| `GetKeyboardState` | Reads the set of keys currently pressed on a keyboard. |
+| `GetMouseState` | Reads mouse position delta, scroll wheel, and button state. |
+| `GetTimestamp` | Returns the timestamp (in microseconds) when this reading was captured. |
+| `GetDevice` | Returns the `IGameInputDevice` this reading came from. |
+| `GetInputKind` | Returns the set of input kinds present in this reading. |
+
+All readings are reference-counted. Always call `Release()` when you are done with a reading.
+
+## Keyboard and mouse input on PC
+
+On PC, GameInput handles keyboard and mouse as first-class devices alongside gamepads. Reading keyboard state returns all keys that are currently held:
+
+```cpp
+void PollKeyboardInput(IGameInput* gameInput)
+{
+    IGameInputReading* reading = nullptr;
+
+    HRESULT hr = gameInput->GetCurrentReading(
+        GameInputKindKeyboard,
+        nullptr,
+        &reading);
+
+    if (SUCCEEDED(hr) && reading != nullptr)
+    {
+        uint32_t keyCount = reading->GetKeyCount();
+        GameInputKeyState keys[32]{};
+        uint32_t keysRead = reading->GetKeyState(
+            static_cast<uint32_t>(std::size(keys)), keys);
+
+        for (uint32_t i = 0; i < keysRead; ++i)
+        {
+            // keys[i].virtualKey contains the virtual key code
+            if (keys[i].virtualKey == GameInputKeyW)
+            {
+                // W key is held — move forward
+            }
+        }
+
+        reading->Release();
+    }
+}
+```
+
+Mouse input provides position deltas (relative movement) rather than absolute screen coordinates, making it suitable for first-person camera control:
+
+```cpp
+void PollMouseInput(IGameInput* gameInput)
+{
+    IGameInputReading* reading = nullptr;
+
+    HRESULT hr = gameInput->GetCurrentReading(
+        GameInputKindMouse,
+        nullptr,
+        &reading);
+
+    if (SUCCEEDED(hr) && reading != nullptr)
+    {
+        GameInputMouseState mouseState{};
+        if (reading->GetMouseState(&mouseState))
+        {
+            float deltaX = static_cast<float>(mouseState.positionX);
+            float deltaY = static_cast<float>(mouseState.positionY);
+            // Apply to camera rotation
+        }
+
+        reading->Release();
+    }
+}
+```
+
+## Supporting multiple devices per player
+
+For multi-player scenarios or titles that support any-device binding, use `RegisterDeviceCallback` to track device connect and disconnect events:
+
+```cpp
+GameInputDeviceCallback deviceCallback = [](
+    GameInputCallbackToken token,
+    void*                  context,
+    IGameInputDevice*      device,
+    uint64_t               timestamp,
+    GameInputDeviceStatus  currentStatus,
+    GameInputDeviceStatus  previousStatus)
+{
+    auto* game = static_cast<Game*>(context);
+
+    bool connected   = (currentStatus   & GameInputDeviceConnected) != 0;
+    bool wasConnected = (previousStatus & GameInputDeviceConnected) != 0;
+
+    if (connected && !wasConnected)
+    {
+        game->OnDeviceConnected(device);
+    }
+    else if (!connected && wasConnected)
+    {
+        game->OnDeviceDisconnected(device);
+    }
+};
+
+GameInputCallbackToken token{};
+gameInput->RegisterDeviceCallback(
+    nullptr,               // monitor all devices
+    GameInputKindGamepad,  // only gamepads
+    GameInputDeviceConnected | GameInputDeviceDisconnected,
+    GameInputBlockingEnumeration,
+    this,
+    deviceCallback,
+    &token);
+```
+
+Once you have a specific `IGameInputDevice*`, you can pass it to `GetCurrentReading` instead of `nullptr` to read input exclusively from that device, enabling per-player input routing in local co-op scenarios.
+
+## Reading input history
+
+GameInput buffers a history of recent readings. You can use `GetNextReading` and `GetPreviousReading` to walk through recent input frames, which is useful for implementing input buffering, combo detection, or latency measurements:
+
+```cpp
+IGameInputReading* previousReading = nullptr;
+
+gameInput->GetCurrentReading(GameInputKindGamepad, nullptr, &previousReading);
+
+// On the next frame, walk backwards from the current reading
+IGameInputReading* currentReading = nullptr;
+gameInput->GetCurrentReading(GameInputKindGamepad, nullptr, &currentReading);
+
+// Check if a button was just pressed this frame (not held from last frame)
+GameInputGamepadState currentState{}, previousState{};
+currentReading->GetGamepadState(&currentState);
+previousReading->GetGamepadState(&previousState);
+
+bool aJustPressed = (currentState.buttons  & GameInputGamepadA) &&
+                   !(previousState.buttons & GameInputGamepadA);
+
+currentReading->Release();
+previousReading->Release();
+```
+
+<Note>
+  GameInput is available on both Xbox console and PC with the GDK. On Xbox, it replaces the older `XInput` and `IGamepad` APIs. On PC, it coexists with `XInput` for backward compatibility, but GameInput is the recommended API for new titles.
+</Note>

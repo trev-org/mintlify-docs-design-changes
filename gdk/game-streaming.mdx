@@ -1,0 +1,136 @@
+---
+title: "Optimize your GDK game for Xbox Cloud Gaming and Streaming"
+sidebarTitle: "Game Streaming"
+description: "Learn the two Xbox streaming modes, how Cloud Aware APIs help you optimize for streaming clients, and how to test with Private Offerings in Azure."
+---
+
+Xbox Game Streaming and Xbox Remote Play let players experience your game on devices that could not otherwise run it — from phones and tablets to PCs and smart TVs. Your game works with streaming out of the box and requires no mandatory changes. However, by adopting the Cloud Aware APIs in the GDK, you can detect when a player is streaming and tailor the experience to their device's capabilities, network conditions, and input methods.
+
+## Two streaming modes
+
+<CardGroup cols={2}>
+  <Card title="Xbox Game Streaming" icon="cloud" href="/reference/xgamestreaming">
+    Your game runs on an Xbox server in a Microsoft Azure datacenter. The player connects to the closest datacenter and the game is streamed to their client device. The player does not need to own an Xbox console.
+  </Card>
+  <Card title="Xbox Remote Play" icon="house" href="/reference/xgamestreaming">
+    Your game runs on the player's own Xbox console at home. The player connects directly to their home console and streams the game to a Windows PC or mobile device. The player must own the console.
+  </Card>
+</CardGroup>
+
+Both modes are transparent to your game at the rendering and logic level. The GDK streaming APIs let you discover which mode is active and adapt accordingly.
+
+## Detecting streaming with XGameStreaming APIs
+
+The `XGameStreaming` API family provides everything you need to build a Cloud Aware game:
+
+### Check whether the game is being streamed
+
+```cpp
+#include <xgamestreaming.h>
+
+bool IsCurrentlyStreaming()
+{
+    return XGameStreamingIsStreaming();
+}
+```
+
+### Detect client device properties
+
+Use `XGameStreamingGetClientPropertiesAsync` to retrieve information about the player's streaming client — screen dimensions, input method, network latency, and more:
+
+```cpp
+XAsyncBlock* asyncBlock = new XAsyncBlock{};
+asyncBlock->queue    = m_taskQueue;
+asyncBlock->context  = this;
+asyncBlock->callback = [](XAsyncBlock* async)
+{
+    auto* game = static_cast<Game*>(async->context);
+
+    XGameStreamingClientProperties properties{};
+    HRESULT hr = XGameStreamingGetClientPropertiesResult(async, &properties);
+
+    if (SUCCEEDED(hr))
+    {
+        // Adapt UI scale, touch layout, or video quality based on properties
+        game->OnStreamingClientProperties(properties);
+    }
+    delete async;
+};
+
+XGameStreamingGetClientPropertiesAsync(asyncBlock);
+```
+
+### Touch controls
+
+When a player streams your game to a touch device, they may not have a physical gamepad. The `XGameStreaming` APIs let you define and activate custom touch control overlays:
+
+```cpp
+// Activate a touch layout defined in your title's streaming metadata
+XGameStreamingShowTouchControlLayout("gameplay-default");
+
+// Hide touch controls when not needed (e.g., cutscenes)
+XGameStreamingHideTouchControls();
+```
+
+### Register for streaming state changes
+
+You can register a callback to be notified when streaming starts or stops:
+
+```cpp
+XTaskQueueRegistrationToken token{};
+
+XGameStreamingRegisterConnectionStateChanged(
+    m_taskQueue,
+    this,
+    [](void* context, XGameStreamingConnectionId connectionId,
+       XGameStreamingConnectionState state)
+    {
+        auto* game = static_cast<Game*>(context);
+        if (state == XGameStreamingConnectionState::Connected)
+        {
+            game->OnStreamingStarted(connectionId);
+        }
+        else
+        {
+            game->OnStreamingStopped(connectionId);
+        }
+    },
+    &token);
+```
+
+## Optimization recommendations
+
+<Accordion title="UI scaling and layout">
+  Streaming clients may have smaller or lower-resolution screens than a living-room TV. Use the client display dimensions from `XGameStreamingClientProperties` to scale UI elements appropriately, and ensure text is legible at lower resolutions.
+</Accordion>
+
+<Accordion title="Input method awareness">
+  A streaming player using a phone may have only touch input, while a streaming player using a PC likely has a keyboard and mouse. Query the available input capabilities and show appropriate control prompts and help text.
+</Accordion>
+
+<Accordion title="Network latency handling">
+  Streaming introduces input latency. Design your game with this in mind: avoid gameplay that requires sub-frame reaction times and consider providing latency-friendly control options. The client properties include network latency estimates you can use for adaptive design.
+</Accordion>
+
+<Accordion title="Reduce texture streaming stalls">
+  Games that stream textures on demand from disc may exhibit hitching during cloud streaming due to the additional network indirection. Pre-load textures for commonly visited areas to smooth out the experience.
+</Accordion>
+
+## Private Offerings for testing
+
+Before your game becomes publicly available through Xbox Game Streaming, you can validate it in the Azure datacenter environment using a **Private Offering**. An offering is a private test environment in the datacenter that includes one or more games available for streaming. By default, a private offering uses the RETAIL sandbox version of your game, but each game in the offering can be flighted with custom metadata (including touch control layouts and keyboard/mouse support) and custom game packages.
+
+<Note>
+  Private Offerings are configured through your Microsoft account representative. Contact them to set up datacenter testing, customize your game's streaming metadata, or configure a package flight or private audience build for your streaming environment.
+</Note>
+
+## Supported client platforms
+
+Xbox Game Streaming supports players connecting from:
+
+- Windows PCs (via the Xbox app)
+- iOS and Android phones and tablets (via the Xbox Game Pass app)
+- Smart TVs with the Xbox app built in
+- Web browsers via Xbox Cloud Gaming
+
+Your game runs identically on the server regardless of which client platform the player is using. Client-specific adaptations — touch layouts, display scaling — are handled through the Cloud Aware APIs.

@@ -1,0 +1,230 @@
+---
+title: "XPackage API reference for DLC and content"
+sidebarTitle: "XPackage"
+description: "Reference for the XPackage API: enumerate packages, mount DLC, check chunk availability, estimate download sizes, and monitor install progress."
+---
+
+The XPackage API lets your game enumerate, mount, and manage installed packages — including the base game package and any downloadable content (DLC). You can check which content chunks are already available locally, trigger installation of missing chunks, monitor install progress, and mount a DLC package to access its files.
+
+**Header:** `XPackage.h`  
+**Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
+
+---
+
+## Key types
+
+| Type | Description |
+|---|---|
+| `XPackageMountHandle` | Opaque handle to a mounted package. Use `XPackageGetMountPath` to get the file system path. |
+| `XPackageInstallationMonitorHandle` | Handle to a progress monitor for a package installation. |
+| `XPackageChunkAvailability` | Enum: `Ready` (installed), `Pending` (queued), `Paused`, `Unknown` |
+| `XPackageChunkSelector` | Struct describing the criteria for selecting a set of chunks (by language, device, tag, feature, or content type) |
+| `XPackageDetails` | Struct containing package identifier, kind, display name, and install path |
+| `XPackageInstallationProgress` | Struct: total bytes, installed bytes, and a completed flag |
+| `XPackageChunkSelectorType` | Enum: `Language`, `Device`, `Tag`, `Chunk`, `Feature` |
+| `XPackageKind` | Enum: `Game`, `Content` (DLC) |
+
+---
+
+## Enumerating packages
+
+<ResponseField name="XPackageEnumeratePackages" type="HRESULT">
+  Finds all packages (base game and DLC) related to the calling process that are installed or currently installing. Invokes `XPackageEnumerationCallback` for each result.
+
+  ```c
+  HRESULT XPackageEnumeratePackages(
+      XPackageKind              kind,
+      XPackageEnumerationScope  scope,
+      void*                     context,
+      XPackageEnumerationCallback* callback
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XPackageGetCurrentProcessPackageIdentifier" type="HRESULT">
+  Returns the package identity string for the currently running process. Use this to identify your own package when calling other XPackage functions.
+</ResponseField>
+
+<ResponseField name="XPackageIsPackagedProcess" type="bool">
+  Returns `true` if the current process has a package identity — i.e. was installed or registered rather than launched directly from a loose executable.
+</ResponseField>
+
+---
+
+## Chunk availability
+
+<ResponseField name="XPackageEnumerateChunkAvailability" type="HRESULT">
+  Examines the installation package and enumerates the availability of all chunks matching the provided selectors, invoking `XPackageChunkAvailabilityCallback` for each.
+
+  ```c
+  HRESULT XPackageEnumerateChunkAvailability(
+      const char*              packageIdentifier,
+      XPackageChunkSelectorType selectorType,
+      void*                     context,
+      XPackageChunkAvailabilityCallback* callback
+  );
+  ```
+
+  Use this to build a progress UI showing which content areas are available for play.
+</ResponseField>
+
+<ResponseField name="XPackageFindChunkAvailability" type="HRESULT">
+  Returns the minimum `XPackageChunkAvailability` value across all chunks matching the provided selectors. A quick way to check whether a specific game feature or language pack is fully installed.
+</ResponseField>
+
+<ResponseField name="XPackageEstimateDownloadSize" type="HRESULT">
+  Computes the estimated download size in bytes for the chunks matching the specified selectors. Use this to inform the player before they start a content download.
+
+  ```c
+  HRESULT XPackageEstimateDownloadSize(
+      const char*               packageIdentifier,
+      uint32_t                  selectorsCount,
+      const XPackageChunkSelector* selectors,
+      uint64_t*                 downloadSize,
+      bool*                     deltaDownload
+  );
+  ```
+</ResponseField>
+
+---
+
+## Mounting packages
+
+<ResponseField name="XPackageMountWithUiAsync" type="HRESULT">
+  Asynchronously mounts the installation of a specified content package and returns a mount handle. If the package requires a purchase or entitlement check, the system shows the appropriate UI to the user.
+
+  ```c
+  HRESULT XPackageMountWithUiAsync(
+      const char*  packageIdentifier,
+      XAsyncBlock* asyncBlock
+  );
+  ```
+
+  Call `XPackageMountWithUiResult` in your async completion callback to retrieve the `XPackageMountHandle`.
+</ResponseField>
+
+<ResponseField name="XPackageMountWithUiResult" type="HRESULT">
+  Retrieves the `XPackageMountHandle` after a successful `XPackageMountWithUiAsync` call.
+</ResponseField>
+
+<ResponseField name="XPackageGetMountPath" type="HRESULT">
+  Returns the file system path where a mounted package's content is accessible.
+
+  ```c
+  HRESULT XPackageGetMountPath(
+      XPackageMountHandle mountHandle,
+      uint32_t            pathSize,
+      char*               path
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XPackageGetMountPathSize" type="HRESULT">
+  Returns the buffer size required for `XPackageGetMountPath`.
+</ResponseField>
+
+<ResponseField name="XPackageCloseMountHandle" type="void">
+  Unmounts the package and releases the mount handle.
+</ResponseField>
+
+---
+
+## Installation monitoring
+
+<ResponseField name="XPackageCreateInstallationMonitor" type="HRESULT">
+  Creates a monitor for a package installation. Use `XPackageGetInstallationProgress` and `XPackageUpdateInstallationMonitor` to poll progress.
+
+  ```c
+  HRESULT XPackageCreateInstallationMonitor(
+      const char*                       packageIdentifier,
+      uint32_t                          selectorsCount,
+      const XPackageChunkSelector*      selectors,
+      uint32_t                          backgroundDeliveryPriority,
+      XTaskQueueHandle                  queue,
+      XPackageInstallationMonitorHandle* monitor
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XPackageRegisterInstallationProgressChanged" type="HRESULT">
+  Registers a callback that fires whenever installation progress changes for a monitored package.
+
+  ```c
+  HRESULT XPackageRegisterInstallationProgressChanged(
+      XPackageInstallationMonitorHandle monitor,
+      void*                             context,
+      XPackageInstallationProgressCallback* callback,
+      XTaskQueueRegistrationToken*      token
+  );
+  ```
+</ResponseField>
+
+<ResponseField name="XPackageGetInstallationProgress" type="void">
+  Fills an `XPackageInstallationProgress` struct with the current installed bytes, total bytes, and whether installation is complete.
+</ResponseField>
+
+<ResponseField name="XPackageUpdateInstallationMonitor" type="void">
+  Refreshes the cached progress in a monitor so the next `XPackageGetInstallationProgress` call returns up-to-date values.
+</ResponseField>
+
+<ResponseField name="XPackageCloseInstallationMonitorHandle" type="void">
+  Releases an `XPackageInstallationMonitorHandle`.
+</ResponseField>
+
+---
+
+## Code example: checking DLC chunk availability
+
+```cpp
+struct ChunkCheckContext
+{
+    bool levelPackReady = false;
+};
+
+bool CALLBACK OnChunkAvailability(
+    void*                    context,
+    const XPackageChunkSelector* selector,
+    XPackageChunkAvailability    availability)
+{
+    auto* ctx = static_cast<ChunkCheckContext*>(context);
+    if (availability == XPackageChunkAvailability::Ready)
+    {
+        ctx->levelPackReady = true;
+    }
+    return true; // continue enumeration
+}
+
+void CheckDlcAvailability(const char* dlcPackageId)
+{
+    XPackageChunkSelector selector = {};
+    selector.type = XPackageChunkSelectorType::Tag;
+    selector.tag  = "LevelPack1";
+
+    ChunkCheckContext ctx = {};
+    HRESULT hr = XPackageEnumerateChunkAvailability(
+        dlcPackageId,
+        XPackageChunkSelectorType::Tag,
+        &ctx,
+        OnChunkAvailability);
+
+    if (SUCCEEDED(hr) && ctx.levelPackReady)
+    {
+        // DLC is installed — mount it
+        XAsyncBlock async = {};
+        async.callback = [](XAsyncBlock* ab)
+        {
+            XPackageMountHandle mount = nullptr;
+            if (SUCCEEDED(XPackageMountWithUiResult(ab, &mount)))
+            {
+                uint32_t pathSize = 0;
+                XPackageGetMountPathSize(mount, &pathSize);
+                std::string path(pathSize, '\0');
+                XPackageGetMountPath(mount, pathSize, path.data());
+                // Load assets from path...
+                XPackageCloseMountHandle(mount);
+            }
+        };
+        XPackageMountWithUiAsync(dlcPackageId, &async);
+    }
+}
+```

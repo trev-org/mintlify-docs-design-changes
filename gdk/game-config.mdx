@@ -1,0 +1,200 @@
+---
+title: "Configure your GDK title with MicrosoftGame.config"
+sidebarTitle: "Game Config"
+description: "Learn how MicrosoftGame.config replaces AppXManifest.xml complexity with a gaming-centric manifest for identity, shell visuals, and store settings."
+---
+
+`MicrosoftGame.config` is the central manifest for every GDK title. It stores game-specific configuration — your title identity, store IDs, executable list, shell visuals, and more — and is used both during local development and when you package your game for Microsoft Store submission. Rather than editing the verbose `AppXManifest.xml` directly, you work with a gaming-centric schema, and the GDK toolchain generates a valid `AppXManifest.xml` for you at build time.
+
+## Why a new manifest schema?
+
+Every package distributed through Microsoft Store requires a manifest. The `AppXManifest.xml` schema has grown over many years to support a broad range of application types, making it error-prone and harder to use for game developers. `MicrosoftGame.config` provides a simpler schema designed specifically for games, with validated elements and IntelliSense support in Visual Studio, reducing mistakes and improving developer productivity.
+
+<Note>
+  As of the March 2022 GDK, `configVersion` has been updated from `0` to `1` for all new titles. As of the October 2023 GDK, **all titles must use `configVersion="1"`**. Submission Validator will report a failure for any submission that still uses `configVersion="0"`.
+</Note>
+
+## Key elements
+
+<CardGroup cols={2}>
+  <Card title="Identity" icon="id-card" href="/reference/microsoftgameconfig-schema">
+    Defines your title's package `Name`, `Publisher`, and `Version`. These values uniquely identify your title and are found in Partner Center under **Product Management → Product Identity**.
+  </Card>
+  <Card title="ShellVisuals" icon="image" href="/reference/microsoftgameconfig-schema">
+    Specifies the logos, display names, splash screen, background color, and store logo that the Windows Shell and Microsoft Store use to represent your game.
+  </Card>
+  <Card title="ExecutableList" icon="code" href="/reference/microsoftgameconfig-schema">
+    Lists every executable in your package. Each `Executable` entry specifies the file name, `TargetDeviceFamily`, application ID, and optional shell visual overrides.
+  </Card>
+  <Card title="StoreId / TitleId / MSAAppId" icon="store" href="/publishing/partner-center">
+    `StoreId` links your build to a Partner Center product. `TitleId` and `MSAAppId` together identify your game to Xbox Live services. When `configVersion="1"`, both `TitleId` and `MSAAppId` must be specified together.
+  </Card>
+</CardGroup>
+
+## Configuration examples
+
+<Tabs>
+  <Tab title="Xbox (Series X|S)">
+    The following is a full Xbox Series X|S `MicrosoftGame.config`. The `TargetDeviceFamily` attribute in the `Executable` element is set to `Scarlett`; use `XboxOne` for an Xbox One title.
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <Game configVersion="1">
+
+        <Identity Name="41336PublisherName.ExampleGame"
+                  Publisher="CN=A4954634-DF4B-47C7-AB70-D3215D246AF1"
+                  Version="1.6.0.0"/>
+
+        <GameOsVersion>**REPLACE**</GameOsVersion>
+
+        <MediaCapture>
+            <GameDVRSystemComponent>true</GameDVRSystemComponent>
+            <BlockBroadcast>0</BlockBroadcast>
+            <BlockGameDVR>0</BlockGameDVR>
+        </MediaCapture>
+
+        <PersistentLocalStorage>
+            <SizeMB>322</SizeMB>
+        </PersistentLocalStorage>
+
+        <MSAAppId>0000000000000000</MSAAppId>
+        <TitleId>FFFFFFFF</TitleId>
+        <StoreId>9NZTKMP36L8J</StoreId>
+
+        <VirtualMachine>
+            <XboxLockhartTitleMemory>Standard</XboxLockhartTitleMemory>
+            <XboxAnacondaTitleMemory>Standard</XboxAnacondaTitleMemory>
+        </VirtualMachine>
+
+        <ExecutableList>
+            <Executable Name="ExampleGame.exe"
+                        TargetDeviceFamily="Scarlett"
+                        Id="Game"
+                        IsDevOnly="false"/>
+            <Executable Name="ExampleGame_Debug.exe"
+                        IsDevOnly="true"/>
+        </ExecutableList>
+
+        <ShellVisuals DefaultDisplayName="Example Game"
+                      PublisherDisplayName="Example Publisher"
+                      StoreLogo="StoreLogoFile.png"
+                      Square150x150Logo="LogoFile150x150.png"
+                      Square44x44Logo="LogoFile44x44.png"
+                      Square480x480Logo="LogoFile480x480.png"
+                      Description="Example Game"
+                      ForegroundText="light"
+                      BackgroundColor="#ffffff"
+                      SplashScreenImage="SplashScreen.png"/>
+
+        <Resources>
+            <Resource Language="en-us"/>
+            <Resource Language="de-de"/>
+        </Resources>
+
+        <DevelopmentOnly>
+            <DebugNetworkPortList>
+                <DebugNetworkPort>4600</DebugNetworkPort>
+            </DebugNetworkPortList>
+        </DevelopmentOnly>
+
+    </Game>
+    ```
+  </Tab>
+  <Tab title="PC (Gaming.Desktop.x64)">
+    The following is a minimal `MicrosoftGame.config` for a PC title. The `TargetDeviceFamily` is set to `PC` and a `DesktopRegistration` block is added for PC-specific settings such as processor architecture and framework dependencies.
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <Game configVersion="1">
+
+        <Identity Name="41336PublisherName.ExampleGame"
+                  Publisher="CN=A4954634-DF4B-47C7-AB70-D3215D246AF1"
+                  Version="1.0.0.0"/>
+
+        <MSAAppId>0000000000000000</MSAAppId>
+        <TitleId>FFFFFFFF</TitleId>
+        <StoreId>9NZTKMP36L8J</StoreId>
+
+        <ExecutableList>
+            <Executable Name="ExampleGame.exe"
+                        TargetDeviceFamily="PC"
+                        Id="Game"/>
+        </ExecutableList>
+
+        <ShellVisuals DefaultDisplayName="Example Game"
+                      PublisherDisplayName="Example Publisher"
+                      StoreLogo="StoreLogo.png"
+                      Square150x150Logo="GraphicsLogo.png"
+                      Square44x44Logo="SmallLogo.png"
+                      Description="Example Game"
+                      ForegroundText="light"
+                      BackgroundColor="#000040"
+                      SplashScreenImage="SplashScreen.png"/>
+
+        <DesktopRegistration>
+            <ProcessorArchitecture>x64</ProcessorArchitecture>
+            <DependencyList>
+                <KnownDependency Name="DX11"/>
+                <KnownDependency Name="VC14"/>
+            </DependencyList>
+        </DesktopRegistration>
+
+    </Game>
+    ```
+  </Tab>
+</Tabs>
+
+## Creating and editing in Visual Studio
+
+When you create a new GDK project in Visual Studio targeting `Gaming.Xbox.XboxOne.x64`, `Gaming.Xbox.Scarlett.x64`, or `Gaming.Desktop.x64`, a `MicrosoftGameConfig.mgc` file is automatically included. At build time, Visual Studio renames it to `MicrosoftGame.config` and copies it to your output directory.
+
+To manually add a config file to an existing project:
+
+<Steps>
+  <Step title="Add the file to your project">
+    Add your `MicrosoftGame.config` as a project file and set the platform configuration to the appropriate GDK target.
+  </Step>
+  <Step title="Set the Item Type">
+    In the file's **Properties** panel, set **Item Type** to **Microsoft Game Config** (`MGCCompile`). This tells MSBuild to treat the file as a game config and automate `.pri` generation, renaming, copying, and post-build registration.
+  </Step>
+  <Step title="Verify the project file">
+    After setting the item type, inspect your `.vcxproj` and confirm the following item group is present:
+
+    ```xml
+    <ItemGroup>
+      <MGCCompile Include="MicrosoftGame.Config" />
+    </ItemGroup>
+    ```
+  </Step>
+</Steps>
+
+### Managing multiple config files
+
+You can associate different `MicrosoftGameConfig.mgc` files with different build configurations, for example separate configs for debug and release, or for Xbox One versus Xbox Series X|S. Use `DefaultApplyTo` to set the default and `ApplyTo` to override per configuration:
+
+```xml
+<ItemGroup>
+  <MGCCompile Include="MicrosoftGameConfig_release.mgc">
+    <ApplyTo Condition="'$(Configuration)|$(Platform)'=='Release|Gaming.Xbox.XboxOne.x64'">True</ApplyTo>
+  </MGCCompile>
+  <MGCCompile Include="MicrosoftGameConfig_dev.mgc">
+    <DefaultApplyTo>True</DefaultApplyTo>
+  </MGCCompile>
+</ItemGroup>
+```
+
+## The MicrosoftGame.config Editor
+
+In addition to editing the file in Visual Studio, you can use the standalone **MicrosoftGame.config Editor** — a UI tool that provides guided authoring of `.config` files. The editor includes a **Store Association Wizard** that connects to your Partner Center project and automatically pulls in your `TitleId`, `MSAAppId`, and `StoreId`, eliminating manual copy-paste errors.
+
+<Tip>
+  The MicrosoftGame.config Editor is the recommended way to set up title identity for the first time. It validates your values against Partner Center data in real time.
+</Tip>
+
+## Launching without a MicrosoftGame.config
+
+During early development, you can launch your game without a `MicrosoftGame.config`. On PC, double-clicking the executable works but Gaming Runtime features and title identity are unavailable. On Xbox, GDK tooling can deploy and launch loose-file builds without a config, but full GDK features, title identity, and packaging for Store submission all require a properly configured `MicrosoftGame.config`.
+
+<Warning>
+  A `MicrosoftGame.config` is required to package and submit your title to Microsoft Store. Adopt and configure yours as soon as you begin using Gaming Runtime APIs, Xbox services, or title identity features.
+</Warning>

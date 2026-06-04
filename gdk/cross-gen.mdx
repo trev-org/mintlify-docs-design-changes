@@ -1,0 +1,64 @@
+---
+title: "Cross-generation development for Xbox One and Xbox Series X|S"
+sidebarTitle: "Cross-Gen"
+description: "Build one GDK title that ships across Xbox One, Xbox One X, Xbox Series S, and Xbox Series X with per-generation graphics, memory, and feature configuration."
+---
+
+Cross-generation ("cross-gen") development means shipping a single Microsoft Store product that runs natively on Xbox One, Xbox One S, Xbox One X, Xbox Series S, and Xbox Series X. Players buy your game once and the platform delivers the right binaries and assets for their console — a benefit known as **Smart Delivery**.
+
+<Note>
+  Cross-gen also intersects with [Xbox Play Anywhere](/publishing/overview), where the same purchase entitles the player to the Windows PC version of the title. This page covers the console-to-console cross-gen story.
+</Note>
+
+## Two cross-gen models
+
+<CardGroup cols={2}>
+  <Card title="Single binary" icon="layer-group">
+    One executable that runs on every supported console SKU. You branch at runtime on hardware capability and adapt asset quality, framerate, and effects.
+  </Card>
+
+  <Card title="Multiple platforms (recommended for new titles)" icon="split">
+    Separate native binaries for the Xbox One family and the Xbox Series X|S family, both packaged into the same Microsoft Store product. The store delivers the right binary; players never see the difference.
+  </Card>
+</CardGroup>
+
+The **multi-platform** approach is recommended for any title that wants to take real advantage of Series X|S hardware (DirectStorage, mesh shaders, sampler feedback, hardware-accelerated ray tracing). It keeps your old-gen build small and lets you ship Series-only features without runtime branching.
+
+## Project configuration
+
+In Visual Studio, set the project platform to **Gaming.Xbox.XboxOne.x64** for the Xbox One family and **Gaming.Xbox.Scarlett.x64** for the Xbox Series X|S family. Most teams maintain both configurations side-by-side in the same solution and use shared source files with `#if defined(_GAMING_XBOX_SCARLETT)` guards for the truly platform-specific paths.
+
+```cpp
+#if defined(_GAMING_XBOX_SCARLETT)
+    // Series X|S — enable hardware ray tracing path
+    EnableRayTracing();
+#else
+    // Xbox One — fall back to screen-space reflections
+    EnableScreenSpaceReflections();
+#endif
+```
+
+## Per-target asset packs
+
+Use package chunking and `MicrosoftGame.config` `<Resources>` entries to ship higher-resolution textures, higher-quality audio, or extra geometry as a separate chunk that only Series X|S consoles install. Combined with Intelligent Delivery, the platform pulls the right chunks for the player's SKU without your title doing any work.
+
+## Save compatibility
+
+Game saves must roam between SKUs. A player who buys on Xbox One and upgrades to Xbox Series X|S expects their saves to follow them, and your Connected Storage schema must support that. Keep your `XGameSave` blob format stable across SKUs, or version it and migrate on load.
+
+## Performance targets
+
+| Console | Target frame rate | Notes |
+| --- | --- | --- |
+| Xbox One | 30 FPS baseline | 1080p typical; HDR optional |
+| Xbox One X | 30 / 60 FPS | Up to 4K render targets |
+| Xbox Series S | 60 FPS baseline | 1080p – 1440p, HDR, VRR |
+| Xbox Series X | 60 / 120 FPS | Up to 4K, HDR, VRR, ray tracing |
+
+Expose the performance / quality choice as a player-facing setting where possible.
+
+## See also
+
+- [Console Overview](/gdk/console-overview)
+- [Packaging](/gdk/packaging) — chunking and Smart Delivery
+- [DirectStorage](/gdk/directstorage) — Series X|S asset streaming

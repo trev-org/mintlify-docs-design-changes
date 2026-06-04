@@ -1,0 +1,144 @@
+---
+title: "Onboard with ID@Xbox to access the GDK and publish on Xbox"
+sidebarTitle: "ID@Xbox Onboarding"
+description: "Step-by-step ID@Xbox onboarding workflow: NDA, concept approval, TLA and GDK agreements, Partner Center registration, Entra ID, roles, and GDK access."
+---
+
+Before you can download the GDK, configure a title in Partner Center, or use any of the products and features described in the rest of this documentation, your studio must complete **ID@Xbox onboarding**. This page walks through every step in order, calls out the steps that block GDK access, and sets realistic timing expectations.
+
+<Warning>
+  Full onboarding typically takes **~1–2 weeks minimum**, sometimes longer depending on review cycles and contract turnaround. Plan it into your production schedule — do not assume same-day access.
+</Warning>
+
+## At a glance
+
+<CardGroup cols={2}>
+  <Card title="Where you start" icon="door-open">
+    The [ID@Xbox onboarding hub](https://www.xbox.com/en-US/developers/id) — not Partner Center, not the Microsoft Store.
+  </Card>
+
+  <Card title="What you unlock" icon="key">
+    GDK documentation, GDK software downloads (SDS site), Partner Center publishing, and Xbox services.
+  </Card>
+
+  <Card title="Why order matters" icon="list-ol">
+    Skipping the ID@Xbox flow (for example, creating Partner Center independently) breaks role assignment and blocks GDK access.
+  </Card>
+
+  <Card title="Time to GDK access" icon="clock">
+    ~2 weeks minimum from first registration to a fully provisioned dev environment.
+  </Card>
+</CardGroup>
+
+## The end-to-end workflow
+
+<Steps>
+  <Step title="Register in ID@Xbox">
+    Start in the [ID@Xbox onboarding hub](https://www.xbox.com/en-US/developers/id). Enter your company and publisher details. The hub generates a **Non-Disclosure Agreement (NDA)** for you to sign and creates your account in the internal onboarding system.
+
+    **Output:** signed NDA, onboarding account created.
+  </Step>
+  <Step title="Submit your game concept">
+    Submit a game concept proposal through the onboarding hub. The submission enters the **ID Games review queue**, which the ID Games team reviews on a weekly cadence.
+
+    **Typical approval time:** ~1 week on average, up to ~2 weeks depending on review volume.
+
+    **Output:** concept approved or rejected. You must have an approved concept to proceed.
+  </Step>
+  <Step title="Sign the Title Licensing Agreement (TLA)">
+    Once your concept is approved, you receive the **Title Licensing Agreement (TLA)**. The TLA establishes your publishing rights and commercial terms for shipping the title on Xbox.
+
+    **Output:** signed TLA. Microsoft's counter-signature is automated in most modern cases.
+  </Step>
+  <Step title="Sign the GDK Agreement (if required)">
+    First-time partners — and older partners onboarded before 2020 — must additionally sign the **GDK Agreement** to gain access to Xbox development resources.
+
+    **Output:** eligibility for GDK documentation and the software download site.
+  </Step>
+  <Step title="Register in Microsoft Partner Center">
+    With agreements complete, the onboarding hub unlocks Partner Center registration. You must enroll in the **Windows program** in Partner Center.
+
+    <Warning>
+      Register from the link in the ID@Xbox onboarding flow — not by going to Partner Center directly. The onboarding flow applies a **"5x5" token** that links your Partner Center account to ID@Xbox, applies the correct permissions and roles, and waives the registration fee in some cases.
+
+      Registering Partner Center outside the onboarding flow leads to missing roles and no GDK access — see [Common pitfalls](#common-pitfalls) below.
+    </Warning>
+
+    **Output:** Partner Center account, linked to your ID@Xbox onboarding record.
+  </Step>
+  <Step title="Connect your Entra ID tenant">
+    Associate your studio's **Entra ID** (formerly Azure AD) tenant with your Partner Center account. This gives you organization-level identity management for your dev team.
+
+    **Result:** any user added to your tenant and granted Partner Center permissions automatically inherits access to the linked Xbox resources.
+  </Step>
+  <Step title="Verify automatic permission configuration">
+    When you complete the onboarding flow correctly, the system **automatically assigns** the roles your studio needs:
+
+    - Game Dev Indie
+    - GDK Software
+    - GDK Hardware
+    - Xbox One permissions (in many cases)
+
+    These roles are guaranteed _only_ if you followed the ID@Xbox onboarding flow end-to-end. If you created Partner Center independently and then tried to link back, you will likely need to file a manual request to get the roles assigned.
+  </Step>
+  <Step title="Access the GDK documentation and downloads">
+    Once every prior step is complete, you can:
+
+    - Read the protected GDK documentation
+    - Download GDK software from the SDS site — see [Download & Install](/gdk/download-install)
+    - Access additional developer resources
+
+    **Dependency chain for GDK access:** approved concept \+ signed agreements \+ Partner Center account \+ correct roles \+ Entra ID association.
+  </Step>
+  <Step title="Create products in Partner Center">
+    With Partner Center provisioned, you can create app and game products and start filling in product configuration — store listing, age ratings, packages, and so on. See [Partner Center](/publishing/partner-center).
+
+    Product creation is technically possible even before GDK access lands, but real development work requires the GDK permissions from step 7.
+  </Step>
+  <Step title="Request manual enablement for Xbox Live features (if needed)">
+    Some capabilities require a manual Microsoft-side activation step. **Xbox Live features** and certain service configurations are not auto-enabled by the onboarding flow.
+
+    Request enablement through your Microsoft contact and wait for backend configuration. Without this step, Xbox services APIs (for example, Xbox Live initialization) will fail at runtime.
+  </Step>
+</Steps>
+
+## Timeline summary
+
+| Phase | Typical time |
+| --- | --- |
+| NDA and account setup | Same day |
+| Concept approval | ~1–2 weeks |
+| Contracts (TLA \+ GDK Agreement) | Variable |
+| Partner Center setup | 1 to a few days |
+| **Total to full GDK access** | **~2\+ weeks minimum** |
+
+Plan the onboarding window as part of pre-production. Concept approval alone is the longest gating item for most studios.
+
+## Common pitfalls
+
+<AccordionGroup>
+  <Accordion title="Creating Partner Center outside the ID@Xbox flow">
+    The number-one cause of missing GDK access. A Partner Center account created directly — not via the onboarding hub link — will not have the 5x5 token applied, the role assignments will not happen automatically, and you will not be able to download the GDK. Recovering from this requires a manual support request to link the accounts and assign roles. **Always register Partner Center through the link in the onboarding hub.**
+  </Accordion>
+
+  <Accordion title="Expecting immediate access">
+    Onboarding is not instant. Concept review meets on a weekly cadence, contracts require signature cycles, and role provisioning runs as a background job. Build at least two weeks of buffer into your schedule before you need the GDK in hand.
+  </Accordion>
+
+  <Accordion title="Limited visibility into GDK access requirements">
+    The dependency chain (concept approval, contracts, Partner Center, roles, Entra ID, Xbox Live enablement) is largely gated until you already have access. Bookmark this page and use it as the checklist while you wait.
+  </Accordion>
+
+  <Accordion title="Forgetting the manual Xbox Live enablement step">
+    Even after the GDK is downloaded and Partner Center is configured, Xbox Live features and some service configurations require a manual activation by Microsoft. If your Xbox services initialization calls fail with a "not enabled" error after a clean onboarding, this is almost always the cause. Contact your Microsoft point of contact to request enablement.
+  </Accordion>
+</AccordionGroup>
+
+## After onboarding
+
+Once you have full GDK access, the natural next pages are:
+
+- [Get Started](/gdk/get-started) — the two development paths and how to pick one
+- [Download & Install](/gdk/download-install) — install the GDK and create your first project
+- [Partner Center](/publishing/partner-center) — create your first product
+- [Publishing overview](/publishing/overview) — the long-term path from build to retail launch

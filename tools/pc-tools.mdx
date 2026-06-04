@@ -1,0 +1,169 @@
+---
+title: "PC development tools: wdapp, PIX for Windows, and WDP"
+sidebarTitle: "PC Tools"
+description: "Use wdapp.exe to register and launch PC titles, PIX for Windows for DirectX 12 profiling, and Windows Device Portal for web-based device management."
+---
+
+The GDK provides a focused set of PC-side tools that handle the three most common development tasks: getting your game registered and running, profiling GPU and CPU performance, and managing the device remotely through a browser. This page covers **wdapp.exe** (Application Management), **PIX for Windows**, and **Windows Device Portal (WDP)**.
+
+<Note>
+  Developer Mode must be enabled on your PC before using `wdapp.exe`. Go to **Settings → For developers** and toggle **Developer Mode** on. Without it, `wdapp` commands will return an error immediately.
+</Note>
+
+## wdapp.exe — Application Management
+
+`wdapp.exe` is the primary command-line tool for installing, registering, and launching GDK PC titles during development. It mirrors the streaming installation process used by retail PCs, so you can test both loose-file builds and packaged `.msixvc` / `.msixvc2` files.
+
+<Tabs>
+  <Tab title="register">
+    Use `wdapp register` to register a loose-file build folder so the Gaming Runtime can find it. As of the June 2022 GDK you only need registration when you want desktop and Start menu shell icons to appear.
+
+    ```powershell
+    # Register the game from a loose-file directory
+    wdapp register "C:\MyGame\Output\Gaming.Desktop.x64\Debug"
+    ```
+
+    After registration, the game appears in the Start menu and is searchable from the Windows search box.
+  </Tab>
+  <Tab title="launch">
+    Use `wdapp launch` to start a registered game by its **Application User Model ID (AUMID)** or directly via its executable path.
+
+    ```powershell
+    # Launch by AUMID (use 'wdapp list' to discover AUMIDs)
+    wdapp launch MyGame_8wekyb3d8bbwe!Game
+
+    # Launch by executable path
+    wdapp launch "C:\MyGame\Output\Gaming.Desktop.x64\Debug\MyGame.exe"
+
+    # Launch and block until the process exits, then print exit code
+    wdapp launch MyGame_8wekyb3d8bbwe!Game /WaitToExit /show exitCode
+    ```
+
+    To pass command-line arguments to your game, append them after the AUMID or path.
+  </Tab>
+  <Tab title="install">
+    Use `wdapp install` to sideload a `.msixvc` package produced by `makepkg.exe`. This exercises the full streaming installation pipeline, including chunk selection and the optional PC Bootstrapper.
+
+    ```powershell
+    # Install a packaged build from a local path
+    wdapp install "C:\MyGame\Package\MyGame_1.0.0.0_x64__pmsdash4d.msixvc"
+
+    # Install and invoke the PC Bootstrapper on first launch
+    wdapp install /bootstrapper "C:\MyGame\Package\MyGame_1.0.0.0_x64__pmsdash4d.msixvc"
+
+    # Install to a specific drive
+    wdapp install /drive=D "C:\MyGame\Package\MyGame_1.0.0.0_x64__pmsdash4d.msixvc"
+    ```
+  </Tab>
+  <Tab title="list / uninstall">
+    Use `wdapp list` to see every sideloaded package, and `wdapp uninstall` to remove one by its Package Full Name (PFN).
+
+    ```powershell
+    # List all sideloaded packages with details
+    wdapp list /d
+
+    # List in JSON format (useful for scripting)
+    wdapp list /json
+
+    # Uninstall a specific package
+    wdapp uninstall MyGame_1.0.0.0_x64__pmsdash4d
+    ```
+  </Tab>
+  <Tab title="ids / terminate">
+    Use `wdapp ids` to inspect Package Family Name (PFN) and AUMID values for all installed packages. Use `wdapp terminate` to forcibly stop a running MSIXVC-installed title.
+
+    ```powershell
+    # Print all package and application identifier details
+    wdapp ids
+
+    # Terminate a running title by AUMID
+    wdapp terminate MyGame_8wekyb3d8bbwe!Game
+    ```
+  </Tab>
+</Tabs>
+
+### Common wdapp subcommands
+
+| Command | Description |
+|---|---|
+| `wdapp ids` | Display Package Family Name (PFN) and AUMID values |
+| `wdapp launch` | Launch by AUMID or executable path |
+| `wdapp terminate` | Stop a running MSIXVC-installed title |
+| `wdapp list` | List all sideloaded packages on the PC |
+| `wdapp listdlc` | List installed DLC packages |
+| `wdapp install` | Install an MSIXVC/MSIXVC2 package via streaming install |
+| `wdapp register` | Register a loose-file folder |
+| `wdapp uninstall` | Remove a sideloaded package |
+| `wdapp unregister` | Unregister a loose-file package |
+| `wdapp update` | Stream a packaged update from a network share |
+| `wdapp migrate` | Migrate an MSIXVC install to Flat File Install format |
+| `wdapp feedback` | Open Feedback Hub to report a GDK bug |
+
+---
+
+## PIX for Windows
+
+PIX for Windows is a standalone GPU performance analysis and debugging tool for DirectX 12 titles running on Windows 10 and later. It is separate from the version of PIX that ships inside the GDK (which targets Xbox One Development Kits).
+
+<Note>
+  PIX for Windows supports **DirectX 12 only** and requires **Windows 10 or later**. If your game also targets Xbox consoles, you can install PIX for Windows and PIX for Xbox **side-by-side** on the same development PC — they do not conflict.
+</Note>
+
+Key capabilities include:
+
+- **GPU captures** — Frame capture and replay for inspecting individual draw calls, pipeline state, and resource views.
+- **Timing captures** — Per-frame CPU and GPU timing with thread-level breakdown.
+- **Event list and resource viewer** — Drill into D3D12 object lifetimes, descriptor heaps, and barriers.
+
+Download PIX for Windows and read the full documentation at the [PIX online documentation site](https://blogs.msdn.microsoft.com/pix/documentation/).
+
+---
+
+## Windows Device Portal (WDP)
+
+Windows Device Portal provides a browser-based management interface for your development PC. You can use it to:
+
+- **Install and launch apps** — Navigate to **Installed Apps** and use the **Start** button to launch a registered GDK title without opening a command prompt.
+- **View running processes and resource usage** — Monitor CPU, memory, and GPU utilisation in real time.
+- **Access file system** — Browse the device's file system and download logs directly from the browser.
+
+WDP is built into Windows and does not require any GDK-specific installation. Enable it from **Settings → For developers → Device Portal**.
+
+---
+
+## Troubleshooting
+
+<Accordion title="Error 0x80073CFF — No valid license or sideloading policy">
+  Developer Mode is not enabled. Go to **Settings → For developers** and toggle **Developer Mode** on. Wait for Windows to finish installing the required features before trying `wdapp` again.
+</Accordion>
+
+<Accordion title="Error 0x80073cfc — Application cannot be started">
+  The Gaming Runtime Services (GRTS) package may be corrupt or uninstalled. Open a PowerShell Admin prompt and run:
+
+  ```powershell
+  get-appxpackage *gamings*
+  remove-appxpackage <PackageFullName from above>
+  ```
+
+  Then open the Xbox app and install a game to trigger automatic reinstallation of GRTS from the Microsoft Store.
+</Accordion>
+
+<Accordion title="Error 0x80070490 — Element not found when using wdapp install">
+  You are attempting to install an `.xvc` file (Xbox console format) with `wdapp install`. The `install` command only works with `.msixvc` (PC format) packages. Rebuild your title targeting `Gaming.Desktop.x64` and repackage with `makepkg.exe`.
+</Accordion>
+
+<Accordion title="Launch failures when title folder is shared via Windows File Sharing">
+  Sharing a registered folder breaks the Gaming Runtime's ACL on the container. Before sharing, save the ACLs with:
+
+  ```powershell
+  icacls "C:\MyGame" /save AclFile
+  ```
+
+  After sharing, restore them with:
+
+  ```powershell
+  icacls "C:\MyGame" /restore AclFile
+  ```
+
+  Alternatively, run `wdapp unregister` then `wdapp register` to refresh permissions while keeping the share intact.
+</Accordion>

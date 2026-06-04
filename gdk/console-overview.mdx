@@ -1,0 +1,59 @@
+---
+title: "Xbox Series X|S console-specific GDK feature areas"
+sidebarTitle: "Console Overview"
+description: "Explore GDK features exclusive to Xbox One and Xbox Series X|S, including audio systems, storage APIs, networking requirements, and Game DVR capture."
+---
+
+The Microsoft Game Development Kit (GDK) exposes a set of features that are available **only** when targeting Xbox console hardware — Xbox One family and Xbox Series X|S. These capabilities go beyond what is available on Windows PC and give you direct access to the specialized subsystems built into Xbox consoles: a multi-tier audio pipeline with spatial sound, a high-throughput NVMe-backed storage stack, certified networking APIs, and a system-level video capture and broadcasting service.
+
+If you are building a title that ships on both PC and console, you should isolate these features behind a runtime or compile-time platform check. Attempting to call console-specific APIs on Windows will either fail to compile or return an error at runtime.
+
+<Note>
+  Several sub-topics in this section — including Audio, Cross-Gen Development, and Memory — are gated behind a non-disclosure agreement (NDA) with Microsoft. You must be signed in to a Microsoft Learn profile that is linked to an authorized Partner Center account to access those pages. If you do not yet have access, visit [xbox.com/Developers](https://www.xbox.com/Developers) to learn about joining the ID\@Xbox or Managed Developer programs.
+</Note>
+
+## Console feature areas
+
+<CardGroup cols={2}>
+  <Card title="Audio" icon="music" href="/gdk/audio">
+    WASAPI, XAudio2, and Dolby Atmos spatial audio for Xbox consoles. Understand which audio system to use and how to configure spatial sound.
+  </Card>
+  <Card title="Storage" icon="hard-drive" href="/gdk/storage">
+    Local storage types, Persistent Local Storage (PLS), and DirectStorage for high-throughput NVMe asset streaming on Xbox Series X|S.
+  </Card>
+  <Card title="Networking" icon="wifi" href="/gdk/networking">
+    GDK networking requirements, approved socket APIs, Xbox network security, and PlayFab Party for cross-platform P2P.
+  </Card>
+  <Card title="Game DVR" icon="video" href="/gdk/game-dvr">
+    System-level clip recording, broadcasting UI, metadata tagging, and privacy controls via the XAppCapture API family.
+  </Card>
+  <Card title="Cross-Gen Development" icon="code-branch" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/features/console/cross-gen/gc-cross-gen-toc">
+    Guidance for shipping a single title on both Xbox One and Xbox Series X|S, including feature-detection patterns and performance scaling. (NDA required)
+  </Card>
+  <Card title="Memory" icon="memory" href="https://learn.microsoft.com/en-us/gaming/gdk/docs/features/console/memory/system-memory-overview">
+    Best practices for memory allocation and management on Xbox Series X|S hardware. (NDA required)
+  </Card>
+</CardGroup>
+
+## What makes a feature "console-specific"?
+
+A GDK feature is considered console-specific when it relies on hardware or OS services that exist only on Xbox consoles. Practical examples include:
+
+- **Persistent Local Storage (PLS)** — A dedicated, encrypted storage partition that is pre-allocated on the console SSD before your title launches.
+- **DirectStorage** — An API that bypasses the CPU for GPU-direct asset decompression, taking advantage of the Xbox Series X|S NVMe controller.
+- **Spatial Audio** — Hardware-accelerated Dolby Atmos decoding that routes through the HDMI audio pipeline.
+- **XAppCapture** — Deep integration with the system DVR service, which manages clip recording across all titles running on the console.
+
+Windows PC equivalents exist for some of these (for example, DirectStorage on PC), but the console variants have different initialization paths, quotas, and certification requirements.
+
+## Certification requirements
+
+Microsoft enforces Xbox certification requirements (XRs) that apply specifically to console titles. Violating these requirements will cause your submission to fail certification. Key requirements covered in this section include:
+
+| Requirement | Topic |
+|---|---|
+| XR-133: Local Storage Write Limitations | [Storage](/gdk/storage) |
+| Network Security (secure socket usage) | [Networking](/gdk/networking) |
+| Game DVR privacy (voice chat exclusion) | [Game DVR](/gdk/game-dvr) |
+
+Review the full [Xbox Certification Requirements](https://learn.microsoft.com/en-us/gaming/gdk/docs/policies/certification/certification-requirements) before submitting your title.

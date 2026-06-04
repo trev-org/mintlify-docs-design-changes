@@ -1,0 +1,64 @@
+---
+title: "System memory model for Xbox Series X|S and Xbox One"
+sidebarTitle: "Memory"
+description: "Understand the GDK memory model: title vs. system reservation, virtual address space limits, XMem allocator, and best practices for shipping on Xbox."
+---
+
+Xbox consoles expose a unified-memory architecture (UMA) where CPU and GPU share the same physical RAM. The GDK gives your title a fixed budget per console SKU and reserves the remainder for the operating system, capture pipeline, and system overlay. Staying inside that budget — and avoiding fragmentation — is one of the highest-impact things you can do for stability and certification.
+
+<Note>
+  Exact memory budgets per console SKU (Xbox One, Xbox One X, Xbox Series S, Xbox Series X) and per running mode (foreground, constrained, streaming) are documented in the NDA-gated [System memory overview](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/console/memory/system-memory-overview). Visit [xbox.com/Developers](https://www.xbox.com/Developers) for program access.
+</Note>
+
+## Memory layout at a glance
+
+<CardGroup cols={2}>
+  <Card title="Title memory" icon="gamepad">
+    The budget your title can use. Includes everything you allocate: executable, heap, GPU resources, audio buffers, and middleware.
+  </Card>
+
+  <Card title="System reservation" icon="server">
+    Reserved for the OS, dashboard, Game DVR capture, party chat, accessibility features, and the multitasking model.
+  </Card>
+</CardGroup>
+
+## Virtual address space
+
+GDK titles run as 64-bit processes with a large virtual address space. Even so, **commit** is what counts against your budget — reserved virtual address space that is never committed does not consume physical memory. Use this distinction to your advantage: reserve large contiguous ranges for streaming pools and commit/decommit pages as the player moves through the world.
+
+## XMem allocator
+
+The GDK provides `XMemAlloc` and related APIs as a thin, attribute-tagged wrapper around the platform allocator. Tagging each allocation with an `XALLOC_ATTRIBUTES` value lets the platform place pages in the right physical memory pool — for example, write-combined memory for GPU upload buffers or non-cached memory for command lists.
+
+```cpp
+#include <XMem.h>
+
+XALLOC_ATTRIBUTES attribs = {};
+attribs.s.ObjectType = XALLOC_OBJECT_TYPE_HEAP;
+attribs.s.PageSize = XALLOC_PAGESIZE_64KB;
+attribs.s.AllocatorId = XALLOC_ALLOCATORID_GAME_MIN;
+attribs.s.MemoryType = XALLOC_MEMTYPE_HEAP;
+
+void* buffer = XMemAlloc(1024 * 1024, attribs.dwAttributes);
+// ...
+XMemFree(buffer, attribs.dwAttributes);
+```
+
+Most engines wrap `XMemAlloc` behind their own allocator and apply tags based on the resource being created.
+
+## Budgeting strategies
+
+- **Pre-allocate at boot.** Reserve your largest contiguous heaps during title startup. This avoids fragmentation later in the session.
+- **Use streaming pools.** For open-world games, segment textures and meshes into chunks that map to gameplay zones, and stream them in and out of fixed-size pools.
+- **Keep a margin.** Leave at least a few hundred megabytes of headroom. Constrained mode, game streaming clients, and certification require a working buffer.
+- **Profile early.** Use PIX for Xbox memory captures and the [XBWatson](/tools/service-tools) crash signature service throughout production, not just at cert time.
+
+## Constrained mode
+
+When the player invokes the Xbox guide or a system dialog, your title may be moved into a constrained execution state with reduced CPU, GPU, and memory. Listen for the platform suspend / constrain notifications and shed non-essential work, particularly audio mix complexity and streaming I/O.
+
+## See also
+
+- [XMem API reference](https://learn.microsoft.com/en-us/gaming/gdk/_content/gc/reference/system/xmem/xmem_members)
+- [Async programming model](/gdk/async-programming) — task queues consume memory too
+- [DirectStorage](/gdk/storage) — bulk asset loading without staging buffers

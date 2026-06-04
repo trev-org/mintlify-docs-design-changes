@@ -1,0 +1,166 @@
+---
+title: "Set up in-game commerce with XStore APIs and Partner Center"
+sidebarTitle: "Commerce"
+description: "Configure products in Partner Center and integrate XStore APIs for querying, purchasing, and verifying in-game products and entitlements."
+---
+
+The GDK's commerce systems give you the tools to build a fully featured in-game store — from browsing available products to processing purchases and validating entitlements. On the client side, the **XStore API** handles everything your game needs to query products, display purchase flows, and check what a player owns. On the server side, the **Microsoft Store Services** provide authenticated endpoints for verifying ownership, fulfilling consumables, and managing refunds. This page covers both layers and shows you how to put them together.
+
+## The XStore API
+
+The XStore API is the GDK's client-side commerce interface. All XStore functions operate over an `XStoreContextHandle`, which you create once per user session using `XStoreCreateContext`. This context binds store operations to the signed-in user (on console) or the default PC user.
+
+<Warning>
+  On Xbox consoles, a **Suspend** or **Quick Resume** event invalidates the `XStoreContextHandle`. Close and recreate the handle whenever your game resumes from a suspended state to avoid stale context errors.
+</Warning>
+
+## Choosing the right product type
+
+Partner Center supports several product types for your game. Choose the one that best matches your content:
+
+<Tabs>
+  <Tab title="Base Game">
+    The base game product represents the game itself. Configure this as your primary product. All add-ons and DLC are children of the base game product.
+  </Tab>
+  <Tab title="Durable DLC">
+    A durable is content the player owns permanently — map packs, story expansions, character skins. Durables can have a downloadable package or be package-free (license-only).
+  </Tab>
+  <Tab title="Consumable">
+    Consumables are products the player purchases multiple times — virtual currency, experience boosts, or packs of in-game items. The player's balance is tracked via a quantity that decrements as they spend.
+  </Tab>
+  <Tab title="Subscription">
+    Subscriptions grant recurring access to content or benefits for a fixed period. The player is charged on a recurring basis and loses access if the subscription lapses.
+  </Tab>
+  <Tab title="Bundle / Season Pass">
+    Bundles group multiple products under a single purchase at a discounted price. A Season Pass is a special add-on bundle that scopes to a single game's content. See [DLC & Add-ons](/publishing/dlc-add-ons) for configuration details.
+  </Tab>
+</Tabs>
+
+## Initial configuration in Partner Center
+
+Before your game can query or sell products, each product must be created and configured in Partner Center:
+
+1. Navigate to your game product and open the **Add-ons** section.
+2. Select **Create a new add-on** and choose the product type (durable, consumable, etc.).
+3. Enter a **Product ID** — an internal string used to identify the product in your code and in Partner Center.
+4. Complete the store listing, pricing, and availability sections.
+5. Publish the add-on to your **development sandbox** so it is queryable during testing.
+
+After publishing, your add-on is assigned a **Store ID** (a 12-character string like `9NBLGGH4R315`). You use this Store ID in XStore API calls to reference specific products.
+
+## Basic store operations
+
+A typical in-game store involves three core operations: querying what's available, checking what the player owns, and processing a purchase.
+
+### 1. Query available products
+
+Use `XStoreQueryAssociatedProductsAsync` to retrieve the purchasable add-ons associated with your game:
+
+```cpp
+XStoreProductKind typeFilter =
+    XStoreProductKind::Consumable |
+    XStoreProductKind::Durable |
+    XStoreProductKind::Game;
+
+HRESULT hr = XStoreQueryAssociatedProductsAsync(
+    m_xStoreContext,
+    typeFilter,
+    UINT8_MAX,   // max results per page — handle paging in your callback
+    async);
+```
+
+<Note>
+  Paging is **not optional**. The number of products returned per page varies with service load. Always implement paging logic in your result callback to ensure you retrieve all available products.
+</Note>
+
+### 2. Check player entitlements
+
+To determine what the player already owns, use `XStoreQueryEntitledProductsAsync` (same callback structure as the query above). You can also check the `isInUserCollection` field on any `XStoreProduct` struct returned from the associated products query.
+
+For **durable DLC with a package**, call `XStoreAcquireLicenseForPackageAsync` to confirm the durable is licensable according to the [product sharing model](/publishing/dlc-add-ons).
+
+### 3. Purchase a product
+
+To initiate the Microsoft Store purchase UI for a product, pass its `storeId` to `XStoreShowPurchaseUIAsync`:
+
+```cpp
+void MakePurchase(const char* storeId)
+{
+    auto async = new XAsyncBlock{};
+    async->context = &storeId;
+    async->queue = m_asyncQueue;
+    async->callback = [](XAsyncBlock* async)
+    {
+        HRESULT hr = XStoreShowPurchaseUIResult(async);
+        if (SUCCEEDED(hr))
+        {
+            printf("Purchase succeeded\n");
+            // Refresh entitlements and update game state
+        }
+        else if (hr == E_GAMESTORE_ALREADY_PURCHASED)
+        {
+            printf("Player already owns this product\n");
+        }
+        delete async;
+    };
+
+    HRESULT hr = XStoreShowPurchaseUIAsync(
+        m_xStoreContext,
+        storeId,
+        nullptr,  // optional title bar text override
+        nullptr,  // optional purchase details
+        async);
+}
+```
+
+<Tip>
+  Players can also purchase products outside your game — via the Microsoft Store app, Xbox.com, or mobile. Always refresh entitlements at sign-in and when the player opens your in-game store, not only immediately after a purchase.
+</Tip>
+
+## Product sharing model
+
+Xbox uses a shared licensing model where some products may be accessible to all users on a shared console or PC. Understanding this model is important for DLC licensing:
+
+- **Durables** follow the sharing model — other users on a shared device may have access to DLC that only one account purchased.
+- **Consumables** are never shared — they are granted only to the purchasing account.
+- **Subscriptions** follow the sharing model during the active subscription period.
+
+Always use `XStoreAcquireLicenseForPackageAsync` (for DLC with packages) to enforce correct license-based access rather than relying solely on ownership checks.
+
+## Usage-limited free trials
+
+You can offer a free trial of your game that limits specific features or game modes. Implement the trial check using `XStoreQueryGameLicenseAsync`, which returns the current game's license state including trial expiry information. When the player upgrades from a trial, refresh the license and unlock the full game experience.
+
+## Consumable-based ecosystems
+
+Consumable products enable premium in-game economies where players spend virtual currency earned or purchased through real-money consumables. Best practices for consumables:
+
+- **Always validate and fulfill server-side.** Use the Microsoft Store Collections API to confirm the consumable quantity and mark it fulfilled from your backend. Never rely solely on client-side balance checks.
+- **Use the Clawback service** to detect refunded consumable purchases and reconcile inventory before they cause economic imbalances.
+
+## Bundles and Season Passes
+
+Bundles let you group products together for a single price. A Season Pass is an add-on bundle scoped to your game's content that can include not-yet-released DLC. Key behaviors:
+
+- When a user purchases a bundle or Season Pass, they receive a license for each included durable — following the sharing model.
+- Consumables included in a bundle are granted once to the purchasing account and are not shared.
+- There is a cache delay of **two to three hours** between the client-side XStore APIs granting access to newly added Season Pass contents and your server-side Collections API reflecting the same ownership.
+
+## Server-side Microsoft Store APIs
+
+Your backend service can call the Microsoft Store Services directly for:
+
+| Service | Purpose |
+|---|---|
+| **Collections** | Query which products the user owns or is entitled to use; fulfill consumables |
+| **Clawback** | Detect refunded consumables and reconcile player inventory |
+| **Purchase** | Grant free items to a user's account from your service |
+| **Recurrence** | Manage subscriptions — query status, cancel, or extend on behalf of the user |
+
+Authenticate your service with these APIs using **Microsoft Entra ID** and a **User Store ID token** (not X-tokens, which are only supported by Collections). The [Microsoft.StoreServices library](https://github.com/microsoft/Microsoft-Store-Services) on GitHub provides wrapper APIs and handles token refresh automatically.
+
+## Reference
+
+- [XStore API reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/system/xstore/xstore_members?view=gdk-2604)
+- [GDK In-Game Store sample](https://github.com/microsoft/Xbox-GDK-Samples/tree/main/Samples/Live/InGameStore)
+- [Microsoft.StoreServices library (GitHub)](https://github.com/microsoft/Microsoft-Store-Services)

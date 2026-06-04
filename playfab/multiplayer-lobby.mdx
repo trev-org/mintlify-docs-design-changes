@@ -1,0 +1,74 @@
+---
+title: "PlayFab Lobby and Matchmaking for cross-platform play"
+sidebarTitle: "Lobby & Matchmaking"
+description: "Use PlayFab Lobby for pre-game grouping and PlayFab Matchmaking for ticket-based queues, then hand off to PlayFab Party for the data plane."
+---
+
+PlayFab provides a complete multiplayer matchmaking and lobby stack that pairs naturally with the GDK and works across Xbox, Windows, and mobile platforms. The pieces are decoupled: **Lobby** handles pre-game grouping and invites, **Matchmaking** handles ticket-based queues with custom rules, and **Party** (covered separately) handles voice and low-latency game data.
+
+## Lobby
+
+A PlayFab Lobby is a server-tracked grouping of players with a shared key/value blob of properties. Lobbies are great for:
+
+- Open or invite-only pre-game rooms
+- Friends-only squads waiting to start a match
+- Persistent guilds or clans (for short-lived sessions)
+
+Create a lobby and let other players join via lobby ID or via a connection string surfaced through [Multiplayer Activity](/services/multiplayer-activity).
+
+```cpp
+PlayFab::MultiplayerModels::FCreateLobbyRequest req;
+req.MaxPlayers = 8;
+req.AccessPolicy = "Public";
+req.Members.Add(/* local member descriptor */);
+
+PlayFab::UMultiplayerAPI::CreateLobby(req,
+    [](const auto& resp) { /* resp.LobbyId, resp.ConnectionString */ },
+    [](const auto& err) { /* handle */ });
+```
+
+The `ConnectionString` returned by the lobby is what you publish as an MPA activity so friends on Xbox can join through the guide.
+
+## Matchmaking
+
+PlayFab Matchmaking is a ticket-based queue. Players submit a ticket with their preferences and "attributes" (skill rating, region, game mode); the matchmaker forms balanced parties by minimizing rule violations.
+
+```cpp
+PlayFab::MultiplayerModels::FCreateMatchmakingTicketRequest req;
+req.QueueName = "5v5_competitive";
+req.GiveUpAfterSeconds = 120;
+req.Creator.Entity = localEntity;
+req.Creator.Attributes.DataObject = R"({
+    "latitude": 47.6,
+    "longitude": -122.3,
+    "skill": 1350
+})";
+
+PlayFab::UMultiplayerAPI::CreateMatchmakingTicket(req,
+    [](const auto& resp) { /* poll resp.TicketId until matched */ },
+    [](const auto& err) { /* handle */ });
+```
+
+Define queues and rules in the PlayFab Game Manager (matchmaking section). Rules can require attribute equality, prefer attribute proximity, or expand a search radius over time.
+
+## Handoff to a transport
+
+Neither Lobby nor Matchmaking moves gameplay data. Once a match is formed, you hand off to your transport of choice:
+
+- **PlayFab Party** for voice and reliable / unreliable peer messaging.
+- **PlayFab Multiplayer Servers** for dedicated hosted servers.
+- **Your own game server** keyed by the match ID.
+
+## Integration with Xbox social
+
+Combine PlayFab matchmaking with Xbox-side discovery:
+
+- Use [Multiplayer Activity](/services/multiplayer-activity) so Xbox friends can join your lobby through the guide.
+- Use [Rich Presence](/services/rich-presence) to display matchmaking state to friends.
+- Use [Game Chat 2](/services/game-chat) for in-lobby and in-match voice.
+
+## See also
+
+- [Party & Voice](/playfab/party-voice)
+- [Multiplayer](/services/multiplayer)
+- [Multiplayer Activity](/services/multiplayer-activity)

@@ -1,0 +1,91 @@
+---
+title: "PlayFab Party for cross-platform voice and data"
+sidebarTitle: "Party & Voice"
+description: "Use PlayFab Party as the low-latency transport for cross-platform voice chat and reliable / unreliable game data in your GDK title."
+---
+
+PlayFab Party is the cross-platform networking library that powers voice chat and low-latency game data for many Xbox, Windows, and mobile titles. It's the recommended transport for GDK games that need multiplayer networking outside of dedicated game servers.
+
+## What Party gives you
+
+<CardGroup cols={3}>
+  <Card title="Voice chat" icon="microphone">
+    End-to-end voice including codec choice, mute enforcement, and per-language transcription / translation.
+  </Card>
+
+  <Card title="Reliable + unreliable messaging" icon="comments">
+    Send arbitrary byte payloads with either reliability mode. Good for both lockstep and snapshot architectures.
+  </Card>
+
+  <Card title="NAT traversal" icon="network-wired">
+    Relay servers handle NAT punching so peer connections succeed regardless of the player's router.
+  </Card>
+</CardGroup>
+
+## Initialization
+
+```cpp
+#include <Party.h>
+using namespace Party;
+
+PartyManager& manager = PartyManager::GetSingleton();
+manager.Initialize("YOUR_TITLE_ID");
+
+// Create or join a network
+PartyNetworkConfiguration config = {};
+config.maxDeviceCount = 16;
+config.maxDevicesPerUserCount = 1;
+config.maxEndpointsPerDeviceCount = 1;
+config.maxUserCount = 32;
+config.maxUsersPerDeviceCount = 1;
+
+PartyNetworkDescriptor descriptor = {};
+manager.CreateNewNetwork(
+    localUser,
+    &config,
+    /*regionCount*/ 0, nullptr,
+    /*invitationConfig*/ nullptr,
+    /*languageCode*/ nullptr,
+    /*invitationIdentifier*/ nullptr,
+    /*async identifier*/ nullptr,
+    &descriptor);
+```
+
+Share `PartyNetworkDescriptor` with other peers (typically through MPA, a PlayFab Lobby, or matchmaking output) so they can call `ConnectToNetwork`.
+
+## Voice integration
+
+Party handles voice end-to-end:
+
+```cpp
+PartyLocalChatControl* chat = nullptr;
+network->CreateChatControl(localUser, /*language*/ nullptr, nullptr, &chat);
+chat->SetAudioInput(PartyAudioDeviceSelectionType::SystemDefault, nullptr, nullptr);
+chat->SetAudioOutput(PartyAudioDeviceSelectionType::SystemDefault, nullptr, nullptr);
+```
+
+For full Game Chat 2 features (TTS, STT, platform mute enforcement), pair Party with [Game Chat 2](/services/game-chat). Party becomes the transport; Game Chat 2 produces the encoded audio frames.
+
+## Sending data
+
+```cpp
+PartyDataBuffer buffer = { payload, payloadSize };
+endpoint->SendMessage(
+    /*targetEndpointCount*/ 1, &targetEndpoint,
+    PartySendMessageOptions::GuaranteedDelivery,
+    /*queuingConfiguration*/ nullptr,
+    /*dataBufferCount*/ 1, &buffer,
+    /*messageIdentifier*/ nullptr);
+```
+
+Process incoming messages by polling `PartyManager::StartProcessingStateChanges` each frame and walking the returned events.
+
+## Region selection
+
+Party hosts relay servers in multiple Azure regions. Let the library pick automatically, or query latency to each region with `PartyManager::GetRegions` and pin your network to the best match for your player population.
+
+## See also
+
+- [Lobby & Matchmaking](/playfab/multiplayer-lobby)
+- [Game Chat 2](/services/game-chat)
+- [Networking](/gdk/networking) — GDK networking requirements

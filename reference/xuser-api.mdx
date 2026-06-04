@@ -1,0 +1,102 @@
+---
+title: "XUser API reference for sign-in and identity"
+sidebarTitle: "XUser"
+description: "Reference for the XUser API: add and resolve users, query gamertag and XUID, react to user-change events, and request gameplay tokens for online services."
+---
+
+The XUser API is the GDK's identity surface. It owns sign-in, user lookup, gameplay-token issuance, and notifications about user-state changes (sign-out, default-user change, controller association). Every other Xbox services call you make ultimately takes an `XUserHandle` produced by this API.
+
+## Including XUser
+
+```cpp
+#include <XUser.h>
+```
+
+Link against `xgameruntime.lib`. Call `XGameRuntimeInitialize` before any XUser call.
+
+## Adding a user
+
+The most common entry point. Opens a UI to let the player pick or sign in to an account; resolves to an `XUserHandle` once complete.
+
+```cpp
+XAsyncBlock* async = new XAsyncBlock{};
+async->callback = [](XAsyncBlock* a) {
+    XUserHandle user = nullptr;
+    HRESULT hr = XUserAddResult(a, &user);
+    if (SUCCEEDED(hr)) {
+        // 'user' is a valid handle. Cache it for the player's session.
+    }
+    delete a;
+};
+
+XUserAddAsync(XUserAddOptions::AddDefaultUserSilently, async);
+```
+
+Common `XUserAddOptions`:
+
+| Option | Behavior |
+| --- | --- |
+| `None` | Show full account-picker UI |
+| `AddDefaultUserSilently` | Try the default user without UI; fall back to error if not signed in |
+| `AllowGuests` | Permit guest accounts for shared-controller play |
+| `AddDefaultUserAllowingUI` | Try silent first, then show UI on miss |
+
+## Reading identity
+
+```cpp
+uint64_t xuid = 0;
+XUserGetId(user, &xuid);
+
+char gamertag[XUserGamertagComponentClassicMaxBytes];
+size_t actual;
+XUserGetGamertag(user, XUserGamertagComponent::Classic,
+                 sizeof(gamertag), gamertag, &actual);
+```
+
+Use the `Classic`, `Modern`, `ModernSuffix`, or `UniqueModern` components depending on which gamertag form you need to display.
+
+## Reacting to state changes
+
+Register a single callback to handle sign-out, default-user change, gamertag change, etc.
+
+```cpp
+XUserLocalIdChangeRegistrationToken changeToken = {};
+XUserRegisterForChangeEvent(
+    taskQueue,
+    nullptr,                                       // context
+    [](void*, XUserLocalId user, XUserChangeEvent event) {
+        switch (event) {
+            case XUserChangeEvent::SignedOut:
+                // Drop cached state, route the player back to the title screen.
+                break;
+            case XUserChangeEvent::SigningOut:
+                // Last chance to commit saves. Block until finished.
+                break;
+            case XUserChangeEvent::Gamertag:
+            case XUserChangeEvent::GamerPicture:
+                // Refresh UI.
+                break;
+        }
+    },
+    &changeToken);
+```
+
+Call `XUserUnregisterForChangeEvent` when shutting down.
+
+## Gameplay tokens for online services
+
+When calling Xbox services or your own back end, request a signed token for the user with `XUserGetTokenAndSignatureAsync`. The platform refreshes the token automatically; just request a fresh one before each batch of authenticated calls.
+
+## Closing a user handle
+
+```cpp
+XUserCloseHandle(user);
+```
+
+Close the handle when the player signs out or the title shuts down. Holding stale handles wastes memory.
+
+## See also
+
+- [User Model](/gdk/user-model) — conceptual guide
+- [Async Model](/gdk/async-programming) — task queues and callbacks
+- [XSAPI Overview](/reference/xsapi-overview) — calls that consume `XUserHandle`

@@ -1,0 +1,141 @@
+---
+title: "Audio systems for Xbox Series X|S and Xbox One titles"
+sidebarTitle: "Audio"
+description: "Learn about WASAPI, XAudio2, and Dolby Atmos spatial audio for Xbox consoles, when to use each system, and the key GDK APIs for audio integration."
+---
+
+Xbox consoles provide a rich, multi-tier audio pipeline that covers everything from low-latency raw PCM output to full object-based spatial audio with Dolby Atmos. As a GDK developer, you choose the abstraction level that fits your title's needs: you can work close to the metal with WASAPI, build a flexible graph with XAudio2, or opt into the high-level spatial audio platform to deliver immersive 3D soundscapes automatically adapted to whatever audio hardware the player is using.
+
+<Note>
+  Detailed audio documentation — including hardware-specific initialization sequences, codec support tables, and advanced spatial audio configuration — is gated behind an NDA Xbox developer program. Sign in to Microsoft Learn with your authorized Partner Center account to access the full [Overview of Audio](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/console/audio/overviews/audio) topic. If you do not yet have access, visit [xbox.com/Developers](https://www.xbox.com/Developers).
+</Note>
+
+## Available audio systems
+
+<CardGroup cols={3}>
+  <Card title="WASAPI" icon="wave-square" href="https://learn.microsoft.com/en-us/windows/win32/coreaudio/wasapi">
+    Windows Audio Session API — the lowest-level audio interface. Provides direct access to the render and capture endpoints with minimal latency.
+  </Card>
+  <Card title="XAudio2" icon="sliders" href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-apis-portal">
+    Microsoft's cross-platform audio graph engine. Supports mixing, submix routing, 3D positional audio via X3DAudio, and DSP effects via XAPO.
+  </Card>
+  <Card title="Spatial Audio (Dolby Atmos)" icon="headphones" href="https://learn.microsoft.com/en-us/windows/win32/coreaudio/spatial-sound">
+    Object-based audio routed through the platform spatial audio pipeline. Automatically adapts to Dolby Atmos-capable receivers, headphones, or stereo fallback.
+  </Card>
+</CardGroup>
+
+## When to use each system
+
+<Tabs>
+  <Tab title="WASAPI">
+    Use WASAPI when you need direct, low-latency access to audio endpoints and want to manage your own render thread. WASAPI is appropriate for:
+
+    - Custom audio engines that already manage their own PCM mixing pipeline
+    - Diagnostic or test tooling that needs raw endpoint access
+    - Scenarios where you must minimize additional API overhead
+
+    WASAPI is **not** recommended for most games. It requires more boilerplate, offers no built-in 3D positioning, and does not participate in the platform spatial audio pipeline automatically.
+  </Tab>
+  <Tab title="XAudio2">
+    XAudio2 is the recommended audio engine for most GDK titles. It is suitable for:
+
+    - Games with complex audio graphs: music, ambient layers, dialogue, SFX
+    - Titles that need 3D positional audio via **X3DAudio** (distance attenuation, Doppler, cone filtering)
+    - Custom DSP effects via the **XAPO** (Xbox Audio Processing Object) interface
+    - Cross-platform titles that also target Windows PC (XAudio2 ships in the Windows SDK)
+
+    XAudio2 can feed its output into the platform spatial audio pipeline if you initialize a `FXMASTERINGLIMITER` on the mastering voice.
+  </Tab>
+  <Tab title="Spatial Audio">
+    Use the spatial audio platform when you want to deliver Dolby Atmos-quality object-based audio with minimal custom DSP work. This is appropriate for:
+
+    - Premium audio experiences targeting Dolby Atmos receivers or headphones
+    - Titles where the platform should manage HRTF and room modelling automatically
+    - Games shipping on both Xbox One and Xbox Series X|S that want consistent spatial audio behavior
+
+    The spatial audio platform uses **ISpatialAudioClient** (derived from WASAPI) and accepts audio objects with position metadata that the OS renders to whatever output format the hardware supports.
+  </Tab>
+</Tabs>
+
+## Spatial audio on Xbox
+
+Xbox Series X|S supports hardware-accelerated Dolby Atmos decoding. When you submit audio objects through the spatial audio pipeline, the OS renderer applies head-related transfer function (HRTF) processing or passes the object metadata to a Dolby Atmos–capable receiver directly over HDMI.
+
+The player configures their preferred spatial audio format in **Settings → Volume & audio output**. Your title does not need to detect the connected hardware manually; the platform abstracts the output device. You only need to supply object-based audio streams with accurate 3D positions.
+
+<Tip>
+  Always provide a stereo fallback. If the player has no spatial audio format enabled, the OS automatically down-mixes your audio objects to stereo. Test your mix in stereo to ensure it sounds intentional, not like a collapsed mono blob.
+</Tip>
+
+## Key APIs
+
+| API | Purpose |
+|---|---|
+| `XAudio2Create` | Initialize an XAudio2 engine instance |
+| `IXAudio2::CreateMasteringVoice` | Create the mastering voice that routes to the audio endpoint |
+| `IXAudio2::CreateSourceVoice` | Create a source voice for a PCM, ADPCM, or XMA2 stream |
+| `X3DAudioInitialize` | Initialize X3DAudio with the speaker configuration |
+| `X3DAudioCalculate` | Calculate DSP settings (volume, pitch, delay) for a positioned emitter |
+| `ISpatialAudioClient::ActivateSpatialAudioStream` | Open an object-based spatial audio stream |
+| `ISpatialAudioObjectRenderStream::BeginUpdatingAudioObjects` | Begin a render pass to update object positions and buffers |
+
+## Code example: initializing XAudio2 with X3DAudio
+
+```cpp
+#include <xaudio2.h>
+#include <x3daudio.h>
+
+IXAudio2* pXAudio2 = nullptr;
+IXAudio2MasteringVoice* pMasterVoice = nullptr;
+
+// 1. Create the XAudio2 engine
+HRESULT hr = XAudio2Create(&pXAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+if (FAILED(hr)) { /* handle error */ }
+
+// 2. Create the mastering voice (default device, default channel count)
+hr = pXAudio2->CreateMasteringVoice(&pMasterVoice);
+if (FAILED(hr)) { /* handle error */ }
+
+// 3. Query the channel mask for X3DAudio initialization
+DWORD dwChannelMask = 0;
+pMasterVoice->GetChannelMask(&dwChannelMask);
+
+// 4. Initialize X3DAudio
+X3DAUDIO_HANDLE x3dInstance;
+X3DAudioInitialize(dwChannelMask, X3DAUDIO_SPEED_OF_SOUND, x3dInstance);
+
+// X3dInstance is now ready to call X3DAudioCalculate() for
+// each positioned sound source each audio frame.
+```
+
+## Voice chat and Game DVR
+
+User voice in game chat should **never** be included in Game DVR clips or broadcasts. Assign the `AudioCategory_GameChat` category to any render stream that carries the player's microphone output. The system then excludes that stream from all capture pipelines automatically.
+
+```cpp
+// When creating a source voice for game chat audio, pass the
+// AUDIO_STREAM_CATEGORY value that maps to AudioCategory_GameChat.
+// This tells the capture system to ignore it.
+WAVEFORMATEX wfx = { /* your format */ };
+IXAudio2SourceVoice* pChatVoice = nullptr;
+pXAudio2->CreateSourceVoice(
+    &pChatVoice,
+    &wfx,
+    0,                           // flags
+    XAUDIO2_DEFAULT_FREQ_RATIO,
+    nullptr,                     // callback
+    nullptr,                     // send list (routes to mastering voice)
+    nullptr                      // effect chain
+    // NOTE: set AudioCategory via WAVEFORMATEXTENSIBLE or platform API
+);
+```
+
+<Note>
+  The exact mechanism for setting the audio category on a voice is documented in the NDA-gated audio overview. Ensure you have authorized access to view the complete implementation guide.
+</Note>
+
+## See also
+
+- [Game DVR and broadcasting](/gdk/game-dvr) — how voice chat interacts with clip capture
+- [XAudio2 reference](https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-apis-portal)
+- [X3DAudio reference](https://learn.microsoft.com/en-us/windows/win32/xaudio2/x3daudio)

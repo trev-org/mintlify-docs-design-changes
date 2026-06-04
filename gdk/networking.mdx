@@ -1,0 +1,130 @@
+---
+title: "Networking requirements and APIs for Xbox GDK titles"
+sidebarTitle: "Networking"
+description: "Learn GDK networking requirements, approved socket APIs, Xbox network security rules, and how to integrate PlayFab Party for cross-platform multiplayer."
+---
+
+Networking on Xbox console is not a free-for-all: the GDK restricts which socket APIs you may use, mandates specific security behaviors, and requires your title to integrate with Xbox network security to pass certification. Understanding these requirements early in your networking design will save you significant rework before submission.
+
+<Warning>
+  Using unapproved networking APIs or bypassing Xbox network security requirements will cause your title to **fail certification**. Review the requirements in this page and the linked GDK networking documentation before writing any network code.
+</Warning>
+
+## GDK networking requirements
+
+The GDK permits titles to use the following socket APIs:
+
+- **WinSock 2** (`winsock2.h`) — the standard Berkeley-style socket API on Windows and Xbox.
+- **GDK-specific networking extensions** — additional APIs that expose Xbox network security features.
+
+You must **not** use raw IP sockets to bypass the Xbox security layer, and you must not use deprecated XDK APIs in GDK titles.
+
+<Note>
+  Detailed networking documentation, including the full list of approved APIs, socket option requirements, and advanced QoS configuration, is in the NDA-gated [GDK Networking section](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/console/networking/gc-networking-toc). Sign in with your authorized Partner Center account to access it.
+</Note>
+
+## WinSock support
+
+WinSock 2 is fully supported in GDK titles and behaves largely the same as on Windows PC. Standard socket operations — `socket`, `bind`, `connect`, `send`, `recv`, `select` — all work as expected.
+
+```cpp
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+// Initialize WinSock
+WSADATA wsaData;
+int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
+if (result != 0) { /* handle error */ }
+
+// Create a UDP socket
+SOCKET sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+if (sock == INVALID_SOCKET) { /* handle error */ }
+
+// ... use sock for your networking ...
+
+closesocket(sock);
+WSACleanup();
+```
+
+<Tip>
+  Always call `WSAStartup` with version 2.2. GDK titles require WinSock 2.2 and must call `WSACleanup` before exiting to avoid resource leaks.
+</Tip>
+
+## Xbox network security requirements
+
+All network traffic sent between players in an Xbox title must pass through the **Xbox network security layer**. This layer provides:
+
+- **Encryption** — all peer traffic is encrypted in transit.
+- **Authentication** — the Xbox identity of each endpoint is verified using the player's signed-in Xbox account.
+- **Anti-cheat** — the security layer prevents spoofed sender addresses and man-in-the-middle attacks.
+
+You integrate with Xbox network security by using the **secure sockets** APIs provided in the GDK. These APIs wrap your underlying WinSock sockets with the Xbox security layer transparently. You should not implement your own encryption layer on top of Xbox secure sockets, as this can interfere with the security model and is not required.
+
+Titles that pass raw, unencrypted game traffic directly between players — bypassing secure sockets — will fail certification with a network security XR violation.
+
+## PlayFab Party (recommended P2P/relay solution)
+
+For most titles that need peer-to-peer networking, Microsoft recommends **Azure PlayFab Party**. Party is a cross-platform library that handles:
+
+- **Relay networking** — traffic routes through Azure relay servers so players never need to expose their IP addresses.
+- **NAT traversal** — Party negotiates connections through NATs automatically.
+- **Voice and text chat** — integrated chat channel with automatic accessibility features (speech-to-text, text-to-speech).
+- **Cross-platform play** — the same Party library works on Xbox, Windows PC, PlayStation, Nintendo Switch, iOS, and Android.
+
+Party satisfies Xbox network security requirements on Xbox and Windows PC when used correctly. It replaces the deprecated **Xbox Integrated Multiplayer (XIM)** service, which does not work in GDK titles.
+
+```cpp
+// Minimal PlayFab Party initialization sketch
+#include <Party.h>
+
+using namespace Party;
+
+PartyManager& manager = PartyManager::GetSingleton();
+
+// Initialize with your PlayFab title ID
+PartyString titleId = "YOUR_PLAYFAB_TITLE_ID";
+PARTY_HANDLE handle = nullptr;
+PartyError err = manager.Initialize(titleId);
+if (PARTY_FAILED(err)) { /* handle error */ }
+
+// Create a local user from the signed-in Xbox user's entity token
+// (obtain entityToken from PlayFab authentication flow)
+PartyLocalUser* localUser = nullptr;
+err = manager.CreateLocalUser(
+    "PLAYFAB_ENTITY_ID",
+    "PLAYFAB_ENTITY_TOKEN",
+    &localUser
+);
+```
+
+<Note>
+  Integrating PlayFab Party requires a PlayFab account and a title configuration in the PlayFab Game Manager. See the [Party overview](https://learn.microsoft.com/en-us/gaming/playfab/features/multiplayer/networking/) and the [Xbox and PC multiplayer design guidance](https://learn.microsoft.com/en-us/gaming/gdk/docs/services/multiplayer/overviews/multiplayer-design-guidance-xbox-pc-gdk) for the full integration path.
+</Note>
+
+## Networking and multiplayer session management
+
+Network connectivity alone is not enough for a compliant Xbox multiplayer experience. You also need to integrate with Xbox services for:
+
+- **Session lifecycle** — use Multiplayer Session Directory (MPSD) or Multiplayer Manager (MPM) to manage player sessions.
+- **Invites and joins** — players must be able to invite friends and join from the Xbox shell using the standard invite flow.
+- **Multiplayer Activity (MPA)** — required for titles using custom matchmaking to surface join-in-progress to the Xbox shell.
+
+See the [Multiplayer](/services/multiplayer) page for a full breakdown of these requirements.
+
+## Key APIs summary
+
+| API | Purpose |
+|---|---|
+| `WSAStartup` / `WSACleanup` | Initialize and tear down the WinSock runtime |
+| `socket` / `bind` / `connect` | Standard WinSock socket lifecycle |
+| `send` / `recv` / `sendto` / `recvfrom` | Standard data transfer |
+| GDK secure socket APIs | Wrap sockets with Xbox network security (see NDA docs) |
+| `PartyManager::Initialize` | Initialize PlayFab Party |
+| `PartyManager::CreateLocalUser` | Register a signed-in player with Party |
+| `PartyNetwork::ConnectToNetwork` | Join or create a Party network |
+
+## See also
+
+- [Multiplayer features](/services/multiplayer) — session directories, matchmaking, Game Chat 2
+- [PlayFab Party overview](https://learn.microsoft.com/en-us/gaming/playfab/features/multiplayer/networking/)
+- [GDK networking documentation (NDA)](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/console/networking/gc-networking-toc)

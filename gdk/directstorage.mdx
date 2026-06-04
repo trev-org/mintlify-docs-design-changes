@@ -1,0 +1,94 @@
+---
+title: "DirectStorage on Xbox Series X|S for fast asset streaming"
+sidebarTitle: "DirectStorage"
+description: "Use DirectStorage on Xbox Series X|S for low-overhead NVMe streaming, GPU-decompressible BCPack and Zlib assets, and Quick Resume-aware loading."
+---
+
+DirectStorage is the GDK API that lets your title pull bytes from the NVMe SSD straight into GPU resources — bypassing the legacy file I/O stack, the CPU-side decompression step, and the staging copy through main memory. On Xbox Series X|S it is the recommended path for any asset streaming workload, and it is required to hit the platform's marketed load-time targets.
+
+<Note>
+  DirectStorage is available **only on Xbox Series X|S**. Xbox One titles continue to use the standard Win32 file APIs (`CreateFile2`, `ReadFile`, etc.). Cross-gen titles should abstract their I/O layer so the Series build can switch to DirectStorage transparently.
+</Note>
+
+## Why DirectStorage
+
+<CardGroup cols={3}>
+  <Card title="NVMe-class bandwidth" icon="gauge-high">
+    Submit thousands of small requests per frame and let the platform coalesce them — no CPU thread spinning on `ReadFile`.
+  </Card>
+
+  <Card title="Hardware decompression" icon="file-zipper">
+    BCPack texture compression and zlib payloads are decompressed on dedicated hardware blocks. Free CPU and GPU cycles for gameplay.
+  </Card>
+
+  <Card title="Direct-to-GPU" icon="microchip">
+    Data lands in the destination resource without a CPU staging copy, cutting memory pressure and total transfer time.
+  </Card>
+</CardGroup>
+
+## Programming model
+
+DirectStorage exposes a queue per priority. You open files, fill request structures, submit them in batches, and the runtime services them asynchronously.
+
+```cpp
+#include <dstorage_xs.h>
+
+Microsoft::WRL::ComPtr<IDStorageFactory> factory;
+DStorageGetFactory(IID_PPV_ARGS(&factory));
+
+DSTORAGE_QUEUE_DESC queueDesc = {};
+queueDesc.Capacity = DSTORAGE_MAX_QUEUE_CAPACITY;
+queueDesc.Priority = DSTORAGE_PRIORITY_NORMAL;
+queueDesc.SourceType = DSTORAGE_REQUEST_SOURCE_FILE;
+queueDesc.Device = d3dDevice.Get();
+
+Microsoft::WRL::ComPtr<IDStorageQueue> queue;
+factory->CreateQueue(&queueDesc, IID_PPV_ARGS(&queue));
+
+Microsoft::WRL::ComPtr<IDStorageFile> file;
+factory->OpenFile(L"Assets/world_chunk_42.pak", IID_PPV_ARGS(&file));
+
+DSTORAGE_REQUEST request = {};
+request.Options.SourceType = DSTORAGE_REQUEST_SOURCE_FILE;
+request.Options.DestinationType = DSTORAGE_REQUEST_DESTINATION_TEXTURE_REGION;
+request.Options.CompressionFormat = DSTORAGE_COMPRESSION_FORMAT_GDEFLATE;
+request.Source.File.Source = file.Get();
+request.Source.File.Offset = chunkOffset;
+request.Source.File.Size = chunkSize;
+request.Destination.Texture.Resource = texture.Get();
+// ... fill subresource + region ...
+
+queue->EnqueueRequest(&request);
+queue->Submit();
+```
+
+## Compression formats
+
+| Format | Decompressor | Use case |
+| --- | --- | --- |
+| `NONE` | n/a | Pre-decompressed data, debug builds |
+| `GDEFLATE` | Hardware | General-purpose, default for shipping titles |
+| `BCPACK` | Hardware | BC1–BC7 textures — highest density |
+| `ZLIB` | CPU | Compatibility with existing assets; consider re-encoding to GDEFLATE |
+
+GDEFLATE is the default recommendation. BCPack offers a higher compression ratio specifically for block-compressed textures and is worth the offline packing cost for large texture libraries.
+
+## Status notifications
+
+DirectStorage signals completion through ID3D12Fence values or status arrays. Your engine typically:
+
+1. Submits a batch of requests for the next streaming tile.
+2. Records a fence value the queue will signal when the batch is done.
+3. Polls or waits on the fence on a background thread, then promotes the assets into the active streaming set.
+
+This pattern fits naturally with the rest of the D3D12 fence-based sync model.
+
+## Quick Resume and DirectStorage
+
+When the platform suspends and later resumes your title via Quick Resume, open file handles remain valid and outstanding DirectStorage requests are preserved. You do not need to re-open `IDStorageFile` instances unless you explicitly closed them.
+
+## See also
+
+- [Console Storage](/gdk/storage) — broader storage overview
+- [Memory](/gdk/memory) — budgeting streaming pools
+- [Packaging](/gdk/packaging) — chunked assets and Intelligent Delivery

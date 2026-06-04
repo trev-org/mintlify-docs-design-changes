@@ -1,0 +1,98 @@
+---
+title: "GameInput API reference for input devices"
+sidebarTitle: "GameInput"
+description: "Reference for the GameInput API: enumerate devices, read gamepad and keyboard state, sample arcade sticks, and handle haptics across Xbox and Windows."
+---
+
+**GameInput** is the modern input API for the Microsoft GDK. It replaces XInput, DirectInput, and Raw Input with a single surface that handles gamepads, keyboards, mice, racing wheels, arcade sticks, and flight sticks consistently across Xbox consoles and Windows PC.
+
+## Header and library
+
+```cpp
+#include <GameInput.h>
+// Link: GameInput.lib
+```
+
+## Core types
+
+| Type | Purpose |
+| --- | --- |
+| `IGameInput` | Top-level service. One per process. |
+| `IGameInputDevice` | A specific physical or virtual input device. |
+| `IGameInputReading` | A snapshot of device state at a moment in time. |
+| `GameInputDeviceInfo` | Static device metadata: vendor / product IDs, supported kinds, capabilities. |
+
+## Initialization
+
+```cpp
+Microsoft::WRL::ComPtr<IGameInput> input;
+GameInputCreate(&input);
+```
+
+`GameInputCreate` succeeds even when no devices are connected; devices become available asynchronously.
+
+## Reading current state
+
+For the common case — "give me the latest gamepad state" — call `GetCurrentReading`:
+
+```cpp
+Microsoft::WRL::ComPtr<IGameInputReading> reading;
+HRESULT hr = input->GetCurrentReading(
+    GameInputKindGamepad,
+    /*device*/ nullptr,        // any gamepad
+    &reading);
+
+if (SUCCEEDED(hr)) {
+    GameInputGamepadState state;
+    if (reading->GetGamepadState(&state)) {
+        // state.buttons, state.leftThumbstickX, state.rightTrigger, etc.
+    }
+}
+```
+
+`GetCurrentReading` returns `GAMEINPUT_E_DEVICE_DISCONNECTED` (or similar) if no device of the requested kind is connected; handle gracefully and present "please connect a controller."
+
+## Reading specific devices
+
+For multi-controller scenarios, enumerate devices and read each one explicitly:
+
+```cpp
+Microsoft::WRL::ComPtr<IGameInputDevice> device;
+input->FindDeviceFromPlatformString(/* platform-specific id */, &device);
+
+input->GetCurrentReading(GameInputKindGamepad, device.Get(), &reading);
+```
+
+Devices are paired to users by the platform; combine with [XUser](/reference/xuser) APIs to map a device to the player it represents.
+
+## Other input kinds
+
+| Kind | State struct |
+| --- | --- |
+| `GameInputKindKeyboard` | `GameInputKeyState` array |
+| `GameInputKindMouse` | `GameInputMouseState` |
+| `GameInputKindRacingWheel` | `GameInputRacingWheelState` |
+| `GameInputKindArcadeStick` | `GameInputArcadeStickState` |
+| `GameInputKindFlightStick` | `GameInputFlightStickState` |
+| `GameInputKindTouch` | Touch point array |
+
+Query `GameInputDeviceInfo::supportedInput` to know which kinds a given device offers — modern gamepads frequently report both gamepad and motion.
+
+## Haptics and rumble
+
+```cpp
+GameInputRumbleParams rumble = {};
+rumble.lowFrequency  = 0.5f;
+rumble.highFrequency = 0.3f;
+rumble.leftTrigger   = 0.0f;
+rumble.rightTrigger  = 0.0f;
+device->SetRumbleState(&rumble);
+```
+
+For advanced haptic effects on supported controllers, use `IGameInputDevice::SetHapticMotorState` with platform-specific effect descriptors.
+
+## See also
+
+- [Input (concepts)](/gdk/input)
+- [User Model](/gdk/user-model) — mapping devices to users
+- [Dynamic Lighting](/gdk/dynamic-lighting) — the matching output API

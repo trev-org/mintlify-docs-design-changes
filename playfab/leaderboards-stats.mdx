@@ -1,0 +1,74 @@
+---
+title: "PlayFab Leaderboards, Statistics, and player progression"
+sidebarTitle: "Leaderboards & Stats"
+description: "Track player stats and leaderboards with PlayFab v2 statistics, compare with Xbox event-based and title-managed stats, and combine them effectively."
+---
+
+PlayFab provides a flexible **Statistics v2** service for tracking arbitrary numeric and string-valued player progress, plus a **Leaderboards** service for ranking players by those stats. Together they cover any scoreboard your title needs — global, regional, friend, or cohort.
+
+## When to use PlayFab vs. Xbox stats
+
+<CardGroup cols={2}>
+  <Card title="Xbox stats (XSAPI)" icon="xbox">
+    Required for any stat that powers an Xbox achievement, friend leaderboard in the Xbox guide, or appears on the Xbox profile card.
+  </Card>
+
+  <Card title="PlayFab statistics" icon="chart-line">
+    Recommended for cross-platform leaderboards, complex multi-column rankings, and any stat that doesn't need to surface inside the Xbox UI.
+  </Card>
+</CardGroup>
+
+Many titles use **both**: Xbox stats for the achievement and friends-list integration, PlayFab stats for the in-game global leaderboards. Write to both from the same gameplay event.
+
+## Defining a statistic
+
+In PlayFab Game Manager, under **Leaderboards & Statistics**, define each statistic with a name, version-reset cadence, and aggregation rule (max, min, sum, last). Stats are then writable per player.
+
+## Writing a stat
+
+```cpp
+PlayFab::ClientModels::FUpdatePlayerStatisticsRequest req;
+PlayFab::ClientModels::FStatisticUpdate update;
+update.StatisticName = "high_score";
+update.Value = newScore;
+req.Statistics.Add(update);
+
+PlayFab::UPlayFabClientAPI::UpdatePlayerStatistics(req,
+    [](const auto&) { /* success */ },
+    [](const auto& err) { /* handle */ });
+```
+
+For authoritative scoring, write stats from a trusted server using the Server SDK rather than the client.
+
+## Reading a leaderboard
+
+```cpp
+PlayFab::ClientModels::FGetLeaderboardRequest req;
+req.StatisticName = "high_score";
+req.MaxResultsCount = 100;
+req.StartPosition = 0;
+
+PlayFab::UPlayFabClientAPI::GetLeaderboard(req,
+    [](const auto& resp) {
+        for (const auto& entry : resp.Leaderboard) {
+            // entry.Position, entry.PlayFabId, entry.DisplayName, entry.StatValue
+        }
+    },
+    [](const auto& err) { /* handle */ });
+```
+
+Use `GetLeaderboardAroundPlayer` to fetch the slice centered on the current player — the most common in-game presentation.
+
+## Cohort leaderboards
+
+PlayFab supports filtering leaderboards by friend list, segment, or arbitrary entity group. Combine with the [People system](/services/people-system) to power a "friends only" tab that pulls the player's Xbox friends into a PlayFab leaderboard slice.
+
+## Versioned resets
+
+Leaderboards can be configured to reset on a fixed schedule (daily, weekly, manual). Old versions are archived and remain queryable. Use versioning for seasonal play and limited-time events.
+
+## See also
+
+- [Player Data (Xbox)](/services/player-data)
+- [Achievements (Xbox)](/services/achievements)
+- [PlayFab Player Sign-In](/playfab/player-sign-in)
