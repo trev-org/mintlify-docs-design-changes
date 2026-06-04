@@ -1,0 +1,104 @@
+### YamlMime:Landing
+
+title: Sell games in the Microsoft Store ecosystem # < 60 chars
+summary: Learn the process and requirements to ship a game in the Microsoft Store ecosystem. # < 160 chars
+
+metadata:
+  title: Publish games to the Microsoft Store # Required; page title displayed in search results. Include the brand. < 60 chars.
+  description: Describes how to publish games in the Microsoft Store ecosystem. # Required; article description that is displayed in search results. < 160 chars.
+  ms.service: gdk #Required; use either service or product per approved list. 
+  ms.topic: landing-page # Required
+  author: edigonzales #Required; your GitHub user alias, with correct capitalization.
+  ms.author: edigonzales #Required; microsoft alias of author; optional team alias.
+  ms.date: 03/10/2026 #Required; mm/dd/yyyy format.
+
+# linkListType: architecture | concept | deploy | download | get-started | how-to-guide | tutorial | overview | quickstart | reference | sample | tutorial | video | whats-new
+
+landingContent:
+# Cards and links should be based on top customer tasks or top subjects
+# Start card title with a verb
+  # Card
+  - title: Game publishing guide
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: "Game publishing documentation"
+            url: /gaming/game-publishing/
+      - linkListType: get-started
+        links:
+          - text: "Publishing process overview"
+            url: /gaming/game-publishing/overview
+          - text: "New creator onboarding"
+            url: /gaming/game-publishing/publishing-processes/managed-creators/publishing-processes-onboarding-new-creator
+          - text: "Configure and Publish a Game (Tutorial)"
+            url: /gaming/game-publishing/publishing-processes/managed-creators/overview
+          - text: "Certification step-by-step guide"
+            url: /gaming/game-publishing/concepts/certification/certification-guide
+
+  # Card
+  - title: Certification and requirements
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: "Policies and Xbox requirements"
+            url: policies/GC-policies-nav.md
+          - text: "Change history for Xbox requirements"
+            url: policies/console-XR-change-history.md
+      - linkListType: concept
+        links:
+          - text: "Xbox requirements for console games"
+            url: policies/Console/certification-requirements.md
+          - text: "Xbox requirements for PC and mobile games"
+            url: policies/pc/live-policies-pc.md
+          - text: "Beta and Game Preview requirements"
+            url: policies/certification-Requirements-Beta-Game-Preview.md
+      - linkListType: how-to-guide
+        links:
+          - text: "Top failing test cases for console"
+            url: policies/Console/console-TopFailingTestcases.md
+          - text: "Certification Failure Mode Analysis (FMA)"
+            url: policies/FMA/Certification-Failure-Mode-Analysis.md
+
+  # Card
+  - title: Commerce and entitlements
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: "Commerce overview"
+            url: commerce/commerce-nav.md
+          - text: "GDK Commerce Systems overview"
+            url: commerce/getting-started/xstore-overview.md
+      - linkListType: get-started
+        links:
+          - text: "Getting started with commerce"
+            url: commerce/getting-started/getting-started-nav.md
+          - text: "Choosing the right product type"
+            url: commerce/getting-started/xstore-choosing-the-right-product-type.md
+          - text: "Initial configuration in Partner Center"
+            url: commerce/getting-started/xstore-initial-configuration-in-partner-center.md
+      - linkListType: concept
+        links:
+          - text: "Basic store operations"
+            url: commerce/fundamentals/xstore-basic-store-operations.md
+          - text: "Product sharing model for games"
+            url: commerce/fundamentals/xstore-product-sharing-model-for-games.md
+
+  # Card
+  - title: Advanced commerce features
+    linkLists:
+      - linkListType: concept
+        links:
+          - text: "Implementing trials for your game"
+            url: commerce/fundamentals/xstore-usage-limited-free-trials.md
+          - text: "Manage and license downloadable content (DLC)"
+            url: commerce/fundamentals/xstore-manage-and-license-optional-packages.md
+          - text: "Consumable-based ecosystems"
+            url: commerce/fundamentals/xstore-consumable-based-ecosystems.md
+          - text: "Bundles and Season Passes"
+            url: commerce/fundamentals/xstore-bundles-and-season-passes.md
+      - linkListType: how-to-guide
+        links:
+          - text: "Microsoft Store Service APIs"
+            url: commerce/service-to-service/microsoft-store-apis/xstore-nav.md
+          - text: "Franchise game hubs"
+            url: franchise-game-hubs.md

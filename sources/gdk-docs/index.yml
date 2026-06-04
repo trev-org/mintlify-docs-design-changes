@@ -1,0 +1,112 @@
+### YamlMime:Hub
+
+#root section (Required)
+title: Game Development Kit (GDK) documentation # < 60 chars
+summary: Learn how to use the Game Development Kit (GDK) to develop games on Xbox and Windows. # < 160 chars
+brand: xbox
+
+metadata:
+  title: Game Development Kit (GDK) documentation # Required; page title displayed in search results. Include the brand. < 60 chars.
+  description: Instruction on using the Game Development Kit (GDK) # Required; article description that is displayed in search results. < 160 chars.
+  ms.service: gdk
+  ms.topic: landing-page # Required
+  author: edigonzales #Required; your GitHub user alias, with correct capitalization.
+  ms.author: edigonzales #Required; microsoft alias of author; optional team alias.
+  ms.date: 03/10/2026 #Required; mm/dd/yyyy format.
+
+# highlightedContent section (Optional; Remove if not applicable.)
+# Maximum of 8 items
+highlightedContent:
+# itemType: architecture | concept | deploy | download | get-started | how-to-guide | training | overview | quickstart | reference | sample | tutorial | video | whats-new
+  items:
+    # Card
+    - title: Get Started
+      itemType: get-started
+      url: docs/gdk-dev/get-started/get-started-home.md
+    # Card
+    - title: What's New
+      itemType: whats-new
+      url: docs/gdk-dev/whatsnew/whats-new.md
+    # Card
+    - title: Download the SDK
+      itemType: download
+      url: docs/gdk-dev/development-downloads/access-resources.md
+    # Card
+    - title: API reference
+      itemType: reference
+      url: docs/reference/gc-reference-toc.md
+
+# conceptualContent section (Optional; Remove if not applicable.)
+conceptualContent:
+# itemType: architecture | concept | deploy | download | get-started | how-to-guide | training | overview | quickstart | reference | sample | tutorial | video | whats-new
+  # Supports up to 3 subsections
+  sections:
+    - title: Build games with Xbox # Optional but good for SEO. Remove if not applicable.
+      items:
+        # Card
+        - title: Develop and test GDK games
+          links:
+            - url: docs/gdk-dev/gdk-dev-index.yml
+              itemType: overview
+              text: Develop games with the GDK
+            - url: docs/gdk-dev/pc-dev/tutorials/pc-e2e-guide/e2e-overview.md
+              itemType: overview
+              text: PC and handheld game development
+            - url: docs/gdk-dev/get-started/get-started-home.md
+              itemType: overview
+              text: Xbox console game development
+
+        # Card
+        - title: GDK Features
+          links:
+            - url: docs/features/common/common-features-overview.md
+              itemType: overview
+              text: "Common features"
+            - url: docs/features/console/console-features-overview.md
+              itemType: overview
+              text: "Xbox Series X|S features"
+            - url: docs/features/graphics/gc-graphics-toc.md
+              itemType: overview
+              text: "DirectX graphics for Xbox"
+        # Card
+        - title: Use Xbox services
+          links:
+            - url: docs/services/fundamentals/live-xbl-overview.md
+              itemType: overview
+              text: Service fundamentals
+            - url: docs/services/player-data/live-playerdata-overview.md
+              itemType: overview
+              text: Player stats, achievements, and leaderboards
+            - url: docs/services/community/live-social-overview.md
+              itemType: overview
+              text: Xbox community
+            - url: docs/services/multiplayer/overviews/multiplayer-intro.md
+              itemType: overview
+              text: Multiplayer
+            - url: docs/services/multiplayer/overviews/multiplayer-intro.md
+              itemType: overview
+              text: Learn more about Xbox services
+        # Card
+        - title: Tools for building games
+          links:
+            - url: docs/tools/tools-console/gc-tools-console-toc.md
+              itemType: overview
+              text: Console tools
+            - url: docs/tools/tools-pc/gc-tools-pc-toc.md
+              itemType: overview
+              text: PC tools
+            - url: docs/tools/tools-services/live-tools.md
+              itemType: overview
+              text: Xbox service tools
+        # Card
+        - title: Publishing, commerce, and certification
+          links:
+            - url: docs/store/store-index.yml
+              itemType: overview
+              text: Publish games in the Microsoft Store
+            - url: docs/store/policies/GC-policies-nav.md
+              itemType: overview
+              text: Xbox requirements and policies
+            - url: docs/store/commerce/commerce-nav.md
+              itemType: overview
+              text: Commerce

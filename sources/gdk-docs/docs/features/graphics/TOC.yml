@@ -1,0 +1,222 @@
+- name: "Graphics (Xbox consoles)"
+  href: gc-graphics-toc.md
+- name: Direct3D 12 on Xbox
+  items:
+    - name: "Direct3D 12 on Xbox (contents)"
+      href: d3d12x/atoc-d3d12x.md
+    - name: "Direct3D 12 overview"
+      href: d3d12x/d3d12x-overview.md
+    - name: "Differences from PC"
+      href: d3d12x/d3d12x-differences-from-pc.md
+    - name: "Direct3D 12 XMemAlloc object types"
+      href: d3d12x/d3d12x-xmemalloc-objecttypes.md
+    - name: "Direct3D Creation and usage"
+      href: directx/creation-flags.md
+    - name: "Native Resource management"
+      href: directx/native-resource-management.md
+    - name: "Direct3D support for suspend and resume"
+      href: directx/suspend-and-resume.md
+    - name: "Tessellation"
+      href: directx/offchip-tesselation.md
+    - name: "Frame scheduling and presentation"
+      href: directx/frame-scheduling-and-presentation.md
+    - name: "Hardware overlays and swap resources"
+      href: directx/hardware-overlays.md
+    - name: "Color and depth compression"
+      href: directx/color-and-depth-compression.md
+    - name: "Screen areas"
+      href: overviews/screen-areas.md
+    - name: "High dynamic range (HDR) output"
+      href: overviews/hdr-support.md
+    - name: "120Hz support"
+      href: overviews/one-twenty-hz-support.md
+    - name: "Cmask decoding"
+      href: overviews/cmask-decoding.md
+    - name: "D3D12 Enhanced Barriers"
+      href: overviews/enhanced-barriers.md
+    - name: "GPU synchronization"
+      href: overviews/gpu-synchronization-scarlett.md
+    - name: "Serialized and Derived Pipeline State Objects In-Depth"
+      href: graphics-pso-overview.md
+    - name: "Windows Imaging Component (WIC)"
+      href: image-processing-overview.md
+- name: Xbox One overview of graphics
+  items:
+    - name: "Xbox One overview of graphics (contents)"
+      href: overviews/graphics.md
+    - name: "Xbox One GPU Overview"
+      href: whitepapers/xbox-one-gpu-overview.md
+    - name: "Xbox One GPU Compute Units"
+      href: whitepapers/xbox-one-gpu-compute-units.md
+    - name: "Xbox One GPU Memory Access: ONION, GARLIC, and more"
+      href: whitepapers/xbox-one-gpu-memory-access.md
+    - name: "Overview of XG Memory"
+      href: d3d12x/xg-memory-overview.md
+    - name: "Caches and Coherency on the Xbox One GPU"
+      href: whitepapers/caches-and-coherency-on-xbox-one-gpu.md
+    - name: "How Do VMEM Instructions Work?"
+      href: whitepapers/how-do-vmem-instructions-work.md
+    - name: "Xbox One Occupancy Quick Reference"
+      href: whitepapers/xbox-one-occupancy-quick-reference.md
+    - name: "Checkerboard Rendering on Xbox One"
+      href: whitepapers/checkerboard-rendering-on-xbox-one.md
+    - name: "Automatic Shader Modification for Checkerboard Rendering"
+      href: whitepapers/automatic-shader-modification-for-checkerboard-rendering.md
+    - name: "Xbox One Dynamic Resolution"
+      href: whitepapers/xbox-one-dynamic-resolution.md
+    - name: "Implementing an ESRAM Memory Manager (DirectX, Xbox One)"
+      href: whitepapers/xbox-one-esram-manager.md
+- name: Xbox Series X|S graphics feature overviews
+  items:
+    - name: "Xbox Series X|S graphics feature overviews (contents)"
+      href: graphics-newfeatures-toc.md
+    - name: Sampler feedback introduction
+      items:
+        - name: "Sampler feedback introduction (contents)"
+          href: newfeatures/sfs/sf-overview.md
+        - name: "Why Sampler Feedback"
+          href: newfeatures/sfs/why-sf.md
+        - name: "Sampler Feedback GPU hardware design"
+          href: newfeatures/sfs/sf-gpu-design.md
+        - name: "Sampler Feedback Direct3D 12 API preview"
+          href: newfeatures/sfs/sf-api-design.md
+        - name: "Sampler Feedback for Streaming (SFS) usage example"
+          href: newfeatures/sfs/sfs-usage.md
+    - name: Raytracing introduction
+      items:
+        - name: "Raytracing introduction (contents)"
+          href: newfeatures/raytracing/rt-overview.md
+        - name: "Raytracing hardware design"
+          href: newfeatures/raytracing/rt-hardware-design.md
+        - name: "XDXR (Xbox DXR)"
+          href: newfeatures/raytracing/rt-xdxr.md
+        - name: "XDXR BVH Builders"
+          href: newfeatures/raytracing/rt-bvhbuilders.md
+        - name: "XDXR Standalone Traversal"
+          href: newfeatures/raytracing/rt-standalone.md
+        - name: "BVH Compression"
+          href: newfeatures/raytracing/rt-compression.md
+        - name: "XDXR Offline RTPSO"
+          href: newfeatures/raytracing/rt-offlinertpso.md
+        - name: "XDXR best practices and recommendations"
+          href: newfeatures/raytracing/rt-xdxrbestpractices.md
+        - name: "XDXR k-DOP Optimization"
+          href: newfeatures/raytracing/rt-kdop.md
+    - name: Mesh Shader introduction
+      items:
+        - name: "Mesh Shader introduction (contents)"
+          href: newfeatures/ms/ms-overview.md
+        - name: "Why Mesh Shaders"
+          href: newfeatures/ms/ms-why.md
+        - name: "Mesh Shader API overview"
+          href: newfeatures/ms/ms-api-design.md
+        - name: "Mesh Shader pipeline usage"
+          href: newfeatures/ms/ms-usage.md
+        - name: "Meshlets"
+          href: newfeatures/ms/ms-meshlet-render.md
+        - name: "Meshlet culling example"
+          href: newfeatures/ms/ms-meshlet-culling.md
+        - name: "Mesh Shaders on Xbox Series X|S"
+          href: newfeatures/ms/ms-scarlett.md
+    - name: Variable Rate Shading introduction
+      items:
+        - name: "Variable Rate Shading introduction (contents)"
+          href: newfeatures/vrs/vrs-overview.md
+        - name: "Why Variable Rate Shading?"
+          href: newfeatures/vrs/why-vrs.md
+        - name: "Variable Rate Shading feature design"
+          href: newfeatures/vrs/vrs-feature.md
+        - name: "Variable Rate Shading Direct3D 12 API preview"
+          href: newfeatures/vrs/vrs-api.md
+    - name: Xbox Texture Compressor overview
+      items:
+        - name: "Xbox Texture Compressor overview (contents)"
+          href: newfeatures/xbtc/xbox-texture-compressor.md
+        - name: "Xbox Texture Compressor tool (XBTC.exe)"
+          href: newfeatures/xbtc/xbtc.md
+        - name: "XBTC archive file specification"
+          href: newfeatures/xbtc/xbtc-archive-format.md
+        - name: "JSON batch configuration"
+          href: newfeatures/xbtc/xbtc-json-batch-configuration.md
+    - name: "Xbox Series X|S GPU overview"
+      href: overviews/gpu-overview.md
+    - name: "Xbox Series X|S graphics memory overview"
+      href: graphics-memory-overview.md
+    - name: "Xbox Series X|S texture layouts"
+      href: scarlett-tex-layouts.md
+    - name: "Dolby Vision for Gen9 Xbox Gaming"
+      href: dolby-vision-for-gaming.md
+    - name: "Xbox Series S optimization recommendations"
+      href: whitepapers/series-s-optimizations.md
+- name: "DirectX-Specs"
+  href: directx-specs.md
+- name: Microsoft graphics presentations
+  items:
+    - name: "Microsoft graphics presentations"
+      href: overviews/presentations/gc-graphics-presentations.md
+    - name: Xbox Dev Days 2024
+      items:
+        - name: Summaries
+          items:
+            - name: "Fine-Tuned loadout: optimizing Call of Duty® rendering for Xbox"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr01.md
+            - name: "Getting the most out of the Xbox shader compiler"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr02.md
+            - name: "What's new in PIX"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr03.md
+            - name: "GPU debugging tips and tricks"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr04.md
+            - name: "Mesh shaders: tales from the trenches"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr05.md
+            - name: "Optimizing shader performance with PIX’s Shader Explorer"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr06.md
+            - name: "Xbox raytracing: performance and optimization"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr07.md
+            - name: "GPU performance tips and tricks"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr08.md
+            - name: "Rapid performance investigation with GPU Trace"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr09.md
+            - name: "Xbox raytracing: 2024 update"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr10.md
+            - name: "Mesh and Texture Viewer extensibility"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr11.md
+            - name: "Optimizing game development workflows with Visual Studio and AI"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr12.md
+            - name: "GPU-driven rendering with mesh shaders in Alan Wake 2"
+              href: overviews/presentations/xdd2024/gc-graphics-xdd-2024-gr13.md
+        - name: Overviews
+          items:
+            - name: "Getting the most from the Xbox shader compiler"
+              href: overviews/presentations/xdd2024/getting-the-most-from-xbox-shader-compiler.md
+            - name: "What's new in PIX in 2024"
+              href: overviews/presentations/xdd2024/whats-new-in-pix-2024.md
+            - name: "GPU debugging tips and tricks for Xbox"
+              href: overviews/presentations/xdd2024/gpu-debugging-tips-and-tricks.md
+            - name: "Optimize shader performance with the PIX Shader Explorer"
+              href: overviews/presentations/xdd2024/optimizing-shader-performance-with-pix-shader-explorer.md
+            - name: "GPU performance tips and tricks"
+              href: overviews/presentations/xdd2024/gpu-performance-tips-and-tricks.md
+    - name: Xfest 2022
+      items:
+        - name: "A tour of the new PIX Checklist"
+          href: overviews/presentations/xfest2022/gc-graphics-xfest-2022-gr01.md
+        - name: "Harnessing the power of the Xbox Series X|S HDR and display hardware"
+          href: overviews/presentations/xfest2022/gc-graphics-xfest-2022-gr02.md
+        - name: "Understanding frame pacing and latency"
+          href: overviews/presentations/xfest2022/gc-graphics-xfest-2022-gr03.md
+        - name: "Xbox Series X|S common graphics problems and solutions"
+          href: overviews/presentations/xfest2022/gc-graphics-xfest-2022-gr06.md
+        - name: "Improvements to PIX for Xbox"
+          href: overviews/presentations/xfest2022/gc-graphics-xfest-2022-gr07.md
+        - name: "Best practices for raytracing on Xbox Series X|S"
+          href: overviews/presentations/xfest2022/gc-graphics-xfest-2022-gr09.md
+    - name: Xfest 2019
+      items:
+        - name: "Xbox Series X|S GPU overview presentation"
+          href: overviews/presentations/xfest2019/gc-graphics-xfest-2019-gr01.md
+        - name: "Responsive gaming"
+          href: overviews/presentations/xfest2019/gc-graphics-xfest-2019-gr04.md
+        - name: "Variable-rate shading and sparse lighting"
+          href: overviews/presentations/xfest2019/gc-graphics-xfest-2019-gr08.md
+- name: "Graphics samples"
+  href: graphics-samples.md

@@ -1,0 +1,24 @@
+- name: "Types of error handling"
+  href: error-handling/live-types-of-error-handling.md
+- name: Best practices for Xbox services
+  items:
+    - name: "Best practices for calling Xbox services"
+      href: best-practices/live-best-practices-calling-xbl.md
+    - name: "Fine-Grained Rate Limiting"
+      href: best-practices/live-fine-grained-rate-limiting.md
+    - name: "Best practices for handling offline play"
+      href: best-practices/live-best-practices-offline-play.md
+- name: Test accounts
+  items:
+    - name: "Xbox test accounts"
+      href: test-accounts/live-test-accounts.md
+    - name: "Creating test accounts"
+      href: test-accounts/live-setup-testaccounts.md
+    - name: "Exporting Xbox test accounts"
+      href: test-accounts/live-exporting-test-accounts.md
+- name: Troubleshooting Xbox services
+  items:
+    - name: "Troubleshooting Xbox Live Services APIs"
+      href: troubleshooting/live-troubleshooting-apis.md
+    - name: "Troubleshooting Sign-in and Sandbox Errors"
+      href: troubleshooting/live-troubleshoot-sandboxes.md

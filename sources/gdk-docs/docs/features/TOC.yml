@@ -1,0 +1,156 @@
+- name: "Build and Develop"
+  href: features-index.yml
+- name: "Platform-specific Development"
+  items:
+    - name: "PC-first development"
+      href: ../gdk-dev/pc-dev/TOC.yml
+    - name: "Xbox Series X|S-first development"
+      href: ../gdk-dev/console-dev/TOC.yml
+    - name: "Cross-platform development"
+      href: ../gdk-dev/overviews/TOC.yml
+- name: "GDK and game engines"
+  items:
+    - name: "Microsoft Game Development Kit and game engines"
+      href: ../gdk-dev/pc-dev/tutorials/pc-e2e-guide/e2e-gdk-and-engines.md
+    - name: "Unity Development Guide"
+      items:
+        - name: "Unity GDK integration"
+          href: ../gdk-dev/pc-dev/tutorials/get-started-with-unity-pc/gdk-unity-end-to-end-guide.md
+        - name: "C# API wrappers for Unity"
+          href: ../gdk-dev/pc-dev/tutorials/get-started-with-unity-pc/features/gdk-unity-api-wrappers.md
+    - name: "Unreal Development Guide"
+      items:
+        - name: "Unreal development"
+          href: ../gdk-dev/pc-dev/tutorials/get-started-with-unreal-pc/gc-get-started-with-unreal-pc.md
+        - name: "Unreal (earlier versions)"
+          href: ../gdk-dev/pc-dev/tutorials/get-started-with-unreal-pc/gc-get-started-with-unreal-legacy-pc.md
+    - name: "Custom C/C++ engine Guide"
+      href: ../gdk-dev/pc-dev/tutorials/get-started-with-custom-engine/gc-get-started-with-custom-engine-pc.md
+    - name: "GameMaker development for PC"
+      href: ../gdk-dev/pc-dev/tutorials/get-started-with-gamemaker/gc-get-started-with-gamemaker.md
+    - name: "Godot development for XBOX"
+      href: ../gdk-dev/pc-dev/tutorials/getting-started-with-godot/gc-get-started-godot.md
+- name: "Build Tools"
+  href: ../tools/tools-build-develop/TOC.yml
+- name: "User and Identity"
+  href: common/user/TOC.yml
+- name: Achievements
+  items:
+    - name: "User achievements systems (contents)"
+      href: ../services/player-data/achievements/live-achievements-nav.md
+    - name: "Event-based vs. title-managed Achievements"
+      href: ../services/player-data/achievements/live-achievements-eb-vs-tm.md
+    - name: Event-based achievements
+      items:
+        - name: "Event-based Achievements (contents)"
+          href: ../services/player-data/achievements/event-based/live-achievements-eb-nav.md
+        - name: "Overview of event-based Achievements"
+          href: ../services/player-data/achievements/event-based/live-achievements-eb-overview.md
+        - name: Concepts
+          items:
+            - name: "Event-based achievements concepts (contents)"
+              href: ../services/player-data/achievements/event-based/concepts/live-achievements-eb-concepts-nav.md
+            - name: "Scenarios for creating event-based achievements"
+              href: ../services/player-data/achievements/event-based/concepts/live-achievements-scenarios.md
+        - name: Portal config
+          items:
+            - name: "Event-based achievements portal configuration (contents)"
+              href: ../services/player-data/achievements/event-based/config/live-achievements-eb-config-nav.md
+            - name: "Portal configuration of event-based Achievements"
+              href: ../services/player-data/achievements/event-based/config/live-achievements-eb-portal.md
+            - name: "Portal configuration of event-based Challenges"
+              href: ../services/player-data/achievements/event-based/config/live-challenges-eb-portal.md
+        - name: Example code
+          items:
+            - name: "Event-based achievements example code (contents)"
+              href: ../services/player-data/achievements/event-based/how-to/live-achievements-eb-howto-nav.md
+            - name: "Getting event-based achievements"
+              href: ../services/player-data/achievements/event-based/how-to/live-getting-event-based-achievements.md
+            - name: "Writing an event to power an event-based achievement"
+              href: ../services/player-data/achievements/event-based/how-to/live-writing-event-based-achievement.md
+    - name: Title-managed achievements
+      items:
+        - name: "Title-managed Achievements (contents)"
+          href: ../services/player-data/achievements/title-managed/live-achievements-tm-nav.md
+        - name: "Title-managed Achievements overview"
+          href: ../services/player-data/achievements/title-managed/live-achievements-tm-overview.md
+        - name: Concepts
+          items:
+            - name: "Title-managed Achievements concepts (contents)"
+              href: ../services/player-data/achievements/title-managed/concepts/live-achievements-tm-concepts-nav.md
+            - name: "Configure Xbox achievement rewards"
+              href: ../services/player-data/achievements/title-managed/concepts/live-achievement-rewards.md
+        - name: Portal config
+          items:
+            - name: "Title-managed Achievements portal config (contents)"
+              href: ../services/player-data/achievements/title-managed/config/live-achievements-tm-config-nav.md
+            - name: "Configuring title-managed Achievements in Partner Center"
+              href: ../services/player-data/achievements/title-managed/config/live-achievements-tm-config.md
+        - name: Example code
+          items:
+            - name: "Title-managed Achievements example code (contents)"
+              href: ../services/player-data/achievements/title-managed/how-to/live-achievements-howto-nav.md
+            - name: "Getting title-managed Achievements"
+              href: ../services/player-data/achievements/title-managed/how-to/live-how-to-get-achievements.md
+            - name: "Updating title-managed Achievements"
+              href: ../services/player-data/achievements/title-managed/how-to/live-how-to-update-achievements.md
+    - name: Achievements Manager
+      items:
+        - name: "Achievements Manager (contents)"
+          href: ../services/player-data/achievements/achievements-manager/live-achievements-manager-nav.md
+        - name: "Xbox Achievements Manager API overview"
+          href: ../services/player-data/achievements/achievements-manager/live-achievements-manager-overview.md
+- name: "Core Systems Async programming model"
+  href: common/async/TOC.yml
+- name: Memory
+  href: console/memory/TOC.yml
+- name: "Graphics and Rendering"
+  items:
+  - name: "Graphics and Rendering"
+    href: graphics/TOC.yml
+  - name: "Lighting"
+    href: common/lighting/TOC.yml
+- name: "Input and Devices"
+  href: common/input/TOC.yml
+- name: "Game Configuration and Packaging"
+  items:
+  - name: "Game configuration"
+    href: common/game-config/TOC.yml
+  - name: "Packaging"
+    href: common/packaging/TOC.yml
+- name: "Audio"
+  items:
+    - name: Audio
+      href: console/audio/TOC.yml
+    - name: Text to speech
+      href: console/text-to-speech/text-to-speech.md
+- name: "Player Data, Social Features, Networking, and Multiplayer"
+  items:
+  - name: "Player Data"
+    href: ../services/player-data/TOC.yml
+  - name: "Social Features"
+    href: ../services/community/TOC.yml
+  - name: "Networking"
+    href: console/networking/TOC.yml
+  - name: "Multiplayer"
+    href: ../services/multiplayer/TOC.yml
+- name: "PlayFab"
+  items:
+    - name: "PlayFab integration"
+      href: ../services/playfab-integration/TOC.yml
+    - name: "PlayFab documentation"
+      href: /gaming/playfab/
+- name: "Storage and Game Saves"
+  items:
+    - name: Storage
+      href: console/storage/TOC.yml
+    - name: "Cloud Storage"
+      href: ../services/storage/TOC.yml
+    - name: "Game Saves"
+      href: common/game-save/TOC.yml
+- name: "Game streaming"
+  href: common/game-streaming/TOC.yml
+- name: "Game DVR"
+  href: console/game-dvr/gamedvr-broadcast.md
+- name: "Cross console gen development"
+  href: console/cross-gen/TOC.yml

@@ -1,0 +1,144 @@
+### YamlMime:Landing
+
+title: PlayFab supported languages # < 60 chars
+summary: PlayFab support for popular game development languages. # < 160 chars
+
+metadata:
+  title: PlayFab supported languages # Required; page title displayed in search results. Include the brand. < 60 chars.
+  description: description # Required; article description that is displayed in search results. < 160 chars.
+  ms.service: azure-playfab #Required; service per approved list. service slug assigned to your service by ACOM.
+  ms.topic: landing-page # Required
+  author: joannaleecy #Required; your GitHub user alias, with correct capitalization.
+  ms.author: jenelleb #Required; microsoft alias of author; optional team alias.
+  ms.date: 03/04/2024 #Required; mm/dd/yyyy format.
+
+# linkListType: architecture | concept | deploy | download | get-started | how-to-guide | learn | overview | quickstart | reference | sample | tutorial | video | whats-new
+
+landingContent:
+# Cards and links should be based on top customer tasks or top subjects
+# Start card title with a verb
+  # Card
+  - title: C/C++
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: C/C++
+            url: ../c/index.md
+      - linkListType: quickstart
+        links:
+          - text: Quickstart - Win32
+            url: ../c/quickstart-win32.md
+          - text: Quickstart - GDK
+            url: ../c/quickstart-gdk.md
+          - text: Quickstart - Android
+            url: ../c/quickstart-android.md
+          - text: Quickstart - iOS
+            url: ../c/quickstart-ios.md
+          - text: Quickstart - macOS
+            url: ../c/quickstart-macos.md
+          - text: Quickstart - Linux
+            url: ../c/quickstart-linux.md
+      - linkListType: how-to-guide
+        links:
+          - text: Making Async Calls
+            url: ../c/async.md
+          - text: Managing Memory
+            url: ../c/memory.md
+          - text: Handling Token Expiration
+            url: ../c/relogin.md
+          - text: Debug Tracing
+            url: ../c/tracing.md
+          - text: Initializing Servers
+            url: ../c/server.md
+      - linkListType: concept
+        links:
+          - text: Event Pipeline Overview
+            url: ../c/event-pipeline/eventpipeline.md
+          - text: Event Pipeline Tutorial
+            url: ../c/event-pipeline/eventpipeline-tutorial.md
+  # Card
+  - title: C#
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: C#
+            url: ../c-sharp/index.md
+      - linkListType: quickstart
+        links:
+          - text: Quickstart C#
+            url: ../c-sharp/quickstart.md
+
+  # Card
+  - title: Java
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Java
+            url: ../java/index.md
+      - linkListType: quickstart
+        links:
+          - text: Java quickstart
+            url: ../java/quickstart.md
+
+  # Card
+  - title: Legacy C++
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Legacy C++
+            url: ../playfab-cpp/index.md
+      - linkListType: quickstart
+        links:
+          - text: Quickstart - Linux quickstart
+            url: ../playfab-cpp/quickstart-linux.md
+          - text: Quickstart - Windows quickstart
+            url: ../playfab-cpp/quickstart-windows.md
+
+  # Card
+  - title: JavaScript
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: JavaScript
+            url: ../javascript/index.md
+      - linkListType: quickstart
+        links:
+          - text: JavaScript quickstart
+            url: ../javascript/quickstart.md
+
+  # Card
+  - title: Lua
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Lua
+            url: ../lua/index.md
+      - linkListType: quickstart
+        links:
+          - text: Quickstart - Corona
+            url: ../lua/quickstart-corona.md
+          - text: Quickstart - Defold
+            url: ../lua/quickstart-corona.md
+
+  # Card
+  - title: NodeJS
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: NodeJS
+            url: ../nodejs/index.md
+      - linkListType: quickstart
+        links:
+          - text: NodeJS quickstart
+            url: ../nodejs/quickstart.md
+  # Card
+  - title: Python
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Python
+            url: ../python/index.md
+      - linkListType: quickstart
+        links:
+          - text: Python quickstart
+            url: ../python/quickstart.md

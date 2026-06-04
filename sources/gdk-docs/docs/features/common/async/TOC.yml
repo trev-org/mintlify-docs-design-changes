@@ -1,0 +1,66 @@
+- name: "Asynchronous Programming Overview"
+  href: async-toc.md
+- name: "Asynchronous programming design goals and improvements"
+  href: async-whitepaper.md
+- name: "Asynchronous Programming Model"
+  href: async-programming-model.md
+- name: "Async Libraries"
+  items:
+    - name: XTaskQueue Library
+      items:
+        - name: "XTaskQueue library overview"
+          href: async-libraries/async-library-xtaskqueue.md
+        - name: "Create task queue"
+          href: async-libraries/async-library-xtaskqueue-example-create-task-queue.md
+        - name: "Dispatch task queue"
+          href: async-libraries/async-library-xtaskqueue-example-dispatch-task-queue.md
+        - name: "Clean up task queue"
+          href: async-libraries/async-library-xtaskqueue-example-cleanup-task-queue.md
+    - name: XAsync Library
+      items:
+        - name: "XAsync library overview"
+          href: async-libraries/async-library-xasync.md
+        - name: "Set up async task"
+          href: async-libraries/async-library-xasync-example-setup-async-task.md
+        - name: "Run simple task"
+          href: async-libraries/async-library-xasync-example-run-simple-task.md
+        - name: "Run Microsoft Game Development Kit (GDK) API task"
+          href: async-libraries/async-library-xasync-example-run-gdk-task.md
+    - name: XAsyncProvider Library
+      items:
+        - name: "XAsyncProvider library overview"
+          href: async-libraries/async-library-xasyncprovider.md
+        - name: "Set up custom provider"
+          href: async-libraries/async-library-xasyncprovider-example-setup-custom-provider.md
+        - name: "Set up invocation methods"
+          href: async-libraries/async-library-xasyncprovider-example-setup-invocation-methods.md
+        - name: "Set up return data"
+          href: async-libraries/async-library-xasyncprovider-example-setup-return-data.md
+        - name: "Set up cancelability"
+          href: async-libraries/async-library-xasyncprovider-example-setup-cancelability.md
+- name: Async Task Queue
+  items:
+    - name: "Async task queue design"
+      href: async-task-queue-design.md
+    - name: "Creating a thread pool task queue"
+      href: async-task-queue-design-howto/creating-thread-pool-task-queue.md
+    - name: "Submitting callbacks"
+      href: async-task-queue-design-howto/submitting-callbacks.md
+    - name: "Duplicating a task queue handle"
+      href: async-task-queue-design-howto/duplicating-task-queue-handle.md
+    - name: "Creating a manual task queue"
+      href: async-task-queue-design-howto/creating-manual-task-queue.md
+    - name: "Using events to control manual queue dispatching"
+      href: async-task-queue-design-howto/control-manual-queue-dispatching.md
+    - name: "Using a task queue with a Windows message loop"
+      href: async-task-queue-design-howto/task-queue-windows-msg-loop.md
+    - name: "Using the process task queue"
+      href: async-task-queue-design-howto/using-process-task-queue.md
+    - name: "Creating a composite task queue"
+      href: async-task-queue-design-howto/creating-composite-task-queue.md
+    - name: "Using delayed callbacks"
+      href: async-task-queue-design-howto/using-delayed-callbacks.md
+    - name: "Using a task queue waiter"
+      href: async-task-queue-design-howto/using-task-queue-waiter.md
+- name: "Generic async task wrapper"
+  href: async-task-function-example.md

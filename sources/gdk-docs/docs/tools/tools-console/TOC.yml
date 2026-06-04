@@ -1,0 +1,473 @@
+- name: "Console tools overview"
+  href: tools-sdk.md
+- name: "Xbox console game development: environment and tools (contents)"
+  href: gc-tools-console-toc.md
+- name: "Xbox environment tools and APIs (contents)"
+  href: gc-xbox-tools-and-apis-toc.md
+- name: "Package Uploader"
+  href: ../../features/common/packaging/package-uploader.md
+- name: "DevKit Agent"
+  href: devkitagent/devkitagent-overview.md
+- name: "Xbox One and Xbox Series X|S GDK Tools"
+  href: tools-sdk.md
+- name: Xbox Manager
+  items:
+    - name: "Xbox Manager"
+      href: xbom/xbom.md
+    - name: "Managing consoles"
+      href: xbom/manager-tool-groups.md
+    - name: "Console updates"
+      href: xbom/manager-tool-updating-console.md
+    - name: "Console settings"
+      href: xbom/manager-tool-console-settings.md
+    - name: "Applications and files"
+      href: xbom/manager-tool-managing-applications.md
+    - name: "Remote control"
+      href: xbom/manager-tool-gamepad-input.md
+    - name: "Group remote control"
+      href: xbom/manager-tool-group-remote-control.md
+    - name: "Media capture"
+      href: xbom/manager-tool-media-capture.md
+    - name: "Test accounts"
+      href: xbom/manager-tool-profiles.md
+    - name: "Console Automation"
+      href: xbom/manager-tool-automation.md
+    - name: "Multiplayer testing"
+      href: xbom/manager-tool-multiplayer.md
+- name: Xbox Device Portal (Windows Device Portal on Xbox)
+  items:
+    - name: "Device portal"
+      href: wdp/wdp.md
+    - name: "Enabling Device Portal"
+      href: wdp/enabling-wdp-on-xbox.md
+    - name: "Adding tools to workspaces"
+      href: wdp/windows-device-portal-on-xbox-adding-tools.md
+    - name: "Home page"
+      href: wdp/windows-device-portal-on-xbox-home.md
+    - name: "Overlay folders"
+      href: wdp/windows-device-portal-on-xbox-overlay-folders.md
+    - name: "Xbox Live page"
+      href: wdp/windows-device-portal-on-xbox-xbl.md
+    - name: "File explorer"
+      href: wdp/windows-device-portal-on-xbox-file-explorer.md
+    - name: "Performance page"
+      href: wdp/windows-device-portal-on-xbox-performance.md
+    - name: "HTTP monitor page"
+      href: wdp/windows-device-portal-on-xbox-http-monitor.md
+    - name: "Network page"
+      href: wdp/windows-device-portal-on-xbox-network.md
+    - name: "Media capture page"
+      href: wdp/windows-device-portal-on-xbox-media-capture.md
+    - name: "Crash data page"
+      href: wdp/windows-device-portal-on-xbox-crash-data.md
+    - name: "Settings page"
+      href: wdp/windows-device-portal-on-xbox-settings.md
+    - name: "Script authoring tool"
+      href: wdp/script-authoring-tool.md
+    - name: "OS update page"
+      href: wdp/windows-device-portal-on-xbox-os-update.md
+    - name: "Scratch page"
+      href: wdp/windows-device-portal-on-xbox-scratch.md
+    - name: "Game event page"
+      href: wdp/windows-device-portal-on-xbox-game-event-data.md
+- name: Developer Home (Dev Home)
+  items:
+    - name: "Dev Home overview"
+      href: devhome/devhome.md
+    - name: "Home page (Dev Home)"
+      href: devhome/devhome-home.md
+    - name: "Xbox Live page (Dev Home)"
+      href: devhome/devhome-live.md
+    - name: "Settings page (Dev Home)"
+      href: devhome/devhome-settings.md
+    - name: "Networking page (Dev Home)"
+      href: devhome/devhome-networking.md
+    - name: "Performance page (Dev Home)"
+      href: devhome/devhome-performance.md
+    - name: "Streaming page (Dev Home)"
+      href: devhome/devhome-streaming.md
+    - name: "Report a Problem"
+      href: devhome/devhome-report-a-problem.md
+
+    - name: "Manage overlay folders"
+      href: devhome/devhome-overlay-folders.md
+- name: Command-line tools
+  items:
+    - name: "Command-line tools for development tasks (contents)"
+      href: commandlinetools/commandlinetools.md
+    - name: "Microsoft Game Development Kit (GDK) command prompts"
+      href: commandlinetools/commandprompt.md
+    - name: "Application Management (xbapp.exe)"
+      href: commandlinetools/xbapp.md
+    - name: "Screen capture (xbcapture.exe)"
+      href: commandlinetools/xbcapture.md
+    - name: "Clean (xbcleanup.exe)"
+      href: commandlinetools/xbcleanup.md
+    - name: "Configuration (xbconfig.exe)"
+      href: commandlinetools/xbconfig.md
+    - name: "Connect (xbconnect.exe)"
+      href: commandlinetools/xbconnect.md
+    - name: "File copy (xbcp.exe)"
+      href: commandlinetools/xbcp.md
+    - name: "xbCopy (xbcopy.exe)"
+      href: commandlinetools/xbcopy.md
+    - name: "Credentials (xbcred.exe)"
+      href: commandlinetools/xbcred.md
+    - name: "Debug string monitoring (xbdbgmon.exe)"
+      href: commandlinetools/xbdbgmon.md
+    - name: "File delete (xbdel.exe)"
+      href: commandlinetools/xbdel.md
+    - name: "Diagnostics information (xbdiaginfo.exe)"
+      href: commandlinetools/xbdiaginfo.md
+    - name: "Directory (xbdir.exe)"
+      href: commandlinetools/xbdir.md
+    - name: "Error Lookup (xberror.exe)"
+      href: commandlinetools/xberror.md
+    - name: "Manage game streaming (xbgamestream.exe)"
+      href: commandlinetools/xbgamestream.md
+    - name: "Make directory (xbmkdir.exe)"
+      href: commandlinetools/xbmkdir.md
+    - name: "CPU performance (xbperf.exe)"
+      href: commandlinetools/xbperf.md
+    - name: "Provision (xbprovision.exe)"
+      href: commandlinetools/xbprovision.md
+    - name: "Reboot (xbreboot.exe)"
+      href: commandlinetools/xbreboot.md
+    - name: "Remote recovery (xbremoterecovery.exe)"
+      href: commandlinetools/xbremoterecovery.md
+    - name: "Delete directory (xbrmdir.exe)"
+      href: commandlinetools/xbrmdir.md
+    - name: "Execute (xbrun.exe)"
+      href: commandlinetools/xbrun.md
+    - name: "Manage XGameSave storage on console (xbstorage.exe)"
+      href: commandlinetools/xbstorage.md
+    - name: "Stress (xbstress.exe)"
+      href: commandlinetools/xbstress.md
+    - name: "Process list (xbtlist.exe)"
+      href: commandlinetools/xbtlist.md
+    - name: "Trace (xbtrace.exe)"
+      href: commandlinetools/xbtrace.md
+    - name: "TimeTravelDebugging for Xbox tool (xbttd.exe)"
+      href: commandlinetools/xbttd.md
+    - name: "Transfer Protocol Service (XbtpLinkSvc.exe)"
+      href: commandlinetools/xbtplinksvc.md
+    - name: "Update hosts (XbUpdateHosts.exe)"
+      href: commandlinetools/xbupdatehosts.md
+    - name: "User management (xbuser.exe)"
+      href: commandlinetools/xbuser.md
+    - name: "Version information (xbVersionInfo.exe)"
+      href: commandlinetools/xbversioninfo.md
+    - name: "XTF transport errors"
+      href: commandlinetools/xtf-transport-errors.md
+- name: Console based Command-line tools
+  items:
+    - name: "Console-based command-line tools (contents)"
+      href: console_commandlinetools/consolecommandlinetools.md
+    - name: "Calling wd tools from your title"
+      href: console_commandlinetools/titlecodecallingwdtools.md
+    - name: "Manage packages (wdapp.exe)"
+      href: console_commandlinetools/wdapp.md
+    - name: "Media capture (wdcapture.exe)"
+      href: console_commandlinetools/wdcapture.md
+    - name: "Long duration game captures (wdcapturesession.exe)"
+      href: console_commandlinetools/wdcapturesession.md
+    - name: "Configuration and settings management (wdconfig.exe)"
+      href: console_commandlinetools/wdconfig.md
+    - name: "Credentials (wdCred.exe)"
+      href: console_commandlinetools/wdcred.md
+    - name: "Manage game streaming (wdgamestream.exe)"
+      href: console_commandlinetools/wdgamestream.md
+    - name: "Front panel management (wdpanel.exe)"
+      href: console_commandlinetools/wdpanel.md
+    - name: "Recovery (wdRecovery.exe)"
+      href: console_commandlinetools/wdrecovery.md
+    - name: "Run (wdRun.exe)"
+      href: console_commandlinetools/wdrun.md
+    - name: "Event tracing (wdtrace.exe)"
+      href: console_commandlinetools/wdtrace.md
+    - name: "Manage user accounts (wduser.exe)"
+      href: console_commandlinetools/wduser.md
+- name: Visual Studio
+  items:
+    - name: "Visual Studio development environment (contents)"
+      href: visualstudio/visualstudio.md
+    - name: "Visual Studio 2026 Microsoft Game Development Kit (GDK) support notes"
+      href: visualstudio/vs-2026-support-notes.md
+    - name: "Visual Studio 2022 Microsoft Game Development Kit (GDK) support notes"
+      href: visualstudio/vs-2022-support-notes.md
+    - name: "Visual Studio 2019 Microsoft Game Development Kit (GDK) support notes"
+      href: visualstudio/vs-2019-support-notes.md
+    - name: "Project templates in Visual Studio for Xbox development"
+      href: visualstudio/durango-visual-studio-templates.md
+    - name: "Visual Studio properties for Xbox development"
+      href: visualstudio/durango-property-pages.md
+    - name: "Xbox Gaming Explorer"
+      href: visualstudio/xbox-gaming-explorer.md
+    - name: "Xbox System Monitor"
+      href: visualstudio/xbox-system-monitor.md
+    - name: "Xbox Game View"
+      href: visualstudio/xbox-game-view.md
+    - name: "Xbox Gaming Project Control"
+      href: visualstudio/xbox-gaming-project-control.md
+    - name: "Debugging Xbox projects by using Visual Studio"
+      href: visualstudio/debugging-with-visualstudio.md
+    - name: "Visual Studio build configurations for Xbox One and Xbox Series X|S"
+      href: visualstudio/vs-cross-gen.md
+    - name: "Use Clang with the Microsoft Game Development Kit (GDK)"
+      href: visualstudio/vs-clang.md
+    - name: "How to: deploying game resource files by using Visual Studio"
+      href: visualstudio/how-to-deploy-resources.md
+    - name: "How to: enabling multiple build configurations in a single deployment"
+      href: visualstudio/multiple-build-configurations.md
+    - name: "Xbox Compiler Technology"
+      href: visualstudio/compiler-technology.md
+    - name: "Address Sanitizer Support for Xbox"
+      href: visualstudio/address-sanitizer-support.md
+    - name: "Deployment errors"
+      href: visualstudio/deployment-errors.md
+    - name: "Table of intrinsics"
+      href: visualstudio/table-of-intrinsics.md
+    - name: "Microsoft Game Development Kit on Xbox preprocessor definitions"
+      href: visualstudio/preprocessor-definitions.md
+    - name: "Visual C++ compiler and linker switch recommendations"
+      href: visualstudio/compiler-switch-recommendations.md
+    - name: "Visual C++ compiler resources"
+      href: visualstudio/compiler-resources.md
+- name: PIX
+  items:
+    - name: "PIX (contents)"
+      href: pix/pix.md
+    - name: Setting up and getting started
+      items:
+        - name: "Setting up and getting started (contents)"
+          href: pix/setup-getting-started.md
+        - name: "Launching PIX and connecting to consoles"
+          href: pix/launching-and-connecting.md
+        - name: "Configuring a console for use with PIX"
+          href: pix/required-xconfig-settings.md
+        - name: "Configuring PIX to access PDBs for CPU captures"
+          href: pix/pix-cpu-pdb-config.md
+    - name: "Configuring the PIX UI"
+      href: pix/configuring-pix.md
+    - name: Extensibility
+      items:
+        - name: "Extensibility (contents)"
+          href: pix/extensibility/pix-extensibility.md
+        - name: "Settings"
+          href: pix/extensibility/pix-extensibility-settings.md
+        - name: "Mesh Viewer"
+          href: pix/extensibility/pix-extensibility-mesh-viewer.md
+        - name: "Texture Viewer"
+          href: pix/extensibility/pix-extensibility-texture-viewer.md
+        - name: "HLSL API"
+          href: pix/extensibility/pix-extensibility-hlsl.md
+    - name: Analyzing title performance
+      items:
+        - name: "Analyzing title performance (contents)"
+          href: pix/analyzing-system-performance.md
+        - name: "System Monitor"
+          href: pix/pix-system-monitor.md
+        - name: "Title Performance Overlay overview"
+          href: titleperfoverlay/titleperfoverlay.md
+        - name: Analyzing CPU performance
+          items:
+            - name: "Analyzing CPU performance (contents)"
+              href: pix/cpu-performance.md
+            - name: "Timing Captures"
+              href: pix/new-timing-captures.md
+            - name: "Timing Capture bookmarks"
+              href: pix/pix-timing-capture-bookmarks.md
+            - name: "Timing Captures Metrics View"
+              href: pix/pix-metrics-view.md
+            - name: "Timing Captures Summary View"
+              href: pix/pix-timing-capture-summary-layout.md
+            - name: "Timing Capture Comparison Features"
+              href: pix/pix-timing-capture-compare.md
+            - name: "Opening programmatic Timing Captures"
+              href: pix/open-offline-timing-captures.md
+            - name: "Converting previous versions of Timing Captures"
+              href: pix/pix-convert-timing-captures.md
+            - name: "Converting an etl file to a Timing Capture"
+              href: pix/pix-convert-etl-files.md
+            - name: "Analyzing stalls and context switches"
+              href: pix/pix-context-switches.md
+            - name: "Analyzing CPU samples in PIX Timing Captures"
+              href: pix/pix-sampling-profiler.md
+            - name: "Analyzing the critical path for a PIX event using Timing Captures"
+              href: pix/pix-critical-path.md
+            - name: "Querying the Timing Capture file format"
+              href: pix/pix-timing-capture-sqlite-queries.md
+            - name: "Instruction Trace Captures"
+              href: pix/pix-instruction-trace-captures.md
+        - name: Analyzing GPU performance
+          items:
+            - name: "Analyzing GPU performance (contents)"
+              href: pix/gpu/gpu-performance.md
+            - name: "PIX GPU Captures"
+              href: pix/gpu/pix-gpu-capture.md
+            - name: "PIX GPU Trace Captures"
+              href: pix/gpu-trace/pix-gpu-trace-capture.md
+            - name: "PIX Bottlenecks"
+              href: pix/gpu/pix-gpu-timing.md
+            - name: PIX ExecuteIndirect Support
+              items:
+                - name: "PIX ExecuteIndirect Support overview"
+                  href: pix/gpu/pix-gpu-executeindirect.md
+                - name: "Page overview"
+                  href: pix/gpu/pix-gpu-overview-page.md
+                - name: "PIX GPU Timeline"
+                  href: pix/gpu/pix-gpu-timeline-tab.md
+            - name: Pipeline view
+              items:
+                - name: "Overview - Pipeline view"
+                  href: pix/gpu/pix-gpu-pipeline-view.md
+                - name: "Input assembly"
+                  href: pix/gpu/pix-gpu-input-assembly.md
+            - name: PIX resources
+              items:
+                - name: "PIX resources (contents)"
+                  href: pix/gpu/pix-gpu-resources.md
+                - name: "PIX Variable Rate Shading"
+                  href: pix/gpu/pix-vrs.md
+                - name: "PIX Mesh viewer"
+                  href: pix/gpu/pix-mesh-viewer.md
+                - name: "PIX BVH viewer"
+                  href: pix/gpu/pix-bvh-viewer.md
+                - name: "PIX Texture viewer"
+                  href: pix/gpu/pix-texture-viewer.md
+                - name: "PIX State View"
+                  href: pix/gpu/pix-state.md
+                - name: "PIX Event Details"
+                  href: pix/gpu/pix-event-details.md
+                - name: "PIX API Objects"
+                  href: pix/gpu/pix-api-objects.md
+                - name: "PIX Resources view"
+                  href: pix/gpu/pix-resources-tab.md
+                - name: "PIX Edits"
+                  href: pix/gpu/pix-edits.md
+                - name: "PIX Texture Mip Stats"
+                  href: pix/gpu/pix-texture-mip-stats.md
+                - name: "PIX Pipeline States"
+                  href: pix/gpu/pix-pipeline-states.md
+                - name: "PIX Memory Viewer"
+                  href: pix/gpu/pix-memory-viewer.md
+            - name: Using PIX with shaders
+              items:
+                - name: "Using PIX with shaders (contents)"
+                  href: pix/gpu/pix-with-shaders.md
+                - name: "PIX Shader Debugging"
+                  href: pix/gpu/pix-shader-debugging.md
+                - name: "PIX On-demand Live Debugging"
+                  href: pix/pix-on-demand-live-debugging.md
+                - name: "PIX Live Debugging on Shader Exceptions"
+                  href: pix/pix-shader-exceptions-live-debugging.md
+                - name: "PIX Shader Exception Detection in GPU Captures"
+                  href: pix/pix-shader-exception-detection.md
+                - name: "PIX Shader PDBs"
+                  href: pix/gpu/pix-shader-pdbs.md
+                - name: "PIX Shader Trace (Xbox Series X|S)"
+                  href: pix/gpu/pix-shader-trace-scarlett.md
+                - name: "PIX Shader Trace (Xbox One)"
+                  href: pix/gpu/pix-shader-trace-durpio.md
+                - name: "PIX Edit and Continue"
+                  href: pix/gpu/pix-edit-and-continue.md
+            - name: "Dr. PIX"
+              href: pix/gpu/pix-drpix.md
+            - name: "PIX counters"
+              href: pix/gpu/pix-counters.md
+            - name: "PIX table of hardware counters"
+              href: pix/gpu/pix-table-of-hardware-counters.md
+            - name: "PIX GPU Bottlenecks"
+              href: pix/gpu/pix-bottlenecks.md
+            - name: GPU Trace
+              items:
+                - name: "PIX GPU Trace Capture Overview"
+                  href: pix/gpu-trace/pix-gpu-trace-overview.md
+                - name: "PIX GPU Trace Capture UI"
+                  href: pix/gpu-trace/pix-gpu-trace-ui.md
+            - name: Shader Explorer
+              items:
+                - name: "PIX Shader Explorer"
+                  href: pix/shader-explorer/pix-shader-explorer-overview.md
+            - name: PIX Live
+              items:
+                - name: "PIX Live View"
+                  href: pix/pix-live.md
+                - name: "PIX Memory Pies"
+                  href: pix/pix-live-memory-pies.md
+            - name: GPU Debugging
+              items:
+                - name: "GPU Debugging"
+                  href: pix/pix-gpu-debugging.md
+        - name: Analyzing memory usage and performance
+          items:
+            - name: "Analyzing memory usage and performance (contents)"
+              href: pix/memory-performance.md
+            - name: "Analyzing memory usage and performance in Timing Captures"
+              href: pix/pix-timing-captures-memory.md
+            - name: "Analyzing D3D API object usage in Timing Captures"
+              href: pix/pix-timing-captures-d3d-objects.md
+            - name: "PIX custom memory allocators"
+              href: pix/pix-custom-memory-allocators.md
+        - name: Analyzing DirectStorage and Win32 file IO performance
+          items:
+            - name: "Analyzing DirectStorage and Win32 file IO performance (contents)"
+              href: pix/fileio-performance.md
+            - name: "Analyzing DirectStorage performance"
+              href: pix/pix-directstorage.md
+            - name: "Analyzing Win32 file IO performance"
+              href: pix/pix-win32-fileio.md
+            - name: "Analyzing file accesses that occur within archive files"
+              href: pix/pix-mappingfiles.md
+            - name: "Detecting violations of write limitations for local storage"
+              href: pix/pix-nvme-write-monitor.md
+        - name: Analyzing Input and Dynamic Latency Input
+          items:
+            - name: "Analyzing Dynamic Latency Input performance"
+              href: pix/pix-input-sync.md
+        - name: "Profiling a title's initialization and startup code"
+          href: pix/pix-capture-from-launch.md
+        - name: "Saving and Loading PIX Settings"
+          href: pix/pix-save-load-settings.md
+    - name: "PIX API reference"
+      href: pix/pix-api-reference.md
+    - name: "PIX videos"
+      href: pix/pix-videos.md
+- name: Shader Compiler
+  items:
+    - name: "Shader compiler overview"
+      href: shadercompiler/shader-compiler.md
+    - name: "Using DXC"
+      href: shadercompiler/dxc-usage.md
+    - name: "Port guide from FXC to DXC"
+      href: shadercompiler/dxc-port-from-fxc.md
+    - name: "Xbox defines"
+      href: shadercompiler/dxc-xbox-defines.md
+    - name: "Xbox intrinsics"
+      href: shadercompiler/dxc-xbox-intrinsics.md
+    - name: "Xbox HLSL Extensions"
+      href: shadercompiler/dxc-xbox-extensions.md
+- name: Hang Investigation
+  items:
+    - name: "Hang Investigation for Xbox (HIX)"
+      href: hix/hix.md
+    - name: "Live Shader Debugging for Hang Investigation"
+      href: hix/live-debugging.md
+    - name: "Live Shader Debugging in VS for Hang Investigation"
+      href: hix/live-debugging-in-vs.md
+    - name: "On-demand Live Debugging in VS"
+      href: hix/on-demand-live-debugging-in-vs.md
+    - name: "Live Debugging in VS on Shader Exceptions"
+      href: hix/shader-exceptions-live-debugging-in-vs.md
+    - name: "Xbox Hang Investigation Tool (XHIT)"
+      href: xhit/xhit-tool.md
+- name: "xbWatson"
+  href: xbWatson/xbwatson.md
+- name: Profile-guided optimization
+  items:
+    - name: "Profile-guided optimization (contents)"
+      href: pgo/pgo.md
+    - name: "Profile-guided optimization"
+      href: pgo/pgo_full.md
+- name: "Xbox video server"
+  href: xbox-video-server.md

@@ -1,0 +1,70 @@
+- name: Create new products
+  href: how-to-create-new-products.md
+- name: Add and edit products in a Bundle
+  href: how-to-addeditproductstobundle.md
+- name: Delist a product from the Microsoft Store
+  href: how-to-delist-from-retail.md
+- name: Create and manage sandboxes
+  href: how-to-create-and-manage-sandboxes.md
+- name: Create and manage Xbox test accounts
+  href: how-to-create-and-manage-test-accounts.md
+- name: Set up free to use scenarios  
+  href: how-to-freetouse.md
+- name: Make changes to product pricing
+  href: how-to-priceupdate.md
+- name: Set age ratings manually
+  href: how-to-set-age-ratings.md
+- name: Package management
+  items:
+  - name: Packages - advanced settings
+    href: how-to-manage-advanced-settings-for-packages.md
+  - name: Configure package flights
+    href: how-to-package-flights-for-xvc-packages.md
+  - name: Package rollback
+    href: how-to-package-rollback.md
+- name: Configure visible products
+  items:
+    - name: Visible and purchasable products
+      href: how-to-visible-release.md
+    - name: Visible and non-purchasable products (including Wish List pages)
+      href: how-to-visible-only-pdp.md
+- name: Configure hidden products
+  items:
+    - name: Create a hidden product redeemable via Promotional Code
+      href: how-to-hiddentokenonly.md
+    - name: Configure a product to be hidden and purchasable  
+      href: how-to-hiddenrelease.md
+    - name: Configure add-ons for in-game store-only availability
+      href: how-to-does-not-have-store-listing.md
+- name: Pre-orders
+  items:
+    - name: Configure pre-orders
+      href: how-to-preorder.md
+    - name: Pre-order game or durable products
+      href: how-to-create-preorder-visible-product.md
+    - name: Pre-order bundles
+      href: how-to-create-preorder-visible-bundle.md
+    - name: Early access bundle
+      href: how-to-create-preorder-early-access-bundle.md
+    - name: Create hidden pre-order products
+      href: how-to-create-preorder-hidden-products.md
+    - name: Create pre-order unlock bundles
+      href: how-to-create-preorder-unlock-bundle.md
+- name: Discs
+  items:
+    - name: Request and manage discs
+      href: how-to-request-and-manage-discs.md
+    - name: Submit royalty tiers
+      href: how-to-submit-royalty-tiers.md
+- name: Trials
+  items:
+    - name: Set up a curated trial
+      href: how-to-curated-trial.md
+    - name: Set up a time-limited trial
+      href: how-to-timedtrial.md
+    - name: Set up a usage-limited trial
+      href: how-to-create-usage-limited-free-trials.md
+- name: Configure Xbox services (Data Platform 2013)
+  href: data-platform-2013/TOC.yml
+- name: Configure Xbox services (Data Platform 2017)
+  href: /gaming/gdk/docs/services/xbox-services-index

@@ -1,0 +1,29 @@
+- name: Game publishing documentation
+  href: index.yml
+- name: Overview
+  href: overview.md
+- name: What's new
+  href: whats-new.md
+- name: Get started with game publishing
+  href: publishing-processes/managed-creators/TOC.yml
+- name: Game setup tutorials
+  href: tutorial-xbox-managed/TOC.yml
+- name: Xbox Certification
+  href: concepts/certification/TOC.yml
+- name: Partner Center features
+  href: concepts/TOC.yml
+- name: Partner Center how-to guides
+  href: how-to/TOC.yml
+- name: Xbox resources and terminology
+  href: resources/TOC.yml
+- name: Microsoft Store Policies and Code of Conduct
+  href: /windows/apps/publish/store-policies-and-code-of-conduct
+  items: 
+    - name: Microsoft Store Policies
+      href: /windows/apps/publish/store-policies
+    - name: Microsoft Store Policies change history
+      href: /windows/apps/publish/store-policies-change-history
+    - name: Developer Code of Conduct
+      href: /windows/apps/publish/store-developer-code-of-conduct
+    - name: Microsoft Store Product Ranking, Placement and Marketing Disclosure Statement
+      href: https://aka.ms/disclosurepolicypdf

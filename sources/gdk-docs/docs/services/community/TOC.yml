@@ -1,0 +1,85 @@
+- name: "Overview of Social features"
+  href: live-social-overview.md
+- name: Social Manager
+  items:
+    - name: "Social Manager overview"
+      href: social-manager/live-social-manager-overview.md
+    - name: Concepts
+      items:
+        - name: "Privilege codes for Social Manager"
+          href: social-manager/concepts/live-socmgr-privilege-codes.md
+        - name: "Social Manager memory and performance"
+          href: social-manager/concepts/live-socmgr-mem-perf.md
+- name: People System (Friends List)
+  items:
+    - name: "People System (Friends List) overview"
+      href: people-system/live-people-system-overview.md
+    - name: Concepts
+      items:
+        - name: "Displaying people from the People System"
+          href: people-system/concepts/live-pplsys-displaying-people.md
+        - name: Example code
+          items:
+            - name: "Getting a social relationship"
+              href: people-system/how-to/live-getting-a-social-relationship.md
+            - name: "Handling a social relationship change"
+              href: people-system/how-to/live-handling-a-relationship-change.md
+- name: Rich Presence
+  items:
+    - name: "Rich Presence (contents)"
+      href: presence/live-presence-nav.md
+    - name: "Rich Presence overview"
+      href: presence/live-presence-overview.md
+    - name: Concepts
+      items:
+        - name: "Rich Presence concepts (contents)"
+          href: presence/concepts/live-presence-concepts-nav.md
+        - name: "Best practices for Rich Presence"
+          href: presence/concepts/live-presence-best-practices.md
+        - name: "Policies and limits for Rich Presence strings"
+          href: presence/concepts/live-presence-limits.md
+        - name: "Rich Presence appendix"
+          href: presence/concepts/live-presence-apx.md
+    - name: Portal config
+      items:
+        - name: "Rich Presence portal config (contents)"
+          href: presence/config/live-presence-config-nav.md
+        - name: "Configuring Rich Presence strings"
+          href: presence/config/live-presence-config.md
+        - name: "Configuring Rich Presence strings in Partner Center"
+          href: presence/config/live-presence-config2.md
+        - name: Example code
+          items:
+            - name: "Rich Presence example code (contents)"
+              href: presence/how-to/live-presence-howto-nav.md
+            - name: "Getting a user's Presence"
+              href: presence/how-to/live-getting-a-users-presence.md
+            - name: "Handling a title Presence change"
+              href: presence/how-to/live-handling-a-title-presence-change.md
+            - name: "Handling a device Presence change"
+              href: presence/how-to/live-handling-a-device-presence-change.md
+            - name: "Updating a user's Presence via XSAPI C"
+              href: presence/how-to/live-updating-user-presence.md
+            - name: "Updating a user's Presence via REST"
+              href: presence/how-to/live-updating-presence-rest.md
+- name: Localized strings
+  items:
+    - name: "Localized strings (contents)"
+      href: localized-strings/live-localized-strings-nav.md
+    - name: "Configuring localized strings in Partner Center"
+      href: localized-strings/live-localized-strings-config.md
+    - name: "Xbox Services Language Fallback"
+      href: localized-strings/live-language-fallback.md
+    - name: Reputation
+      items:
+        - name: "Reputation overview"
+          href: reputation/live-reputation-overview.md
+        - name: "Sending reputation feedback from a title"
+          href: reputation/concepts/live-sending-reputation-feedback.md
+        - name: Example code
+          items:
+            - name: "Reputation example code (contents)"
+              href: reputation/how-to/live-reputation-howto-nav.md
+            - name: "Submitting Reputation feedback"
+              href: reputation/how-to/live-submitting-reputation-feedback.md
+

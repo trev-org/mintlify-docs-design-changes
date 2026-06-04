@@ -1,0 +1,20 @@
+- name: Game Saves overview
+  href: game-saves-overview.md
+- name: Game Saves developer guide
+  href: game-saves-developer-guide.md
+- name: Understanding the Game Saves sync flow
+  href: game-saves-syncing.md
+- name: Game Saves storage systems
+  href: game-saves-storage-systems.md
+- name: Game Saves system dialogs
+  href: game-saves-dialogues.md
+- name: Game Saves walkthroughs and samples
+  href: game-saves-walkthroughs-and-samples.md
+- name: Game Saves debugging
+  href: game-saves-debugging.md
+- name: Game Saves tools
+  href: game-saves-tools.md
+- name: XGameSaveFiles API overview
+  href: XGameSaveFiles.md
+- name: XGameSave API overview
+  href: XGameSave.md

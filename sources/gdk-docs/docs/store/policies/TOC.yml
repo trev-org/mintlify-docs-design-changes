@@ -1,0 +1,160 @@
+- name: "Policies and Xbox Requirements"
+  href: GC-policies-nav.md
+- name: "Change history for Xbox Requirements and test cases"
+  href: console-XR-change-history.md
+- name: "Xbox Requirements for Xbox console games"
+  href: Console/certification-requirements.md
+  items:
+    - name: "Certification Tested Xbox Requirements for Xbox console games"
+      href: Console/console-certification-requirements-and-tests.md
+    - name: "Xbox network terminology for console games"
+      href: Console/console-certification-terminology.md
+    - name: "Top failing test cases for console"
+      href: Console/console-TopFailingTestcases.md
+- name: "Xbox Requirements and Store Policies for PC and mobile games"
+  href: pc/live-policies-pc.md
+  items:
+    - name: "Certification tested Xbox Requirements for PC and mobile games"
+      href: pc/live-policy-tests-pc.md
+    - name: "Xbox network terminology for PC and mobile games"
+      href: pc/live-terminology-pc.md
+    - name: "Top failing test cases for PC"
+      href: pc/live-TopFailingTestcases-pc.md
+    - name: "Xbox Network Services data processing addendum for PC and mobile games"
+      href: pc/live-network-services-data-processing-addendum.md
+- name: "Xbox Requirements for Beta and Xbox Game Preview titles"
+  href: certification-Requirements-Beta-Game-Preview.md
+- name: "Certification Failure Mode Analysis (FMA)"
+  href: FMA/Certification-Failure-Mode-Analysis.md
+  items:
+    - name: "XR001 Title Stability"
+      href: FMA/XR001-Title-Stability.md
+    - name: "XR003 Title Quality for Submission"
+      href: FMA/XR003-Title-Quality-for-Submission.md
+    - name: "XR013 Linking Microsoft Accounts with Publisher Accounts"
+      href: FMA/XR013-Linking-Microsoft-Accounts-with-Publisher-Accounts.md
+    - name: "XR014 Personal Information"
+      href: FMA/XR014-Personal-Information.md
+    - name: "XR015 Managing Player Communication"
+      href: FMA/XR015-Managing-Player-Communication.md
+    - name: "XR018 User Generated Content"
+      href: FMA/XR018-User-Generated-Content.md
+    - name: "XR022 Official Naming Standards"
+      href: FMA/XR022-Official-Naming-Standards.md
+    - name: "XR034 Streaming Install Initial Play Marker"
+      href: FMA/XR034-Streaming-Install-Initial-Play-Marker.md
+    - name: "XR036 Title Pricing Information"
+      href: FMA/XR036-Title-Pricing-Information.md
+    - name: "XR037 Dependencies on Content Packages"
+      href: FMA/XR037-Dependencies-on-Content-Packages.md
+    - name: "XR045 Xbox User and Account Privileges"
+      href: FMA/XR045-Xbox-User-and-Account-Privileges.md
+    - name: "XR046 Display Name and Gamerpic"
+      href: FMA/XR046-Display-Name-and-Gamerpic.md
+    - name: "XR047 User Profile Access"
+      href: FMA/XR047-User-Profile-Access.md
+    - name: "XR048 Profile Settings Usage"
+      href: FMA/XR048-Profile-Settings-Usage.md
+    - name: "XR052 User State and Title-Save Location, Roaming and Dependencies"
+      href: FMA/XR052-User-State-and-Title-Save-Location-Roaming-and-Dependencies.md
+    - name: "XR055 Achievements"
+      href: FMA/XR055-Achievements.md
+    - name: "XR057 No Additional Purchase Requirements for Base Achievements"
+      href: FMA/XR057-No-Additional-Purchase-Requirements-for-Base-Achievements.md
+    - name: "XR064 Joinable Game Sessions and Online Play"
+      href: FMA/XR064-Joinable-Game-Sessions-and-Online-Play.md
+    - name: "XR067 Maintaining Multiplayer Session State"
+      href: FMA/XR067-Maintaining-Multiplayer-Session-State.md
+    - name: "XR070 Xbox Friends List"
+      href: FMA/XR070-Xbox-Friends-List.md
+    - name: "XR074 Loss of Connectivity to Xbox and Partner Services"
+      href: FMA/XR074-Loss-of-Connectivity-to-Xbox-and-Partner-Services.md
+    - name: "XR112 Establishing A User and Controller During Initial Activation and Resume"
+      href: FMA/XR112-Establishing-a-User-and-Controller-During-Initial-Activation-and-Resume.md
+    - name: "XR115 Addition and Removal of Users or Controllers During Gameplay"
+      href: FMA/XR115-Addition-and-Removal-of-Users-or-Controllers-During-Gameplay.md
+    - name: "XR117 Demos, Trials and Betas"
+      href: FMA/XR117-Demos-Trials-and-Betas.md
+    - name: "XR123 Installation of DLC During Gameplay"
+      href: FMA/XR123-Installation-of-DLC-During-Gameplay.md
+    - name: "XR124 Game Invitations"
+      href: FMA/XR124-Game-Invitations.md
+    - name: "XR129 Intelligent Delivery Content Management"
+      href: FMA/XR129-Intelligent-Delivery-Content-Management.md
+    - name: "XR130 Xbox Console Families and Generations"
+      href: FMA/XR130-Xbox-Console-Families-and-Generations.md
+    - name: "XR131 Game DVR and Screenshots"
+      href: FMA/XR131-Game-DVR-and-Screenshots.md
+    - name: "XR132 Service Access Limitations"
+      href: FMA/XR132-Service-Access-Limitations.md
+    - name: "XR133 Local Storage Write Limitations"
+      href: FMA/XR133-Local-Storage-Write-Limitations.md
+- name: "Xbox Requirements and Policies Supporting Content"
+  href: XR/Console-XR-supporting-docs.md
+  items:
+    - name: "XR-001 Title Stability"
+      href: XR/XR001.md
+    - name: "XR-003 Title Quality for Submission"
+      href: XR/XR003.md
+    - name: "XR-006 Title Assets and Metadata"
+      href: XR/XR006.md
+    - name: "XR-007 Cross-Network Play, Data Usage, and Companion App Interactions (MMO implementation example)"
+      href: XR/XR007-MMO-Example.md
+    - name: "XR-007 Cross-Network Play, Data Usage, and Companion App Interactions (Multiplayer game implementation example)"
+      href: XR/XR007-Multiplayer-Example.md
+    - name: "XR-007 Cross-Network Play, Data Usage, and Companion App Interactions"
+      href: XR/XR007.md
+    - name: "XR-007 Cross-Network Data Usage"
+      href: XR/xr007pc.md
+    - name: "XR-013 Linking Microsoft Accounts with Publisher Accounts"
+      href: XR/XR013.md
+    - name: "XR-014 Player Data and Personal Information"
+      href: XR/XR014.md
+    - name: "XR-015 Managing Player Communications"
+      href: XR/XR015.md
+    - name: "XR-017 Title Ratings"
+      href: XR/XR017.md
+    - name: "XR-018 User-Generated Content"
+      href: XR/XR018.md
+    - name: "XR-036 In-Title Pricing Information"
+      href: XR/XR036.md
+    - name: "XR-037 Dependencies on Content Packages"
+      href: XR/XR037.md
+    - name: "XR-045 Xbox network and Account Privileges"
+      href: XR/XR045.md
+    - name: "XR-046 Display Name and Gamerpic"
+      href: XR/XR046.md
+    - name: "XR-047 User-Profile Access"
+      href: XR/XR047.md
+    - name: "XR-048 Profile Settings Usage"
+      href: XR/XR048.md
+    - name: "XR-052 User State and Title-Save Location, Roaming and Dependencies"
+      href: XR/XR052.md
+    - name: "XR-057 Unlocking Achievements"
+      href: XR/XR057.md
+    - name: "XR-062 Achievement Names and Descriptions"
+      href: XR/XR062.md
+    - name: "XR-064 Joinable Game Sessions and Online Play"
+      href: XR/XR064.md
+    - name: "XR-067 Maintaining Multiplayer Session State"
+      href: XR/XR067.md
+    - name: "XR-074 Loss of Connectivity to Xbox and Partner Services"
+      href: XR/XR074.md
+    - name: "XR-083 XDK / ADK Versions"
+      href: XR/XR083.md
+    - name: "XR-109 Linking Between Apps"
+      href: XR/XR109.md
+    - name: "XR-112 Establishing a User and Controller During Initial Activation and Resume"
+      href: XR/XR112.md
+    - name: "XR-115 Addition and Removal of Users or Controllers During Gameplay"
+      href: XR/XR115.md
+    - name: "XR-123 Installation/Unlock of Game Add-Ons or Consumables During Gameplay"
+      href: XR/XR123.md
+    - name: "XR-129 Intelligent Delivery Content Management"
+      href: XR/XR129.md
+    - name: "XR-130 Xbox Console Families and Generations"
+      href: XR/XR130.md
+    - name: "XR-131 Display Mode Support for Game DVR and Screenshots"
+      href: XR/XR131.md
+    - name: "XR-132 Service Access Limitations"
+      href: XR/XR132.md

@@ -1,0 +1,60 @@
+
+
+- name: "Using the build environment after installing the Microsoft Game Development Kit (GDK)"
+  href: gc-console-build-environment.md
+- name: "Using the SDK registry values after installing the Microsoft Game Development Kit (GDK)"
+  href: gc-console-registry-values.md
+- name: "Settings App functions"
+  href: settings-app-functions.md
+- name: "Silent installation of the Microsoft Game Development Kit (GDK)"
+  href: silent-install.md
+- name: "Xbox console game registration"
+  href: title-registration-console.md
+- name: "Upgrading your Xbox One Software Development Kit title on Xbox Series consoles"
+  href: upgrading-xbox-one-xdk-titles-on-scarlett.md
+- name: "Using the GDK Remotely"
+  href: using-gdk-remotely.md
+- name: "Multi-process support for Console"
+  href: multi-process-support-console.md
+- name: "Xbox Game Life Cycle"
+  href: xbox-game-life-cycle.md
+- name: "GDKX header and library directory structure"
+  href: gdkx-new-layout.md
+- name: "File system and storage"
+  items:
+    - name: "Developer storage with the Microsoft Game Development Kit"
+      href: file-system/storage.md
+    - name: "Maximizing File Performance on Xbox One"
+      href: file-system/Maximizing_File_Performance_Win32_Xbox_One.md
+    - name: "Maximizing File Performance on Xbox Series X|S"
+      href: file-system/Maximizing_File_Performance_Win32_Scarlett.md
+    - name: "Xbox game cache on Xbox One X"
+      href: file-system/xbox-game-cache.md
+- name: "CPU and memory systems"
+  items:
+    - name: "Cost for Synchronization Primitives"
+      href: system/Costs_for_Synchronization_Primitives.md
+    - name: "Xbox Series quick reference sheets"
+      href: system/quick-reference-sheets.md
+    - name: "Xbox One vs. Xbox Series X|S CPU and memory"
+      href: system/XboxOne-vs-ProjectScarlett.md
+- name: Finding Threading Issues
+  items:
+    - name: "Common Steps"
+      href: threads/common-steps.md
+    - name: "Core utilization: idle time"
+      href: threads/core-utilization-idle.md
+    - name: "Core utilization: spinning"
+      href: threads/core-utilization-spinning.md
+    - name: "Thread locking"
+      href: threads/threads-locking.md
+    - name: "Serialization"
+      href: threads/serialization.md
+    - name: "High context switch rate"
+      href: threads/high-context-switches.md
+    - name: "Floating threads"
+      href: threads/floating-threads.md
+    - name: "Time-sensitive threads"
+      href: threads/time-sensitive-threads.md
+    - name: "Appendix"
+      href: threads/finding-threading-issues-appendix.md

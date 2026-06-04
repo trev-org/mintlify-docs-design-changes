@@ -1,0 +1,10 @@
+- name: Game Chat 2
+  items:
+    - name: "Intro to Game Chat 2"
+      href: game-chat2/game-chat-2-intro.md
+    - name: "Using the Game Chat 2 C++ API"
+      href: game-chat2/using-game-chat-2.md
+    - name: "Real-time audio manipulation"
+      href: game-chat2/real-time-audio-manipulation.md
+- name: "PlayFab Party chat introduction"
+  href: playfab-party-intro-chat.md

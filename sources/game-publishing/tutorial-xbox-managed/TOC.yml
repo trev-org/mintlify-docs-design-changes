@@ -1,0 +1,30 @@
+- name: Overview
+  href: overview.md
+- name: Create a Game and configure Game setup
+  href: how-to-create-a-title-and-configure-game-setup.md
+- name: Create and upload Packages
+  href: how-to-create-a-package.md
+- name: Configure Properties
+  href: how-to-configure-properties.md
+- name: Configure Age ratings
+  href: how-to-set-age-ratings.md
+- name: Configure Store listings
+  href: how-to-create-a-store-listing.md
+- name: Configure Pricing and availability
+  href: how-to-configure-pricing-and-availability.md
+- name: Configure Gaming metadata
+  href: how-to-add-metadata.md
+- name: Configure Xbox services
+  href: how-to-configure-xbox-services.md
+- name: Add-ons
+  items:
+    - name: Create and publish add-ons
+      href: how-to-create-use-publish-add-ons.md
+    - name: Configure, certify, and publish a durable
+      href: how-to-configure-a-durable.md
+- name: Configure product relationships
+  href: how-to-create-product-relationships.md
+- name: Certify a game
+  href: how-to-certify-a-game.md
+- name: Publish a game
+  href: how-to-publish-a-base-game.md

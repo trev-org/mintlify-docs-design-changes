@@ -1,0 +1,161 @@
+### YamlMime:Landing
+
+title: Game publishing documentation # < 60 chars
+summary: Learn how to sign up and use Partner Center to publish your games to the Microsoft Store. # < 160 chars
+
+metadata:
+  title: Game publishing documentation for managed creators # Required; page title displayed in search results. Include the brand. < 60 chars.
+  description: Learn how to sign up and use Partner Center to publish your games to the Microsoft Store. # Required; article description that is displayed in search results. < 160 chars.
+  ms.service: gaming
+  ms.topic: landing-page # Required
+  author: e-h-s #Required; your GitHub user alias, with correct capitalization.
+  ms.author: edwardst #Required; microsoft alias of author; optional team alias.
+  ms.date: 01/15/2023 #Required; mm/dd/yyyy format.
+
+# linkListType: architecture | concept | deploy | download | get-started | how-to-guide | learn | overview | quickstart | reference | sample | tutorial | video | whats-new
+
+landingContent:
+# Cards and links should be based on top customer tasks or top subjects
+# Start card title with a verb
+
+  # Card (optional)
+  - title: Understand game publishing
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Publishing experience
+            url: overview.md
+          - text: Steps to publish a game
+            url: publishing-processes/managed-creators/overview.md
+      - linkListType: reference
+        links:
+          - text: Glossary
+            url: glossary.md
+          - text: Who are your Microsoft contacts?
+            url: resources/managed-support/overview-microsoft-representatives-and-contacts.md
+
+  # Card (optional)
+  - title: Product planning
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: SKU planning
+            url: publishing-processes/managed-creators/publishing-processes-sku-planning.md
+          - text: Configure a Game Wish List page
+            url: publishing-processes/managed-creators/publishing-processes-wishlist-pages.md
+          - text: Configure pre-orders
+            url: publishing-processes/managed-creators/publishing-processes-configuring-pre-orders.md
+          - text: Ways to do pre-release testing
+            url: publishing-processes/managed-creators/publishing-processes-prerelease.md
+          - text: Post-sale monetization
+            url: publishing-processes/managed-creators/publishing-processes-post-sale-monetization.md
+          - text: Content Updates and product changes
+            url: publishing-processes/managed-creators/publishing-processes-post-release-lifecycle.md
+          - text: Participate in curated programs
+            url: publishing-processes/managed-creators/publishing-processes-managed-programs.md
+
+  # Card (optional)
+  - title: Xbox Certification
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Certification guide
+            url: concepts/certification/certification-guide.md
+          - text: Cert Bypass program
+            url: concepts/certification/cert-bypass.md
+          - text: Microsoft Gaming Accessibility Testing
+            url: concepts/certification/certification-mgats.md
+            
+  # Card (optional)
+  - title: Use Partner Center to create and manage games
+    linkLists:
+      - linkListType: quickstart
+        links:
+          - text: How to register and become a managed Creator
+            url: publishing-processes/managed-creators/publishing-processes-onboarding-new-creator.md
+      - linkListType: overview
+        links:
+          - text: Partner Center features and concepts
+            url: concepts/overview.md
+          - text: Product creation and onboarding
+            url: publishing-processes/managed-creators/publishing-processes-product-onboarding-and-configuration.md
+          - text: What are add-ons?
+            url: concepts/add-ons.md
+          - text: Understand certification
+            url: concepts/certification/certification-overview.md    
+      - linkListType: concept
+        links:
+          - text: Account types, locations, and fees
+            url: concepts/developer-account.md
+          - text: Manage users and access
+            url: concepts/developer-account.md#manage-users-and-access
+          - text: Insights and analytic reports
+            url: /windows/apps/publish/analytics
+      
+  # Card (optional)
+  - title: Game creation and setup
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Configure and publish a game as a managed Creator
+            url: tutorial-xbox-managed/overview.md
+      - linkListType: how-to-guide
+        links:
+         - text: Create a Game product
+           url: tutorial-xbox-managed/how-to-create-a-title-and-configure-game-setup.md
+         - text: Configure Game Setup
+           url: tutorial-xbox-managed/how-to-create-a-title-and-configure-game-setup.md#configure-game-setup-step-1
+         - text: Configure age ratings
+           url: tutorial-xbox-managed/how-to-set-age-ratings.md
+         - text: Create and upload game packages
+           url: tutorial-xbox-managed/how-to-create-a-package.md
+         - text: Configure Xbox services
+           url: tutorial-xbox-managed/how-to-configure-xbox-services.md
+
+  # Card (optional)
+  - title: Add info to help customers discover your game
+    linkLists:
+      - linkListType: how-to-guide
+        links:
+          - text: Configure game properties
+            url: tutorial-xbox-managed/how-to-configure-properties.md
+          - text: Configure gaming metadata
+            url: tutorial-xbox-managed/how-to-add-metadata.md
+          - text: Create a store listing
+            url: tutorial-xbox-managed/how-to-create-a-store-listing.md
+          - text: Configure pricing and availability
+            url: tutorial-xbox-managed/how-to-configure-pricing-and-availability.md
+      - linkListType: concept
+        links:
+          - text: Game setup
+            url: concepts/game-setup-overview.md
+          - text: Game properties
+            url: concepts/properties-overview.md
+          - text: Game metadata
+            url:  concepts/metadata-overview.md
+          - text: Age ratings
+            url:  concepts/age-ratings.md
+          - text: Store listings
+            url: concepts/store-listing.md
+          - text: Choose your release markets
+            url: concepts/availability/availability-overview.md#markets
+          - text: Make your game discoverable
+            url: concepts/availability/visibility.md
+          - text: Set game pricing
+            url:  concepts/availability/availability-overview.md#pricing
+
+  # Card (optional)
+  - title: Submit games to the Microsoft Store
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Submit packages for Xbox Certification
+            url: publishing-processes/managed-creators/publishing-processes-submitting-to-certification.md
+          - text: Publish your game
+            url: publishing-processes/managed-creators/publishing-processes-retail-publishing-and-testing.md
+      - linkListType: how-to-guide
+        links:
+          - text: Certify a game
+            url: tutorial-xbox-managed/how-to-certify-a-game.md
+          - text: Publish a game
+            url: tutorial-xbox-managed/how-to-publish-a-base-game.md

@@ -1,0 +1,10 @@
+- name: "Lighting overview"
+  href: gc-lighting-toc.md
+- name: "Lighting concepts"
+  items:
+    - name: "Lighting basics"
+      href: lighting-basics.md
+    - name: "Lighting colors"
+      href: lighting-colors.md
+    - name: "Lighting effects"
+      href: lighting-effects.md

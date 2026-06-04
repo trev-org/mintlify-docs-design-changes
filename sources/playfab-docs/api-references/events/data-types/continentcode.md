@@ -1,0 +1,25 @@
+---
+title: ContinentCode
+author: joannaleecy
+description: ContinentCode data type.
+ms.author: jenelleb
+ms.date: 02/19/2019
+ms.topic: article
+ms.service: azure-playfab
+keywords: playfab, playstream events
+ms.localizationpriority: medium
+---
+
+# ContinentCode
+
+## Possible Values
+
+|Possible Values|
+| :--------------------|
+|AF|
+|AN|
+|AS|
+|EU|
+|NA|
+|OC|
+|SA|

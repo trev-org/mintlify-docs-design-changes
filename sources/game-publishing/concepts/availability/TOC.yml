@@ -1,0 +1,24 @@
+- name: Overview
+  href: availability-overview.md
+- name: Visibility
+  items:
+  - name: Overview
+    href: visibility.md
+  - name: Audiences
+    href: visibility-audiences.md
+- name: Schedule
+  items:
+  - name: Schedule overview
+    href: availability-schedule.md
+  - name: Pre-orders
+    href: preorder-overview.md
+- name: Pricing
+  items:
+  - name: Trials
+    href: trials.md
+  - name: Sale pricing
+    href: sale-pricing.md
+  - name: Price adjustment preference
+    href: managed-creators/price-adjustment-preference.md
+  - name: Pricing models
+    href: managed-creators/reseller-pricing.md

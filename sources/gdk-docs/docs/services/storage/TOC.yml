@@ -1,0 +1,26 @@
+- name: "Xbox Services cloud storage"
+  href: live-cloud-storage-nav.md
+- name: "Connected Storage vs. Title Storage"
+  href: live-connected-storage-vs-title-storage.md
+- name: "Connected Storage"
+  href: connected-storage/live-connected-storage-nav.md
+- name: Title Storage
+  items:
+    - name: "Title Storage overview"
+      href: title-storage/live-title-storage-overview.md
+    - name: Portal config
+      items:
+        - name: "Configuring Title Storage in Partner Center"
+          href: title-storage/config/live-title-storage-portal-config.md
+    - name: Example code
+      items:
+        - name: "Uploading a blob to Title Storage"
+          href: title-storage/how-to/live-uploading-title-storage-blob.md
+        - name: "Downloading a blob from Title Storage"
+          href: title-storage/how-to/live-downloading-title-storage-blob.md
+        - name: "Deleting a blob from Title Storage"
+          href: title-storage/how-to/live-deleting-title-storage-blob.md
+        - name: "Getting Title Storage blob metadata"
+          href: title-storage/how-to/live-getting-title-storage-blob-metadata.md
+        - name: "Getting quota information for a Title Storage service configuration"
+          href: title-storage/how-to/live-getting-title-storage-quota-info.md

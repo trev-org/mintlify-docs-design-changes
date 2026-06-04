@@ -1,0 +1,29 @@
+items:
+- name: Data Connections
+  expanded: true
+  items:
+  - name: Overview
+    href: data-connection-overview.md
+  - name: Quickstart
+    href: data-connection-quickstart.md
+  - name: Tutorials
+    expanded: true
+    items:
+    - name: Azure Data Explorer Export
+      href: data-connection-adx.md
+    - name: Azure Blob Export
+      href: data-connection-azure-blob.md
+- name: Event Sampling
+  expanded: true
+  items:
+  - name: Overview
+    href: event-sampling-overview.md
+  - name: Quickstart
+    href: event-sampling-quickstart.md
+- name: Event Partitioning (Preview)
+  expanded: true
+  items:
+  - name: Overview (Preview)
+    href: event-partitioning-overview.md
+  - name: Quickstart (Preview)
+    href: event-partitioning-quickstart.md

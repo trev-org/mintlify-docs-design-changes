@@ -1,0 +1,210 @@
+### YamlMime:Hub
+
+title: XBOX Documentation Hub # < 60 chars
+summary: XBOX game development documentation to develop and publish XBOX games using Microsoft products, tools, and services.
+# brand: aspnet | azure | dotnet | dynamics | m365 | ms-graph | office | power-bi | power-platform | sql | sql-server | vs | visual-studio | windows | xamarin
+brand: xbox
+
+metadata:
+  title: XBOX game development documentation # Required; page title displayed in search results. Include the brand. < 60 chars.
+  description: Learn how to develop XBOX games using Microsoft tools, products, and services. Get documentation, example code, tutorials, and more. Access to some content requires membership in an XBOX NDA developer program. Contact your publisher or your XBOX program representative if you need direct access. Not in the program? Join the ID@XBOX program to gain access today!# Required; article description that is displayed in search results. #< 160 chars.
+  services: XBOX
+  ms.topic: hub-page # Required
+  author: edigonzales #Required; your GitHub user alias, with correct capitalization.
+  ms.author: edigonzales #Required; microsoft alias of author; optional team alias.
+  ms.date: 05/19/2026 #Required; mm/dd/yyyy format.
+
+# productDirectory section (Optional; Remove if not applicable.)
+productDirectory:
+  title: Develop and publish games with XBOX # Optional but good for SEO. Remove if not applicable.
+  summary: Learn how to build, launch, and operate games on XBOX using game development tools and services. Explore technical information and product documentation for XBOX GDK, PlayFab, Windows, and publishing workflows — designed to support every stage of modern game development from building and testing to publishing, live operations, and growth. # Optional but good for SEO. Remove if not applicable.
+  items:
+    # Card
+    - title: XBOX Game Development Kit (GDK)
+      imageSrc: /gaming/icons/icon-gdk.svg
+      summary: Learn how to use the XBOX Game Development Kit (GDK) to develop games on XBOX and Windows
+      url: /gaming/gdk/
+    # Card
+    - title: PlayFab
+      imageSrc: /gaming/icons/playfab.svg
+      summary: Learn how to build and manage engaging games using PlayFab services
+      url: /gaming/playfab/
+    # Card
+    - title: XBOX Game Publishing Guide
+      imageSrc: /gaming/icons/xbox.svg
+      summary: Learn and understand what it takes to ship a game on XBOX
+      url: /gaming/game-publishing/
+    # Card
+    - title: Partner Center
+      imageSrc: /gaming/icons/microsoft-logo_rgb.svg
+      summary: Partner Center makes it easier for Microsoft partners to manage their relationship with Microsoft and their customers
+      url: /partner-center/
+    # Card
+    - title: Azure Gaming
+      imageSrc: /gaming/icons/azure.svg
+      summary: Learn how to build games using Microsoft Azure services
+      url: /gaming/azure/
+    # Card
+    - title: XBOX Accessibility and Sustainability
+      imageSrc: /gaming/icons/icon-xcloud.svg
+      summary: Learn how to create more accessible games and minimize the environmental impact of gaming
+      url: /gaming/game-dev
+    # Card
+    - title: XBOX Game Dev (website)
+      imageSrc: /gaming/icons/icon-gamedev.svg
+      summary: Get the latest XBOX Game Dev news
+      url: https://developer.microsoft.com/en-us/games/
+
+conceptualContent:
+# itemType: architecture | concept | deploy | download | get-started | how-to-guide | learn | overview | quickstart | reference | tutorial | whats-new
+  sections:
+    - title: Develop
+      items:
+        - title: XBOX Game Development Kit (GDK)
+          links:
+            - url: /gaming/gdk/docs/gdk-dev/gdk-dev-index
+              itemType: get-started
+              text: Learn about the XBOX GDK
+            - url: /gaming/gdk/docs/features/features-index
+              itemType: concept
+              text: Build and Develop
+            - url: /gaming/gdk/docs/tools/tools-index
+              itemType: concept 
+              text: Optimize and Validate
+            - url: /gaming/gdk/docs/store/store-index
+              itemType: concept
+              text: Publish and Ship (XBOX Requirements)
+            - url: /gaming/gdk/docs/reference/gc-reference-toc
+              itemType: reference
+              text: References
+
+        - title: PlayFab
+          links:
+            - url: /gaming/playfab/identity
+              itemType: deploy
+              text: Identity
+            - url: /gaming/playfab/live-service-management/
+              itemType: deploy
+              text: Live Service Management
+            - url: /gaming/playfab/economy-monetization/
+              itemType: deploy
+              text: Economy, Monetization, and UGC
+            - url: /gaming/playfab/multiplayer/
+              itemType: deploy
+              text: Multiplayer
+            - url: /gaming/playfab/community/
+              itemType: deploy
+              text: Community
+            - url: /gaming/playfab/player-progression/
+              itemType: deploy
+              text: Player Progression
+            - url: /gaming/playfab/data-analytics/
+              itemType: deploy
+              text: Game Data
+
+        - title: XBOX Game Accessibility
+          links:
+            - url: /gaming/accessibility/guidelines
+              itemType: overview
+              text: XBOX Game Accessibility Guidelines
+            - url: /gaming/accessibility/gadpeg
+              itemType: overview
+              text: XBOX Gaming and Disability Player Experience Guide
+            - url: /gaming/accessibility/mgats
+              itemType: overview
+              text: XBOX Gaming Accessibility Testing Service
+            - url: /gaming/accessibility/accessibility-workshop-toolkit
+              itemType: overview
+              text: XBOX Game Accessibility Workshop Toolkit
+
+        - title: XBOX Game Sustainability
+          links:
+            - url: /gaming/sustainability/sustainability-overview
+              itemType: overview
+              text: XBOX Game Sustainability and XBOX Sustainability Toolkit
+            - url: /gaming/sustainability/xbox-game-energy-efficiency-essentials
+              itemType: overview
+              text: Manage XBOX Game Energy Efficiency Essentials
+            - url: /gaming/sustainability/developer-tools/developer-tool-devkit-guide
+              itemType: overview
+              text: Measuring Power Consumption with XBOX Dev Kit
+            - url: /gaming/sustainability/lab-platform-baselines
+              itemType: overview
+              text: Lab Measurements for Baseline Comparisons
+            - url: /gaming/sustainability/global-platform-baselines
+              itemType: overview
+              text: Telemetry Measurement for Baseline Comparisons
+    
+    - title: Publish
+      items:
+        - title: XBOX Game Publishing Guide (GPG)
+          links:
+           - url: /gaming/game-publishing/
+             itemType: overview
+             text: XBOX Game Publishing Guide (GPG)
+           - url: /gaming/game-publishing/publishing-processes/managed-creators/overview
+             itemType: tutorial
+             text: Step-by-Step Overview Guide
+           - url: /gaming/game-publishing/publishing-processes/managed-creators/publishing-processes-onboarding-new-creator
+             itemType: get-started
+             text: New Creator Onboarding
+           - url: /gaming/game-publishing/tutorial-xbox-managed/how-to-create-a-title-and-configure-game-setup
+             itemType: tutorial
+             text: Create and Configure a Game
+           - url: /gaming/game-publishing/concepts/certification/certification-guide
+             itemType: tutorial
+             text: Certification Step-by-Step Guide
+
+# tools section (optional)
+tools:
+  title: Products, Tools, and Services # < 60 chars (optional)
+  items:
+    # Card
+    - title: XBOX Game Development Kit (GDK)
+      imageSrc: /gaming/icons/icon-gdk.svg
+      url: https://www.microsoft.com/en-us/software-download/gdk
+    # Card
+    - title: PlayFab
+      imageSrc: /gaming/icons/playfab.svg
+      url: https://playfab.com/
+    # Card
+    - title: Azure Partner Solutions and Services
+      imageSrc: /gaming/icons/azure.svg
+      url: https://azure.microsoft.com/en-us
+    # Card
+    - title: Visual Studio
+      imageSrc: /gaming/icons/visual-studio.svg
+      url: https://visualstudio.microsoft.com/
+    # Card
+    - title: Havok
+      imageSrc: /gaming/icons/havok.svg
+      url: https://www.havok.com/
+    # Card
+    - title: Simplygon
+      imageSrc: /gaming/icons/simplygon.svg
+      url: https://www.simplygon.com/
+
+additionalContent:
+  sections:
+    - title: XBOX Developer Resources
+      items:
+        # Card
+        - title: XBOX Game Dev
+          links:
+           - text: XBOX Game Dev (Website)
+             url: https://developer.microsoft.com/en-us/games/
+           - text: ID@XBOX
+             url: https://developer.microsoft.com/en-US/games/publish/
+           - text: XBOX Console Publisher Guide (policies)
+             url: https://developer.microsoft.com/en-us/games/resources/xbox-publisher-guide/
+        # Card
+        - title: Community
+          links:
+           - text: XBOX Discord
+             url: https://discord.com/invite/BDVZ8yY38W
+           - text: XBOX YouTube
+             url: https://www.youtube.com/msftgamedev
+           - text: XBOX on X
+             url: https://x.com/MSFTGameDev
+           - text: XBOX on Bluesky
+             url: https://bsky.app/profile/msftgamedev.bsky.social

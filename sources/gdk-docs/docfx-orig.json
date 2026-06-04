@@ -1,0 +1,77 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.md",
+          "**/*.yml",
+          "breadcrumb/toc.yml"
+        ],
+        "exclude": [
+          "**/obj/**",
+          "**/includes/**",
+          "_themes/**",
+          "_themes.pdf/**",
+          "**/docfx.json",
+          "_repo.en-us/**",
+          "README.md",
+          "LICENSE",
+          "LICENSE-CODE",
+          "ThirdPartyNotices.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "**/*.png",
+          "**/*.jpg",
+          "**/*.svg",
+          "**/*.gif"
+        ],
+        "exclude": [
+          "**/obj/**",
+          "**/includes/**",
+          "_themes/**",
+          "_themes.pdf/**",
+          "**/docfx.json",
+          "_repo.en-us/**"
+        ]
+      }
+    ],
+    "overwrite": [],
+    "externalReference": [],
+    "globalMetadata": {
+      "uhfHeaderId": "MSDocsHeader-GDK",
+      "breadcrumb_path": "/gaming/gdk/breadcrumb/toc.json",
+      "feedback_system": "None",
+      "authorize_path": "~/authorize.md",
+      "titleSuffix": "Microsoft Game Development Kit",
+      "ms.localizationpriority": "medium",
+      "ms.service": "gdk",
+      "ms.author": "kevinasg",
+      "author": "KevinAsgari",
+      "permissioned-groups": ["Xbox-GameDev\\Dev-Game-Platform-GDK_SW"]
+    },
+    "fileMetadata": {
+      "permissioned-type": {
+        "**/*": "public",
+        "**/toc.yml": "public",
+        "**/toc.md": "public",
+         "a/**/*": "private"
+      },
+      "ms.author": {
+        "docs/gc/commerce/*": "joannaleecy",
+        "docs/gc/get-started/*": "sdgmiller",
+        "docs/gc/graphics/*": "m-stahl",
+        "docs/gc/policies/*": "sdgmiller",
+        "docs/gc/reference/live/*": "joannaleecy",
+        "docs/gc/reference/tools/*": "KevinAsgari",
+        "docs/gc/tools-console/*": "KevinAsgari"
+      }
+    },
+    "template": [],
+    "dest": "gdk-docs-pr",
+    "markdownEngineName": "markdig"
+  }
+}

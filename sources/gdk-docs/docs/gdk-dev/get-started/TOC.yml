@@ -1,0 +1,22 @@
+- name: "Get started with the GDK"
+  href: get-started-home.md
+- name: "Set up your developer environment"
+  href: dev-pc-setup.md
+- name: Overviews
+  items:
+    - name: "Develop a new title with the GDK"
+      href: overviews\developing-new-titles-on-gamecore.md
+    - name: "Set up a remote test PC"
+      href: overviews\gr-configure-test-pc.md
+    - name: "SDK and tools requirements"
+      href: overviews\sdk-and-tools.md
+    - name: "Development PC requirements"
+      href: overviews\set-up-dev-pc.md
+    - name: "Set up your organization in Partner Center"
+      href: overviews\set-up-organization.md
+- name: "Running samples"
+  items:
+    - name: "PC samples"
+      href: running-samples\running-samples-pc.md
+    - name: "Xbox samples"
+      href: running-samples\running-samples.md

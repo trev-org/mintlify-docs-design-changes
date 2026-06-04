@@ -1,0 +1,104 @@
+### YamlMime:Landing
+
+title: Tools documentation for the Game Development Kit (GDK) # < 60 chars
+summary: Learn how to use the GDK tools to build games for Xbox. # < 160 chars
+
+metadata:
+  title: GDK tools for Xbox and PC game development # Required; page title displayed in search results. Include the brand. < 60 chars.
+  description: description # Required; article description that is displayed in search results. < 160 chars.
+  ms.service: gdk #Required; use either service or product per approved list. 
+  ms.topic: landing-page # Required
+  author: edigonzales #Required; your GitHub user alias, with correct capitalization.
+  ms.author: edigonzales #Required; microsoft alias of author; optional team alias.
+  ms.date: 03/10/2026 #Required; mm/dd/yyyy format.
+
+# linkListType: architecture | concept | deploy | download | get-started | how-to-guide | tutorial | overview | quickstart | reference | sample | tutorial | video | whats-new
+
+landingContent:
+# Cards and links should be based on top customer tasks or top subjects
+# Start card title with a verb
+  # Card 
+  - title: PC debugging tools
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Tools for GDK PC game development
+            url: tools-pc/gc-tools-pc-toc.md
+      - linkListType: concept
+        links:
+          - text: Visual Studio support and templates
+            url: tools-pc/visualstudio/gr-visualstudio-toc.md
+          - text: Command-line tools
+            url: tools-pc/commandlinetools/gr-commandlinetools-toc.md
+          - text: Xbox PC Toolbox
+            url: tools-pc/xboxpctoolbox/xboxpctoolbox.md
+      - linkListType: how-to-guide
+        links:
+          - text: Install and launch PC titles
+            url: tools-pc/launching-on-pc.md
+          - text: Performance Investigator (PIX) for Windows
+            url: tools-pc/pix-for-windows.md
+
+  # Card 
+  - title: Xbox debugging tools
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Console tools overview
+            url: tools-console/tools-sdk.md
+      - linkListType: concept
+        links:
+          - text: Xbox Manager
+            url: tools-console/xbom/xbom.md
+          - text: Xbox Device Portal
+            url: tools-console/wdp/wdp.md
+          - text: Developer Home
+            url: tools-console/devhome/devhome.md
+          - text: Performance Investigator for Xbox (PIX)
+            url: tools-console/pix/pix.md
+      - linkListType: how-to-guide
+        links:
+          - text: Managing consoles with Xbox Manager
+            url: tools-console/xbom/manager-tool-groups.md
+          - text: Media capture
+            url: tools-console/xbom/manager-tool-media-capture.md
+
+  # Card
+  - title: Xbox services validation
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Development tools for Xbox services
+            url: tools-services/live-tools.md
+      - linkListType: concept
+        links:
+          - text: Config as Source tools (XblConfig.exe)
+            url: tools-services/live-config-as-source.md
+          - text: Xbox Connected Storage tool
+            url: tools-services/live-connected-storage-tool.md
+          - text: Test Account tool
+            url: tools-services/live-xbox-live-account-tool.md
+          - text: PC Sandbox Switcher
+            url: tools-services/live-pc-sandbox-switcher.md
+      - linkListType: how-to-guide
+        links:
+          - text: Player Data Reset tool
+            url: tools-services/live-player-data-reset.md
+          - text: Trace Analyzer
+            url: tools-services/live-trace-analyzer.md
+  
+  # Card
+  - title: Additional tools and middleware
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Additional tools
+            url: additional-tools.md
+          - text: Middleware providers
+            url: tools-and-middleware-providers.md
+      - linkListType: concept
+        links:
+          - text: Shader compiler
+            url: tools-console/shadercompiler/shader-compiler.md
+          - text: Package Uploader
+            url: ../features/common/packaging/package-uploader.md

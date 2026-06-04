@@ -1,0 +1,16 @@
+- name: "Error handling in the Microsoft Game Development Kit"
+  href: error-handling.md
+- name: "Media Foundation transform decoding"
+  href: mediafoundation-decode.md
+- name: "Protocol activation"
+  href: protocolactivation.md
+- name: "File type activation"
+  href: filetypeactivation.md
+- name: "Quick Resume Guidance for Developers"
+  href: quick-resume-guidance-for-developers.md
+- name: "Using OAuth"
+  href: using-oauth.md
+- name: "UTF-8 support in the GDK"
+  href: utf-8.md
+- name: "Windows and messages"
+  href: windows-messages.md

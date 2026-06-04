@@ -1,0 +1,90 @@
+- name: "Audio (contents)"
+  href: gc-audio-toc.md
+- name: Audio overview
+  items:
+    - name: "Audio overview"
+      href: overviews/audio.md
+    - name: "Overview of Xbox Series X|S audio hardware"
+      href: overviews/scarlett-audio.md
+    - name: "The audio architecture in Xbox One"
+      href: overviews/xbox-one-audio-architecture.md
+    - name: "Comparison of Xbox One Software Development Kit and Microsoft Game Development Kit (GDK) audio API"
+      href: overviews/comparison-of-xdk-and-gdk-audio-api.md
+- name: XAPU
+  items:
+    - name: "XAPU overview"
+      href: overviews/xapu-overview.md
+    - name: "Overview of single stream Opus audio decoding by using the XAPU API"
+      href: overviews/xapu-overview-single-stream-audio-decode.md
+- name: XDSP
+  items:
+    - name: "XDSP overview"
+      href: overviews/xdsp-overview.md
+    - name: "Overview of a single stream Convolution using the XDSP API"
+      href: overviews/xdsp-overview-single-stream-convolution.md
+    - name: "Overview of a single stream FFT/IFFT using the XDSP API"
+      href: overviews/xdsp-overview-single-stream-fft-ifft.md
+    - name: "Overview of XDSP Impulse Response Reduction"
+      href: overviews/xdsp-overview-ir-reduction.md
+    - name: "Overview of XDSP Enveloping"
+      href: overviews/xdsp-overview-enveloping.md
+    - name: "Overview of a single stream Convolution with Envelope using the XDSP API"
+      href: overviews/xdsp-overview-single-stream-convolution-with-envelope.md
+- name: "Spatial sound overview"
+  href: overviews/spatial-audio-overview.md
+- name: XAudio2
+  items:
+    - name: "XAudio2 Overview"
+      href: overviews/xaudio2-overview.md
+    - name: "Play a sound by using XAudio2"
+      href: overviews/xaudio2-play-sound.md
+    - name: "ADPCM overview"
+      href: overviews/adpcm-overview.md
+    - name: "ADPCM command-line encoder"
+      href: tools/adpcmencoder-tools.md
+- name: SHAPE
+  items:
+    - name: "SHAPE overview"
+      href: overviews/shape-overview.md
+    - name: "Getting into SHAPE: Best practices for audio flowgraph construction"
+      href: overviews/best-practices-audio-flowgraph-construction.md
+    - name: "ACP overview"
+      href: overviews/acp-overview.md
+- name: XMA2
+  items:
+    - name: "XMA2 overview"
+      href: overviews/xma2-overview.md
+    - name: XMA2 encoder tool
+      items:
+        - name: "XMA2 encoder tool overview"
+          href: tools/xma2encodertool.md
+        - name: XMA2 encoder reference
+          items:
+            - name: "Reference contents for xmaencoder.lib"
+              href: tools/xma2encoder/atoc-xmaencoder.md
+            - name: XMA2 encoder functions
+              items:
+                - name: "Function contents for XMA2encoder"
+                  href: tools/xma2encoder/tech-xmaencoder-funcs.md
+                - name: "XAudio2XMAEncoder"
+                  href: tools/xma2encoder/methods/xaudio2xmaencoder-xmaencoder-xbox-microsoft-m.md
+- name: xWMA
+  items:
+    - name: "xWMA overview"
+      href: overviews/xwma-overview.md
+    - name: xWMA command-line encoder
+      items:
+        - name: "xWMA encoder tool overview"
+          href: tools/xwmaencode-tools.md
+        - name: xWMA encoder reference
+          items:
+            - name: "Reference contents for xwmaencoder.lib"
+              href: tools/xwmaencoder/atoc-xwmaencoder.md
+            - name: XWMA encoder functions
+              items:
+                - name: "Function contents for xwmaencoder"
+                  href: tools/xwmaencoder/tech-xwmaencoder-nativereference-funcs.md
+                - name: "XWMAEncoder"
+                  href: tools/xwmaencoder/methods/xwmaencoder-xwmaencoder-xbox-microsoft-m.md
+- name: "WASAPI"
+  href: overviews/wasapi-overview.md

@@ -1,0 +1,164 @@
+- name: "Xbox services overview"
+  href: live-xbl-overview.md
+- name: "Identity"
+  items:
+    - name: "User identity"
+      href: identity/xs-identity-overview.md
+    - name: "User authentication"
+      items:
+        - name: "Account authentication and access overview"
+          href: identity/auth/live-authentication-overview.md
+        - name: "Troubleshooting Xbox services sign-in"
+          href: identity/auth/live-troubleshooting-sign-in.md
+    - name: "Gamertags"
+      items:
+        - name: "Gamertags overview"
+          href: identity/user-profile/gamertags/live-gamertags-overview.md
+        - name: "Classic gamertags"
+          href: identity/user-profile/gamertags/live-classic-gamertags-overview.md
+        - name: "Modern gamertags"
+          href: identity/user-profile/gamertags/live-modern-gamertags-overview.md
+        - name: "Modern gamertags definition and terminology"
+          href: identity/user-profile/gamertags/live-modern-gamertags-definition.md
+        - name: "Best practices and testing for modern gamertags"
+          href: identity/user-profile/gamertags/live-modern-gamertags-best-practices-and-testing.md
+        - name: "UTF-8 character ranges for modern gamertags"
+          href: identity/user-profile/gamertags/live-modern-gamertags-unicode.md
+        - name: "Backwards compatibility"
+          href: identity/user-profile/gamertags/live-modern-backwards-compatibility.md
+    - name: "Privileges and privacy"
+      items:
+        - name: "Xbox services user privileges overview"
+          href: identity/privileges/live-user-privileges-overview.md
+        - name: "Configuring Privileges in Partner Center"
+          href: identity/privileges/config/live-privileges-config.md
+        - name: "Privacy and permissions overview"
+          href: identity/privacy/live-privacy-overview.md
+        - name: "Client-side use of Xbox services user privileges"
+          href: identity/privileges/concepts/live-user-privileges-client.md
+        - name: "Server-side handling of Xbox services User Privileges"
+          href: identity/privileges/concepts/live-user-privileges-server.md
+- name: Sandboxes
+  items:
+    - name: "Setting up sandboxes"
+      href: sandboxes/live-setting-up-sandboxes.md
+    - name: "Xbox services Sandboxes overview"
+      href: sandboxes/live-setup-sandbox.md
+    - name: "Advanced Xbox services sandboxes"
+      href: sandboxes/live-advanced-sandboxes.md
+    - name: "Retrieving game save files generated during certification testing"
+      href: sandboxes/live-get-certification-test-saves.md
+- name: Game binding
+  items:
+    - name: "Game Binding"
+      href: game-binding/game-binding-overview.md
+- name: "Using Xbox services APIs"
+  items:
+    - name: "Xbox services API overview"
+      href: xbox-services-api/live-introduction-to-xbox-live-apis.md
+    - name: "Quickstart for using Xbox service APIs"
+      href: xbox-services-api/live-gs-xbl-apis.md
+    - name: "XSAPI C overview"
+      href: xbox-services-api/live-xsapi-flat-c.md
+    - name: "Making async calls in the XSAPI C API"
+      href: xbox-services-api/live-flatc-async-patterns.md
+    - name: "Backwards compatibility with XDK Xbox services API"
+      href: xbox-services-api/live-gs-backcompat-api.md
+- name: Real-Time Activity (RTA) service
+  items:
+    - name: "Real-Time Activity service overview"
+      href: rta/live-real-time-activity-service-overview.md
+    - name: Concepts
+      items:
+        - name: "Registering for player stat  change notifications"
+          href: rta/concepts/live-register-for-stat-notifications.md
+        - name: "Best practices for the RTA service"
+          href: rta/concepts/live-rta-best-practices.md
+    - name: Example code
+      items:
+        - name: "Programming the RTA service"
+          href: rta/how-to/live-programming-rta.md
+- name: Authentication and S2S
+  items:
+    - name: "Authentication and S2S (contents)"
+      href: s2s-auth-calls/live-s2s-auth-calls-nav.md
+    - name: Custom service configuration
+      items:
+        - name: "Custom service configuration (contents)"
+          href: s2s-auth-calls/custom-service-config/live-custom-services-config-nav.md
+        - name: Access policies
+          items:
+            - name: "Access Policies (contents)"
+              href: s2s-auth-calls/custom-service-config/access-policies/live-access-policies-nav.md
+            - name: "Access policies overview"
+              href: s2s-auth-calls/custom-service-config/access-policies/live-access-policies-overview.md
+            - name: Portal config
+              items:
+                - name: "Access Policies portal config (contents)"
+                  href: s2s-auth-calls/custom-service-config/access-policies/config/live-access-policies-config-nav.md
+                - name: "Configuring access policies in partner center"
+                  href: s2s-auth-calls/custom-service-config/access-policies/config/live-access-policies-udc.md
+        - name: Single Sign-On
+          items:
+            - name: "Single sign-on (contents)"
+              href: s2s-auth-calls/custom-service-config/single-sign-on/live-single-sign-on-nav.md
+            - name: "Configuring single sign-on in Partner Center"
+              href: s2s-auth-calls/custom-service-config/single-sign-on/live-single-sign-on.md
+        - name: Web services
+          items:
+            - name: "Web services endpoint configuration (contents)"
+              href: s2s-auth-calls/custom-service-config/web-services/live-web-services-nav.md
+            - name: "Setting up web services at Partner Center"
+              href: s2s-auth-calls/custom-service-config/web-services/live-web-services.md
+        - name: "Configuring relying parties"
+          href: s2s-auth-calls/custom-service-config/relying-parties/live-relying-parties-nav.md
+    - name: Service calls to Xbox services
+      items:
+        - name: "Service calls to Xbox services (contents)"
+          href: s2s-auth-calls/s2s-calls/live-s2s-calls-nav.md
+        - name: "Title service calls to Xbox services"
+          href: s2s-auth-calls/s2s-calls/live-title-service-calls-xbox-live.md
+        - name: Service-to-service calling patterns
+          items:
+            - name: "Service-to-service calling patterns (contents)"
+              href: s2s-auth-calls/s2s-calls/s2s-call-patterns/live-s2s-call-patterns-nav.md
+            - name: "Service-to-service multiplayer session management"
+              href: s2s-auth-calls/s2s-calls/s2s-call-patterns/live-mpsd-service-to-service.md
+            - name: "Getting the deleted accounts list"
+              href: s2s-auth-calls/s2s-calls/s2s-call-patterns/live-get-deleted-accounts-list.md
+    - name: Xbox services authentication
+      items:
+        - name: "Xbox services authentication (contents)"
+          href: s2s-auth-calls/service-authentication/live-service-authentication-nav.md
+        - name: "Xbox services authentication"
+          href: s2s-auth-calls/service-authentication/live-xbox-live-authentication.md
+        - name: "Xbox services authentication for title services"
+          href: s2s-auth-calls/service-authentication/live-title-service-authentication.md
+        - name: Xbox services security tokens
+          items:
+            - name: "Xbox Live security tokens (contents)"
+              href: s2s-auth-calls/service-authentication/security-tokens/live-security-token-nav.md
+            - name: "Xbox services security tokens (XSTS tokens) for GDK title use"
+              href: s2s-auth-calls/service-authentication/security-tokens/live-security-tokens.md
+            - name: "Xbox services security token claims"
+              href: s2s-auth-calls/service-authentication/security-tokens/live-token-claims.md
+            - name: "Sample Xbox Live security token"
+              href: s2s-auth-calls/service-authentication/security-tokens/live-sample-xsts-token.md
+        - name: "Xbox services sign-in for title websites"
+          href: s2s-auth-calls/service-authentication/live-website-authentication.md
+- name: "Configure services in Partner Center"
+  items:
+    - name: "Portal configuration overview"
+      href: portal-config/live-portal-config-overview.md
+    - name: "Summary page for Xbox services configuration"
+      href: portal-config/live-portal-summary-tab.md
+    - name: "Configuring Xbox services setup in Partner Center"
+      href: portal-config/live-config-xbl-setup.md
+    - name: "Xbox services configuration for managed partners"
+      href: portal-config/live-setup-partner-center-partners.md
+    - name: "Configuring Game DVR in Partner Center"
+      href: portal-config/live-game-dvr.md
+    - name: "Configuring data sharing in Partner Center"
+      href: portal-config/live-data-sharing-udc.md
+    - name: "Xbox services configuration IDs, for Managed Partners"
+      href: portal-config/live-service-config-ids-mp.md

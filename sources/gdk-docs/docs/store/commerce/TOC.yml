@@ -1,0 +1,98 @@
+- name: "Commerce overview"
+  href: commerce-nav.md
+- name: Getting Started
+  items:
+    - name: "Getting Started (contents)"
+      href: getting-started/getting-started-nav.md
+    - name: "GDK Commerce Systems Overview"
+      href: getting-started/xstore-overview.md
+    - name: "Choosing the right product type"
+      href: getting-started/xstore-choosing-the-right-product-type.md
+    - name: "Initial configuration in Partner Center"
+      href: getting-started/xstore-initial-configuration-in-partner-center.md
+    - name: "Enabling XStore development and testing"
+      href: getting-started/xstore-product-testing-setup.md
+    - name: "Enabling licensing testing"
+      href: getting-started/xstore-licensing-setup.md
+    - name: "Troubleshooting XStore development"
+      href: getting-started/xstore-troubleshooting.md
+- name: Fundamentals
+  items:
+    - name: "Fundamentals (contents)"
+      href: fundamentals/fundamentals-nav.md
+    - name: "Basic store operations"
+      href: fundamentals/xstore-basic-store-operations.md
+    - name: "Granting players access to add-on content"
+      href: fundamentals/xstore-granting-access-to-content.md
+    - name: "Product sharing model for games"
+      href: fundamentals/xstore-product-sharing-model-for-games.md
+    - name: "Implementing Trials for your game"
+      href: fundamentals/xstore-usage-limited-free-trials.md
+    - name: "Manage and license downloadable content (DLC)"
+      href: fundamentals/xstore-manage-and-license-optional-packages.md
+    - name: "Checking for updates"
+      href: fundamentals/xstore-checking-for-updates.md
+    - name: "How to use a durable without a package"
+      href: fundamentals/xstore-dwobs.md
+    - name: "Consumable-based ecosystems"
+      href: fundamentals/xstore-consumable-based-ecosystems.md
+    - name: "Bundles and Season Passes"
+      href: fundamentals/xstore-bundles-and-season-passes.md
+- name: Manage products from your services
+  items:
+    - name: Microsoft Store Service APIs
+      items:
+        - name: "Microsoft Store Service APIs (contents)"
+          href: service-to-service/microsoft-store-apis/xstore-nav.md
+        - name: "Fine Grained Rate Limiting for Microsoft Store APIs"
+          href: service-to-service/xstore-fgrl.md
+        - name: "collections.mp.microsoft.com/v9.0/collections/publisherQuery"
+          href: service-to-service/microsoft-store-apis/xstore-v9-query-for-products.md
+        - name: "collections.mp.microsoft.com/v8.0/collections/b2bLicensePreview"
+          href: service-to-service/microsoft-store-apis/xstore-v8-query-for-products.md
+        - name: "collections.mp.microsoft.com/v8.0/collections/consume"
+          href: service-to-service/microsoft-store-apis/xstore-v8-consume.md
+        - name: "purchase.mp.microsoft.com/v8.0/b2b/orders/query"
+          href: service-to-service/microsoft-store-apis/xstore-v8-clawbackv1.md
+        - name: "purchase.mp.microsoft.com/v8.0/b2b/clawback/sastoken"
+          href: service-to-service/microsoft-store-apis/xstore-v8-clawbackv2-sastoken.md
+        - name: "purchase.mp.microsoft.com/v7.0/purchases/grant"
+          href: service-to-service/microsoft-store-apis/xstore-v8-grant.md
+        - name: "purchase.mp.microsoft.com/v8.0/b2b/recurrences/query"
+          href: service-to-service/microsoft-store-apis/xstore-v8-recurrence-query.md
+        - name: "purchase.mp.microsoft.com/v8.0/b2b/recurrences/{recurrenceId}/change"
+          href: service-to-service/microsoft-store-apis/xstore-v8-recurrence-change.md
+    - name: "Manage products from your services (contents)"
+      href: service-to-service/service-to-service-nav.md
+    - name: "Authenticating your service with the Microsoft Store APIs"
+      href: service-to-service/xstore-authenticating-your-service.md
+    - name: "Query user entitlements from your services"
+      href: service-to-service/xstore-query-user-entitlements.md
+    - name: "Detecting Xbox Game Pass subscription access from your service"
+      href: service-to-service/xstore-detecting-game-pass.md
+    - name: "Managing subscription products from your service"
+      href: service-to-service/xstore-managing-subscriptions.md
+    - name: "Managing consumable products from your service"
+      href: service-to-service/xstore-managing-consumables-and-refunds.md
+    - name: "Managing refunds and chargebacks from your service"
+      href: service-to-service/xstore-managing-refunds-and-chargebacks.md
+    - name: "Requesting a User Store ID for service-to-service authentication"
+      href: service-to-service/xstore-requesting-a-userstoreid.md
+    - name: "Requesting a User Store ID from your service with X-tokens or OAuth 2.0"
+      href: service-to-service/xstore-requesting-a-userstoreid-from-services.md
+    - name: "Renewing a User Store ID key"
+      href: service-to-service/xstore-renew-a-user-store-id-key.md
+- name: PC Specific Considerations
+  items:
+    - name: "PC Specific considerations (contents)"
+      href: pc-specific-considerations/pc-specific-considerations-nav.md
+    - name: "Basic DRM and license checks"
+      href: pc-specific-considerations/xstore-basic-drm-and-license-checks.md
+    - name: "Open and restrictive licensing"
+      href: pc-specific-considerations/xstore-open-and-restrictive-licensing.md
+    - name: "Using License Tokens to validate licensing on your services"
+      href: pc-specific-considerations/xstore-license-tokens.md
+    - name: "Handling mismatched store account scenarios on PC"
+      href: pc-specific-considerations/xstore-handling-mismatched-store-accounts.md
+    - name: "Switching sandboxes properly for store operations"
+      href: pc-specific-considerations/xstore-switching-pc-sandbox-for-store.md

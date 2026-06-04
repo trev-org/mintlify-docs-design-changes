@@ -1,0 +1,67 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.md",
+          "**/*.yml"
+        ],
+        "exclude": [
+          "**/obj/**",
+          "**/includes/**",
+          "_themes/**",
+          "_themes.pdf/**",
+          "**/docfx.json",
+          "_repo.en-us/**",
+          "README.md",
+          "LICENSE",
+          "LICENSE-CODE",
+          "ThirdPartyNotices.md",
+          "SECURITY.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "**/*.png",
+          "**/*.jpg",
+          "**/*.svg"
+        ],
+        "exclude": [
+          "**/obj/**",
+          "**/includes/**",
+          "_themes/**",
+          "_themes.pdf/**",
+          "**/docfx.json",
+          "_repo.en-us/**"
+        ]
+      }
+    ],
+    "overwrite": [],
+    "externalReference": [],
+    "globalMetadata": {
+      "uhfHeaderId": "MSDocsHeader-Gaming",
+      "breadcrumb_path": "/gaming/game-publishing/breadcrumb/toc.json",
+      "extendBreadcrumb": true,
+      "feedback_system": "Standard",
+      "authorize_path": "authorize.md",
+      "searchScope": ["Microsoft Game Development Kit", "Microsoft Game Development Kit NDA", "PlayFab", "Game Publishing Guide", "Gaming"],
+      "titleSuffix": "Game Publishing Guide",
+      "ms.localizationpriority": "medium",
+      "permissioned-groups": ["Xbox-GameDev\\Dev-Game-Platform-Xbox One","Xbox-GameDev\\Dev-Game-Platform-GDK_SW"]
+    },
+    "fileMetadata": {
+      "permissioned-type": {
+        "**/*": "private",
+        "**/index.yml": "public",
+        "**/toc.yml": "public",
+        "**/toc.md": "public",
+        "**/media-private/*": "private",
+        "**/media/*": "public"
+      }
+    },
+    "template": [],
+    "dest": "game-publishing"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.md",
+          "**/*.yml",
+          "breadcrumb/toc.yml"
+        ],
+        "exclude": [
+          "**/obj/**",
+          "**/includes/**",
+          "_themes/**",
+          "_themes.pdf/**",
+          "**/docfx.json",
+          "_repo.en-us/**",
+          "README.md",
+          "LICENSE",
+          "LICENSE-CODE",
+          "ThirdPartyNotices.md"
+        ],
+        "group": "all"
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "**/*.png",
+          "**/*.jpg",
+          "**/*.svg",
+          "**/*.gif"
+        ],
+        "exclude": [
+          "**/obj/**",
+          "**/includes/**",
+          "_themes/**",
+          "_themes.pdf/**",
+          "**/docfx.json",
+          "_repo.en-us/**"
+        ],
+        "group": "all"
+      }
+    ],
+    "overwrite": [],
+    "externalReference": [],
+    "globalMetadata": {
+      "uhfHeaderId": "MSDocsHeader-Gaming",
+      "breadcrumb_path": "/gaming/gdk/breadcrumb/toc.json",
+      "feedback_system": "Standard",
+      "authorize_path": "~/authorize.md",
+      "searchScope": ["Microsoft Game Development Kit", "Microsoft Game Development Kit NDA", "PlayFab", "Game Publishing Guide", "Gaming"],
+      "titleSuffix": "Microsoft Game Development Kit",
+      "ms.localizationpriority": "medium",
+      "ms.service": "gdk",
+      "ms.author": "edigonzales",
+      "author": "edigonzales",
+      "permissioned-groups": ["Xbox-GameDev\\Dev-Game-Platform-GDK_SW"],
+      "monikerRange": ">=gdk-2510"
+    },
+    "fileMetadata": {
+      "permissioned-type": {
+        "**/*": "public",
+        "**/toc.yml": "public",
+        "**/toc.md": "public",
+         "a/**/*": "private"
+      },
+      "ms.author": {
+        "docs/gc/commerce/*": "edigonzales",
+        "docs/gc/get-started/*": "edigonzales",
+        "docs/gc/graphics/*": "edigonzales",
+        "docs/gc/policies/*": "edigonzales",
+        "docs/gc/reference/live/*": "edigonzales",
+        "docs/gc/reference/tools/*": "edigonzales",
+        "docs/gc/tools-console/*": "edigonzales",
+        "docs/features/*": "edigonzales",
+        "docs/**": "edigonzales"
+      }
+    },
+    "groups": {
+      "all": {
+        "moniker_range": "gdk-2510||gdk-2604||gdk-2610"
+      }
+    },
+    "template": [],
+    "dest": "gdk-docs-pr",
+    "markdownEngineName": "markdig"
+  }
+}

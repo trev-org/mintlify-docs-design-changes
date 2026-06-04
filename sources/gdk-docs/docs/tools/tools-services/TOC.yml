@@ -1,0 +1,28 @@
+- name: "Tools for Xbox services (contents)"
+  href: live-tools-nav.md
+- name: "Development tools for Xbox services"
+  href: live-tools.md
+- name: "Config as Source tools (XblConfig.exe)"
+  href: live-config-as-source.md
+- name: "Xbox Connected Storage tool (XblConnectedStorage.exe)"
+  href: live-connected-storage-tool.md
+- name: "Global Storage tool (GlobalStorage.exe)"
+  href: live-global-storage-tool.md
+- name: "Multiplayer Session History Viewer (MultiplayerSessionHistoryViewer.exe)"
+  href: live-mp-session-history-viewer.md
+- name: "Player Data Reset tool (XblPlayerDataReset.exe)"
+  href: live-player-data-reset.md
+- name: "Test Account tool (XblTestAccountGui.exe)"
+  href: live-xbox-live-account-tool.md
+- name: "Developer Account tool (XblDevAccount.exe)"
+  href: live-dev-account-tool.md
+- name: "PC Sandbox Switcher (XblPCSandbox.exe)"
+  href: live-pc-sandbox-switcher.md
+- name: "Trace Analyzer (XblTraceAnalyzer.exe)"
+  href: live-trace-analyzer.md
+- name: "Using Fiddler to inspect web service calls"
+  href: live-fiddler-inspect-web-calls.md
+- name: "Xbox Common Events Tool (XceTool.exe)"
+  href: live-xbox-common-events-tool.md
+- name: "Store Development Entitlement Tool (DevEntitlementTool.exe)"
+  href: live-dev-entitlements-tool.md

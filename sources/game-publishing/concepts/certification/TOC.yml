@@ -1,0 +1,19 @@
+- name: Certification step-by-step guide
+  href: certification-guide.md
+- name: Console BVT guide
+  href: certification-console-bvt-guide.md
+- name: PC BVT guide
+  href: certification-pc-bvt-guide.md
+- name: Optional Submissions
+  href: certification-optional-submissions.md
+- name: Cert Bypass
+  href: cert-bypass.md
+- name: Certification paid services
+  href: certification-paid-services.md
+- name: Microsoft Gaming Accessibility Testing
+  href: certification-mgats.md
+- name: Media validation test steps
+  href: certification-media-validation-test-steps.md
+- name: Supplemental info
+  href: certification-supplemental-info.md
+  

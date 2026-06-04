@@ -1,0 +1,113 @@
+- name: "Overview of packaging"
+  href: overviews/packaging.md
+- name: "Xbox Game Package Manager (XGPM)"
+  href: xgpm.md
+- name: "Automating package uploading"
+  href: package-uploader.md
+- name: "Getting Started Packaging for Xbox Consoles"
+  href: overviews/packaging-getting-started-for-console.md
+- name: "Getting started with packaging for PC"
+  href: overviews/packaging-getting-started-for-PC.md
+- name: "Streaming Installation and Intelligent Delivery: an overview"
+  href: overviews/streaming_install-intelligent_delivery.md
+- name: "Supporting Games-as-a-Service (GaaS)"
+  href: supporting-games-as-a-service.md
+- name: MSIXVC2 Packaging (Preview)
+  items:
+    - name: "MSIXVC2 overview"
+      href: overviews/packaging-msixvc2-overview.md
+    - name: "Getting started with MSIXVC2 for PC"
+      href: overviews/packaging-getting-started-for-PC-msixvc2.md
+    - name: "Content updates with MSIXVC2"
+      href: packaging-updates-msixvc2.md
+    - name: "MSIXVC2 encryption model"
+      href: packaging-encryption-msixvc2.md
+    - name: "Make package (makepkg2.exe)"
+      href: deployment/makepkg2.md
+    - name: "packageutil2.exe"
+      href: deployment/packageutil2.md
+- name: Common packaging tasks and workflow overview
+  items:
+    - name: "Title packaging, content updates, and streaming-installation testing"
+      href: title-packaging-streaming-install-testing.md
+    - name: Submission Validator (SubmissionValidator.dll)
+      items:
+        - name: "Submission Validator introduction"
+          href: subval/submissionvalidator.md
+        - name: "Submission Validator quality checks"
+          href: subval/submissionvalidator-tests.md
+        - name: "Submission Validator messages"
+          href: subval/submissionvalidator-messages.md
+    - name: "Application packaging during development"
+      href: packaging-packaging-during-development.md
+    - name: "Flat File Install overview"
+      href: packaging-flatfileinstall.md
+    - name: "Testing packages on a development PC"
+      href: packaging-testing-PC-install.md
+    - name: "Content update"
+      href: packaging-updates.md
+    - name: "Creating test discs"
+      href: creating-test-compilation-discs.md
+    - name: "Creating a disc subset"
+      href: packaging-disc-subset.md
+    - name: "Creating cross-generation test discs"
+      href: creating-cross-gen-test-discs.md
+    - name: "Creating discs"
+      href: creating-discs.md
+    - name: "Framework Packages - automatic dependency installation for common software redistributables"
+      href: packaging-framework-packages.md
+    - name: "Custom installation actions for Win32 games in Microsoft Store"
+      href: packaging-custom-install-actions.md
+    - name: "Mods support for PC GDK titles"
+      href: packaging-mods.md
+    - name: "GDK downloadable content (DLC) packages"
+      href: packaging-downloadable-content-dlc.md
+    - name: "Creating, examining, and testing content updates"
+      href: packaging-testing-updates.md
+- name: Intelligent Delivery features
+  items:
+    - name: "Intelligent Delivery introduction"
+      href: overviews/intelligentdelivery.md
+    - name: "Intelligent Delivery: features and recipes"
+      href: intelligentdelivery-features-recipes.md
+    - name: "Intelligent Delivery: custom tag specifiers"
+      href: intelligentdelivery-custom.md
+    - name: "Intelligent Delivery: devices specifiers"
+      href: intelligentdelivery-device.md
+    - name: "Intelligent Delivery: language specifiers"
+      href: intelligentdelivery-language.md
+    - name: "Intelligent Delivery: OnDemand content"
+      href: intelligentdelivery-ondemand.md
+    - name: Intelligent Delivery implementation
+      items:
+        - name: "Dynamic chunk reordering"
+          href: packaging-chunkreordering.md
+        - name: "Streaming installation: debugging"
+          href: packaging-debugging.md
+        - name: "Streaming installation: status"
+          href: packaging-installstatus.md
+        - name: "Multi-disc functionality"
+          href: packaging-multi-disc.md
+- name: Tools for Streaming Installation
+  items:
+    - name: "Tools for streaming installation (contents)"
+      href: deployment/atoc-deployment-tools.md
+    - name: Deployment package schema
+      items:
+        - name: "Schema introduction"
+          href: deployment/atoc-deployment-schema.md
+        - name: "<Chunk> element"
+          href: deployment/deployment-element-chunk.md
+        - name: "<FileGroup> element"
+          href: deployment/deployment-element-filegroup.md
+        - name: "<Package> element"
+          href: deployment/deployment-element-package.md
+    - name: "Make package (makepkg.exe)"
+      href: deployment/makepkg.md
+    - name: "Make package resource index (makepri.exe)"
+      href: deployment/makepri.md
+    - name: "packageutil.exe"
+      href: deployment/packageutil.md
+    - name: "Split package (splitpkg.exe)"
+      href: deployment/splitpkg.md
+

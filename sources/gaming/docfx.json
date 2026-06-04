@@ -1,0 +1,57 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.md",
+          "**/*.svg",
+          "**/*.yml"
+        ],
+        "exclude": [
+          "**/obj/**",
+          "**/includes/**",
+          "_themes/**",
+          "_themes.pdf/**",
+          "README.md",
+          "LICENSE",
+          "LICENSE-CODE",
+          "ThirdPartyNotices"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "**/*.png",
+          "**/*.svg",
+          "**/*.jpg",
+          "**/*.gif"
+        ],
+        "exclude": [
+          "**/obj/**",
+          "**/includes/**",
+          "_themes/**",
+          "_themes.pdf/**"
+        ]
+      }
+    ],
+    "overwrite": [],
+    "externalReference": [],
+    "globalMetadata": {
+      "uhfHeaderId": "MSDocsHeader-Gaming",
+      "breadcrumb_path": "/gaming/breadcrumb/toc.json",
+      "extendBreadcrumb": true,
+      "feedback_system": "Standard",
+      "searchScope": ["Microsoft Game Development Kit", "Microsoft Game Development Kit NDA", "PlayFab", "Game Publishing Guide", "Gaming"],
+      "titleSuffix": "Microsoft Game Dev",
+      "ms.service": "gdk",
+      "author": "edigonzales",
+      "ms.author": "edigonzales",
+      "ms.topic": "article"
+    },
+    "fileMetadata": {},
+    "template": [],
+    "dest": "gaming-docs",
+    "markdownEngineName": "markdig"
+  }
+}

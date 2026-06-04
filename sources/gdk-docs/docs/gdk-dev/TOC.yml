@@ -1,0 +1,14 @@
+- name: "Learn about the GDK"
+  href: gdk-dev-index.yml
+- name: "What's New"
+  href: whatsnew/TOC.yml
+- name: "GDK Introduction"
+  href: intro/TOC.yml
+- name: "Getting Started"
+  href: get-started/TOC.yml
+- name: "Downloads and samples"
+  href: development-downloads/TOC.yml
+- name: "Game Principles"
+  href: game-principles/TOC.yml
+- name: "Advanced Technical Guidance"
+  href: atg-engagement/TOC.yml

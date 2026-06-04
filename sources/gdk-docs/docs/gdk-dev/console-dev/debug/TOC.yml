@@ -1,0 +1,32 @@
+- name: "Debugging and testing (contents)"
+  href: overviews\atoc-dev-env-debugging.md
+- name: "Accessing debug memory"
+  href: overviews\accessing-debug-memory.md
+- name: "Accessing additional storage for development scenarios"
+  href: overviews\additional-storage-for-development.md
+- name: "Analyze and diagnose errors with the GDK tools"
+  href: overviews\inspecting-errors.md
+- name: "Troubleshoot common issues"
+  href: overviews/troubleshooting-common-issues.md
+- name: "Profiling Mode"
+  href: overviews\profiling-mode.md
+- name: "Retrieving crash dumps"
+  href: overviews\retrieving-crash-dumps.md
+- name: "Xbox One title debugging checklist"
+  href: overviews\xbox-one-title-debugging-checklist.md
+- name: "Debugging your title without a network connection"
+  href: overviews\debugging-no-network.md
+- name: "Simulating gamepad input"
+  href: overviews\xtf-gamepad-input-testing.md
+- name: "Testing with a trial license"
+  href: overviews\testing-trial-license.md
+- name: "Debugging with Overlay Folders"
+  href: overviews\debugging-with-overlay-folders.md
+- name: "Using the Xbox Development Kit second NIC"
+  href: overviews\devkit-second-nic.md
+- name: "Tool and automation APIs"
+  href: atoc-api-tools-dev-env.md
+- name: "Kernel Debugger and WinDbg"
+  href: overviews\atoc-kd.md
+- name: "Testing and automation samples"
+  href: atoc-testpub-samples.md

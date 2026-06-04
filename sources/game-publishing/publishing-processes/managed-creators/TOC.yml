@@ -1,0 +1,58 @@
+- name: Game publishing overview
+  href: overview.md
+- name: New creator onboarding
+  href: publishing-processes-onboarding-new-creator.md
+- name: Submit game concepts
+  href: publishing-processes-game-concepts.md
+- name: Product planning
+  items:
+    - name: SKU planning
+      href: publishing-processes-sku-planning.md
+    - name: Xbox Game Preview
+      href: publishing-processes-xbox-game-preview.md
+- name: Create and onboard products in Partner Center
+  href: publishing-processes-product-onboarding-and-configuration.md
+- name: Microsoft Store and monetization
+  items:
+    - name: Game Wish List pages
+      href: publishing-processes-wishlist-pages.md
+    - name: Game pre-orders
+      href: publishing-processes-configuring-pre-orders.md
+    - name: DLC and post-sale monetization
+      href: publishing-processes-post-sale-monetization.md
+    - name: Ordering promotional codes
+      href: publishing-processes-promo-codes.md
+- name: Prerelease testing and betas
+  href: publishing-processes-prerelease.md
+- name: Submit to Xbox Certification
+  items:
+    - name: Certification submission overview
+      href: publishing-processes-submitting-to-certification.md
+    - name: Submit games for Optional Certification
+      href: publishing-processes-optional-certification.md
+    - name: Submit games for Final Certification
+      href: publishing-processes-disc-and-digital-certification.md
+- name: Disc releases
+  items:
+  - name: Disc packaging requirements
+    href: publishing-processes-disc-packaging.md
+  - name: Approve discs for manufacture
+    href: publishing-processes-rtm.md
+  - name: Order discs for manufacture
+    href: publishing-processes-ordering-discs.md
+- name: Publish to RETAIL
+  items: 
+  - name: Publishing a game to the RETAIL sandbox
+    href: publishing-processes-retail-publishing-and-testing.md 
+  - name: Game Publishing Readiness Checklist
+    href: publishing-processes-game-publishing-readiness-checklist.md
+- name: Recommendations for testing in RETAIL
+  href: publishing-processes-recommendations-for-testing-in-retail.md
+- name: Product changes and Content Updates
+  href: publishing-processes-post-release-lifecycle.md
+- name: Additional programs
+  items:
+    - name: Sub-publishing
+      href: publishing-processes-subpublishing.md
+    - name: Curated programs
+      href: publishing-processes-managed-programs.md

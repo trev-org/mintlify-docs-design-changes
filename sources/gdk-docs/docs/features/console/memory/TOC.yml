@@ -1,0 +1,22 @@
+- name: Memory
+  items:
+    - name: "Introduction to memory"
+      href: system-memory-overview.md
+    - name: "Microsoft Game Development Kit (GDK) memory manager technical details"
+      href: system-memory-details.md
+    - name: "Cross core memory costs"
+      href: Cross-Core-Memory-Costs.md
+    - name: "Diagnostics and memory tracking"
+      href: system-memory-diagnostics.md
+    - name: "Porting your title to use the Microsoft Game Development Kit (GDK) memory manager"
+      href: system-memory-porting.md
+    - name: "Working with the Microsoft GDK Game OS memory manager"
+      href: system-memory-working.md
+    - name: "Configuring Memory for your title and dev kit"
+      href: system-memory-tooling.md
+    - name: "Kernel Memory Usage"
+      href: kernel_memory_usage.md
+    - name: "Virtual Memory Allocator"
+      href: virtual-memory-allocator.md
+    - name: "Writeable Memory Mapped Files"
+      href: writeable-file-mappings.md

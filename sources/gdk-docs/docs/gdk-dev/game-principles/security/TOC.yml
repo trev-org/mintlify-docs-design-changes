@@ -1,0 +1,32 @@
+- name: "Game Security Considerations (contents)"
+  href: gc-security-nav.md
+- name: "Game Security Concepts"
+  href: game-security-overview.md
+- name: Communication Security
+  items:
+    - name: "Best Practices for Communication Security (contents)"
+      href: communication-security/communication-security-nav.md
+    - name: "Communication Security Best Practices"
+      href: communication-security/communication-security-overview.md
+    - name: Implementing Communication Security
+      items:
+        - name: "Implementing the Best Practices for Secure Game Communication (contents)"
+          href: communication-security/communication-security-impl/secure-communication-impl-nav.md
+        - name: "Implementing the Best Practices for Secure Game Communication"
+          href: communication-security/communication-security-impl/secure-communication-impl.md
+        - name: "Best Practices for Secure Game Communication for Microsoft Game Development Kit Titles"
+          href: communication-security/communication-security-impl/gc-secure-communication-impl.md
+        - name: "Best Practices for Secure Web Requests and WebSockets for Microsoft Game Development Kit Titles"
+          href: communication-security/communication-security-impl/gc-secure-webrequest-impl.md
+        - name: "Best Practices for Secure Game Mesh Communication for Microsoft Game Development Kit Titles"
+          href: communication-security/communication-security-impl/gc-secure-game-mesh-impl.md
+        - name: "Best Practices for Secure Communication Samples for Microsoft Game Development Kit Titles"
+          href: communication-security/communication-security-impl/gc-secure-samples.md
+- name: General Game Security
+  items:
+    - name: "Best Practices for General Game Security (contents)"
+      href: general-security/general-security-nav.md
+    - name: "Game Security Best Practices"
+      href: general-security/general-game-security.md
+    - name: "Game Development Tool Best Practices"
+      href: general-security/game-tool-security.md

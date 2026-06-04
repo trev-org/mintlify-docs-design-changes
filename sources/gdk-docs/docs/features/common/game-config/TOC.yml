@@ -1,0 +1,6 @@
+- name: "MicrosoftGame.config overview"
+  href: MicrosoftGameConfig-Overview.md
+- name: "MicrosoftGame.config Editor"
+  href: MicrosoftGameConfig-Editor.md
+- name: "MicrosoftGame.config localization"
+  href: MicrosoftGameConfig-Localization.md

@@ -1,0 +1,16 @@
+- name: "Features specific to Xbox Series X|S and Xbox One"
+  href: console-features-overview.md
+- name: Audio
+  href: audio/TOC.yml
+- name: "Cross console gen development"
+  href: cross-gen/TOC.yml
+- name: Game DVR
+  href: game-dvr/gamedvr-broadcast.md
+- name: Memory
+  href: memory/TOC.yml
+- name: Networking
+  href: networking/TOC.yml
+- name: Storage
+  href: storage/TOC.yml
+- name: Text to speech
+  href: text-to-speech/text-to-speech.md

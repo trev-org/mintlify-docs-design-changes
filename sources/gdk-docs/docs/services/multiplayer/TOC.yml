@@ -1,0 +1,148 @@
+- name: "Multiplayer introduction"
+  href: overviews/multiplayer-intro.md
+- name: Overviews
+  items:
+    - name: "Multiplayer overview"
+      href: overviews/live-multiplayer-intro.md
+    - name: "Common multiplayer scenarios"
+      href: overviews/live-common-multiplayer-scenarios.md
+    - name: "Design guidance (GDK games)"
+      href: overviews/multiplayer-design-guidance-xbox-pc-gdk.md
+    - name: "Design guidance (cross-platform)"
+      href: overviews/multiplayer-design-guidance-cross-platform.md
+- name: Concepts
+  items:
+    - name: "Multiplayer concepts overview"
+      href: ./concepts/live-multiplayer-concepts.md
+    - name: "Configuring the Multiplayer service"
+      href: ./concepts/live-configure-the-multiplayer-service.md
+    - name: "Multiplayer roles"
+      href: ./concepts/live-multiplayer-roles.md
+    - name: "Session browse"
+      href: ./concepts/live-session-browse.md
+    - name: "Calling the Multiplayer service directly"
+      href: ./concepts/live-intro-calling-mp-directly.md
+    - name: "Migrating an arbiter"
+      href: ./concepts/live-migrating-an-arbiter.md
+    - name: "Cross-network example: MMO"
+      href: ./concepts/live-console-xr007-mmo-example.md
+    - name: "Cross-network example: multiplayer"
+      href: ./concepts/live-console-xr007-multiplayer-example.md
+- name: "Game chat"
+  href: chat/TOC.yml
+- name: Multiplayer Activity (MPA)
+  items:
+    - name: "Multiplayer Activity feature overview"
+      href: ./mpa/live-mpa-overview.md
+    - name: Concepts
+      items:
+        - name: "Activities"
+          href: ./mpa/concepts/live-mpa-activities.md
+        - name: "Invites"
+          href: ./mpa/concepts/live-mpa-invites.md
+        - name: "Recent players"
+          href: ./mpa/concepts/live-mpa-recent-players.md
+        - name: "MPA troubleshooting guide"
+          href: ./mpa/concepts/live-mpa-troubleshooting.md
+        - name: "Integration with PlayFab Lobby and Match"
+          href: ./mpa/concepts/live-mpa-playfab-integration.md
+    - name: Example code
+      items:
+        - name: "Example code for Multiplayer Activity"
+          href: ./mpa/how-to/live-mpa-client-how-to.md
+- name: Multiplayer Manager (MPM)
+  items:
+    - name: "Multiplayer Manager overview"
+      href: ./mpm/live-multiplayer-manager-overview.md
+    - name: Concepts
+      items:
+        - name: "Multiplayer Manager API overview"
+          href: ./mpm/concepts/live-multiplayer-manager-api-overview.md
+        - name: Multiplayer Manager flowcharts
+          items:
+            - name: "Playing a game with friends (flowchart)"
+              href: ./mpm/concepts/flowcharts/live-mpm-play-with-friends.md
+            - name: "Playing a game by using SmartMatch matchmaking (flowchart)"
+              href: ./mpm/concepts/flowcharts/live-mpm-play-with-smartmatch-matchmaking.md
+            - name: "Checking Quality of Service for matchmaking (flowchart)"
+              href: ./mpm/concepts/flowcharts/live-mpm-use-matchmaking-and-qos.md
+            - name: "Sending invites to another player (flowchart)"
+              href: ./mpm/concepts/flowcharts/live-mpm-send-invites.md
+            - name: "Handling protocol activation (flowchart)"
+              href: ./mpm/concepts/flowcharts/live-mpm-on-protocol-activation.md
+            - name: "Filling open slots in a multiplayer game (flowchart)"
+              href: ./mpm/concepts/flowcharts/live-mpm-fill-open-slots.md
+            - name: "Handling host migration (flowchart)"
+              href: ./mpm/concepts/flowcharts/live-mpm-host-migration.md
+            - name: "Shutting down a multiplayer session (flowchart)"
+              href: ./mpm/concepts/flowcharts/live-mpm-shut-down.md
+    - name: Example code
+      items:
+        - name: "Enable playing a multiplayer game with friends by using Multiplayer Manager"
+          href: ./mpm/how-to/live-play-multiplayer-with-friends.md
+        - name: "Enable finding a multiplayer game by using SmartMatch using Multiplayer Manager"
+          href: ./mpm/how-to/live-play-multiplayer-with-matchmaking.md
+        - name: "Send game invites by using Multiplayer Manager"
+          href: ./mpm/how-to/live-send-game-invites.md
+        - name: "Handling protocol activation to start a game by using Multiplayer Manager"
+          href: ./mpm/how-to/live-handle-protocol-activation.md
+- name: Multiplayer Session Directory (MPSD)
+  items:
+    - name: "Multiplayer Session Directory overview"
+      href: ./mpsd/live-mpsd-overview.md
+    - name: "Multiplayer Session Directory"
+      href: ./mpsd/live-xbox-multiplayer-session-directory.md
+    - name: Concepts
+      items:
+        - name: "Multiplayer Session advanced topics"
+          href: ./mpsd/concepts/live-mpsd-details.md
+        - name: "Game session visibility and joinability"
+          href: ./mpsd/concepts/live-game-session-visibility-joinability.md
+        - name: "Multiplayer session templates"
+          href: ./mpsd/concepts/live-session-templates.md
+        - name: "Session template constants"
+          href: ./mpsd/concepts/live-session-template-constants.md
+        - name: "Enable large sessions for Multiplayer"
+          href: ./mpsd/concepts/live-large-sessions.md
+        - name: "Multiplayer FAQ and troubleshooting"
+          href: ./mpsd/concepts/live-multiplayer-2015-faq.md
+        - name: "MPSD invite and activity troubleshooting"
+          href: ./mpsd/concepts/live-multiplayer-invite-troubleshooting.md
+        - name: "Moving from MPSD to PlayFab Multiplayer and MPA"
+          href: mpsd/concepts/live-mpsd-to-mlp.md
+    - name: Example code
+      items:
+        - name: "Multiplayer tasks"
+          href: ./mpsd/how-to/live-mpsd-how-tos.md
+        - name: "Multiplayer session status codes"
+          href: ./mpsd/how-to/live-mpsd-status-codes.md
+- name: Invites
+  items:
+    - name: "Invites overview"
+      href: ./invites/live-multiplayer-invites-overview.md
+    - name: Concepts
+      items:
+        - name: "Flows for multiplayer game invites"
+          href: ./invites/concepts/live-multiplayer-invite-flows.md
+        - name: "Invites across Xbox One Software Development Kit/GDK title versions"
+          href: ./invites/concepts/live-multiplayer-xdkinvites.md
+    - name: Example code
+      items:
+        - name: "Sending invites"
+          href: ./invites/how-to/live-invites-send.md
+        - name: "Receiving invites"
+          href: ./invites/how-to/live-invites-receive.md
+- name: SmartMatch Matchmaking
+  items:
+    - name: "Matchmaking overview"
+      href: ./matchmaking/live-matchmaking-overview.md
+    - name: Concepts
+      items:
+        - name: "Using SmartMatch matchmaking"
+          href: ./matchmaking/concepts/live-matchmaking-how-tos.md
+        - name: "Target session initialization and QoS"
+          href: ./matchmaking/concepts/live-matchmaking-target-session.md
+    - name: Portal config
+      items:
+        - name: "Configuring matchmaking in Partner Center"
+          href: ./matchmaking/config/live-matchmaking-config.md

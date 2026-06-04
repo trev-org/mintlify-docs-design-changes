@@ -1,0 +1,34 @@
+- name: XBOX Game Development Docs
+  href: index.yml
+  items:
+  - name: XBOX Accessibility
+    href: accessibility/accessibility.md
+    items:
+    - name: Accessibility Feature Tags
+      href: accessibility/accessibility-feature-tags.md
+    - name: Accessibility of Gaming AI Experiences
+      href: accessibility/accessibility-of-gaming-ai.md
+    - name: Developer Accessibility Resources
+      href: accessibility/developer-resources.md
+    - name: Disability Etiquette
+      href: accessibility/etiquette.md
+    - name: Gaming Accessibility Fundamentals Learning Path
+      href: accessibility/gaf-info.md
+    - name: Gaming and Disability Player Experience Guide
+      href: accessibility/gadpeg.md
+    - name: Game Accessibility Workshop Developer Toolkit
+      href: accessibility/accessibility-workshop-toolkit.md  
+    - name: Microsoft Gaming Accessibility Testing Service
+      href: accessibility/mgats.md
+    - name: Playbook for Accessible Gaming Events
+      href: accessibility/page.md
+    - name: Xbox Accessibility Insiders League
+      href: accessibility/xail.md
+    - name: Xbox Accessibility Guidelines
+      href: accessibility/guidelines.md
+    - name: Guidelines
+      href: accessibility/toc.yml
+    - name: Event guidelines
+      href: accessibility/page/toc.yml
+  - name: XBOX Sustainability
+    href: sustainability/toc.yml

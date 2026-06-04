@@ -1,0 +1,12 @@
+- name: "Game Development Kit (GDK)"
+  href: index.yml
+- name: "Learn about the GDK"
+  href: docs/gdk-dev/TOC.yml
+- name: "Build and Develop"
+  href: docs/features/TOC.yml  
+- name: "Optimize and Validate"
+  href: docs/tools/TOC.yml
+- name: "Publish and Commerce"
+  href: docs/store/TOC.yml
+- name: "Reference"
+  href: docs/reference/TOC.yml

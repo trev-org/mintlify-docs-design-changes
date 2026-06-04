@@ -1,0 +1,10 @@
+- name: "Publish and Commerce"
+  href: store-index.yml
+- name: "Game Publishing Guide"
+  href: /gaming/game-publishing/
+- name: "Certification and Requirements"
+  href: policies/TOC.yml
+- name: "Commerce and Entitlements"
+  href: commerce/TOC.yml
+- name: "Franchise game hubs"
+  href: franchise-game-hubs.md

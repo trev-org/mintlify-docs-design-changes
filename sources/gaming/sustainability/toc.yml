@@ -1,0 +1,42 @@
+- name: Overview
+  href: sustainability-overview.md
+- name: Xbox Energy Efficiency Essentials
+  href: xbox-game-energy-efficiency-essentials.md
+- name: Lab Measurements for Baseline Comparisons
+  href: lab-platform-baselines.md
+- name: Telemetry Measurements for Baseline Comparisons
+  href: global-platform-baselines.md
+- name: Case studies
+  expanded: true
+  items: 
+    - name: Case Study - Halo Infinite
+      href: case-studies/case-studies-halo.md
+    - name: Case Study - Fortnite
+      href: case-studies/case-studies-fortnite.md
+    - name: Case Study - Call of Duty
+      href: case-studies/case-studies-cod.md
+    - name: Case Study - The Elder Scrolls Online
+      href: case-studies/case-studies-elder-scrolls-online.md
+    - name: Case Study - Minecraft
+      href: case-studies/case-studies-minecraft.md
+    - name: Case Study - Gears of War Reloaded
+      href: case-studies/case-studies-gears-of-war-reloaded.md
+    - name: Case Study - For Honor
+      href: case-studies/case-studies-for-honor.md
+    - name: Case Study - Star Wars Outlaws
+      href: case-studies/case-studies-star-wars-outlaws.md
+- name: Developer tools
+  expanded: true
+  items: 
+  - name: Developer Introduction
+    href: developer-tools/developer-overview.md
+  - name: PIX Developer Tools
+    href: developer-tools/developer-tool-pix-guide.md
+  - name: Devkit Developer Tools
+    href: developer-tools/developer-tool-devkit-guide.md
+  - name: Dynamic Power States
+    href: developer-tools/dynamic-power-states.md
+- name: Certification Testing Reports
+  href: certification-testing-process.md
+- name: Viewing Your Data In Partner Center
+  href: partner-center-data.md

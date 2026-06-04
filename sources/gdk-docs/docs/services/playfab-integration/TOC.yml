@@ -1,0 +1,6 @@
+- name: "Player sign in concepts"
+  href: gdk-playfab-player-sign-in-concepts.md
+- name: "Implement player sign in"
+  href: gdk-playfab-player-sign-in-steps.md
+- name: "Microsoft Store in-app purchase set up"
+  href: gdk-playfab-microsoft-store.md

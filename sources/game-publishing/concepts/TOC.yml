@@ -1,0 +1,84 @@
+- name: Overview
+  href: overview.md
+- name: Partner Center account and access management
+  href: developer-account.md
+- name: Add-ons
+  items:
+    - name: Overview
+      href: add-ons.md
+    - name: Durable add-ons
+      href: add-ons/durable-add-ons.md
+    - name: Add-on bundles and Season Pass
+      href: add-ons/add-on-bundle.md
+    - name: Consumable add-ons
+      href: add-ons/consumable-add-ons.md
+- name: Age ratings
+  href: age-ratings.md
+- name: Branches
+  href: branches.md
+- name: Bundles
+  href: bundle.md
+- name: Certification (Certify)
+  href: certification/certification-overview.md
+- name: Discs
+  items:
+    - name: Disc request management
+      href: discs-overview.md
+    - name: Royalty configuration
+      href: discs-royalty-configuration.md
+- name: Game publisher insights
+  items:
+    - name: Frequently Asked Questions (FAQ)
+      href: game-publisher-insights/game-publisher-insights-faq.md
+- name: Game reparenting
+  href: reparenting.md
+- name: Gaming metadata
+  items:
+    - name: Overview
+      href: metadata-overview.md
+    - name: Supported Languages
+      href: metadata-supported-languages.md
+- name: Open and restrictive licensing
+  href: licensing/open-and-restrictive-licensing.md
+- name: Packages
+  items:
+    - name: Packages
+      href: game-package-management.md
+    - name: Packages (classic experience)
+      href: packages-overview.md
+- name: Pricing and availability
+  href: availability/TOC.yml
+- name: Product setup
+  items:
+    - name: Product setup overview
+      href: game-setup-overview.md
+    - name: Product groups
+      href: product-groups.md
+    - name: Game name
+      href: name.md
+- name: Properties
+  items:
+    - name: Overview
+      href: properties-overview.md
+    - name: Basic Info
+      href: properties-basic-info.md
+    - name: Technical Capabilities
+      href: properties-technical-capabilities.md
+- name: Relationship management
+  href: relationship-management.md
+- name: Review and publish
+  href: modular-submission.md
+- name: Sandboxes
+  href: sandboxes.md
+- name: Store listings
+  href: store-listing.md
+- name: Supplemental info
+  href: certification/certification-supplemental-info.md
+- name: Xbox Insider Program
+  items:
+    - name: Xbox Insider Program Flighting
+      href: ../publishing-processes/managed-creators/publishing-processes-xbox-insider-flighting.md
+    - name: Xbox Insider Program FAQ
+      href: ../publishing-processes/managed-creators/publishing-processes-xbox-flighting-faq.md
+- name: Xbox services
+  href: xbox-services.md

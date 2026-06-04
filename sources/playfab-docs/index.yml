@@ -1,0 +1,189 @@
+### YamlMime:Hub
+
+# root section (required)
+title: PlayFab documentation
+summary: Learn how to build and manage engaging games using Microsoft PlayFab services.
+# brand: PlayFab
+
+metadata:
+  title: PlayFab documentation
+  description: PlayFab is a complete backend platform for live games. 
+  services: service
+  ms.service: azure-playfab
+  ms.topic: hub-page
+  author: m-kdearnley
+  ms.author: kdearnley
+  ms.date: 03/19/2025
+
+# highlightedContent section (optional)
+# Maximum of 8 items
+highlightedContent:
+# itemType: architecture | concept | deploy | download | get-started | how-to-guide | learn | overview | quickstart | reference | sample | tutorial | video | whats-new
+  items:
+    - title: What is PlayFab?
+      itemType: concept
+      url: get-started/what-is-playfab.md
+    - title: What's new
+      itemType: whats-new
+      url: release-notes/index.md   
+    - title: Download the SDK
+      itemType: download
+      url: sdks/sdk-overview.md  
+    - title: API reference
+      itemType: reference
+      url: api-references/index.md
+
+productDirectory:
+  title: Game developers - start building with PlayFab
+  items:
+    - title: Fundamentals
+      # imageSrc should be square in ratio with no whitespace
+      imageSrc: ./media/index/build.svg
+      summary: Learn PlayFab’s fundamental concepts with tutorials and a demo game.
+      url: get-started/index.yml
+
+    - title: Identity
+      imageSrc: ./media/index/build.svg
+      summary: Manage player and developer identities across game titles.
+      url: identity/index.yml
+
+    - title: Live service management
+      imageSrc: ./media/index/build.svg
+      summary: Streamline every part of the development lifecycle from production to running a live game.
+      url: live-service-management/index.yml
+
+    - title: Economy, Monetization, & UGC
+      imageSrc: ./media/index/engage.svg
+      summary: Set up thriving in-game economies and UGC.
+      url: economy-monetization/index.yml
+
+    - title: Multiplayer
+      imageSrc: ./media/index/engage.svg
+      summary: Enable different multiplayer modes to connect players.
+      url: multiplayer/index.yml
+
+    - title: Community
+      imageSrc: ./media/index/engage.svg
+      summary: Create ways for players to connect and build community.
+      url: community/index.yml
+
+    - title: Player progression
+      imageSrc: ./media/index/engage.svg
+      summary: Create engaging gameplay with player statistics and leaderboard tracking.
+      url: player-progression/index.yml
+    
+    - title: Game data
+      imageSrc: ./media/index/analyze.svg
+      summary: Get deep insights on player activity and take action.
+      url: data-analytics/index.yml
+
+#    - title: Reference documentation
+#      imageSrc: ./media/index/reference.svg
+#      links:
+#        - url: api-references/index.md
+#          text: Rest APIs
+#        - url: api-references/events/index.md
+#          text: PlayStream Events
+#        - url: resources/recipes-and-samples.md
+#          text: Recipes and Samples          
+
+# conceptual content (optional)
+conceptualContent:
+  sections:
+    - title: Client libraries, scripting, and tools
+      items:
+        - title: Languages
+          links: 
+            - url: sdks/c/index.md
+              itemType: reference
+              text: C/C++
+            - url: sdks/c-sharp/index.md
+              itemType: reference
+              text: C#
+            - url: sdks/java/index.md
+              itemType: reference
+              text: Java
+            - url: sdks/javascript/index.md
+              itemType: reference
+              text: JavaScript
+            - url: sdks/python/index.md
+              itemType: reference
+              text: Python
+          footerLink: 
+            url: sdks/languages/index.yml
+            text: See more
+            
+        - title: Platforms
+          links: 
+            - url: sdks/platforms/android.md
+              itemType: reference
+              text: Android
+            - url: sdks/platforms/ios.md
+              itemType: reference
+              text: iOS
+            - url: sdks/platforms/macos.md
+              itemType: reference
+              text: macOS
+            - url: sdks/platforms/linux.md
+              itemType: reference
+              text: Linux
+            - url: sdks/platforms/gdk.md
+              itemType: reference
+              text: Microsoft GDK
+          footerLink:
+            url: sdks/platforms/index.yml
+            text: See more
+
+        - title: Game engines
+          links:
+            - url: sdks/unity3d/index.md
+              itemType: reference
+              text: Unity 3D
+            - url: sdks/unreal/index.md
+              itemType: reference
+              text: Unreal Engine
+            - url: sdks/cocos2d-x/index.md
+              itemType: reference
+              text: Cocos2D-x
+
+        - title: Tools & utilities
+          links:
+              - url: sdks/sdkgenerator/index.md
+                itemType: reference
+                text: SDK Generator
+              - url: sdks/postman/index.md
+                itemType: reference
+                text: Postman
+# tools section (optional)
+# tools:
+#   title: Client libraries, scripting, and tools
+#   items:
+#     - title: Languages
+#       # imageSrc should be square in ratio with no whitespace
+#       imageSrc: ./media/index/code-languages.svg
+#       url: sdks/languages/index.yml
+#     - title: Platforms
+#       imageSrc: ./media/index/frameworks.svg
+#       url: sdks/platforms/index.yml
+#     - title: Game engines
+#       imageSrc: ./media/index/game-engines.svg
+#       url: sdks/game-engines/index.yml
+#     - title: Tools and utilities
+#       imageSrc: ./media/index/tools-utilities.svg
+#       url: sdks/tools/index.yml      
+
+# additionalContent section (optional)
+# Card with summary style
+additionalContent:
+  sections:
+    - title: PlayFab Community & Support
+      items:
+        - title: Discord forums
+          summary: Community based product support. Use the Discord forums to post questions, share answers, and discuss the PlayFab product experience.
+          url: https://discord.com/invite/msftgamedev
+        - title: Support
+          summary: PlayFab support options
+          url: pricing/Support.md
+        - title: Blog
+          summary: Latest news and updates from the PlayFab developers
+          url: https://blog.playfab.com/blog

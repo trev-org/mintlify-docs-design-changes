@@ -1,0 +1,138 @@
+- name: Introduction to game streaming
+  href: game-streaming-overview.md
+- name: Game Streaming Setup
+  items: 
+    - name: Game streaming test prerequisites
+      href: game-streaming-stream-your-game.md
+    - name: Setting up your Xbox Development Kit for streaming
+      href: game-streaming-setup-xbox-developer-kit.md
+    - name: Android Content Test Application (CTA) overview
+      href: game-streaming-android-content-test-application.md
+    - name: Web Content Test Application (CTA) overview
+      href: game-streaming-web-content-test-application.md
+    - name: Windows PC Content Test Application (CTA) overview
+      href: game-streaming-windows-pc-content-test-application.md
+    - name: Content Test Application (CTA) Stream Configuration
+      href: game-streaming-content-test-application-stream-config.md
+- name: Game Streaming Basics
+  items: 
+    - name: Cloud Aware API calls
+      href: game-streaming-am-i-streaming.md
+    - name: Optimizing your game
+      href: game-streaming-optimizing-your-game.md
+    - name: Xbox Game Streaming vs. Xbox Remote Play
+      href: game-streaming-project-xcloud-vs-console-streaming.md
+    - name: Referencing Xbox Game Streaming Servers in Xbox services Security Token (XSTS) Claims
+      href: game-streaming-referencing-xcloud-servers-in-xsts-claims.md
+- name: Creating Touch Experiences
+  items: 
+    - name: Getting started with touch
+      href: game-streaming-getting-started-with-touch.md
+    - name: Building a native touch interface for your game with IGameInput
+      href: game-streaming-native-touch-igameinput.md
+    - name: Touch Adaptation Kit
+      items: 
+        - name: Touch Adaptation Bundle
+          href: game-streaming-touch-touch-adaptation-bundle.md
+        - name: Touch Adaptation Kit Editor
+          items: 
+            - name: Overview
+              href: tak-editor/game-streaming-tak-editor.md
+            - name: Setup
+              href: tak-editor/game-streaming-tak-editor-setup.md
+            - name: Create Bundles and Layouts
+              href: tak-editor/game-streaming-tak-editor-create-bundle.md
+            - name: Preview Layouts
+              href: tak-editor/game-streaming-tak-editor-preview-layouts.md
+            - name: Customize Preview
+              href: tak-editor/game-streaming-tak-editor-customize-preview.md
+            - name: Pack Bundles
+              href: tak-editor/game-streaming-tak-editor-pack-bundles.md
+            - name: Troubleshooting and Feedback
+              href: tak-editor/game-streaming-tak-editor-troubleshooting.md
+        - name: Command Line Tool (tak.exe)
+          items: 
+            - name: Command Line Tool overview (tak.exe)
+              href: tak-command-line-tool/game-streaming-tak-command-line.md
+            - name: Create Command
+              items: 
+                - name: Create Command overview
+                  href: tak-command-line-tool/game-streaming-tak-command-line-create-command.md
+                - name: Templates
+                  href: tak-command-line-tool/game-streaming-tak-command-line-templates.md
+            - name: Convert Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-convert-command.md
+            - name: License Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-license-command.md
+            - name: Notice Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-notice-command.md
+            - name: Pack Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-pack-command.md
+            - name: Serve Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-serve-command.md
+            - name: Settings Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-settings-command.md
+            - name: Takx Version Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-takx-version-command.md
+            - name: Unpack Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-unpack-command.md
+            - name: Verify Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-verify-command.md
+            - name: Version Command
+              href: tak-command-line-tool/game-streaming-tak-command-line-version-command.md
+        - name: Localizing Content
+          href: game-streaming-tak-localization.md
+        - name: Touch Adaptation Kit (TAK) Reference
+          href: game-streaming-touch-touch-adaptation-kit-overview.md
+        - name: Building Layouts
+          items: 
+            - name: Building touch control layouts
+              href: building-touch-layouts/game-streaming-touch-building-touch-layout.md
+            - name: "Designer's guide to building touch control layouts"
+              href: building-touch-layouts/game-streaming-tak-designers-guide.md
+            - name: Create custom touch controls layout with GitHub Copilot
+              href: building-touch-layouts/game-streaming-build-touch-layout-github-copilot.md
+            - name: Custom assets for Touch Adaptation Layouts
+              href: building-touch-layouts/game-streaming-tak-custom-assets.md
+            - name: High contrast mode for Touch Adaptation Layouts
+              href: building-touch-layouts/game-streaming-tak-high-contrast-mode.md
+            - name: Changing Touch Control Layouts Based On Game State
+              href: building-touch-layouts/game-streaming-touch-changing-layouts-game-state.md
+            - name: Deploying touch control layouts using Tak CLI
+              href: building-touch-layouts/game-streaming-touch-deploying-touch-layout.md
+            - name: Publishing touch layouts
+              href: building-touch-layouts/game-streaming-touch-publishing-layouts.md
+        - name: Sample Layouts
+          items: 
+            - name: Getting started with touch bundle layouts
+              href: building-touch-layouts/samples/game-streaming-touch-getting-started-with-sample-layouts.md
+            - name: Driving Touch Control Layout
+              href: building-touch-layouts/samples/game-streaming-touch-tak-sample-driving.md
+            - name: Fighting Game Touch Control Layout
+              href: building-touch-layouts/samples/game-streaming-touch-tak-sample-fighter.md
+            - name: First person shooter Touch Control Layout
+              href: building-touch-layouts/samples/game-streaming-touch-tak-sample-first-person.md
+            - name: Standard Xbox Controller Touch Control Layout
+              href: building-touch-layouts/samples/game-streaming-touch-tak-sample-full-layout.md
+            - name: 2D Platformer Touch Control Layout
+              href: building-touch-layouts/samples/game-streaming-touch-tak-sample-platformer.md
+- name: Graphics
+  items: 
+    - name: DirectCapture Overview
+      href: game-streaming-directcapture-overview.md
+    - name: Custom Resolution Overview
+      href: game-streaming-custom-resolution-overview.md
+    - name: Best Practices for Game Streaming Custom Resolution
+      href: game-streaming-custom-resolution-best-practices.md
+    - name: Testing With Custom Resolution
+      href: game-streaming-testing-custom-resolution.md
+- name: Latency Compensation
+  items: 
+    - name: Game streaming latency compensation overview
+      href: game-streaming-latency-compensation-overview.md
+    - name: Game streaming latency compensation deep dive
+      href: game-streaming-latency-compensation-deep-dive.md
+    - name: Game streaming latency measurement
+      href: game-streaming-latency-measurement.md
+    - name: Simulating latency while testing your game
+      href: game-streaming-simulate-latency-while-testing.md

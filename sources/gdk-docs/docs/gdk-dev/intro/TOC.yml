@@ -1,0 +1,28 @@
+- name: "Welcome to the Microsoft Game Development Kit"
+  href: welcome.md
+- name: "What is the GDK?"
+  href: introduction.md
+- name: "Using the documentation"
+  href: using-documentation.md
+- name: "Feature quality levels"
+  href: feature-quality.md
+- name: "Glossary"
+  href: glossary.md
+- name: "Gaming Runtime glossary"
+  href: gaming-runtime-glossary.md
+- name: "GDK security requirements"
+  href: security.md
+- name: "Copyright"
+  href: copyright.md
+- name: Quick links
+  items:
+    - name: "Quick links (contents)"
+      href: quick-links/quick-links-overview.md
+    - name: "Porting Guides"
+      href: quick-links/porting-guides.md
+    - name: "Xbox hardware"
+      href: quick-links/hardware.md
+    - name: "Video Overviews"
+      href: quick-links/gdk-videos-overview.md
+
+

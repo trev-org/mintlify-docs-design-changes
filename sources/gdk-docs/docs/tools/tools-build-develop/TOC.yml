@@ -1,0 +1,84 @@
+- name: "PC Build Tools"
+  items:
+    - name: "Visual Studio for PC development"
+      href: ../tools-pc/visualstudio/gr-visualstudio-toc.md
+    - name: "Visual Studio 2022 support notes"
+      href: ../tools-pc/visualstudio/gr-vs-2022-support-notes.md
+    - name: "Visual Studio 2019 support notes"
+      href: ../tools-pc/visualstudio/gr-vs-2019-support-notes.md
+    - name: "Project templates for PC"
+      href: ../tools-pc/visualstudio/gr-vs-templates.md
+    - name: "Visual Studio properties for PC"
+      href: ../tools-pc/visualstudio/gr-vs-property-pages.md
+    - name: "Debugging PC projects"
+      href: ../tools-pc/visualstudio/gr-vs-debugging-with-visualstudio.md
+    - name: "Debugging PC projects on remote Windows devices"
+      href: ../tools-pc/visualstudio/gr-vs-debugging-with-visualstudio-remote-windows.md
+    - name: "Using Clang/LLVM with GDK"
+      href: ../tools-pc/visualstudio/gr-vs-clang.md
+- name: "Console Build Tools"
+  items:
+    - name: "Visual Studio for console development"
+      href: ../tools-console/visualstudio/visualstudio.md
+    - name: "Visual Studio 2026 support notes"
+      href: ../tools-console/visualstudio/vs-2026-support-notes.md
+    - name: "Visual Studio 2022 support notes"
+      href: ../tools-console/visualstudio/vs-2022-support-notes.md
+    - name: "Visual Studio 2019 support notes"
+      href: ../tools-console/visualstudio/vs-2019-support-notes.md
+    - name: "Project templates for console"
+      href: ../tools-console/visualstudio/durango-visual-studio-templates.md
+    - name: "Visual Studio properties for console"
+      href: ../tools-console/visualstudio/durango-property-pages.md
+    - name: "Build configurations for Xbox One and Xbox Series X|S"
+      href: ../tools-console/visualstudio/vs-cross-gen.md
+    - name: "Debugging console projects"
+      href: ../tools-console/visualstudio/debugging-with-visualstudio.md
+    - name: "Deploying resource files"
+      href: ../tools-console/visualstudio/how-to-deploy-resources.md
+    - name: "Multiple build configurations in single deployment"
+      href: ../tools-console/visualstudio/multiple-build-configurations.md
+    - name: "Xbox compiler technology"
+      href: ../tools-console/visualstudio/compiler-technology.md
+    - name: "Deployment errors"
+      href: ../tools-console/visualstudio/deployment-errors.md
+    - name: "Using Clang/LLVM with GDK"
+      href: ../tools-console/visualstudio/vs-clang.md
+- name: "Shader Compiler"
+  items:
+    - name: "Shader compiler overview"
+      href: ../tools-console/shadercompiler/shader-compiler.md
+    - name: "Using DXC"
+      href: ../tools-console/shadercompiler/dxc-usage.md
+    - name: "FXC to DXC port guide"
+      href: ../tools-console/shadercompiler/dxc-port-from-fxc.md
+    - name: "Xbox defines"
+      href: ../tools-console/shadercompiler/dxc-xbox-defines.md
+    - name: "Xbox intrinsics"
+      href: ../tools-console/shadercompiler/dxc-xbox-intrinsics.md
+    - name: "Xbox HLSL extensions"
+      href: ../tools-console/shadercompiler/dxc-xbox-extensions.md
+- name: "Packaging and Deployment Tools"
+  items:
+    - name: "Make package (makepkg.exe)"
+      href: ../../features/common/packaging/deployment/makepkg.md
+    - name: "Make package resource index (makepri.exe)"
+      href: ../../features/common/packaging/deployment/makepri.md
+    - name: "Split package (splitpkg.exe)"
+      href: ../../features/common/packaging/deployment/splitpkg.md
+    - name: "Package utility (packageutil.exe)"
+      href: ../../features/common/packaging/deployment/packageutil.md
+    - name: "Package Uploader"
+      href: ../additional-tools.md
+- name: "Compiler and Linker Resources"
+  items:
+    - name: "Compiler and linker switch recommendations"
+      href: ../tools-console/visualstudio/compiler-switch-recommendations.md
+    - name: "Visual C++ compiler resources"
+      href: ../tools-console/visualstudio/compiler-resources.md
+    - name: "GDK preprocessor definitions"
+      href: ../tools-console/visualstudio/preprocessor-definitions.md
+    - name: "Address Sanitizer support"
+      href: ../tools-console/visualstudio/address-sanitizer-support.md
+    - name: "Table of intrinsics"
+      href: ../tools-console/visualstudio/table-of-intrinsics.md

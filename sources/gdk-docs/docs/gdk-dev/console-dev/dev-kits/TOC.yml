@@ -1,0 +1,59 @@
+- name: "Development kits"
+  href: devkits.md
+- name: "Development kits overview"
+  href: devkit-contents.md
+- name: "Configuration and settings"
+  items:
+  - name: "Changing from Retail Mode to Developer Mode"
+    href: settings\change-dev-kit-mode.md
+  - name: "Configuring dev kit settings"
+    href: settings\config-dev-kit-settings.md
+  - name: "Configuring development network access"
+    href: settings\configure-dev-network.md
+  - name: "Flashing the OS recovery onto your dev kit"
+    href: settings\dev-kit-os.md
+  - name: "Setting a host name for the console IP address"
+    href: settings\setting-a-hostname.md
+- name: "Concepts"
+  items:
+  - name: "Deploy your title to an Xbox dev kit"
+    href: concepts\deployment.md
+  - name: "Diagnosing why your Xbox dev kit may have rebooted or shutdown unexpectedly"
+    href: concepts\gc-console-rebootreason.md
+  - name: "Emergency Offline System Updates for Xbox dev kits"
+    href: concepts\gc-console-eou.md
+  - name: "Getting the most out of your Xbox One X dev kit"
+    href: concepts\scorpio-devkit-tips.md
+  - name: "Granting permissions to products"
+    href: concepts\activating-dev-kit-permissions-sandbox.md
+  - name: "Remove Gold Sharing from Development Kits"
+    href: concepts\remove-gold-sharing.md
+  - name: "Universal Error Messages on Xbox dev kits"
+    href: concepts\gc-console-uems.md
+  - name: "Using console modes to test your game"
+    href: concepts\using-console-modes.md
+  - name: "Using the front panel display"
+    href: concepts\scorpio-frontpanel.md
+- name: "Setup"
+  items:
+  - name: "Xbox Series X Dev Kit setup overview"
+    href: setup\setting-up-your-devkit.md
+  - name: "Activation overview"
+    href: setup\provisioning-role.md
+  - name: "Activate a dev kit"
+    href: setup\activating-dev-kit.md
+  - name: "Activate a dev kit by using a QR code"
+    href: setup\activating-dev-kit-qr-code.md
+  - name: "Xbox dev kit setup frequently asked questions (FAQ)"
+    href: setup\devkit-faq.md
+  - name: "Troubleshooting your dev kit setup"
+    href: setup\troubleshooting-setup.md
+  - name: "Set up an Xbox One dev kit"
+    items:
+    - name: "Setting up your Xbox One Development Kit (contents)"
+      href: xbox-one-devkit\xbox-one-devkit-toc.md
+    - name: "Connecting Xbox One development kit hardware"
+      href: xbox-one-devkit\setting-up-hardware.md
+    - name: "Hardware included with your Xbox One development kit"
+      href: xbox-one-devkit\whats-in-the-box.md
+

@@ -1,0 +1,106 @@
+---
+title: Xbox Accessibility Guidelines
+description: Game development documentation for creating accessible games.
+ms.topic: conceptual
+ms.prod: gaming
+ms.date: 07/29/2021
+---
+
+# Xbox Accessibility Guidelines V2.5
+Version 2.5 was published on July 29, 2021. A version history can be found in [the change log](version-history.md).
+
+## Introduction
+
+The Xbox Accessibility Guidelines (XAGs) are a set of best practices that have been developed in partnership with industry experts and members of the Gaming & Disability Community.  
+
+These guidelines are intended for designers as a catalyst for generating ideas, for developers as guardrails when developing their games, and for test teams as a checklist to validate the accessibility of their titles. The XAGs aren't intended to act as a checklist to validate any type of compliance or legal requirements. Rather, they seek to ensure that the user experience in a game is enjoyable and playable for everyone. When everyone plays, we all win.  
+
+## Overview of XAG components
+
+Each XAG has the following sections.  
+
+#### Goal
+
+States the overall desired impact that proper implementation of the guidelines in each XAG will have on players.  
+
+#### Overview
+
+Provides an introduction to players with disabilities. They often experience barriers related to gameplay elements that are addressed in each XAG.  
+
+#### Scoping questions
+
+Intended to help developers get a better understanding of where to start. This section lists primary game elements and mechanics that are directly related to each XAG. This section also prompts developers to determine whether their title contains these elements.  
+
+#### Background and foundational information
+
+Present in certain XAGs that address more complex topics. This section provides basic, introductory information that can help those new to accessibility more easily understand XAG criteria and implementation.  
+
+#### Key areas to target
+
+Provides a list of key game areas and elements that are directly related to each XAG. Developers should ensure that the elements identified in this section aren't overlooked when implementing guidance.  
+
+#### Implementation guidelines
+
+Provides a prescriptive set of guidance that helps ensure games provide the minimum amount of accessible components. This eliminates common barriers that most players with disabilities experience in games.  
+
+#### Example content
+
+Example images and video captures are featured within the XAGs to display what proper implementation of a particular accessibility guideline can look like.  
+
+Please note that many accessibility concepts are complex. The industry is only at the beginning of its journey to create games that are fully accessible across every aspect of a game. It's best to focus on the particular aspect of the example that's being highlighted in reference to the XAG guideline that it's associated with. Other elements that are shown in the example might not adhere to all other XAG guidelines. (That is, an example that's used to display the proper narration order of menu items might have smaller text sizes than the guidance suggested by the XAGs. However, the point of focus for that particular example is the proper narration aspect. As such, text size shouldn't be taken into account. For guidance specifically on text size, see the examples in the [dedicated text size guidelines](xbox-accessibility-guidelines/101.md) section.) 
+
+#### Gaming personas
+
+Provides a list of disability personas that are most likely to be affected by the guidance in each XAG.  
+
+#### Resources and tools
+
+Provides a list of external articles, videos, and other resources that are related to each XAG for readers who are interested in learning more about a particular aspect of game accessibility.
+
+  
+_Thank you to the developers and publishers who have graciously approved the use of their game content to be published in these guidelines._
+
+These guidelines were last updated on April 19, 2021.   
+
+## In this section
+
+| Guideline | Description |
+|:-----------:|:-------------|
+| [101](xbox-accessibility-guidelines/101.md) | Text display |
+| [102](xbox-accessibility-guidelines/102.md) | Contrast |
+| [103](xbox-accessibility-guidelines/103.md) | Additional channels for visual and audio cues |
+| [104](xbox-accessibility-guidelines/104.md) | Subtitles and captions |
+| [105](xbox-accessibility-guidelines/105.md) | Audio customization |
+| [106](xbox-accessibility-guidelines/106.md) | Screen narration |
+| [107](xbox-accessibility-guidelines/107.md) | Input |
+| [108](xbox-accessibility-guidelines/108.md) | Game difficulty options |
+| [109](xbox-accessibility-guidelines/109.md) | Object clarity |
+| [110](xbox-accessibility-guidelines/110.md) | Haptic feedback |
+| [111](xbox-accessibility-guidelines/111.md) | Audio description |
+| [112](xbox-accessibility-guidelines/112.md) | UI navigation |
+| [113](xbox-accessibility-guidelines/113.md) | UI focus handling |
+| [114](xbox-accessibility-guidelines/114.md) | UI context |
+| [115](xbox-accessibility-guidelines/115.md) | Error messages and destructive actions |
+| [116](xbox-accessibility-guidelines/116.md) | Time limits |
+| [117](xbox-accessibility-guidelines/117.md) | Visual distractions |
+| [118](xbox-accessibility-guidelines/118.md) | Photosensitivity |
+| [119](xbox-accessibility-guidelines/119.md) | Speech-to-text/text-to-speech chat |
+| [120](xbox-accessibility-guidelines/120.md) | Communication experiences |
+| [121](xbox-accessibility-guidelines/121.md) | Accessible feature documentation |
+| [122](xbox-accessibility-guidelines/122.md) | Accessible customer support |
+| [123](xbox-accessibility-guidelines/123.md) | Advanced best practices |
+
+## Developer resources
+
+* [Gaming and Disability Player Experience Guide](gadpeg.md)
+<<<<<<< HEAD
+=======
+* [Gaming Accessibility Fundementals Learning Path](gaf-info.md)
+* [Microsoft Gaming Accessibility Testing Service](mgats.md)
+>>>>>>> main
+* [ID@Xbox developer program](http://www.xbox.com/en-US/developers/id)
+* [Xbox Live Creators Program](/gaming/xbox-live/developer-program-overview)
+
+## See also
+
+* [Xbox Accessibility](../accessibility.md)

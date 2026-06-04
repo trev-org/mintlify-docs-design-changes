@@ -1,0 +1,73 @@
+
+    - name: Cross-Gen Console Development
+      items:
+      - name: "Cross-generation title development (contents)"
+        href: docs/gc/cross-gen/gc-cross-gen-toc.md
+      - name: "Cross-generation gaming overview"
+        href: docs/gc/cross-gen/cross-gen-overview.md
+      - name: "Dual SKU cross-generation games"
+        href: docs/gc/cross-gen/cross-gen-dual-sku.md
+      - name: "Backcompat only titles"
+        href: docs/gc/cross-gen/cross-gen-backcompat-only.md
+      - name: "Smart Delivery"
+        href: docs/gc/cross-gen/cross-gen-smart-delivery.md
+      - name: "Upgrading your Xbox One Software Development Kit title on Xbox Series consoles"
+        href: docs/gc/tools-console/upgrading-xbox-one-xdk-titles-on-scarlett.md
+    - name: Using the Microsoft Game Development Kit (GDK) without installation
+      items:
+      - name: "Using the Microsoft Game Development Kit without installation (contents)"
+        href: docs/gc/tools-console/usingwithoutinstall/gc-usingwithoutinstall-toc.md
+      - name: "Overview of building without installing the Microsoft Game Development Kit"
+        href: docs/gc/tools-console/usingwithoutinstall/withoutinstall-overview.md
+      - name: "Visual Studio toolset setup"
+        href: docs/gc/tools-console/usingwithoutinstall/bwoi-vs-setup.md
+      - name: "Extracting the Microsoft Game Development Kit (GDK) setup payload"
+        href: docs/gc/tools-console/usingwithoutinstall/extract-setup-payload.md
+      - name: "Configuring the build environment without installing the Microsoft Game Development Kit (GDK)"
+        href: docs/gc/tools-console/usingwithoutinstall/build-environment-withoutinstall.md
+      - name: "Configuring projects without installing the Microsoft Game Development Kit"
+        href: docs/gc/tools-console/usingwithoutinstall/project-configuration-withoutinstall.md
+      - name: "Using tools without installing the Microsoft Game Development Kit (GDK)"
+        href: docs/gc/tools-console/usingwithoutinstall/tools-usage-withoutinstall.md
+    - name: "Additional standalone tools"
+      href: docs/gc/system/overviews/additional-tools.md
+  - name: Testing and automation
+    items:
+    - name: "Testing and automation (contents)"
+      href: docs/gc/test-automation-publishing/atoc-testpub.md
+    - name: Debugging and testing
+      items:
+      - name: "Debugging and testing (contents)"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/atoc-dev-env-debugging.md
+      - name: "Accessing debug memory"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/accessing-debug-memory.md
+      - name: "Accessing additional storage for development scenarios"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/additional-storage-for-development.md
+      - name: "Profiling Mode"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/profiling-mode.md
+      - name: "Retrieving crash dumps"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/retrieving-crash-dumps.md
+      - name: "Xbox One title debugging checklist"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/xbox-one-title-debugging-checklist.md
+      - name: "Debugging your title without a network connection"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/debugging-no-network.md
+      - name: "Simulating gamepad input"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/xtf-gamepad-input-testing.md
+      - name: "Testing with a trial license"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/testing-trial-license.md
+      - name: "Debugging with Overlay Folders"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/debugging-with-overlay-folders.md
+      - name: "Using the Xbox Development Kit second NIC"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-overviews/test-automation-publishing-debugging/devkit-second-nic.md
+    - name: Testing and automation tools
+      items:
+      - name: "Testing and automation tools (contents)"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-tools/atoc-testpub-tools.md
+      - name: "xPerf and Windows Performance Analyzer"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-tools/xperf-wpa/atoc-xperf.md
+      - name: "Tool and automation APIs"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-tools/tools-automation-apis/atoc-api-tools-dev-env.md
+      - name: "Kernel Debugger and WinDbg"
+        href: docs/gc/test-automation-publishing/test-automation-publishing-tools/atoc-kd.md
+    - name: "Testing and automation samples"
+      href: docs/gc/test-automation-publishing/atoc-testpub-samples.md

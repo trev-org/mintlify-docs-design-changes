@@ -1,0 +1,96 @@
+- name: "PC Tools"
+  items:
+    - name: "Performance Investigator (PIX) for Windows"
+      href: ../tools-pc/pix-for-windows.md
+    - name: "Xbox PC Toolbox"
+      href: ../tools-pc/xboxpctoolbox/xboxpctoolbox.md
+    - name: "Command-line tools for PC"
+      href: ../tools-pc/commandlinetools/gr-commandlinetools-toc.md
+    - name: "Screen capture (wdcapture.exe)"
+      href: ../tools-pc/commandlinetools/gr-wdCapture.md
+    - name: "Video capture (wdcapturesession.exe)"
+      href: ../tools-pc/commandlinetools/gr-wdcapturesession.md
+    - name: "Application management (wdapp.exe)"
+      href: ../tools-pc/commandlinetools/gr-wdapp.md
+    - name: "PC game registration"
+      href: ../tools-pc/title-registration-pc.md
+    - name: "Install and launch PC titles"
+      href: ../tools-pc/launching-on-pc.md
+- name: "Console Tools"
+  items:
+    - name: "Performance Investigator (PIX) for Xbox"
+      href: ../tools-console/pix/pix.md
+    - name: "PIX setup and getting started"
+      href: ../tools-console/pix/setup-getting-started.md
+    - name: "PIX configuring the UI"
+      href: ../tools-console/pix/configuring-pix.md
+    - name: "PIX analyzing title performance"
+      href: ../tools-console/pix/analyzing-system-performance.md
+    - name: "PIX CPU performance analysis"
+      href: ../tools-console/pix/cpu-performance.md
+    - name: "PIX GPU performance analysis"
+      href: ../tools-console/pix/gpu/gpu-performance.md
+    - name: "Title Performance Overlay"
+      href: ../tools-console/titleperfoverlay/titleperfoverlay.md
+- name: "Console System Monitoring"
+  items:
+    - name: "Xbox System Monitor"
+      href: ../tools-console/visualstudio/xbox-system-monitor.md
+    - name: "Xbox Gaming Explorer"
+      href: ../tools-console/visualstudio/xbox-gaming-explorer.md
+    - name: "Xbox Game View"
+      href: ../tools-console/visualstudio/xbox-game-view.md
+    - name: "Xbox Gaming Project Control"
+      href: ../tools-console/visualstudio/xbox-gaming-project-control.md
+    - name: "Profile-guided optimization (PGO)"
+      href: ../tools-console/pgo/pgo.md
+- name: "Console Debugging and Diagnostics"
+  items:
+    - name: "Hang Investigation for Xbox (HIX)"
+      href: ../tools-console/hix/hix.md
+    - name: "xbWatson"
+      href: ../tools-console/xbWatson/xbwatson.md
+    - name: "Visual Studio debugging for console"
+      href: ../tools-console/visualstudio/debugging-with-visualstudio.md
+    - name: "DevKit Agent"
+      href: ../tools-console/devkitagent/devkitagent-overview.md
+- name: "Console Management and Validation"
+  items:
+    - name: "Xbox Manager (XBOM)"
+      href: ../tools-console/xbom/xbom.md
+    - name: "Xbox Device Portal (WDP)"
+      href: ../tools-console/wdp/wdp.md
+    - name: "Developer Home (Dev Home)"
+      href: ../tools-console/devhome/devhome.md
+    - name: "Console command-line tools"
+      href: ../tools-console/commandlinetools/commandlinetools.md
+    - name: "Console-based command-line tools"
+      href: ../tools-console/console_commandlinetools/consolecommandlinetools.md
+- name: "Xbox Services Validation"
+  items:
+    - name: "Development tools for Xbox services"
+      href: ../tools-services/live-tools.md
+    - name: "Trace Analyzer (XblTraceAnalyzer.exe)"
+      href: ../tools-services/live-trace-analyzer.md
+    - name: "Using Fiddler to inspect web service calls"
+      href: ../tools-services/live-fiddler-inspect-web-calls.md
+    - name: "Config as Source tools (XblConfig.exe)"
+      href: ../tools-services/live-config-as-source.md
+    - name: "Xbox Connected Storage tool (XblConnectedStorage.exe)"
+      href: ../tools-services/live-connected-storage-tool.md
+    - name: "Global Storage tool (GlobalStorage.exe)"
+      href: ../tools-services/live-global-storage-tool.md
+    - name: "Multiplayer Session History Viewer"
+      href: ../tools-services/live-mp-session-history-viewer.md
+    - name: "Player Data Reset tool (XblPlayerDataReset.exe)"
+      href: ../tools-services/live-player-data-reset.md
+    - name: "Test Account tool (XblTestAccountGui.exe)"
+      href: ../tools-services/live-xbox-live-account-tool.md
+    - name: "Developer Account tool (XblDevAccount.exe)"
+      href: ../tools-services/live-dev-account-tool.md
+    - name: "PC Sandbox Switcher (XblPCSandbox.exe)"
+      href: ../tools-services/live-pc-sandbox-switcher.md
+    - name: "Xbox Common Events Tool (XceTool.exe)"
+      href: ../tools-services/live-xbox-common-events-tool.md
+    - name: "Store Development Entitlement Tool (DevEntitlementTool.exe)"
+      href: ../tools-services/live-dev-entitlements-tool.md

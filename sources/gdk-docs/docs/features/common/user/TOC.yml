@@ -1,0 +1,24 @@
+- name: "User identity and XUser"
+  href: player-identity-xuser.md
+- name: "GDK User Models"
+  href: gamecore-user-models.md
+- name: "Opting into Default User Required"
+  href: users-opting-into-simplified-model.md
+- name: "Establishing the Default User for the Game"
+  href: users-establishing-default-user.md
+- name: "Changing the Default User for the Game"
+  href: users-changing-default-user.md
+- name: "Dealing with Controller Loss"
+  href: users-dealing-with-controller-loss.md
+- name: "When do user-to-controller associations take place?"
+  href: users-timing-of-user-to-device-association.md
+- name: "Guest users overview"
+  href: users-guest-overview.md
+- name: "Headless automation of XUser"
+  href: users-headless-automation.md
+- name: "How to: best practice to sign in a user"
+  href: xuser_howto_best_practice_signing_in.md
+- name: "Users and input devices"
+  href: users-input-devices.md
+- name: "XUser Cross-Platform Support"
+  href: xuser-crossplatform.md

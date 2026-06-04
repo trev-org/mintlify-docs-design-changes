@@ -1,0 +1,8 @@
+- name: "Configuring Xbox hardware across your studio (contents)"
+  href: gc-xbox-config-across-studio-toc.md
+- name: "Automatic recovery update settings"
+  href: recovery-update-settings.md
+- name: "Recovering multiple Xbox One development consoles"
+  href: recovering-multiple-consoles.md
+- name: "Configuring your Development Kit with an unattended setup script"
+  href: unattended-setup-script.md

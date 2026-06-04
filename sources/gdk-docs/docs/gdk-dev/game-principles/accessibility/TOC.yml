@@ -1,0 +1,6 @@
+- name: "Accessibility overview"
+  href: accessibility-overview.md
+- name: "Why make games accessible"
+  href: accessibility-motivation.md
+- name: "User settings for speech accessibility"
+  href: speech-accessibility.md

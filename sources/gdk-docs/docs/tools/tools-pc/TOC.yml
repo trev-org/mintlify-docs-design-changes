@@ -1,0 +1,44 @@
+- name: "Tools for GDK PC game development"
+  href: gc-tools-pc-toc.md
+- name: Visual Studio
+  items:
+    - name: "Visual Studio (contents)"
+      href: visualstudio/gr-visualstudio-toc.md
+    - name: "Visual Studio 2022 support notes"
+      href: visualstudio/gr-vs-2022-support-notes.md
+    - name: "Visual Studio 2019 support notes"
+      href: visualstudio/gr-vs-2019-support-notes.md
+    - name: "Project templates in Visual Studio for PC game development"
+      href: visualstudio/gr-vs-templates.md
+    - name: "Visual Studio properties for PC game development"
+      href: visualstudio/gr-vs-property-pages.md
+    - name: "Debugging PC projects by using Visual Studio"
+      href: visualstudio/gr-vs-debugging-with-visualstudio.md
+    - name: "Debugging PC projects on remote Windows devices using Visual Studio"
+      href: visualstudio/gr-vs-debugging-with-visualstudio-remote-windows.md
+    - name: "Using Clang with the Microsoft Game Development Kit (GDK)"
+      href: visualstudio/gr-vs-clang.md
+- name: Command-line tools
+  items:
+    - name: "Command-line tools (contents)"
+      href: commandlinetools/gr-commandlinetools-toc.md
+    - name: "Application Management (wdapp.exe)"
+      href: commandlinetools/gr-wdapp.md
+    - name: "Manage xgamefiles data on PC (xgamesaveutil.exe)"
+      href: commandlinetools/gr-xgamesaveutil.md
+    - name: "Screen capture (wdcapture.exe)"
+      href: commandlinetools/gr-wdCapture.md
+    - name: "Video Capture (wdcapturesession.exe)"
+      href: commandlinetools/gr-wdcapturesession.md
+    - name: "Xbox PC Remote listening endpoint (wdEndpoint.exe)"
+      href: commandlinetools/gr-wdEndpoint.md
+    - name: "Xbox PC Remote (wdRemote.exe)"
+      href: commandlinetools/gr-wdRemote.md
+- name: "Xbox PC Toolbox"
+  href: xboxpctoolbox/xboxpctoolbox.md
+- name: "Performance Investigator (PIX) for Windows"
+  href: pix-for-windows.md
+- name: "PC game registration"
+  href: title-registration-pc.md
+- name: "Utilizing Microsoft Game Development Kit (GDK) tools to install and launch your PC title"
+  href: launching-on-pc.md

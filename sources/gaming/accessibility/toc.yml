@@ -1,0 +1,46 @@
+- name: 101 - Text display
+  href: xbox-accessibility-guidelines/101.md
+- name: 102 - Contrast
+  href: xbox-accessibility-guidelines/102.md
+- name: 103 - Additional channels for visual and audio cues
+  href: xbox-accessibility-guidelines/103.md
+- name: 104 - Subtitles and captions
+  href: xbox-accessibility-guidelines/104.md
+- name: 105 - Audio accessibility
+  href: xbox-accessibility-guidelines/105.md
+- name: 106 - Screen narration
+  href: xbox-accessibility-guidelines/106.md
+- name: 107 - Input
+  href: xbox-accessibility-guidelines/107.md
+- name: 108 - Game difficulty options
+  href: xbox-accessibility-guidelines/108.md
+- name: 109 - Objective clarity
+  href: xbox-accessibility-guidelines/109.md
+- name: 110 - Haptic feedback
+  href: xbox-accessibility-guidelines/110.md
+- name: 111 - Audio description
+  href: xbox-accessibility-guidelines/111.md
+- name: 112 - UI navigation
+  href: xbox-accessibility-guidelines/112.md
+- name: 113 - UI focus handling
+  href: xbox-accessibility-guidelines/113.md
+- name: 114 - UI context
+  href: xbox-accessibility-guidelines/114.md
+- name: 115 - Error messages and destructive actions
+  href: xbox-accessibility-guidelines/115.md
+- name: 116 - Time limits
+  href: xbox-accessibility-guidelines/116.md
+- name: 117 - Visual distractions and motion settings
+  href: xbox-accessibility-guidelines/117.md
+- name: 118 - Photosensitivity
+  href: xbox-accessibility-guidelines/118.md
+- name: 119 - STT / TTS chat
+  href: xbox-accessibility-guidelines/119.md
+- name: 120 - Communication experiences
+  href: xbox-accessibility-guidelines/120.md
+- name: 121 - Accessible feature documentation
+  href: xbox-accessibility-guidelines/121.md
+- name: 122 - Accessible customer support
+  href: xbox-accessibility-guidelines/122.md
+- name: 123 - Mental health best practices
+  href: xbox-accessibility-guidelines/123.md

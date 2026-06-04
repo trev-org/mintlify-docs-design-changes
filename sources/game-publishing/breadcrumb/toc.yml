@@ -1,0 +1,11 @@
+- name: Gaming
+  tocHref: /
+  topicHref: /gaming/index
+  items:
+  - name: Publishing
+    tocHref:
+    topicHref: ../index.yml
+    items:
+    - name: Store
+      tocHref: /windows/apps/publish
+      topicHref: /gaming/game-publishing/index

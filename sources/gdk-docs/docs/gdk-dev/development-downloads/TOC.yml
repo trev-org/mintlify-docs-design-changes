@@ -1,0 +1,6 @@
+- name: "Access GDK resources"
+  href: access-resources.md
+- name: "GDK samples overview"
+  href: gdk-samples-home.md
+- name: "GDK samples list"
+  href: gdk-samples-list.md

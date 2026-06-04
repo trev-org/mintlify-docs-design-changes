@@ -1,0 +1,14 @@
+- name: "Using the Microsoft Game Development Kit without installation (contents)"
+  href: gc-usingwithoutinstall-toc.md
+- name: "Overview of building without installing the Microsoft Game Development Kit"
+  href: withoutinstall-overview.md
+- name: "Visual Studio toolset setup"
+  href: bwoi-vs-setup.md
+- name: "Extracting the Microsoft Game Development Kit (GDK) setup payload"
+  href: extract-setup-payload.md
+- name: "Configuring the build environment without installing the Microsoft Game Development Kit (GDK)"
+  href: build-environment-withoutinstall.md
+- name: "Configuring projects without installing the Microsoft Game Development Kit"
+  href: project-configuration-withoutinstall.md
+- name: "Using tools without installing the Microsoft Game Development Kit (GDK)"
+  href: tools-usage-withoutinstall.md

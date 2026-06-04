@@ -1,0 +1,195 @@
+### YamlMime:Landing
+
+title: Game Development Kit (GDK) features # < 60 chars
+summary: Learn about the features in the GDK. # < 160 chars
+
+metadata:
+  title: Game Development Kit (GDK) features # Required; page title displayed in search results. Include the brand. < 60 chars.
+  description: Describes the features in the Game Development Kit. # Required; article description that is displayed in search results. < 160 chars.
+  ms.service: gdk #Required; use either service or product per approved list. 
+  ms.topic: landing-page # Required
+  author: edigonzales #Required; your GitHub user alias, with correct capitalization.
+  ms.author: edigonzales #Required; microsoft alias of author; optional team alias.
+  ms.date: 03/10/2026 #Required; mm/dd/yyyy format.
+
+# linkListType: architecture | concept | deploy | download | get-started | how-to-guide | tutorial | overview | quickstart | reference | sample | tutorial | video | whats-new
+
+landingContent:
+# Cards and links should be based on top customer tasks or top subjects
+# Start card title with a verb
+  # Card 
+  - title: Build tools and development
+    linkLists:
+      - linkListType: concept
+        links:
+          - text: PC build tools
+            url: ../tools/tools-pc/TOC.yml
+          - text: Xbox build tools
+            url: ../tools/tools-console/TOC.yml
+  # Card 
+  - title: User and Identity
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: User identity and XUser
+            url: common/user/player-identity-xuser.md
+          - text: GDK User Models
+            url: common/user/gamecore-user-models.md
+      - linkListType: how-to-guide
+        links:
+          - text: Best practice to sign in a user
+            url: common/user/xuser_howto_best_practice_signing_in.md
+          - text: Establishing the Default User
+            url: common/user/users-establishing-default-user.md
+  # Card 
+  - title: Achievements
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: User achievements systems overview
+            url: ../services/player-data/achievements/live-achievements-nav.md
+          - text: Event-based vs. title-managed Achievements
+            url: ../services/player-data/achievements/live-achievements-eb-vs-tm.md
+      - linkListType: concept
+        links:
+          - text: Event-based Achievements overview
+            url: ../services/player-data/achievements/event-based/live-achievements-eb-overview.md
+          - text: Title-managed Achievements overview
+            url: ../services/player-data/achievements/title-managed/live-achievements-tm-overview.md
+  # Card 
+  - title: Core system features
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Asynchronous Programming overview
+            url: common/async/async-toc.md
+          - text: Memory management introduction
+            url: console/memory/system-memory-overview.md
+      - linkListType: concept
+        links:
+          - text: Asynchronous Programming Model
+            url: common/async/async-programming-model.md
+          - text: XTaskQueue library overview
+            url: common/async/async-libraries/async-library-xtaskqueue.md
+  # Card 
+  - title: Graphics and rendering
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Graphics for Xbox overview
+            url: graphics/gc-graphics-toc.md
+          - text: Direct3D 12 on Xbox overview
+            url: graphics/d3d12x/d3d12x-overview.md
+      - linkListType: concept
+        links:
+          - text: Lighting overview
+            url: common/lighting/lighting-basics.md
+          - text: High dynamic range (HDR) output
+            url: graphics/overviews/hdr-support.md
+  # Card 
+  - title: Input and devices
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Input overview
+            url: common/input/gc-input-toc.md
+          - text: GameInput introduction
+            url: common/input/overviews/input-overview.md
+      - linkListType: concept
+        links:
+          - text: GameInput fundamentals
+            url: common/input/overviews/input-fundamentals.md
+          - text: GameInput devices
+            url: common/input/overviews/input-devices.md
+  # Card 
+  - title: Configuration and packaging
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: MicrosoftGame.config overview
+            url: common/game-config/MicrosoftGameConfig-Overview.md
+          - text: Packaging overview
+            url: common/packaging/TOC.yml
+      - linkListType: how-to-guide
+        links:
+          - text: MicrosoftGame.config Editor
+            url: common/game-config/MicrosoftGameConfig-Editor.md
+          - text: Audio features for Xbox
+            url: console/audio/overviews/audio.md
+  # Card 
+  - title: PlayFab
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: PlayFab integration with GDK
+            url: ../services/playfab-integration/gdk-playfab-player-sign-in-concepts.md
+          - text: PlayFab documentation
+            url: /gaming/playfab/
+      - linkListType: concept
+        links:
+          - text: PlayFab services overview
+            url: ../services/playfab-integration/gc-gdk-playfab-toc.md
+
+  # Card - Xbox Services
+  - title: Xbox Services fundamentals
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: User identity overview
+            url: ../services/fundamentals/identity/xs-identity-overview.md
+          - text: Sandboxes overview
+            url: ../services/fundamentals/sandboxes/live-setup-sandbox.md
+          - text: "Real Time Activity (RTA) overview"
+            url: ../services/fundamentals/rta/live-real-time-activity-service-overview.md
+          - text: "Title service calls to Xbox services overview"
+            url: ../services/fundamentals/s2s-auth-calls/s2s-calls/live-title-service-calls-xbox-live.md
+      - linkListType: concept
+        links:
+          - text: "User sign-in"
+            url: ../services/fundamentals/identity/auth/live-authentication-overview.md
+          - text: Gamertags
+            url: ../services/fundamentals/identity/user-profile/gamertags/live-gamertags-overview.md
+          - text: "Privacy and permissions"
+            url: ../services/fundamentals/identity/privacy/live-privacy-overview.md
+
+  # Card - Xbox Services Multiplayer
+  - title: Xbox Services multiplayer
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Multiplayer introduction
+            url: ../services/multiplayer/overviews/multiplayer-intro.md
+          - text: Xbox services multiplayer overview
+            url: ../services/multiplayer/overviews/live-multiplayer-intro.md
+      - linkListType: concept
+        links:
+          - text: Multiplayer concepts
+            url: ../services/multiplayer/concepts/live-multiplayer-concepts.md
+          - text: Multiplayer sessions
+            url: ../services/multiplayer/concepts/live-session-browse.md
+
+  # Card - Xbox Services Community
+  - title: Xbox Services community
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Social feature overview
+            url: ../services/community/live-social-overview.md
+      - linkListType: concept
+        links:
+          - text: Social manager
+            url: ../services/community/social-manager/live-social-manager-overview.md
+
+  # Card - Xbox Services Player Data
+  - title: Xbox Services player data
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: Player data overview
+            url: ../services/player-data/live-playerdata-overview.md
+      - linkListType: concept
+        links:
+          - text: Player stats
+            url: ../services/player-data/stats-leaderboards/live-stats-leaderboards-nav.md
+          - text: Achievements
+            url: ../services/player-data/achievements/live-achievements-nav.md

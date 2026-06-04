@@ -1,0 +1,112 @@
+- name: Develop Xbox games for PC
+  href: tutorials/pc-e2e-guide/e2e-overview.md
+- name: PC end to end guide overview
+  href: tutorials/pc-e2e-guide/e2e-overview.md
+- name: Handheld devices considerations
+  items:
+  - name: Handheld Compatibility program
+    href: handheld/handheld-guidance.md
+  - name: Guidelines and Test Cases
+    href: handheld/handheld-guidelines-and-testcases.md
+  - name: Additional Considerations
+    href: handheld/handheld-considerations.md
+  - name: Game Launchers
+    href: handheld/handheld-launchers.md
+  - name: Performance and Power Efficiency
+    href: handheld/handheld-performance.md
+- name: Porting from Steamworks to Xbox PC
+  items:
+  - name: "Conceptual differences between the Microsoft Game Development Kit (GDK) and Steamworks"
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-conceptual-differences.md
+  - name: Available Services overview
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-porting-guide-toc.md
+- name: Steps for all games
+  items:
+  - name: "Steps for all games"
+    href: tutorials/pc-e2e-guide/e2e-required-steps.md
+  - name: "Step 1 - Register for the ID@Xbox program"
+    href: tutorials/pc-e2e-guide/e2e-register-id-at-xbox.md
+  - name: "Step 2 - Create an account in Partner Center"
+    href: tutorials/pc-e2e-guide/e2e-creating-partnercenter-account.md
+  - name: "Step 3 - Create an initial product definition in Partner Center"
+    href: tutorials/pc-e2e-guide/e2e-creating-partnercenter-product-definition.md
+  - name: "Step 4 - Integrate the GDK with your game"
+    items:
+    - name: "Integrate the GDK with your game"
+      href: tutorials/pc-e2e-guide/e2e-integrating-gdk-in-your-game.md
+    - name: Initialize the GDK
+      href: tutorials/pc-e2e-guide/e2e-services/e2e-initialize-gdk.md
+    - name: Player sign-in
+      href: tutorials/pc-e2e-guide/e2e-services/e2e-user-sign-in.md
+    - name: Achievements
+      href: tutorials/pc-e2e-guide/e2e-services/e2e-achievements.md
+    - name: Cloud saves
+      href: tutorials/pc-e2e-guide/e2e-services/e2e-cloud-saves.md
+  - name: "Step 5 - Publish your game in Partner Center"
+    href: tutorials/pc-e2e-guide/e2e-publishing-your-game.md
+- name: Steps that may apply to your game
+  items:
+  - name: Implement optional features or services
+    href: tutorials/pc-e2e-guide/e2e-optional-services.md
+  - name: Chat
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-party-voice-chat.md
+  - name: In-game purchases
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-in-game-purchases.md
+  - name: Invites
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-invites.md
+  - name: Leaderboards
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-leaderboards.md
+  - name: Lobbies
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-lobbies.md
+  - name: Matchmaking
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-matchmaking.md
+  - name: Multiplayer
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-multiplayer.md
+  - name: Networking
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-networking.md
+  - name: Player stats
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-stats.md
+  - name: Rich presence
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-rich-presence.md
+  - name: S2S Authentication
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-s2s-authentication.md
+  - name: User-generated content
+    href: tutorials/pc-e2e-guide/e2e-services/e2e-user-generated-content.md
+- name: Xbox PC Remote Tools
+  items:
+  - name: Xbox PC Remote Tools overview
+    href: overviews/remote-win-gamedev.md
+  - name: Xbox PC Remote Tools
+    href: overviews/remote-gamedev-tools.md
+  - name: Xbox PC Remote Tools quickstart guide
+    href: tutorials/get-started-with-remote-devices/remote-win-gamedev-quickstart.md
+  - name: How to use the Xbox PC Remote Tools
+    href: tutorials/get-started-with-remote-devices/remote-win-gamedev-how-to-use-tools.md
+  - name: Xbox PC Remote Tools FAQ
+    href: tutorials/get-started-with-remote-devices/remote-win-gamedev-tools-faq.md
+  - name: Release notes
+    items:
+    - name: "May 2026 (2605)"
+      href: tutorials/get-started-with-remote-devices/release-notes/rwd-release-notes-2605.md
+    - name: "March 2026 (2603)"
+      href: tutorials/get-started-with-remote-devices/release-notes/rwd-release-notes-2603.md
+- name: "Additional PC overviews"
+  items:
+  - name: "PC Bootstrapper"
+    href: overviews/gr-pc-bootstrapper.md
+  - name: "Supporting high DPI displays on PC"
+    href: overviews/gr-best-practices-for-high-dpi-displays.md
+  - name: "Adding the GDK to an existing desktop project"
+    href: overviews/gr-add-to-existing-project.md
+  - name: "Starting development of a new title using GDK project templates"
+    href: overviews/gr-developing-new-titles-on-gamecore.md
+  - name: "GDK header and library directory structure"
+    href: overviews/gdk-new-layout.md
+  - name: "Window display modes and title-callable UI dialogs"
+    href: overviews/window-display-modes-and-tcui.md
+  - name: "FAQ for PC developers"
+    href: gr-pc-faq.md
+  - name: "Troubleshooting Xbox Services traffic for PC games"
+    href: overviews/troubleshooting-xbox-services-traffic.md
+  - name: "Game Performance in Hybrid CPU Environments"
+    href: overviews/game-performance-hybrid-cpu-environments.md

@@ -1,0 +1,18 @@
+- name: Overview
+  href: how-to-configure-data-platform-2013.md
+- name: Events
+  href: how-to-configure-events-2013.md
+- name: Player stats and stat rules
+  href: how-to-configure-stats.md
+- name: Featured stats
+  href: how-to-configure-featured-stats.md
+- name: Stat change notifications
+  href: how-to-configure-stat-notifications.md
+- name: Leaderboards
+  href: how-to-configure-leaderboards-2013.md
+- name: Achievements
+  href: how-to-configure-achievements-2013.md
+- name: Challenges
+  href: how-to-configure-challenges.md
+- name: Download Events Manifest file
+  href: how-to-download-events-manifest.md

@@ -1,0 +1,62 @@
+- name: PC game development
+  items:
+  - name: "PC game development: environment and tools (contents)"
+    href: _content/gc/tools-pc/gc-tools-pc-toc.md
+  - name: Visual Studio
+    items:
+      - name: "Visual Studio (contents)"
+        href: _content/gc/tools-pc/visualstudio/gr-visualstudio-toc.md
+      - name: "Visual Studio 2022 support notes"
+        href: _content/gc/tools-pc/visualstudio/gr-vs-2022-support-notes.md
+      - name: "Visual Studio 2019 support notes"
+        href: _content/gc/tools-pc/visualstudio/gr-vs-2019-support-notes.md
+      - name: "Project templates in Visual Studio for PC game development"
+        href: _content/gc/tools-pc/visualstudio/gr-vs-templates.md
+      - name: "Visual Studio properties for PC game development"
+        href: _content/gc/tools-pc/visualstudio/gr-vs-property-pages.md
+      - name: "Debugging PC projects by using Visual Studio"
+        href: _content/gc/tools-pc/visualstudio/gr-vs-debugging-with-visualstudio.md
+      - name: "Using Clang with the Microsoft Game Development Kit (GDK)"
+        href: _content/gc/tools-pc/visualstudio/gr-vs-clang.md
+  - name: Command-line tools
+    items:
+        - name: "Command-line tools (contents)"
+          href: _content/gc/tools-pc/commandlinetools/gr-commandlinetools-toc.md
+        - name: "Application Management (wdapp.exe)"
+          href: _content/gc/tools-pc/commandlinetools/gr-wdapp.md
+        - name: "Manage xgamefiles data on PC (xgamesaveutil.exe)"
+          href: _content/gc/tools-pc/commandlinetools/gr-xgamesaveutil.md
+  - name: "PC game registration"
+    href: _content/gc/tools-pc/title-registration-pc.md
+  - name: "Utilizing Microsoft Game Development Kit (GDK) tools to install and launch your PC title"
+    href: _content/gc/tools-pc/launching-on-pc.md
+  - name: Tools for Xbox services
+    items:
+    - name: "Tools for Xbox services (contents)"
+      href: _content/gc/live/test-release/tools/live-tools-nav.md
+    - name: "Development tools for Xbox services"
+      href: _content/gc/live/test-release/tools/live-tools.md
+    - name: "Config as Source tools (XblConfig.exe)"
+      href: _content/gc/live/test-release/tools/live-config-as-source.md
+    - name: "Xbox Connected Storage tool (XblConnectedStorage.exe)"
+      href: _content/gc/live/test-release/tools/live-connected-storage-tool.md
+    - name: "Global Storage tool (GlobalStorage.exe)"
+      href: _content/gc/live/test-release/tools/live-global-storage-tool.md
+    - name: "Multiplayer Session History Viewer (MultiplayerSessionHistoryViewer.exe)"
+      href: _content/gc/live/test-release/tools/live-mp-session-history-viewer.md
+    - name: "Player Data Reset tool (XblPlayerDataReset.exe)"
+      href: _content/gc/live/test-release/tools/live-player-data-reset.md
+    - name: "Test Account tool (XblTestAccountGui.exe)"
+      href: _content/gc/live/test-release/tools/live-xbox-live-account-tool.md
+    - name: "Developer Account tool (XblDevAccount.exe)"
+      href: _content/gc/live/test-release/tools/live-dev-account-tool.md
+    - name: "PC Sandbox Switcher (XblPCSandbox.exe)"
+      href: _content/gc/live/test-release/tools/live-pc-sandbox-switcher.md
+    - name: "Trace Analyzer (XblTraceAnalyzer.exe)"
+      href: _content/gc/live/test-release/tools/live-trace-analyzer.md
+    - name: "Using Fiddler to inspect web service calls"
+      href: _content/gc/live/test-release/tools/live-fiddler-inspect-web-calls.md
+    - name: "Xbox Common Events Tool (XceTool.exe)"
+      href: _content/gc/live/test-release/tools/live-xbox-common-events-tool.md
+    - name: "Store Development Entitlement Tool (DevEntitlementTool.exe)"
+      href: _content/gc/live/test-release/tools/live-dev-entitlements-tool.md

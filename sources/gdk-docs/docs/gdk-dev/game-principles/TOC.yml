@@ -1,0 +1,8 @@
+- name: Accessibility
+  href: /gaming/accessibility
+- name: Localization and globalization
+  href: localization/TOC.yml
+- name: "Security"
+  href: security/TOC.yml
+- name: "Sustainability"
+  href: /gaming/sustainability/sustainability-overview

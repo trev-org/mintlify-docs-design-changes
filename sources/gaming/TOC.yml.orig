@@ -1,0 +1,40 @@
+- name: Game Stack Docs
+  href: index.md
+  items:
+  - name: Accessibility
+    href: accessibility.md
+    items:
+    - name: Xbox Accessibility Guidelines
+      href: accessibility/guidelines.md
+    - name: Guidelines
+      href: accessibility/toc.yml
+    - name: Gaming and Disability Player Experience Guide
+      href: accessibility/gadpeg.md
+<<<<<<< HEAD
+=======
+    - name: Gaming Accessibility Fundementals Learning Path
+      href: accessibility/gaf-info.md
+    - name: Microsoft Gaming Accessibility Testing Service
+      href: accessibility/mgats.md
+    - name: Accessibility Feature Tags
+      href: accessibility/accessibility-feature-tags.md
+>>>>>>> main
+  - name: Audio
+    href: audio.md
+    items:
+    - name: Project Acoustics
+      href: acoustics/toc.yml
+  - name: Data, AI & ML
+    href: data-ai-ml.md
+  - name: Game Streaming
+    href: https://docs.microsoft.com/gaming/game-streaming/get-started/what-is-game-streaming
+  - name: Monetization
+    href: monetization.md
+  - name: Multiplayer
+    href: multiplayer.md
+  - name: Security
+    href: security.md
+  - name: Social & Community
+    href: social-community.md
+  - name: Systems & Tools
+    href: systems-tools.md

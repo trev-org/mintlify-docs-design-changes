@@ -1,0 +1,25 @@
+- name: "What's new"
+  href: whats-new.md
+- name: "Release notes"
+  href: release-notes.md
+- name: "Release notes (NDA)"
+  href: release-notes-nda-2604.md
+- name: "October 2025"
+  items:
+  - name: "October 2025 - What's new"
+    href: 2510/whats-new-2510.md
+  - name: "October 2025 - What's new (NDA)"
+    href: 2510/whats-new-nda-2510.md
+  - name: "October 2025 - Release notes"
+    href: 2510/release-notes-2510.md
+  - name: "October 2025 - Release notes (NDA)"
+    href: 2510/release-notes-nda-2510.md
+- name: "April 2025"
+  items:
+  - name: "April 2025 - What's new"
+    href: archive/2504/whats-new-2504.md
+  - name: "April 2025 - Release notes"
+    href: archive/2504/release-notes-2504.md
+  - name: "April 2025 - Release notes (NDA)"
+    href: archive/2504/release-notes-nda-2504.md
+

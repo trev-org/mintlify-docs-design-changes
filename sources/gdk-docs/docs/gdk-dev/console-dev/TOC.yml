@@ -1,0 +1,22 @@
+- name: "Concepts"
+  href: overviews/TOC.yml
+- name: "Development kits for Xbox"
+  href: dev-kits/TOC.yml
+- name: "Debug and test"
+  href: debug/TOC.yml
+- name: "Xbox hardware"
+  href: hardware/TOC.yml
+- name: "Engage with the Advanced Technology Group (ATG)"
+  href: ../atg-engagement/TOC.yml
+- name: "Use the GDK without installing"
+  href: usingwithoutinstall/TOC.yml
+- name: "Configure Xbox hardware across a Studio"
+  href: xbox-config-across-studio/TOC.yml
+- name: "Porting guides"
+  items:
+    - name: "Port ERA titles to GDK"
+      href: porting/era/porting-guide-for-existing-ERA.md
+    - name: "ERA migration library (EMiLi)"
+      href: porting/era/era-migration-library.md
+    - name: "Additional porting guides"
+      href: porting/additional-porting-guides.md

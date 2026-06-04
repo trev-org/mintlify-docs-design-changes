@@ -1,0 +1,129 @@
+### YamlMime:Landing
+
+title: Develop games with the Game Development Kit # < 60 chars
+summary: Learn how use the Microsoft GDK to build your game for the Xbox ecosystem. # < 160 chars
+
+metadata:
+  title: GDK development # Required; page title displayed in search results. Include the brand. < 60 chars.
+  description: Describes how to develop games with the Microsoft GDK. # Required; article description that is displayed in search results. < 160 chars.
+  ms.service: gdk #Required; use either service or product per approved list. 
+  ms.topic: landing-page # Required
+  author: edigonzales #Required; your GitHub user alias, with correct capitalization.
+  ms.author: edigonzales #Required; microsoft alias of author; optional team alias.
+  ms.date: 03/10/2026 #Required; mm/dd/yyyy format.
+
+# linkListType: architecture | concept | deploy | download | get-started | how-to-guide | tutorial | overview | quickstart | reference | sample | tutorial | video | whats-new
+
+landingContent:
+# Cards and links should be based on top customer tasks or top subjects
+# Start card title with a verb
+  # Card
+  - title: What's new
+    linkLists:
+      - linkListType: whats-new
+        links:
+          - text: "What's new"
+            url: whatsnew/whats-new.md
+          - text: "Release notes"
+            url: whatsnew/release-notes.md
+
+  - title: GDK Introduction
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: "Welcome to the Microsoft Game Development Kit"
+            url: intro/welcome.md
+          - text: "What is the GDK?"
+            url: intro/introduction.md
+      - linkListType: concept
+        links:
+          - text: "Using the documentation"
+            url: intro/using-documentation.md
+          - text: "Feature quality levels"
+            url: intro/feature-quality.md
+          - text: "Glossary"
+            url: intro/glossary.md
+
+  - title: Getting started
+    linkLists:
+      - linkListType: get-started
+        links:
+          - text: "Get started with the GDK"
+            url: get-started/get-started-home.md
+          - text: "Set up your developer environment"
+            url: get-started/dev-pc-setup.md
+      - linkListType: how-to-guide
+        links:
+          - text: "Develop a new title with the GDK"
+            url: get-started/overviews/developing-new-titles-on-gamecore.md
+          - text: "Set up a remote test PC"
+            url: get-started/overviews/gr-configure-test-pc.md
+
+  - title: Downloads and samples
+    linkLists:
+      - linkListType: download
+        links:
+          - text: "Access GDK resources"
+            url: development-downloads/access-resources.md
+          - text: "GDK samples overview"
+            url: development-downloads/gdk-samples-home.md
+          - text: "GDK samples list"
+            url: development-downloads/gdk-samples-list.md
+
+  - title: Game principles
+    linkLists:
+      - linkListType: concept
+        links:
+          - text: "Accessibility"
+            url: /gaming/accessibility
+          - text: "Sustainability"
+            url: /gaming/sustainability/sustainability-overview
+          - text: "Localization and globalization"
+            url: game-principles/localization/localization_overview.md
+          - text: "Security"
+            url: game-principles/security/game-security-overview.md
+
+  - title: Platform-specific development
+    linkLists:
+      - linkListType: concept
+        links:
+          - text: "PC-first development"
+            url: pc-dev/tutorials/pc-e2e-guide/e2e-overview.md
+          - text: "PC end to end guide overview"
+            url: pc-dev/tutorials/pc-e2e-guide/e2e-overview.md
+          - text: "Xbox Series X|S-first development"
+            url: console-dev/overviews/gc-console-build-environment.md
+          - text: "Development Kits for Xbox"
+            url: console-dev/dev-kits/devkits.md
+          - text: "Cross-platform development"
+            url: overviews/error-handling.md
+
+  - title: GDK and game engines
+    linkLists:
+      - linkListType: how-to-guide
+        links:
+          - text: "Microsoft Game Development Kit and game engines"
+            url: pc-dev/tutorials/pc-e2e-guide/e2e-gdk-and-engines.md
+          - text: "Unity GDK integration"
+            url: pc-dev/tutorials/get-started-with-unity-pc/gdk-unity-end-to-end-guide.md
+          - text: "C# API wrappers for Unity"
+            url: pc-dev/tutorials/get-started-with-unity-pc/features/gdk-unity-api-wrappers.md
+          - text: "Unreal development"
+            url: pc-dev/tutorials/get-started-with-unreal-pc/gc-get-started-with-unreal-pc.md
+          - text: "GameMaker development for PC"
+            url: pc-dev/tutorials/get-started-with-gamemaker/gc-get-started-with-gamemaker.md
+          - text: "Godot development for XBOX"
+            url: pc-dev/tutorials/getting-started-with-godot/gc-get-started-godot.md
+
+  - title: Advanced technical guidance
+    linkLists:
+      - linkListType: concept
+        links:
+          - text: "ATG Systems Engagement Checklist"
+            url: atg-engagement/atg-systems-engagement.md
+          - text: "ATG Graphics Engagement Checklist"
+            url: atg-engagement/atg-graphics-engagement.md
+          - text: "Error handling"
+            url: overviews/error-handling.md
+          - text: "Xbox forums for NDA partners"
+            url: https://forums.xboxlive.com/index.html

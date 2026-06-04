@@ -1,0 +1,68 @@
+- name: "Networking (contents)"
+  href: gc-networking-toc.md
+- name: "Introduction to Microsoft Game Development Kit (GDK) networking"
+  href: introduction-networking.md
+- name: "Network initialization and connectivity"
+  href: initialization-connectivity-networking.md
+- name: "Quality of service (QoS) packet tagging on Xbox consoles"
+  href: qos-packet-tagging.md
+- name: "Xbox reserved ports and firewall exceptions"
+  href: reserved-ports-networking.md
+- name: XDK migration guide
+  items:
+    - name: "Xbox One Software Development Kit migration guides (contents)"
+      href: xdk-migration/xdk-migration-toc.md
+    - name: "Xbox One Software Development Kit migration overview"
+      href: xdk-migration/xdk-migration-overview-networking.md
+    - name: "Xbox One Software Development Kit migration of web requests"
+      href: xdk-migration/xdk-migration-web-requests-networking.md
+    - name: "Xbox One Software Development Kit migration of game mesh communication"
+      href: xdk-migration/xdk-migration-game-mesh-networking.md
+- name: Web Requests
+  items:
+    - name: "Web requests (contents)"
+      href: web-requests/web-requests-toc.md
+    - name: "Web requests overview"
+      href: web-requests/http-networking.md
+    - name: "xCurl overview"
+      href: web-requests/intro-xcurl.md
+    - name: "WinHTTP overview"
+      href: web-requests/intro-winhttp.md
+    - name: "Debugging custom HTTP stacks"
+      href: web-requests/debugging-custom-http-stacks.md
+- name: Game Mesh
+  items:
+    - name: "Game Mesh (contents)"
+      href: game-mesh/game-mesh-toc.md
+    - name: "PlayFab Party"
+      href: game-mesh/playfab-party-intro-networking.md
+    - name: "PlayFab Party Online Subsystem for Unreal"
+      href: game-mesh/party-unreal-online-subsystem.md
+    - name: "PlayFab Party SDK for Unity"
+      href: game-mesh/party-unity-plugin.md
+    - name: "MsQuic"
+      href: game-mesh/msquic-intro-networking.md
+    - name: "Preferred UDP multiplayer port"
+      href: game-mesh/preferred-local-udp-multiplayer-port-networking.md
+    - name: Windows Sockets
+      items:
+        - name: "Windows Sockets overview"
+          href: game-mesh/winsock-intro-networking.md
+        - name: "PC port behavior"
+          href: game-mesh/pc-port-behavior.md
+        - name: "Xbox console port behavior"
+          href: game-mesh/xbox-console-port-behavior.md
+    - name: "Quality of Service measurements"
+      href: game-mesh/qos-networking.md
+- name: Networking tools for the Microsoft Game Development Kit
+  items:
+    - name: "Networking tools in the Microsoft Game Development Kit (contents)"
+      href: tools/tools-networking-toc.md
+    - name: "Fiddler on Xbox devkits"
+      href: tools/fiddler-setup-networking.md
+    - name: "Fiddler on Windows PC"
+      href: tools/fiddler-pc.md
+    - name: "Xbox One Network Capture"
+      href: tools/netcap-networking.md
+    - name: "Xbox network stress"
+      href: tools/netstress-networking.md

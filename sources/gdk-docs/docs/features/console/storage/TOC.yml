@@ -1,0 +1,14 @@
+- name: "Local storage"
+  href: local-storage.md
+- name: "DirectStorage (contents)"
+  href: directstorage-toc.md
+- name: "DirectStorage Overview"
+  href: directstorage/directstorage-overview.md
+- name: "DirectStorage Usage and Internal Details"
+  href: directstorage/directstorage-white-paper.md
+- name: "Optimizing compressed content by using DirectStorage and XBTC"
+  href: directstorage/directstorage-compression.md
+- name: "DirectStorage - Easy Hardware Decompression"
+  href: directstorage/directstorage-drop-in-decompression.md
+- name: "DirectStorage Shuffle Formats"
+  href: directstorage/directstorage-shuffles.md

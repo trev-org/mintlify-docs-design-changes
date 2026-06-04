@@ -1,0 +1,8 @@
+- name: "Debugging and Diagnostics Tools"
+  href: tools-optimize-validate/TOC.yml
+- name: "Additional Tools and Middleware"
+  items:
+    - name: "Additional tools"
+      href: additional-tools.md
+    - name: "Middleware providers"
+      href: tools-and-middleware-providers.md

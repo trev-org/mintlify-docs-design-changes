@@ -1,0 +1,18 @@
+- name: Common GDK features
+  href: common-features-overview.md
+- name: Async programming model
+  href: async/TOC.yml
+- name: Game configuration
+  href: game-config/TOC.yml
+- name: Game Saves
+  href: game-save/TOC.yml
+- name: Game Streaming
+  href: game-streaming/TOC.yml
+- name: Lighting
+  href: lighting/TOC.yml
+- name: Player input
+  href: input/TOC.yml
+- name: Packaging
+  href: packaging/TOC.yml
+- name: User and identity
+  href: user/TOC.yml

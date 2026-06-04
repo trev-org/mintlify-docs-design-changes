@@ -1,0 +1,14 @@
+        - name: "Localization and globalization overview"
+          href: localization_overview.md
+        - name: "Console-supported languages"
+          href: console_supported_languages.md
+        - name: "Determining console locale and language"
+          href: determining_console_locale.md
+        - name: "Determining console location"
+          href: determining_console_geolocation.md
+        - name: "Supported NLS functions"
+          href: supported_nls_apis.md
+        - name: "Localization of packaged resources"
+          href: localization_of_packaged_resources.md
+        - name: "Game supported and unsupported locales"
+          href: game_supported_and_unsupported_locales.md

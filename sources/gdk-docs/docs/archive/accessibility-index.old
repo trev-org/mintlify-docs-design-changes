@@ -1,0 +1,34 @@
+### YamlMime:Landing
+
+
+title: Accessibility documentation
+summary: Learn how to use accessibility features in the Game Development Kit (GDK).
+metadata:
+  title: Accessibility documentation
+  description: Instruction on accessibility features in the GDK
+  ms.service: gdk
+  ms.topic: landing-page
+  author: joannaleecy
+  ms.author: joanlee
+  ms.date: '08/09/2022'
+landingContent:
+- title: About game accessibility
+  linkLists:
+  - linkListType: overview
+    links:
+    - text: Overview
+      url: "/gaming/gdk/_content/gc/accessibility/accessibility-overview"
+    - text: Why make games accessible
+      url: "/gaming/gdk/_content/gc/accessibility/accessibility-motivation"
+- title: Speech accessibility
+  linkLists:
+  - linkListType: get-started
+    links:
+    - text: User settings for speech accessiblity
+      url: "/gaming/gdk/_content/gc/accessibility/speech-accessibility"
+- title: Resources
+  linkLists:
+  - linkListType: overview
+    links:
+    - text: Xbox Accessibility Guidelines
+      url: "/gaming/accessibility/guidelines"

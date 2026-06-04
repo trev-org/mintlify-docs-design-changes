@@ -1,0 +1,10 @@
+- name: "Cross-generation title development (contents)" 
+  href: gc-cross-gen-toc.md
+- name: "Cross-generation gaming overview"
+  href: cross-gen-overview.md
+- name: "Dual SKU cross-generation games"
+  href: cross-gen-dual-sku.md
+- name: "Backcompat only titles"
+  href: cross-gen-backcompat-only.md
+- name: "Smart Delivery"
+  href: cross-gen-smart-delivery.md

@@ -1,0 +1,56 @@
+- name: "Input (contents)"
+  href: gc-input-toc.md
+- name: Overview of GameInput
+  items:
+    - name: "GameInput introduction"
+      href: overviews/input-overview.md
+    - name: "GameInput Frequently Asked Questions"
+      href: overviews/input-faq.md
+    - name: "GameInput fundamentals"
+      href: overviews/input-fundamentals.md
+    - name: "GameInput readings"
+      href: overviews/input-readings.md
+    - name: "GameInput devices"
+      href: overviews/input-devices.md
+    - name: "GameInput for PC with NuGet"
+      href: overviews/input-nuget.md
+    - name: "GameInput API versioning"
+      href: overviews/input-versioning.md
+- name: Advanced GameInput topics
+  items:
+    - name: "Advanced GameInput topics (contents)"
+      href: advanced/input-advanced-topics.md
+    - name: "GameInput callbacks"
+      href: advanced/input-callbacks.md
+    - name: "GameInput work queues"
+      href: advanced/input-work-queues.md
+    - name: "GameInput Dynamic Latency Input"
+      href: advanced/input-synchronization.md
+    - name: "Force feedback on GameInput"
+      href: advanced/input-forcefeedback.md
+    - name: "GameInput keyboard and mouse"
+      href: advanced/input-keyboard-mouse.md
+- name: GameInput for hardware developers
+  items:
+    - name: "GameInput for hardware developers (contents)"
+      href: hardware/input-hardware-topics.md
+    - name: "GameInput Device Mapping Tool and Testing Guide"
+      href: hardware/input-hardware-mapping.md
+    - name: "GameInput Interfaces"
+      href: hardware/input-hardware-interfaces.md
+    - name: "GameInput force feedback interface"
+      href: hardware/input-hardware-force-feedback.md
+    - name: "GameInput Sensors"
+      href: hardware/input-hardware-sensors.md
+    - name: "GameInput Haptics"
+      href: hardware/input-hardware-haptics.md
+- name: GameInput porting guide
+  items:
+    - name: "GameInput porting guide (contents)"
+      href: porting/input-porting.md
+    - name: "Porting from Windows.Xbox.Input to GameInput"
+      href: porting/input-porting-wxi.md
+    - name: "Porting from XInput to GameInput"
+      href: porting/input-porting-xinput.md
+- name: "Virtual keyboard support"
+  href: overviews/virtualkeyboardsupport.md

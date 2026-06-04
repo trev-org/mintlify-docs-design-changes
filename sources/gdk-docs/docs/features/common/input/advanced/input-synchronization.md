@@ -1,0 +1,69 @@
+---
+author: AlexYatskov
+title: "GameInput Dynamic Latency Input"
+description: "Provides an overview of the input synchronization features that are available in Dynamic Latency Input."
+kindex: GameInput readings
+ms.topic: article
+edited: 06/30/2025
+ms.date: '08/01/2022'
+permissioned-type: public
+---
+
+# Dynamic Latency Input
+
+> [!NOTE]
+> Dynamic Latency Input is only available on Xbox console. The feature isn't available on PC, and thus the API is unimplemented on the PC platform. The APIs for DLI are also no longer available beginning with GameInput v.1, but the underlying synchronization system continues to be available on supported devices. A title can still choose to provide these syncs by casting down from a future API version back to v.0 for that particular call.
+
+<a id="introductionSection"></a>
+ 
+Use this article to understand how Dynamic Latency Input (DLI) synchronizes in-game device input and output. *Input lag*, or *input latency*, is the delay between the time that a physical input occurs and an output is sent. In gaming, this lag is the time between a button press and screen output. Keeping this latency low is crucial to keeping users engaged and immersed in gameplay.
+
+Input latency is the time between a button press and a game reading it. DLI is an input architecture that's designed to reduce latency in this part of the equation. 
+
+## Overview of Dynamic Latency Input 
+ 
+DLI is a synchronization system between the controller and game platform. It assesses the game's input calling pattern and adjusts the report rate of the controller to deliver up-to-date input just before the input call. The following are the key components that are necessary to complete an input call.
+ * A controller that's capable of dynamically adjusting how often it reports and reads its buttons.
+ * The ability to monitor game input reading patterns to predict when the next input is needed.
+ * The ability to use these patterns to adjust the controller reports so that they align with the game's needs. 
+
+## DLI accuracy
+ 
+DLI runs when a supported device is in use. It monitors how well it's predicting when the next input read will occur. It keeps this value as an internal confidence. If the predictions are consistently off, the confidence gets too low and DLI disables itself. 
+The most common reason for a low-confidence value is inconsistent behavior. DLI assumes that input is read at a consistent cadence and synchronizes to it. Some games use simulation threads that outpace DLI or that read input at inconsistent intervals. These cases confuse DLI and lower its confidence because it can't find a stable rate to synchronize to. 
+
+> [!NOTE]
+> DLI is limited to a cadence of 125 Hz. Attempting a cadence higher than that value results in DLI disabling itself.
+
+### Use hints to increase accuracy
+ 
+To mitigate low confidence values and assist DLI, send hints to the platform that give you control of when input synchronizes. When you call [SendInputSynchronizationHint](../../../../reference/input/gameinput/deprecated/interfaces/igameinputdevice/methods/igameinputdevice_sendinputsynchronizationhint.md), DLI ignores input read timing and synchronizes to the hint call. To ensure inputs don't come in late, use `SendInputSynchronizationHint` right before the first input read of each simulation pass as shown in the following code.
+
+```c++
+IGameInputDevice::SendInputSynchronizationHint()
+```
+
+## Disabling DLI
+ 
+Currently, there's no recommended situation for turning off input synchronization, but disabling it can help when evaluating its benefits. Use [SetInputSynchronizationState](../../../../reference/input/gameinput/deprecated/interfaces/igameinputdevice/methods/igameinputdevice_setinputsynchronizationstate.md) to disable or re-enable DLI as shown in the following code. 
+
+```c++
+IGameInputDevice::SetInputSynchronizationState(bool enabled)
+```
+
+## Analyzing DLI performance
+For more information about how DLI performs against a title, see [Analyzing Dynamic Latency Input performance (NDA topic)](../../../../tools/tools-console/pix/pix-input-sync.md).
+
+## Device support
+
+DLI only runs on input devices with supporting firmware. For more information about devices that support DLI, see [GameInputDeviceCapabilities](../../../../reference/input/gameinput/deprecated/enums/gameinputdevicecapabilities.md). 
+
+<a id="seeAlsoSection"></a>
+
+## See also
+
+[GameInput fundamentals](../overviews/input-fundamentals.md)
+
+[Advanced GameInput topics](input-advanced-topics.md)
+
+[Input API reference](../../../../reference/input/gc-reference-input-toc.md)
