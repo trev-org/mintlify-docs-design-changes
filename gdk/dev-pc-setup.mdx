@@ -1,0 +1,63 @@
+---
+title: "Dev PC hardware and OS requirements"
+description: "Hardware and operating system requirements for developing GDK titles."
+---
+
+## Hardware
+
+### Both PC and Xbox development
+
+- Fast, modern PC running a supported Windows version
+- **30 GB** of free space for the GDK install
+
+### Xbox development (additional)
+
+- **NVMe SSD** (heatsink recommended)
+- **10 GbE NIC** — the Xbox Series X Dev Kit Debug NIC supports 10 Gigabit Ethernet for faster deployment
+- **Category 6a** cables
+- Dev PC and dev kit on the **same Ethernet switch / subnet**
+- 10 GbE-capable network switch and infrastructure
+- Motherboard with **Thunderbolt 3** support (for upcoming deployment improvements)
+- 4K/UHD \+ HDR monitor recommended
+
+**Validated 10 GbE hardware**: Netgear XS708T 8-port switch, AQuantia AQN-107, Intel X540-T1, Samsung 970 EVO NVMe M.2, Cat 6a cables.
+
+## Operating system
+
+<Warning>
+  GDK Visual Studio extension (VSIX) components are not supported on ARM devices. Install the GDK on an **x64** dev PC.
+</Warning>
+
+### For Xbox titles
+
+- Windows 10 (64-bit): Home, Pro, or Enterprise
+- Windows 11 (64-bit): Home, Pro, or Enterprise
+- Build servers: Windows Server 2019 (1809\+) Standard or Datacenter
+
+Windows 7/8/8.1 are no longer supported — GDK setup will block.
+
+### For Windows titles
+
+- Windows 10 (May 2019 Update or later), 64-bit
+- Windows 11 (64-bit)
+- 32-bit Windows is not supported
+- Keep graphics drivers up to date
+
+### For testing MSIXVC-packaged PC games
+
+- Windows 10 (May 2019 Update\+) 64-bit
+- Gaming Services Runtime (installed automatically with any Store MSIXVC game, or [install from Microsoft Store](ms-windows-store://pdp/?productid=9MWPM2CQNLHN))
+
+<Note>
+  If your title declares framework dependencies in `MicrosoftGame.config`, sideload only the **exact versions specified**. Installing other versions can mask errors during development.
+</Note>
+
+## Microsoft Symbol Servers
+
+Enable in Visual Studio to get Gaming Runtime symbols:
+
+**Debug → Options → Symbols →** check **Microsoft Symbol Servers**.
+
+## Next
+
+[SDK & tools requirements](/gdk/sdk-and-tools)

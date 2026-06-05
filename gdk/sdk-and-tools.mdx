@@ -1,0 +1,65 @@
+---
+title: "SDK and tools requirements"
+description: "SDKs and tools required on your dev PC for GDK title development."
+---
+
+Install the following before developing GDK games (PC, Xbox, or both):
+
+1. **Windows SDK**
+2. **Visual Studio**
+3. **Microsoft GDK**
+
+<Tip>
+  Create a system restore point before installing.
+</Tip>
+
+## Windows SDK
+
+GDK games are Win32-based, so the [Windows SDK](https://developer.microsoft.com/windows/downloads/windows-sdk/) provides the foundation: D3D, XAudio, PIX public API, networking, file I/O, memory, and windowing.
+
+It also exposes:
+
+- **`WINAPI_FAMILY_GAMES`** — the subset of Win32 supported on both PC and Xbox
+- **`xgameplatform.lib`** — umbrella library defining entry points for that API family
+- **GameInput** — unified input model across gamepad, keyboard, mouse, touch
+- New process lifetime management (PLM) APIs
+
+**Required**: Windows SDK version **22000** or later. Install from the link above or via the Visual Studio Installer ("Windows SDK for Windows 11 (10.0.22000.0)").
+
+## Visual Studio
+
+**Visual Studio 2022 or 2026** is recommended.
+
+<Note>
+  If you install a new Visual Studio edition after the GDK, **repair the GDK** so it integrates with the new VS edition. If you need to uninstall Visual Studio, **uninstall the GDK first**.
+</Note>
+
+<Warning>
+  GDK VSIX components are not supported on ARM. Install on an x64 dev PC.
+</Warning>
+
+## Microsoft GDK
+
+The GDK adds everything beyond the Windows SDK:
+
+- **Gaming Runtime** — MSIXVC packaging, TCUI, Connected Storage, async block, device association, user, text-to-speech, accessibility, Screen Time
+- **Gaming Cloud Services** — XSAPI, XAL, multiplayer, PlayFab, Microsoft Store APIs
+- **Gaming device extensions** — DirectX 12.x, Audio.x, PIX.x, `XMemAlloc`
+
+## Tools by target
+
+**PC games**:
+
+- Existing Win32 dev tools, IDEs, middleware
+- Visual Studio \+ PIX for Windows
+- Remote Desktop Portal for debugging on lab machines with specific GPU drivers
+
+**Xbox games**:
+
+- GDK with Xbox Extensions (GXDK) tools
+- Visual Studio \+ PIX for Xbox
+- `xb*` command-line tools, Xbox Manager, Dev Home, Xbox Device Portal (XDP)
+
+## Next
+
+[Developing a new title](/gdk/developing-new-titles)

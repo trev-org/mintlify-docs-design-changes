@@ -25,9 +25,21 @@
             "group": "Get Started",
             "pages": [
               "onboarding",
+              "gdk/welcome",
               "introduction",
+              "gdk/what-is-gdk",
+              "gdk/glossary",
+              "gdk/feature-quality",
+              "gdk/access-resources",
+              "gdk/setup-organization",
+              "gdk/dev-pc-setup",
+              "gdk/sdk-and-tools",
               "gdk/get-started",
-              "gdk/download-install"
+              "gdk/download-install",
+              "gdk/developing-new-titles",
+              "gdk/samples",
+              "gdk/porting-guides",
+              "gdk/security-requirements"
             ]
           },
           {
