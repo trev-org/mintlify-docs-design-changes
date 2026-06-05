@@ -30,20 +30,37 @@ Before you can download the GDK, configure a title in Partner Center, or use any
   </Card>
 </CardGroup>
 
+## Before you start
+
+Prepare a **fresh Personal Microsoft Account (MSA)** that is not tied to any existing Xbox console, Windows device, or Microsoft Store activity. This keeps publishing credentials separate from anyone's personal Xbox or Windows login.
+
+- Create at [account.microsoft.com](https://account.microsoft.com) — use a **private browser session** if you're already signed in elsewhere
+- Enable **two-factor authentication** immediately
+
 ## The end-to-end workflow
 
 <Steps>
   <Step title="Register in ID@Xbox">
-    Start in the [ID@Xbox onboarding hub](https://www.xbox.com/en-US/developers/id). Enter your company and publisher details. The hub generates a **Non-Disclosure Agreement (NDA)** for you to sign and creates your account in the internal onboarding system.
+    Start in the [ID@Xbox onboarding hub](https://www.xbox.com/en-US/developers/id) or [Xbox Developer Programs](https://developer.microsoft.com/games/publish). Sign in with your new MSA, confirm the account in the welcome banner, then select **ID@Xbox → Apply Now**.
 
-    **Output:** signed NDA, onboarding account created.
+    Complete the contact details form, fill in studio information, and **Submit Introduction**. The hub generates a **Non-Disclosure Agreement (NDA)** for you to sign and creates your account in the onboarding system.
+
+    **NDA delivery:** typically within **~20 minutes**, up to **3 business days**.
+
+    **Output:** signed NDA, onboarding account created. You only complete the contact, studio, and NDA steps once.
   </Step>
   <Step title="Submit your game concept">
-    Submit a game concept proposal through the onboarding hub. The submission enters the **ID Games review queue**, which the ID Games team reviews on a weekly cadence.
+    Every game requires concept approval before development and publishing.
 
-    **Typical approval time:** ~1 week on average, up to ~2 weeks depending on review volume.
+    1. **New Application** under **Game Concepts**
+    2. Fill in the form (tooltips guide individual fields)
+    3. **Submit Application**
 
-    **Output:** concept approved or rejected. You must have an approved concept to proceed.
+    This enters the **Trust & Safety / ID Games review queue**, reviewed on a weekly cadence.
+
+    **Typical approval time:** **10–15 business days**. Multiple concepts can be submitted in parallel.
+
+    **Output:** concept approved or rejected. You must have an approved concept to proceed. If rejected, resubmit when the build materially changes.
   </Step>
   <Step title="Sign the Title Licensing Agreement (TLA)">
     Once your concept is approved, you receive the **Title Licensing Agreement (TLA)**. The TLA establishes your publishing rights and commercial terms for shipping the title on Xbox.
@@ -56,7 +73,7 @@ Before you can download the GDK, configure a title in Partner Center, or use any
     **Output:** eligibility for GDK documentation and the software download site.
   </Step>
   <Step title="Register in Microsoft Partner Center">
-    With agreements complete, the onboarding hub unlocks Partner Center registration. You must enroll in the **Windows program** in Partner Center.
+    With agreements complete, the onboarding hub unlocks Partner Center registration. You must enroll in the **Windows and Xbox program** in Partner Center.
 
     <Warning>
       Register from the link in the ID@Xbox onboarding flow — not by going to Partner Center directly. The onboarding flow applies a **"5x5" token** that links your Partner Center account to ID@Xbox, applies the correct permissions and roles, and waives the registration fee in some cases.
@@ -64,10 +81,42 @@ Before you can download the GDK, configure a title in Partner Center, or use any
       Registering Partner Center outside the onboarding flow leads to missing roles and no GDK access — see [Common pitfalls](#common-pitfalls) below.
     </Warning>
 
+    ### Choose your account type carefully
+
+    <Warning>
+      **You cannot change your account type after creation.**
+    </Warning>
+
+    | Individual | Company |
+    | --- | --- |
+    | Independent devs publishing not in relation to business | Devs / freelancers publishing in relation to business |
+    | Small-scale, non-commercial creators | Businesses, organizations, non-profits, government |
+    | Hobbyists, students, personal projects | Teams within an organization |
+
+    See [Developer accounts](https://learn.microsoft.com/windows/apps/publish/partner-center/partner-center-developer-account) for full criteria.
+
+    ### Have these ready
+
+    - **Primary contact** name \+ verifiable company email (verification email goes here)
+    - **Email address** that does **not** contain `info`, `admin`, `email@`, `marketing@`
+    - **Company email** for company accounts — no personal domains (hotmail, gmail, etc.). Use a business or Microsoft 365 work account (e.g. `you@contoso.onmicrosoft.com`)
+    - **Authority to sign legal agreements**
+    - **Legal business name \+ address** matching official record (use Western European characters)
+
+    Account verification typically takes **3–5 business days**.
+
     **Output:** Partner Center account, linked to your ID@Xbox onboarding record.
   </Step>
   <Step title="Connect your Entra ID tenant">
     Associate your studio's **Entra ID** (formerly Azure AD) tenant with your Partner Center account. This gives you organization-level identity management for your dev team.
+
+    1. **Settings → Account settings → Tenants**
+    2. **Associate Microsoft Entra ID** — either:
+       - **Use existing tenant** — sign in as Global/Account admin → **Confirm**
+       - **Create free tenant** — follow the wizard, then confirm
+    3. **Settings → Account settings → Users** — add an Entra user, assign the global admin role
+    4. Sign back in via **Account Settings → User management → Sign in with Microsoft Entra ID**
+    5. Use this Entra account going forward
 
     **Result:** any user added to your tenant and granted Partner Center permissions automatically inherits access to the linked Xbox resources.
   </Step>
@@ -90,15 +139,30 @@ Before you can download the GDK, configure a title in Partner Center, or use any
 
     **Dependency chain for GDK access:** approved concept \+ signed agreements \+ Partner Center account \+ correct roles \+ Entra ID association.
   </Step>
-  <Step title="Create products in Partner Center">
-    With Partner Center provisioned, you can create app and game products and start filling in product configuration — store listing, age ratings, packages, and so on. See [Partner Center](/publishing/partner-center).
+  <Step title="Create your first product in Partner Center">
+    With Partner Center provisioned, reserve a product so you can start configuration:
 
-    Product creation is technically possible even before GDK access lands, but real development work requires the GDK permissions from step 7.
+    1. **Apps and games → New product → Game**
+    2. Enter the game name → **Reserve product name**
+    3. In the Game overview page, check **Retail** in the **Desktop** row (**Sandboxes** auto-checks)
+    4. **Save draft**
+
+    Take note of the values under **Game setup → Identity details** — you'll paste them into your `MicrosoftGame.config` later.
+
+    See [Partner Center](/publishing/partner-center) for the full product workflow.
   </Step>
-  <Step title="Request manual enablement for Xbox Live features (if needed)">
-    Some capabilities require a manual Microsoft-side activation step. **Xbox Live features** and certain service configurations are not auto-enabled by the onboarding flow.
+  <Step title="Request manual enablement for Xbox services">
+    Xbox services are **disabled** by default on new products. Enable them early so you can test in your dev cycle.
 
-    Request enablement through your Microsoft contact and wait for backend configuration. Without this step, Xbox services APIs (for example, Xbox Live initialization) will fail at runtime.
+    Email your Microsoft representative with your **Microsoft Store ID** (from **Game setup → Identity details**):
+
+    > **Subject:** Need to enable game for Xbox services
+    >
+    > **Body:** Please enable Xbox services compatibility for my Partner Center product. The Microsoft Store ID is `<your-store-id>`.
+
+    Once enabled, return to **Game setup** and choose **Use full Xbox services feature set**.
+
+    Without this step, Xbox services APIs (for example, Xbox Live initialization) will fail at runtime.
   </Step>
 </Steps>
 

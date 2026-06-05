@@ -95,22 +95,6 @@
               "playfab/party-voice",
               "playfab/analytics"
             ]
-          },
-          {
-            "group": "Publishing & Commerce",
-            "pages": [
-              "publishing/overview",
-              "publishing/partner-center",
-              "publishing/certification",
-              "publishing/commerce",
-              "publishing/dlc-add-ons",
-              "publishing/age-ratings",
-              "publishing/store-listings",
-              "publishing/pricing-availability",
-              "publishing/pre-release-testing",
-              "publishing/cert-bypass",
-              "publishing/game-hubs"
-            ]
           }
         ]
       },
@@ -185,5 +169,32 @@
   },
   "metadata": {
     "timestamp": true
-  }
+  },
+  "redirects": [
+    {
+      "source": "/pc-e2e/register-id-xbox",
+      "destination": "/onboarding",
+      "permanent": true
+    },
+    {
+      "source": "/pc-e2e/partner-center-account",
+      "destination": "/onboarding",
+      "permanent": true
+    },
+    {
+      "source": "/pc-e2e/partner-center-product",
+      "destination": "/onboarding",
+      "permanent": true
+    },
+    {
+      "source": "/pc-e2e/integrate-gdk",
+      "destination": "/pc-e2e/engines/custom-engine",
+      "permanent": true
+    },
+    {
+      "source": "/pc-e2e/publish-your-game",
+      "destination": "/publishing/overview",
+      "permanent": true
+    }
+  ]
 }
