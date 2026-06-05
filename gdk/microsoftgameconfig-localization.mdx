@@ -1,0 +1,47 @@
+---
+title: "MicrosoftGame.config localization"
+description: "Localize shell-visible display strings for packaged games."
+---
+
+Localize the strings displayed in the Windows / Xbox shell (display name, description, etc.) using `.resw` resource files.
+
+## 1. Create resource files
+
+Create `resources.resw` in a `Strings\` subfolder for each supported language. Use [BCP-47](https://tools.ietf.org/html/bcp47) language codes.
+
+```text
+<project>/
+  Strings/
+    resources.resw          (language-neutral fallback)
+    en-us/resources.resw
+    es-mx/resources.resw
+```
+
+## 2. Reference resources in MicrosoftGame.config
+
+Use `ms-resource:ResourceStringName`:
+
+```xml
+<ExecutableList>
+  <Executable Name="MyGame.exe"
+              OverrideDisplayName="ms-resource:ApplicationDisplayName"
+              Id="Game"/>
+</ExecutableList>
+```
+
+## 3. Declare supported languages
+
+```xml
+<Resources>
+  <Resource Language="en-US" />
+  <Resource Language="es-MX" />
+</Resources>
+```
+
+## 4. Generate the .pri file
+
+```bat
+makepkg localize /d . /resw Strings
+```
+
+Place the resulting `resources.pri` in your game's root content directory, then create your package.

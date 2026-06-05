@@ -1,0 +1,31 @@
+---
+title: "Speech accessibility user settings"
+description: "Retrieve and respect user settings for STT, TTS, and screen narration."
+---
+
+Players configure speech accessibility settings via the **Ease of access** menu. Your title should retrieve and respect these settings.
+
+## Where users configure settings
+
+### Xbox consoles
+
+**Settings → Ease of access →** check Speech-to-text on, Text-to-speech on, Text-to-speech voice, Let games read to me.
+
+### Windows
+
+Install [Xbox Game Bar](https://www.microsoft.com/p/xbox-game-bar/9nzkpstsnw4p) → open the app (**Win\+G**) → **Settings → Gaming features**.
+
+## Apply STT/TTS preference
+
+### PlayFab Party
+
+Call `GetAccessibilitySettings` from the Xbox Live Helper Library.
+
+### Game Chat 2
+
+With the default `game_chat_speech_to_text_conversion_mode::automatic`, Game Chat 2 is automatically tied to the user's STT/TTS settings.
+
+### What your title must do
+
+- Render transcribed text in your UI or TCUI (if TTS is enabled)
+- Synthesize voice from text (if STT is enabled)

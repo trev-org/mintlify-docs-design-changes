@@ -46,10 +46,19 @@
             "group": "Build and Develop (Core Features)",
             "pages": [
               "gdk/game-config",
+              "gdk/microsoftgameconfig-editor",
+              "gdk/microsoftgameconfig-localization",
               "gdk/user-model",
+              "gdk/xuser-identity",
+              "gdk/xuser-signin-best-practice",
+              "gdk/guest-users",
               "gdk/async-programming",
+              "gdk/async-task-queues",
               "gdk/packaging",
+              "gdk/packaging-pc",
+              "gdk/intelligent-delivery",
               "gdk/game-saves",
+              "gdk/game-saves-overview",
               "gdk/game-streaming",
               "gdk/input",
               "gdk/memory",
@@ -73,6 +82,16 @@
             ]
           },
           {
+            "group": "Game Principles",
+            "icon": "compass",
+            "pages": [
+              "principles/accessibility-overview",
+              "principles/speech-accessibility",
+              "principles/localization-globalization",
+              "principles/security-overview"
+            ]
+          },
+          {
             "group": "Xbox Console Features",
             "pages": [
               "gdk/console-overview",
@@ -82,7 +101,9 @@
               "gdk/game-dvr",
               "gdk/cross-gen",
               "gdk/directstorage",
-              "gdk/dynamic-lighting"
+              "gdk/dynamic-lighting",
+              "gdk/game-streaming-overview",
+              "gdk/cloud-aware-api"
             ]
           },
           {

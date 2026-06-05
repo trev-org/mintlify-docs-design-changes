@@ -1,0 +1,53 @@
+---
+title: "User identity and XUser"
+description: "How the GDK manages signed-in users via XUser and XUserHandle."
+---
+
+The GDK manages users via **`XUser`** objects, each represented by an `XUserHandle`.
+
+## Two identifiers per user
+
+| Identifier | API | Scope |
+| --- | --- | --- |
+| **Local ID** | `XUserGetLocalId` | Lifetime of the game session — do **not** use across sessions |
+| **XUID** (Xbox services ID) | `XUserGetId` | For Xbox services calls and TCUI |
+
+## User states
+
+Three states: **SignedIn**, signing out (in progress), **SignedOut**.
+
+- Query with `XUserGetState`
+- Subscribe to changes with `XUserRegisterForChangeEvent`
+
+<Warning>
+  `SignedIn` indicates the user was authenticated at some point — it does **not** guarantee active network connectivity.
+</Warning>
+
+## Adding users
+
+Games only see users they've explicitly added via `XUserAddAsync`. Signed-in users on the console are invisible to the game unless added.
+
+## Patterns for establishing an initial user
+
+### Option 1 — Silent
+
+```cpp
+XUserAddAsync(XUserAddOptions::AddDefaultUserSilently, asyncBlock);
+```
+
+Fails with `E_GAMEUSER_NO_DEFAULT_USER` if no one is signed in — fall through to the UI flow.
+
+### Option 2 — With UI fallback
+
+```cpp
+XUserAddAsync(XUserAddOptions::AddDefaultUserAllowingUI, asyncBlock);
+```
+
+On success, the user is fully signed in to Xbox services.
+
+## Managing handles
+
+1. Maintain a collection of `XUserHandle` instances
+2. Subscribe via `XUserRegisterForChangeEvent`
+3. When you receive a handle from `XUserAddAsync`, compare against existing handles using `XUserCompare` or `XUserGetLocalId`
+4. Close duplicate handles with `XUserCloseHandle`

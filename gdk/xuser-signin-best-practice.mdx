@@ -1,0 +1,47 @@
+---
+title: "Best practice: sign in a user"
+description: "Recommended patterns for establishing an initial user with XUserAddAsync."
+---
+
+Every GDK title must establish an initial user.
+
+## Silent sign-in (no UI)
+
+```cpp
+HRESULT Identity_TrySignInDefaultUserSilently(XTaskQueueHandle asyncQueue)
+{
+    XAsyncBlock* asyncBlock = new XAsyncBlock();
+    asyncBlock->queue = asyncQueue;
+    asyncBlock->callback = Identity_TrySignInDefaultUserSilently_Callback;
+
+    HRESULT hr = XUserAddAsync(XUserAddOptions::AddDefaultUserSilently, asyncBlock);
+    if (FAILED(hr)) delete asyncBlock;
+    return hr;
+}
+
+void CALLBACK Identity_TrySignInDefaultUserSilently_Callback(XAsyncBlock* asyncBlock)
+{
+    XUserHandle newUser = nullptr;
+    HRESULT hr = XUserAddResult(asyncBlock, &newUser);
+
+    if (SUCCEEDED(hr)) {
+        // Create Xbox services context.
+    } else {
+        // No default user — prompt "Press A / Enter to continue" and retry with UI.
+    }
+
+    delete asyncBlock;
+}
+```
+
+## Sign-in with UI fallback
+
+```cpp
+HRESULT hr = XUserAddAsync(XUserAddOptions::AddDefaultUserAllowingUI, asyncBlock);
+```
+
+Shows the system sign-in UI if no default user can be determined.
+
+<Note>
+  `XUserAddResult` adds a reference to the `XUserHandle`. Pair with `XUserCloseHandle`.
+</Note>

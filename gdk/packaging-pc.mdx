@@ -1,0 +1,51 @@
+---
+title: "Packaging for PC (MSIXVC)"
+description: "Create an MSIXVC package for sideload testing and Partner Center submission."
+---
+
+## Prerequisites
+
+- Windows 10 version **18362 or later** for deployment testing
+- Microsoft GDK installed (includes `MakePkg.exe`)
+- Product identity from Partner Center
+
+## 1. Prepare your content
+
+Put all source files in one directory. Remove PDB files and UWP/APPX footprint files.
+
+## 2. Create MicrosoftGame.config
+
+Use the [MicrosoftGame.config Editor](/gdk/microsoftgameconfig-editor) or hand-author with required values: `Identity`, `StoreId`, `MSAAppId`, `TitleId`, `ExecutableList`, `ShellVisuals`, `DesktopRegistration`.
+
+### Required image sizes
+
+| Asset | Size |
+| --- | --- |
+| StoreLogo | 100x100 |
+| Square150x150Logo | 150x150 |
+| Square44x44Logo | 44x44 |
+| SplashScreenImage | 1920x1080 |
+
+## 3. Generate the layout file
+
+```bat
+MakePkg genmap /f layout.xml /d <Your_game_folder>
+```
+
+## 4. Build the package
+
+```bat
+MakePkg pack /f layout.xml /lt /d <Your_game_folder_name> /nogameos /pc /pd <Output_Folder>
+```
+
+## 5. Enable developer mode \+ install
+
+**Settings → Use developer features → Developer mode**.
+
+```bat
+Wdapp install <Your_Package.msixvc>
+```
+
+## 6. Repackage for submission
+
+The `/LT` flag uses a test key. For submission, re-pack with `/LK` (stable key, recommended).

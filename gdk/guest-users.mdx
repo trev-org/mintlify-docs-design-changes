@@ -1,0 +1,46 @@
+---
+title: "Guest users overview"
+description: "Sponsored Guest accounts and how they interact with Xbox services."
+---
+
+**Guest users** let players interact with many Xbox services without creating a full Xbox account. They're sponsored by a signed-in Xbox player on the same device.
+
+A Sponsored Guest session ends when the guest signs out, the sponsor signs out, or the device shuts down.
+
+## Supporting guests
+
+Guest support is optional. Pass `XUserAddOptions::AllowGuests` to `XUserAddAsync`.
+
+```cpp
+XUserAddAsync(XUserAddOptions::AllowGuests, asyncBlock);
+```
+
+Check if a handle is a guest with `XUserGetIsGuest`.
+
+<Warning>
+  Guests have no deterministic identity. Don't store player preferences keyed to a guest.
+</Warning>
+
+## Subscription, parental controls, privileges
+
+Guests inherit the sponsor's subscription, parental controls, and community policy enforcement. These privileges are **revoked** for guests:
+
+- `XPRIVILEGE_BROADCAST`
+- `XPRIVILEGE_MANAGE_PROFILE_PRIVACY_SETTING`
+- `XPRIVILEGE_GAME_DVR`
+- `XPRIVILEGE_SOCIAL_NETWORK_SHARING`
+- `XPRIVILEGE_ADD_FRIEND`
+
+## Service support matrix
+
+| Area | Guest support |
+| --- | --- |
+| Cloud Storage | Not supported |
+| Authentication / Privacy / Privileges | Inherited from sponsor |
+| User Profile | Partial — view public data |
+| Multiplayer | Inherited from sponsor |
+| Achievements | Not supported |
+| Stats | Not supported |
+| Custom web service / S2S | Supported |
+| Social Manager | Not supported |
+| PlayFab Party Chat | Supported via sponsor permissions |

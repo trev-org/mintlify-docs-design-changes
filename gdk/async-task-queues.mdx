@@ -1,0 +1,34 @@
+---
+title: "Async task queues"
+description: "Configure work and completion dispatch with XTaskQueue."
+---
+
+The GDK async pattern uses **task queues** to control where and when async work and completion callbacks execute. Each queue has two ports.
+
+## Dispatch modes
+
+| Mode | Behavior |
+| --- | --- |
+| **Thread pool** | Callbacks run on the system thread pool, in parallel as threads become available |
+| **Serialized thread pool** | Same as thread pool, but one at a time |
+| **Manual** | Callbacks are not auto-dispatched — you call `XTaskQueueDispatch` yourself |
+| **Immediate** | Callback runs synchronously on the submitting thread; no queuing |
+
+## Handles and lifetime
+
+- Task queue handles are sharable, ref-counted resources
+- `XTaskQueueDuplicateHandle`, `XTaskQueueSubmitCallback`, `XTaskQueueSubmitDelayedCallback`, and `XTaskQueueCreateComposite` all add a reference
+- Handles are per-process — not marshalable
+
+## Process task queue
+
+A default **process task queue** is configured. Used when no queue is passed to an `XAsyncBlock`.
+
+## Common patterns
+
+- **Thread pool queue** — fire-and-forget async
+- **Manual queue** — STL threads pump work and completion separately
+- **Win32 message loop integration** — thread pool for work, completion callbacks from the WindowProc
+- **Composite queues** — mix ports from existing queues
+- **Delayed callbacks** — `XTaskQueueSubmitDelayedCallback` for retries or timers
+- **Waiters** — register a Win32 kernel handle; callback fires when it signals

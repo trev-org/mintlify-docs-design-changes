@@ -1,0 +1,40 @@
+---
+title: "Game Saves overview"
+description: "How Game Saves persist local data and sync it to the cloud for cross-device play."
+---
+
+**Game Saves** keep player progress available across devices by saving locally and syncing to the cloud when connected.
+
+## Available APIs
+
+| API | Use case | Platforms |
+| --- | --- | --- |
+| **XGameSaveFiles**_(recommended)_ | File path local \+ auto cloud sync | PC \+ Xbox |
+| **No-code cloud saves** | Path declared in `.config`; auto-synced | PC |
+| **XGameSave** | Container/blob model; finer control | PC \+ Xbox |
+
+Use **XGameSaveFiles** for most new titles.
+
+## User models
+
+| Model | Description |
+| --- | --- |
+| **Simple User Model**_(recommended)_ | Default user required; lifetime tied to user |
+| **Advanced User Model** | No default user guaranteed |
+
+## Security
+
+- Microsoft does **not** offer an API to access another user's Game Saves
+- Game Saves are not secure when **PC accessibility** is enabled (users can open the file path directly). For sensitive state, use server-side validation.
+
+## Key terms
+
+| Term | Meaning |
+| --- | --- |
+| **SCID** | Service Configuration Identifier (per-title, from Partner Center) |
+| **MSAAppID** | Microsoft account App ID linking the game to its identity |
+| **Local storage** | Data saved to the device during gameplay |
+| **Title storage / cloud** | Storage that syncs to cloud when online |
+| **Lock** | Mechanism granting one device exclusive write access for a user |
+| **Containers** | Analogous to folders |
+| **Blobs** | Analogous to files |

@@ -1,0 +1,24 @@
+---
+title: "Intelligent Delivery"
+description: "Segment game content into chunks installed on demand to reduce install size."
+---
+
+**Intelligent Delivery** reduces install size by splitting content into chunks and applying rules for when each chunk installs.
+
+## Capabilities
+
+| Capability | Use case |
+| --- | --- |
+| **Features and recipes** | Independently addable/removable functionality (e.g., campaign vs multiplayer) |
+| **Device specifiers** | Tag chunks by device type (e.g., Xbox One X 4K textures) |
+| **Language specifiers** | Install only localized assets for the system language |
+| **Custom tags** | Group related chunks |
+| **OnDemand content** | Deferred install (deprecated — use Features) |
+
+<Warning>
+  **ContentType specifiers and OnDemand tags are deprecated** in favor of Features.
+</Warning>
+
+<Warning>
+  Feature names, recipe names, and custom tag names are **not encrypted** in the package on CDN. Don't use sensitive data in specifier names.
+</Warning>
