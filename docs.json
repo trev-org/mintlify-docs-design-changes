@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "XBOX Game Development Kit",
+  "name": "XBOX Game Development Documentation",
   "theme": "palm",
   "favicon": "https://media.brand.dev/1cc7d407-f23a-4b9b-b989-9f91593a9123.png",
   "colors": {
@@ -250,7 +250,7 @@
       }
     ]
   },
-  "description": "XBOX Game Development Kit",
+  "description": "XBOX Game Development Documentation",
   "logo": {
     "light": "/images/We_Are_Xbox_Email-Signature_200x200.png",
     "dark": "/images/We_Are_Xbox_Email-Signature_200x200.png"
