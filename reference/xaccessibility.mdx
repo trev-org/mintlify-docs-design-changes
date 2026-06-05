@@ -1,0 +1,44 @@
+---
+title: "XAccessibility API reference"
+description: "Closed captions, high-contrast mode, and the speech-to-text overlay for in-game accessibility."
+---
+
+`XAccessibility` lets you read user accessibility preferences and drive the system speech-to-text overlay.
+
+**Header:** `XAccessibility.h` · **Library:** `xgameruntime.lib`
+
+## Closed captions
+
+| Function | Purpose |
+| --- | --- |
+| `XClosedCaptionGetProperties` | Returns the user's current closed-caption settings |
+| `XClosedCaptionSetEnabled` | Enable or disable closed captioning |
+
+### Enumerations
+
+- `XClosedCaptionFontStyle` — font family
+- `XClosedCaptionFontEdgeAttribute` — edge style
+
+## High contrast mode
+
+| Function | Purpose |
+| --- | --- |
+| `XHighContrastGetMode` | Returns the user's current high-contrast mode |
+
+## Speech-to-text overlay
+
+### Send finalized strings
+
+| Function | Purpose |
+| --- | --- |
+| `XSpeechToTextSendString` | Display a finalized string |
+| `XSpeechToTextSetPositionHint` | Set the on-screen position |
+
+### Hypothesis flow
+
+| Function | Purpose |
+| --- | --- |
+| `XSpeechToTextBeginHypothesisString` | Start a hypothesis |
+| `XSpeechToTextUpdateHypothesisString` | Update the hypothesis |
+| `XSpeechToTextFinalizeHypothesisString` | Finalize the hypothesis |
+| `XSpeechToTextCancelHypothesisString` | Cancel the hypothesis |

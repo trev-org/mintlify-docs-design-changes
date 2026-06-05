@@ -1,0 +1,56 @@
+---
+title: "XSpeechSynthesizer API reference"
+description: "Text-to-speech: configure a voice and convert text or SSML into an audio stream."
+---
+
+`XSpeechSynthesizer` (TTS) converts text or SSML into an audio stream.
+
+**Header:** `XSpeechSynthesizer.h` · **Library:** `xgameruntime.lib`
+
+## Synthesizer lifecycle
+
+| Function | Purpose |
+| --- | --- |
+| `XSpeechSynthesizerCreate` | Create a synthesizer |
+| `XSpeechSynthesizerCloseHandle` | Release a synthesizer |
+
+## Selecting a voice
+
+| Function | Purpose |
+| --- | --- |
+| `XSpeechSynthesizerSetDefaultVoice` | Use the system default voice |
+| `XSpeechSynthesizerSetCustomVoice` | Use a specific voice |
+| `XSpeechSynthesizerEnumerateInstalledVoices` | Enumerate installed voices |
+
+## Generating audio
+
+| Function | Purpose |
+| --- | --- |
+| `XSpeechSynthesizerCreateStreamFromText` | Synthesize from plain text |
+| `XSpeechSynthesizerCreateStreamFromSsml` | Synthesize from SSML |
+| `XSpeechSynthesizerGetStreamDataSize` | Size of stream's audio buffer |
+| `XSpeechSynthesizerGetStreamData` | Copy audio data |
+| `XSpeechSynthesizerCloseStreamHandle` | Release the stream |
+
+## Typical flow
+
+```cpp
+XSpeechSynthesizerHandle synth = nullptr;
+XSpeechSynthesizerCreate(&synth);
+XSpeechSynthesizerSetDefaultVoice(synth);
+
+XSpeechSynthesizerStreamHandle stream = nullptr;
+XSpeechSynthesizerCreateStreamFromText(synth, L"Hello, player!", &stream);
+
+size_t size = 0;
+XSpeechSynthesizerGetStreamDataSize(stream, &size);
+
+std::vector<uint8_t> buffer(size);
+size_t written = 0;
+XSpeechSynthesizerGetStreamData(stream, size, buffer.data(), &written);
+
+// Hand `buffer` to your audio pipeline.
+
+XSpeechSynthesizerCloseStreamHandle(stream);
+XSpeechSynthesizerCloseHandle(synth);
+```

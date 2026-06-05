@@ -1,0 +1,67 @@
+---
+title: "XAppCapture API reference"
+description: "GameDVR recording, screenshots, broadcasting, and metadata tagging for Xbox and PC."
+---
+
+`XAppCapture` exposes GameDVR recording, screenshots, broadcasting UI, and metadata tagging.
+
+**Header:** `XAppCapture.h` · **Library:** `xgameruntime.lib`
+
+## Capability gating
+
+- `XAppCaptureEnableRecord` / `XAppCaptureDisableRecord` toggle per-player
+- `XAppCaptureGetVideoCaptureSettings` reports encoding, color format, resolution, max length
+
+## Recording
+
+### GameDVR recordings
+
+| Function | Purpose |
+| --- | --- |
+| `XAppCaptureRecordTimespan` | Make a GameDVR recording of a timespan |
+| `XAppCaptureReadLocalStream` | Read the .mp4 |
+| `XAppCaptureCloseLocalStream` | Close and delete the stream |
+
+### User-initiated recordings
+
+| Function | Purpose |
+| --- | --- |
+| `XAppCaptureStartUserRecord` | Start a recording |
+| `XAppCaptureStopUserRecord` | Stop and save |
+| `XAppCaptureCancelUserRecord` | Stop and delete |
+
+## Screenshots
+
+| Function | Purpose |
+| --- | --- |
+| `XAppCaptureTakeScreenshot` | Take a screenshot |
+| `XAppCaptureOpenScreenshotStream` | Open a screenshot stream |
+| `XAppCaptureReadScreenshotStream` | Read a screenshot stream |
+
+## Broadcasting
+
+| Function | Purpose |
+| --- | --- |
+| `XAppBroadcastGetStatus` | Current broadcasting status |
+| `XAppBroadcastIsAppBroadcasting` | Bool — is the app broadcasting? |
+| `XAppBroadcastShowUI` | Show broadcasting UI |
+
+## Metadata tagging
+
+### Add events
+
+| Function | Purpose |
+| --- | --- |
+| `XAppCaptureMetadataAddDoubleEvent` | Double event |
+| `XAppCaptureMetadataAddInt32Event` | Int32 event |
+| `XAppCaptureMetadataAddStringEvent` | String event |
+
+### Track states
+
+| Function | Purpose |
+| --- | --- |
+| `XAppCaptureMetadataStartDoubleState` | Begin a double state |
+| `XAppCaptureMetadataStartInt32State` | Begin an int32 state |
+| `XAppCaptureMetadataStartStringState` | Begin a string state |
+| `XAppCaptureMetadataStopState` | Stop a named state |
+| `XAppCaptureMetadataStopAllStates` | Stop everything currently active |

@@ -1,0 +1,79 @@
+---
+title: "MicrosoftGame.config elements reference"
+description: "Every element you can declare in MicrosoftGame.config — required, optional, and platform-specific."
+---
+
+## configVersion
+
+`<Game configVersion="1">` is the root.
+
+| Version | Status |
+| --- | --- |
+| `0` | Legacy. **Not allowed** as of October 2023 GDK |
+| `1` | Required |
+
+## Core elements
+
+| Element | Required | Parent | Purpose |
+| --- | --- | --- | --- |
+| `Game` | ✅ | — | Root node |
+| `Identity` | ✅ | `Game` | `Name` \+ `Publisher` (required) \+ `Version` (defaults to `1.0.0.0`) |
+| `ShellVisuals` | ✅ packaged | `Game` | Shell display — logos, names, splash, colors |
+| `ExecutableList` | ✅ | `Game` | List of executables |
+| `Executable` | ✅ | `ExecutableList` | `Name`, `TargetDeviceFamily`, `Id`, `IsDevOnly`, override attrs |
+| `Resources` | optional | `Game` | List of supported languages |
+| `Resource` | optional | `Resources` | One `Language` entry |
+| `StoreId` | optional | `Game` | 12-char Store identity |
+
+### Title identity
+
+| Element | Notes |
+| --- | --- |
+| `MSAAppId` | Required if `TitleId` is set (configVersion 1) |
+| `TitleId` | Required if `MSAAppId` is set (configVersion 1) |
+| `RequiresXboxLive` | Whether Xbox Live connectivity is required |
+
+## User model
+
+| Element | Parent | Purpose |
+| --- | --- | --- |
+| `AdvancedUserModel` | `Game` | `true` (default) = Advanced; `false` = Simplified |
+
+## Capture and broadcast (console only)
+
+| Element | Parent | Purpose |
+| --- | --- | --- |
+| `MediaCapture` | `Game` | Container |
+| `GameDVRSystemComponent` | `MediaCapture` | Enable/disable Game DVR |
+| `BlockBroadcast` | `MediaCapture` | Block broadcasting |
+| `BlockGameDVR` | `MediaCapture` | Block Game DVR recording |
+
+## Memory and VM (console only)
+
+| Element | Parent | Purpose |
+| --- | --- | --- |
+| `VirtualMachine` | `Game` | Container |
+| `XboxOneXTitleMemory` | `VirtualMachine` | `Standard` / `Advanced` |
+| `XboxAnacondaTitleMemory` | `VirtualMachine` | Xbox Series X memory tier |
+| `XboxLockhartTitleMemory` | `VirtualMachine` | Xbox Series S memory tier |
+| `SMTEnabled` | `VirtualMachine` | Boolean |
+
+## PLS (console only)
+
+| Element | Parent | Purpose |
+| --- | --- | --- |
+| `PersistentLocalStorage` | `Game` | Container |
+| `SizeMB` | `PersistentLocalStorage` | Minimum PLS size in MB |
+| `GrowableToMB` | `PersistentLocalStorage` | Max growable size |
+
+## Desktop (PC) registration
+
+| Element | Purpose |
+| --- | --- |
+| `ProcessorArchitecture` | `x64` or `x86` |
+| `DependencyList` | Container for framework packages |
+| `KnownDependency` | Shortcut: `DX11`, `VC11`, `VC12`, `VC14` |
+| `Dependency` | Custom framework |
+| `CustomInstallActions` | Run admin-elevated installers |
+| `MultiplayerProtocol` | Enables `ms-xbl-multiplayer` protocol activation |
+| `FileTypeAssociation` | Associate file types with an executable |

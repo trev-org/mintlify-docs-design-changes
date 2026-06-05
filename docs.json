@@ -162,18 +162,7 @@
           {
             "group": "Publishing & Commerce",
             "icon": "shield-check",
-            "pages": [
-              "publishing/xstore-overview",
-              "publishing/xstore-product-types",
-              "publishing/xstore-basic-operations",
-              "publishing/xstore-consumables",
-              "publishing/xstore-bundles",
-              "publishing/xstore-sharing-model",
-              "publishing/xrs-console",
-              "publishing/xrs-pc",
-              "publishing/top-failing-console",
-              "publishing/fma"
-            ]
+            "pages": []
           }
         ]
       },
@@ -186,6 +175,8 @@
               "reference/system-overview",
               "reference/xgameruntime",
               "reference/xgamesave",
+              "reference/xtaskqueue",
+              "reference/xgameruntime-features",
               "reference/xgamestreaming",
               "reference/xpackage",
               "reference/xstore",
@@ -195,8 +186,12 @@
               "reference/chat",
               "reference/lighting",
               "reference/tools-api",
+              "reference/xaccessibility",
+              "reference/xspeechsynthesizer",
+              "reference/xappcapture",
               "reference/wdp-rest",
-              "reference/error-codes"
+              "reference/error-codes",
+              "reference/error-codes-detailed"
             ]
           },
           {
@@ -204,7 +199,8 @@
             "pages": [
               "reference/xsapi-overview",
               "reference/social-manager",
-              "reference/microsoftgameconfig-schema"
+              "reference/microsoftgameconfig-schema",
+              "reference/microsoftgameconfig-elements"
             ]
           }
         ]

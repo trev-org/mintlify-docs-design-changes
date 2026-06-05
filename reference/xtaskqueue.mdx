@@ -1,0 +1,56 @@
+---
+title: "XTaskQueue API reference"
+description: "Queue work and completion callbacks with configurable dispatch modes for async execution control."
+---
+
+`XTaskQueue` controls **where** and **when** async work and completion callbacks execute.
+
+**Header:** `XTaskQueue.h` · **Library:** `xgameruntime.lib`
+
+## XTaskQueueDispatchMode
+
+| Mode | Behavior |
+| --- | --- |
+| `Manual` | Not auto-dispatched. You call `XTaskQueueDispatch` yourself |
+| `ThreadPool` | Auto-dispatched on the system thread pool. Runs in parallel |
+| `SerializedThreadPool` | Same as `ThreadPool` but serial |
+| `Immediate` | No queueing. Callback runs synchronously on the submitting thread |
+
+## XTaskQueuePort
+
+- `Work` — async work
+- `Completion` — completion callbacks
+
+## Functions
+
+### Lifetime
+
+| Function | Purpose |
+| --- | --- |
+| `XTaskQueueCreate` | Create a queue with per-port dispatch modes |
+| `XTaskQueueCreateComposite` | Composite a queue from existing ports |
+| `XTaskQueueDuplicateHandle` | Add a reference |
+| `XTaskQueueCloseHandle` | Release a reference |
+| `XTaskQueueTerminate` | Cancel pending items \+ block new submissions |
+
+### Process task queue
+
+| Function | Purpose |
+| --- | --- |
+| `XTaskQueueGetCurrentProcessTaskQueue` | Get the process-wide default queue |
+| `XTaskQueueSetCurrentProcessTaskQueue` | Set or clear the process-wide queue |
+
+### Submitting work
+
+| Function | Purpose |
+| --- | --- |
+| `XTaskQueueSubmitCallback` | Submit a callback to the given port |
+| `XTaskQueueSubmitDelayedCallback` | Submit a callback to fire after a delay |
+| `XTaskQueueDispatch` | Manually dispatch one item |
+
+### Waiters and monitors
+
+| Function | Purpose |
+| --- | --- |
+| `XTaskQueueRegisterWaiter` | Register a Win32 kernel handle |
+| `XTaskQueueRegisterMonitor` | Monitor every submission to the queue |
