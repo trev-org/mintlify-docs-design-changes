@@ -1,0 +1,113 @@
+---
+title: "Custom C/C++ engine integration"
+description: "Integrate the GDK into a custom C/C++ engine for PC publishing."
+---
+
+Use this guide if you're publishing to the Microsoft Store on PC with a C/C\+\+ engine that doesn't have built-in GDK support.
+
+## What you need from the GDK
+
+1. **Headers** — GDK \+ XSAPI API signatures and types
+2. **Import libraries** — link GDK exports
+3. **XSAPI** — static lib or dynamic import lib
+4. **DLLs** — runtime implementation (if using dynamic XSAPI)
+
+### File requirements
+
+| Component | GRTS (dynamic only) | XSAPI (dynamic) | XSAPI (static) |
+| --- | --- | --- | --- |
+| Headers | `XUser`, `XGameSave`, `XGameUI`, etc. | `profile_c.h`, `achievements_c.h`, etc. | Same as dynamic |
+| Import lib | `xgameruntime.lib` | `Microsoft.Xbox.Services.GDK.C.Thunks.lib` | `Microsoft.Xbox.Services.142.GDK.C.lib` |
+| DLL | `xgameruntime.dll` \+ others (system32, installed by GRTS) | `Microsoft.Xbox.Services.GDK.C.Thunks.dll` (ship with game) | Not required |
+
+<Note>
+  For plug-in architectures where multiple DLLs use XSAPI, use **`Thunks.dll`**. Static linking into multiple DLLs creates per-DLL global state — calling `XblInitialize` in one DLL doesn't affect others, and sharing handles can crash. `Thunks.dll` provides a single shared instance.
+</Note>
+
+## Project setup (Visual Studio)
+
+Replace `[GDK version number]` with your version directory (e.g. `220600` for June 2022).
+
+### 1. Target x64
+
+**Build → Configuration Manager → Active solution platform = x64**
+
+### 2. Include paths
+
+**Configuration Properties → VC\+\+ Directories → Include Directories**:
+
+```text
+C:\Program Files (x86)\Microsoft GDK\[GDK version number]\GRDK\GameKit\Include
+C:\Program Files (x86)\Microsoft GDK\[GDK version number]\GRDK\ExtensionLibraries\Xbox.Services.API.C\Include
+C:\Program Files (x86)\Microsoft GDK\[GDK version number]\GRDK\ExtensionLibraries\Xbox.LibHttpClient\Include
+```
+
+### 3. Library paths
+
+**Configuration Properties → VC\+\+ Directories → Library Directories**:
+
+```text
+C:\Program Files (x86)\Microsoft GDK\[GDK version number]\GRDK\GameKit\Lib\amd64
+C:\Program Files (x86)\Microsoft GDK\[GDK version number]\GRDK\ExtensionLibraries\Xbox.Services.API.C\Lib\x64\Release
+C:\Program Files (x86)\Microsoft GDK\[GDK version number]\GRDK\ExtensionLibraries\Xbox.LibHttpClient\Lib\x64
+```
+
+### 4. Linker input
+
+**Configuration Properties → Linker → Input → Additional Dependencies**:
+
+- `xgameruntime.lib`
+- `Microsoft.Xbox.Services.GDK.C.Thunks.lib` (dynamic) **or** `Microsoft.Xbox.Services.142.GDK.C.lib` (static)
+- `libHttpClient.GDK.lib`
+
+### 5. Preprocessor defines
+
+**C/C\+\+ → Command Line → Additional Options**:
+
+```text
+/D "_GAMING_DESKTOP" /D "WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP"
+```
+
+### 6. MicrosoftGame.config
+
+Copy alongside your `.exe` (including any run-in-editor `.exe`). Update identity values from Partner Center.
+
+### 7. Ship DLLs alongside the .exe
+
+- `Microsoft.Xbox.Services.GDK.C.Thunks.dll` (if dynamic) — `Xbox.Services.API.C\Lib\x64\[Debug|Release]`
+- `XCurl.dll` — `Xbox.XCurl.API\Redist\x64`
+- `libHttpClient.GDK.dll` — `Xbox.LibHttpClient\Redist\x64`
+
+## Initialize at runtime
+
+```cpp
+#include <XGameRuntime.h>
+#include <xsapi-c/services_c.h>
+
+HRESULT hr = XGameRuntimeInitialize();
+if (FAILED(hr)) {
+    if (hr == E_GAMERUNTIME_DLL_NOT_FOUND || hr == E_GAMERUNTIME_VERSION_MISMATCH) {
+        MessageBoxW(nullptr, L"Game Runtime is not installed or needs updating.", g_szAppName,
+                    MB_ICONERROR | MB_OK);
+    }
+    return 1;
+}
+
+XblInitArgs xblArgs = {};
+xblArgs.scid = "00000000-0000-0000-0000-000000000000";
+hr = XblInitialize(&xblArgs);
+```
+
+## Uninitialize at exit
+
+```cpp
+XGameRuntimeUninitialize();
+```
+
+XSAPI doesn't need explicit cleanup.
+
+## Publish
+
+- GDK integrated
+- MSIXVC package created — see [Packaging for PC](/gdk/packaging-pc)
+- Submit at [Partner Center](https://partner.microsoft.com/dashboard/windows/overview)

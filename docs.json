@@ -59,6 +59,20 @@
             ]
           },
           {
+            "group": "PC End-to-End Guide",
+            "icon": "rocket",
+            "pages": [
+              "pc-e2e/overview",
+              "pc-e2e/gdk-and-engines",
+              "pc-e2e/engines/unity",
+              "pc-e2e/engines/unreal",
+              "pc-e2e/engines/gamemaker",
+              "pc-e2e/engines/custom-engine",
+              "pc-e2e/engines/godot",
+              "pc-e2e/optional-services"
+            ]
+          },
+          {
             "group": "Xbox Console Features",
             "pages": [
               "gdk/console-overview",

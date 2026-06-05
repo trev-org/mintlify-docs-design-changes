@@ -1,0 +1,88 @@
+---
+title: "Get started with GameMaker"
+description: "Prepare a GameMaker Studio 2 game for the Microsoft Store using the GDK Extension."
+---
+
+## Prerequisites
+
+- Visual Studio 2022
+- June 2024 GDK or later
+- CMake (ensure installer adds to system PATH)
+- GameMaker Studio 2 (from [yoyogames.com](https://www.yoyogames.com/))
+
+<Tip>
+  Keep **Gaming Runtime Services (GRTS)** and **PC Bootstrapper** up to date. Outdated GRTS causes sign-in failures with `E_FAIL`.
+</Tip>
+
+## Set up the GDK Extension
+
+Clone the extension with submodules:
+
+```bash
+git clone --recurse-submodules https://github.com/YoYoGames/GMEXT-GDK
+```
+
+Follow the README and the [wiki](https://github.com/YoYoGames/GMEXT-GDK/wiki). Build `GDKExtension.sln` in Visual Studio 2022.
+
+## Create a Partner Center product
+
+Follow [Set up an app or game in Partner Center](/publishing/partner-center) before testing Xbox services or publishing.
+
+## Test the sample
+
+The extension repo includes a sample at `source/GDKExtension_gml/GDKExtension.yyp`.
+
+1. In GameMaker: **Build → Create Executable**
+2. Select **Package as Zip** (required for MSIXVC)
+
+<Warning>
+  Do **not** select **Package as Installer** — it doesn't produce MSIXVC, so Xbox services won't work.
+</Warning>
+
+Install and launch:
+
+```bat
+wdapp install XboxDeveloperExperienceTe.GamePassSampleGame_1.0.0.0_x64__pmsd8ndztetqc.msixvc
+```
+
+## Update MicrosoftGame.config
+
+Map Partner Center identity values:
+
+| Partner Center | MicrosoftGame.config |
+| --- | --- |
+| Xbox Title ID | `TitleId` |
+| Package/Identity/Name | `Identity→Name` |
+| Package/Identity/Publisher | `Identity→Publisher` |
+| Xbox services → Xbox Settings → MSAAppId | `MSAAppId` |
+
+Find values: **Partner Center → Game setup → Identity details → Show Details**.
+
+## Integrate the GDK in your project
+
+Minimum API calls:
+
+- `gdk_init()` — call before any GDK functionality
+- `gdk_update()` — call once per frame
+- `gdk_quit()` — cleanup at exit
+
+### Modules
+
+| Module | Provides |
+| --- | --- |
+| **Base** | User/account selection |
+| **Storage** | Per-user load/save |
+| **Xbox services** | Stats, leaderboards, achievements, rich presence |
+| **In-App Purchases** | Microsoft Store commerce via the GDK |
+
+Full API docs: `source/GDKExtension_gml/datafiles/GDK_Extension_Documentation.pdf` in the repo.
+
+## Publish
+
+Before submission:
+
+- MSIXVC package created via **Package as Zip**
+- `MicrosoftGame.config` updated with Partner Center values
+- GDK extension integrated
+
+Submit via [Partner Center](https://partner.microsoft.com/dashboard/windows/overview).
