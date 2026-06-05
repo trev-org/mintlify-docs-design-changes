@@ -88,7 +88,9 @@
               "principles/accessibility-overview",
               "principles/speech-accessibility",
               "principles/localization-globalization",
-              "principles/security-overview"
+              "principles/security-overview",
+              "principles/xbox-accessibility-guidelines",
+              "principles/mgats"
             ]
           },
           {

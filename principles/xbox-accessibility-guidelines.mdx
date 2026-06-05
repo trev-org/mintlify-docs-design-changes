@@ -1,0 +1,118 @@
+---
+title: "Xbox Accessibility Guidelines (XAG)"
+sidebarTitle: "Accessibility guidelines"
+description: "The 23 Xbox Accessibility Guidelines covering text, audio, input, UI, photosensitivity, and more."
+icon: "universal-access"
+---
+
+The **Xbox Accessibility Guidelines (XAGs)** are best practices developed with industry experts and the Gaming and Disability Community. They serve as:
+
+- **Idea generators** for designers.
+- **Guardrails** for developers.
+- **Validation checklists** for test teams.
+
+The XAGs are **not** a compliance checklist. They exist to make games enjoyable and playable for everyone. Microsoft's accessibility testing service (MGATS) evaluates against the XAGs.
+
+<Note>
+  Current published version: **XAG v3.2** (Jun 8, 2023). For change history, contact your Microsoft representative.
+</Note>
+
+## How each guideline is structured
+
+Every XAG has the same sections:
+
+- **Goal** — the desired impact on players.
+- **Overview** — the barriers players with disabilities commonly encounter for this topic.
+- **Scoping questions** — helps you decide whether the guideline applies to your title.
+- **Background** — introductory material for complex topics.
+- **Key areas to target** — game elements that must not be overlooked.
+- **Implementation guidelines** — the prescriptive minimums.
+- **Example content** — images and clips showing correct implementation.
+- **Potential player impact** — the disability types most affected.
+- **Resources and tools** — external reading.
+
+## The 23 guidelines
+
+### Visual
+
+| # | Guideline | What it covers |
+| --- | --- | --- |
+| **101** | Text display | Font size, line spacing, color, customization |
+| **102** | Contrast | Foreground / background contrast ratios |
+| **109** | Object clarity | Distinguishability of in-game objects |
+| **112** | UI navigation | Logical reading and focus order |
+| **113** | UI focus handling | Visible focus indicators |
+| **114** | UI context | Headings, labels, and contextual cues |
+| **117** | Visual distractions and motion settings | Camera shake, parallax, motion-blur opt-outs |
+| **118** | Photosensitivity | Flashing patterns, photosensitive-epilepsy safety |
+
+### Audio
+
+| # | Guideline | What it covers |
+| --- | --- | --- |
+| **103** | Additional channels for visual and audio cues | Don't rely on a single sense for any cue |
+| **104** | Subtitles and captions | Caption text, speaker labels, sound effects |
+| **105** | Audio accessibility | Independent volume sliders for music / dialog / SFX / chat |
+| **106** | Screen narration | TTS narration of UI for blind / low-vision players |
+| **111** | Audio description | Narration of visual scenes / cinematics |
+
+### Input
+
+| # | Guideline | What it covers |
+| --- | --- | --- |
+| **107** | Input | Remapping, hold-vs-tap, accessible peripherals |
+| **110** | Haptic feedback | Optional and informative rumble |
+
+### Difficulty and pace
+
+| # | Guideline | What it covers |
+| --- | --- | --- |
+| **108** | Game difficulty options | Difficulty selection, granular assists |
+| **115** | Error messages and destructive actions | Confirmations, undo, clear errors |
+| **116** | Time limits | Pause, extend, or disable time pressure |
+
+### Communication
+
+| # | Guideline | What it covers |
+| --- | --- | --- |
+| **119** | Speech-to-text / text-to-speech chat | Built-in or platform-provided STT and TTS |
+| **120** | Communication experiences | Safer chat defaults, friction for unmoderated channels |
+
+### Documentation and support
+
+| # | Guideline | What it covers |
+| --- | --- | --- |
+| **121** | Accessible feature documentation | Where and how to document your accessibility features |
+| **122** | Accessible customer support | Multi-channel support for assistive-tech users |
+| **123** | Mental health best practices | Safer content warnings, opt-outs, breaks |
+
+## Use the XAGs in your process
+
+<Steps>
+  <Step title="Design phase">
+    Run scoping questions against your design pillars. Mark in-scope guidelines and decide which assists to bake into core systems vs. options.
+  </Step>
+  <Step title="Implementation phase">
+    Pull the implementation guidelines into your task tracker. Track per-feature accessibility acceptance criteria.
+  </Step>
+  <Step title="QA / cert prep">
+    Run [MGATS](#) before final cert. Address the report's findings before submitting.
+  </Step>
+  <Step title="Store listing">
+    Document supported accessibility features in your [Properties](/publishing/properties) module so they surface on the Store PDP.
+  </Step>
+</Steps>
+
+## Related GDK building blocks
+
+- [Accessibility overview](/principles/accessibility-overview)
+- [Speech accessibility user settings](/principles/speech-accessibility)
+- [Text-to-speech](/gdk/text-to-speech)
+- [XAccessibility API](/reference/xaccessibility)
+- [XSpeechSynthesizer API](/reference/xspeechsynthesizer)
+
+## See also
+
+- Gaming and Disability Player Experience Guide (GADPEG)
+- Gaming Accessibility Fundamentals Learning Path
+- [Xbox Developer Programs](https://www.xbox.com/developers/id)
