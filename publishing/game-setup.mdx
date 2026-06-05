@@ -1,0 +1,116 @@
+---
+title: "Game setup in Partner Center"
+sidebarTitle: "Game setup"
+description: "Configure product group, content type, device families, sandboxes, included products, and identity details."
+icon: "gear"
+---
+
+Use the **Game setup** page (or **Bundle setup** for bundles) to configure top-level product options that drive every other Partner Center module.
+
+## Product group
+
+Applies to: **Game, Game Demo, Game Bundle**.
+
+Product groups organize related products in the **Apps and Games** dashboard.
+
+Create a product group:
+
+1. **Apps and Games** dashboard → **New Product** → **Product group**.
+2. Set **Product group name**, **Dev studio** (create new if needed), and the products to include.
+3. **Save**.
+
+Assign a product to a group from its Game setup page → select group → **Save draft**.
+
+## Content type
+
+Applies to: **Durable, Durable with Packages, Consumable**.
+
+Usually **Electronic software download**.
+
+## Microsoft Store listing
+
+Applies to: **Durable, Durable with Packages, Consumable, Season Pass, Add-on Bundle**.
+
+Indicate whether the product has its own Store listing. In-game-only purchases may not need one.
+
+<Note>
+  Game, Game Bundle, and Game Demo products **must** have a Store listing.
+</Note>
+
+## Device family availability
+
+Applies to: **All product types**.
+
+For each device family (Xbox, Desktop), select:
+
+- **Retail** — required to publish to RETAIL. Automatically also selects Sandboxes.
+- **Sandboxes** — required to publish to dev sandboxes or submit for cert.
+
+If neither is checked for a device family, you can't upload packages for it.
+
+## Xbox services
+
+Applies to: **Game, Game Demo**.
+
+- **Limited Xbox services** are enabled the first time you save Game setup. Limited means **no achievements**.
+- **Full Xbox services** (including achievements) are enabled for Managed Creators with an approved game concept after Microsoft onboards the product.
+
+If you use **game binding** to link two products' Xbox services, the secondary product's Xbox services stay disabled.
+
+## Sandboxes
+
+The sandboxes selection (set when creating the product) determines whether the product uses content isolation. **You can't change this later.** See [Sandboxes](/publishing/sandboxes).
+
+### Primary Xbox services development sandbox
+
+Set the primary dev sandbox — this adds a branch to your Xbox services Gameplay settings. To use the product in other sandboxes, select **Manage sandboxes**.
+
+<Note>
+  You must publish the product to a dev sandbox before any Partner Center features for that sandbox become testable.
+</Note>
+
+## Included products
+
+Applies to: **Game Bundle, Add-on Bundle, Season Pass**.
+
+Products must be **published to the Store** before they can be added to a bundle submitted for cert.
+
+Add products:
+
+- **Manage included products** — search and pick multiple.
+- **Add products by Store ID** — enter the Store ID (found on each product's setup page → Identity Details).
+
+For each included product, set **Visible in bundle**:
+
+| Setting | When the product is visible in the bundle |
+| --- | --- |
+| at bundle release | When the bundle releases (per its Pricing and availability Schedule) |
+| at custom date / time | A custom date and time |
+| never | Never visible in the bundle |
+
+<Warning>
+  **Visible in bundle** only controls visibility inside the bundle. Customers can still find the product via its own Pricing and availability Schedule.
+</Warning>
+
+## Identity details
+
+Shows the identifiers needed in your MicrosoftGame.config and elsewhere:
+
+- **Store ID**
+- **Legacy product ID**
+- **Xbox Title ID**
+- **Xbox Service Configuration ID (SCID)**
+- **MSAAppID**
+- **Package Identity Name** and **Publisher**
+
+Also includes:
+
+- **Store protocol link** — works in RETAIL or dev sandboxes; opens the Store app directly to your PDP.
+- **Store URL** — RETAIL only, after the product is published.
+
+## See also
+
+- [Packages](/publishing/packages)
+- [Properties](/publishing/properties)
+- [Sandboxes](/publishing/sandboxes)
+- [Branches](/publishing/branches)

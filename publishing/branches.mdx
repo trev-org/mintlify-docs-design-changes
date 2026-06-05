@@ -1,0 +1,93 @@
+---
+title: "Branches in Partner Center"
+sidebarTitle: "Branches"
+description: "Use per-module branches to manage configuration changes without affecting your published product."
+icon: "code-branch"
+---
+
+Branches are **separate workspaces inside a single Partner Center module**. They let you author and test configuration changes without overwriting what's already published.
+
+## Main branch
+
+Every module gets a **Main** branch automatically when you create a product. Main is the only branch that can publish to the **RETAIL** sandbox.
+
+## Modules that support branches
+
+- **Packages**
+- **Store listings**
+- **Pricing and availability**
+
+Each module has its own branches. A `Test` branch in Packages is independent of a `Test` branch in Store listings.
+
+## Branches vs. sandboxes
+
+| Branches | Sandboxes |
+| --- | --- |
+| Configuration workspaces inside Partner Center | Isolated runtime environments |
+| Manage different versions of settings | Test the published result |
+| Don't isolate runtime behavior | Control who can sign in and play |
+
+Use **branches** to manage configuration changes. Use [**sandboxes**](/publishing/sandboxes) to publish and test those changes.
+
+## What you can and can't do
+
+**You can:**
+
+- Maintain multiple versions of settings (e.g., a `New pricing` branch).
+- Test changes in development sandboxes without affecting live content.
+- Submit different configurations for certification.
+
+**You can't:**
+
+- Use branches to isolate runtime behavior — use sandboxes.
+- Share branches across modules — each module has its own.
+- Publish branches other than **Main** to RETAIL.
+
+## Importing between branches
+
+| Module | Import behavior |
+| --- | --- |
+| **Packages** | Direct import from another branch |
+| **Pricing and availability** | Direct import from another branch |
+| **Store listings** | Export to `.csv`, then import to another branch — no direct branch-to-branch import |
+
+## Certification and publishing
+
+- **Cert submission**: choose the branch per module.
+- **Publishing**:
+  - **RETAIL**: only Main.
+  - **Development sandboxes**: any branch.
+
+## Recommended branch names
+
+- `Development`
+- `Internal QA`
+- `Certification staging`
+
+Delete or reuse branches when they're no longer needed.
+
+## Example workflow
+
+<Steps>
+  <Step title="Create branches">
+    New branch in **Packages** for an updated build; new branch in **Store listings** for updated copy.
+  </Step>
+  <Step title="Publish to a dev sandbox">
+    Publish the new branches into your QA sandbox via **Review and publish → Custom**.
+  </Step>
+  <Step title="Test">
+    Validate the combined experience with test accounts.
+  </Step>
+  <Step title="Import to Main">
+    Import validated branches into **Main** per module.
+  </Step>
+  <Step title="Publish to RETAIL">
+    Publish Main to RETAIL.
+  </Step>
+</Steps>
+
+## See also
+
+- [Sandboxes](/publishing/sandboxes)
+- [Certification](/publishing/certification)
+- [Publishing overview](/publishing/overview)

@@ -162,7 +162,16 @@
           {
             "group": "Publishing & Commerce",
             "icon": "shield-check",
-            "pages": []
+            "pages": [
+              "publishing/overview",
+              "publishing/certification",
+              "publishing/sandboxes",
+              "publishing/branches",
+              "publishing/add-ons",
+              "publishing/properties",
+              "publishing/packages",
+              "publishing/game-setup"
+            ]
           }
         ]
       },

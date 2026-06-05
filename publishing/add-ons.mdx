@@ -1,0 +1,82 @@
+---
+title: "Add-ons (DLC, in-app purchases)"
+sidebarTitle: "Add-ons"
+description: "Configure consumables, durables, durable-with-packages, bundles, season passes, and subscriptions in Partner Center."
+icon: "puzzle-piece"
+---
+
+Add-ons are additional products customers can purchase for your game — in-game currency, DLC, expansions, season passes. Add-ons are published through Partner Center and must be enabled in your game's code via the [`XStore` API](/reference/xstore).
+
+Every add-on must be associated with a game already created in Partner Center (even an unsubmitted one). Create add-ons from the **Add-ons** page in your product's navigation.
+
+## Add-on types
+
+| Type | Self-serve | Managed Creators |
+| --- | --- | --- |
+| **Consumable (Developer-managed)** | Yes | Yes |
+| **Consumable (Microsoft Store–managed)** | Yes | Yes |
+| **Durable** | Yes | Yes |
+| **Durable with packages** | — | Yes |
+| **Season Pass** | — | Yes |
+| **Subscription** | Yes | Yes |
+| **Add-on Bundle** | — | Yes |
+
+## Sections to configure
+
+| Type | Setup | Properties | Age ratings | Store listing | Pricing | Gaming metadata |
+| --- | --- | --- | --- | --- | --- | --- |
+| Consumable (Dev-managed) | ✓ | ✓ |  | optional | ✓ |  |
+| Consumable (Store-managed) | ✓ | ✓ |  | optional | ✓ |  |
+| Durable | ✓ | ✓ | ✓ | optional | ✓ | ✓ |
+| Durable with packages | ✓ | ✓ | ✓ | optional | ✓ | ✓ |
+| Add-on Bundle | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Season Pass | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Subscription | ✓ | ✓ |  | ✓ | ✓ | ✓ |
+
+## Consumable
+
+For things you can buy, use, and buy again (in-game currency, etc.).
+
+- **Developer-managed**: purchasable once until your game reports it as fulfilled/consumed; then purchasable again. The game tracks the reward state.
+- **Microsoft Store–managed**: each purchase grants a configured quantity that the Store tracks. When the game reports fulfillment, the Store deducts from the user's balance. Purchasable repeatedly without per-purchase fulfillment.
+
+## Durable
+
+One-time purchase, content included in the base game package. Used to unlock features, narrative chapters, expansion modes, vehicles, environments, character assets.
+
+- Default product lifetime: **Forever**.
+- Optional expiration: 1–365 days. After expiration, the customer can repurchase.
+
+## Durable with packages
+
+Like Durable but the add-on ships its own package (e.g., for physical disc inclusion or content outside the base game package). After purchase, the customer downloads and installs the package; the GDK licenses and mounts it.
+
+## Add-on Bundle
+
+A collection of add-ons sold as one product.
+
+- Must include at least one product before publishing.
+- Bundle contents must share the same parent product as the bundle.
+- You can add Durables to a published bundle. Consumables cannot be added after publishing.
+
+## Season Pass
+
+A special bundle that lets customers download specified add-ons.
+
+- Can be published **empty**.
+- Can be updated to include new add-ons as they release — ideal for staged DLC.
+- Create via **Add-on Bundle** → select **Make this product a Season Pass** during creation.
+
+## Subscription
+
+Configured by Microsoft. Contact your Microsoft representative.
+
+## Store listings for add-ons
+
+Store listings are optional for most add-on types. Add-ons **with** a listing appear on the Store PDP and on the parent product's PDP. Add-ons **without** a listing are buyable only from inside your game (based on the configured Schedule).
+
+## See also
+
+- [Pricing & availability](/publishing/pricing)
+- [`XStore` overview](/reference/xstore)
+- [Certification](/publishing/certification)

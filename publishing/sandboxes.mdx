@@ -1,0 +1,106 @@
+---
+title: "Sandboxes for game development and publishing"
+sidebarTitle: "Sandboxes"
+description: "Use development and global sandboxes for content isolation, testing Xbox services, and staging release candidates."
+icon: "boxes-stacked"
+---
+
+Sandboxes provide **content isolation**: a product created in a sandbox is only visible to MSAs you authorize. This is how you test Xbox services (multiplayer, achievements), the Microsoft Store install experience, and your product detail page (PDP) before going to RETAIL.
+
+## When you must use a sandbox
+
+You must create your product in a sandbox if it:
+
+- Uses Xbox services.
+- Is an add-on with a separate Microsoft Store listing.
+- Is an add-on whose parent product is in a sandbox.
+- Is a bundle that contains products that use Xbox services.
+- Contains one or more XVC packages.
+
+Some product types create sandbox-enabled by default. For others (e.g., game bundles), tick **Create this product in a sandbox** at creation time.
+
+## Sandboxes vs. branches
+
+- **Branches** live inside each Partner Center module (Packages, Store listings, Pricing and availability). Each module has its own **Main** branch by default; you can create more.
+- **Sandboxes** are environments you publish branches into.
+
+Use branches to test configuration changes without overwriting your published config; use sandboxes to test the result with real users in isolation.
+
+See [Branches](#) for the full model.
+
+## Sandbox types
+
+### Global sandboxes
+
+- **RETAIL** — the public-facing environment
+- Other global sandboxes used by Microsoft for certification testing
+
+### Development sandboxes
+
+- Specific to your Partner Center account
+- Up to **100 development sandboxes** per account
+- Naming: `<account prefix>.<0–99>`, e.g., `ABCDEF.1`
+- Can be configured as **Shared** (any product in your account can use it) or **Isolated** (only specified products can publish to it). Add-ons inherit permissions from their parent.
+
+A common structure:
+
+- One or more sandboxes per dev team.
+- One sandbox per QA team (internal \+ each external).
+- One sandbox for **certification staging** — prep release candidates here.
+
+## Create and manage sandboxes
+
+From the **Sandboxes** page (in the **Apps and games** dashboard or your product's setup page) you can create, rename, change Isolated/Shared, and manage approved products.
+
+When creating a new game, select your primary development sandbox on the **Game setup** page.
+
+## Test accounts
+
+Global sandboxes (RETAIL) use standard MSAs. **Development sandboxes use Xbox test accounts** created in Partner Center.
+
+Manage them at **Apps and games → Xbox test accounts**:
+
+- Create batches of test accounts
+- View / modify account type and sandbox access
+- Inspect email, gamertag, XUID, permissions
+- Delete batches
+
+See [Test Account Tool](/tools/test-account-tool) for using `XblPCSandbox.exe` on PC.
+
+## Publish to a sandbox
+
+### Publish only Xbox services
+
+From **Gameplay settings**, select **Publish**, then choose the target sandbox.
+
+### Publish the full product
+
+From your product's **Overview** → **Review and publish**:
+
+1. **Publish to** — a development sandbox or RETAIL.
+2. **Publish from** — if to RETAIL, you can only publish from **Main**. If to a dev sandbox, you can publish from RETAIL (if already published there) or **Custom** (choose a branch per module).
+3. Monitor publish status on the **Overview** page (and **History** for past publishes).
+
+<Note>
+  The only global sandbox you can publish to is **RETAIL**. To submit updates for cert, use the **Certify** workflow.
+</Note>
+
+## Test in a sandbox
+
+Sign in with an authorized test account in your sandbox. If you published the full product, its Microsoft Store availability follows the **Schedule** you configured in **Pricing and availability**.
+
+If the **Release date** or **Discoverable** date is in the future, the product won't appear in Store search — use the **Store protocol link** from the product's Setup page to navigate to it directly.
+
+<Warning>
+  **Private audience** (in the Visibility section of Pricing and availability) **only affects RETAIL**, not development sandboxes.
+</Warning>
+
+## Per-sandbox user permissions
+
+For **Test accounts** and **Xbox devices** account-level permissions, you can grant access to **All sandboxes** or selected sandboxes individually. **All sandboxes** covers current and future sandboxes; select individually to grant only current ones.
+
+## See also
+
+- [Certification](/publishing/certification)
+- [PC Sandbox Switcher](/tools/pc-sandbox-switcher)
+- [Pre-release testing](/publishing/pre-release)

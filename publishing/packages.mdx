@@ -1,0 +1,125 @@
+---
+title: "Manage packages in Partner Center"
+sidebarTitle: "Packages"
+description: "Upload, validate, certify, flight, publish, and roll back game packages from the Partner Center Packages module."
+icon: "box"
+---
+
+The **Packages** module in Partner Center lets you:
+
+- Upload packages for Xbox and PC.
+- Review package validation problems.
+- Submit packages for certification.
+- Flight packages to selected audiences.
+- Publish packages to all players.
+- Roll back instantly if something goes wrong.
+
+## Package formats by device family
+
+Device families are configured in **Game setup**.
+
+| Device family | Players on these devices | Upload format |
+| --- | --- | --- |
+| **Xbox** | Xbox One, One S, One X, Series X | S | **XVC** — see [packaging](/gdk/packaging) |
+| **Desktop** | Windows 10 / Windows 11 | **MSIXVC** — see [packaging for PC](/gdk/packaging-pc) |
+
+<Note>
+  MSIX, MSI, EXE, and PWA formats are supported for Windows apps but **not for Xbox games**.
+</Note>
+
+## Package version numbers
+
+Set the version in `Identity → Version` of your `MicrosoftGame.config`. **Each cert submission must increment the version.** You can use the same version across platforms.
+
+## Submission Validator
+
+Submission Validator runs automatically as part of [`makepkg pack`](#) and writes a validation log next to your output package.
+
+- Resolve any **failures** before submitting to Certification.
+- Check **warnings** to confirm they're expected.
+- Use the latest Submission Validator — expired versions log a self-update instruction.
+- For a pre-pack check, use `makepkg validate`.
+
+A localized output is available alongside the English log if you set `/validationlanguage` on `makepkg`.
+
+## Required vs. optional package files
+
+### Mandatory
+
+- **XVC (console) / MSIXVC (PC)** — the main package.
+- **Encryption Key Bundle (EKB)** — required before XVC/MSIXVC upload can proceed.
+- **Submission Validator log (.xml)** — must show overall pass (or have approved exceptions for any failures).
+
+### Recommended
+
+- **Symbols (.zip)** — enables comprehensive crash dump reporting.
+- **Disc layout file (.xml)** — only for disc-based or multi-disc releases. Digital-only games don't need this.
+
+<Warning>
+  The disc layout file is **not** the `layout.xml` that `makepkg` produces for chunk layout. Don't upload that as the disc layout.
+</Warning>
+
+## Branches for packages
+
+Branches let you maintain multiple builds in parallel — stable cert, internal QA, hotfix, etc.
+
+- Any branch can publish to a **dev sandbox** or submit for cert.
+- Only **Main** can publish to RETAIL.
+- Import packages into Main from another branch when ready to publish.
+
+See [Branches](/publishing/branches) for the full model.
+
+### Create a branch
+
+1. **\+ New Branch** in branch navigation.
+2. Name it descriptively (`QA`, `ABCDEF.1`).
+3. **Continue**.
+
+Each branch has a **History** button (top-right) for the action audit log.
+
+## Upload
+
+Drag and drop or **browse your files**. Upload the XVC/MSIXVC first, then the EKB, validator log, and optional files.
+
+### Market-specific packages
+
+Use **Add market-specific packages** to define market groups and upload per-market packages. Each market package follows its own availability and pre-download schedule.
+
+## Availability and pre-download
+
+A **Base release** (first published package) installs immediately when published to a sandbox; launchability depends on the **Pricing and availability** schedule.
+
+For **Content Updates (CUs)** each package has:
+
+| Date | What it does |
+| --- | --- |
+| **Availability date** | When the update becomes required to play online |
+| **Pre-download date** | When the update can be downloaded silently on supporting devices |
+
+Set pre-download **at least 48 hours before** availability to reduce launch-day waits. If the dates match, there's no pre-download. If no availability date is set, the CU publishes immediately after cert.
+
+## Certify
+
+Select **Certify** at the top of the branch with the packages you want to submit. Cert always applies to the **entire build**.
+
+Before submitting, complete the **Certification questionnaire** from the product's page navigation.
+
+See [Certification](/publishing/certification) for the full workflow.
+
+## Flights
+
+Flights make packages available to a specific audience.
+
+- **Xbox console** flights target **Known Device Groups**.
+- **PC** flights target **Known User Groups**.
+
+## Rollback
+
+If a published package causes problems, **Configure rollback** restores the previous package live with no re-upload or re-cert needed.
+
+## See also
+
+- [Packaging (Xbox)](/gdk/packaging)
+- [Packaging for PC](/gdk/packaging-pc)
+- [Certification](/publishing/certification)
+- [Intelligent Delivery](/gdk/intelligent-delivery)
