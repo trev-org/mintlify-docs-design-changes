@@ -111,11 +111,19 @@
             "pages": [
               "services/overview",
               "services/player-data",
+              "services/achievements-eb-vs-tm",
+              "services/stats-eb-vs-tm",
               "services/achievements",
               "services/multiplayer",
               "services/social",
               "services/cloud-storage",
+              "services/multiplayer-intro",
+              "services/mpsd",
+              "services/mpm",
+              "services/mpa",
+              "services/matchmaking",
               "services/game-chat",
+              "services/test-accounts",
               "services/rich-presence",
               "services/multiplayer-activity",
               "services/people-system"
@@ -134,6 +142,7 @@
             "group": "PlayFab",
             "pages": [
               "playfab/overview",
+              "playfab/sign-in-concepts",
               "playfab/player-sign-in",
               "playfab/microsoft-store",
               "playfab/economy",

@@ -1,0 +1,36 @@
+---
+title: "Xbox services multiplayer overview"
+description: "MPSD, matchmaking, networking, voice and text chat for real-time multiplayer."
+---
+
+Xbox services provides multiplayer features for real-time gameplay: **MPSD**, **matchmaking**, **networking**, **voice/text chat**, and **invites**.
+
+## Major subsystems
+
+### Session process lifetime management
+
+| Service | Use case |
+| --- | --- |
+| [**Multiplayer Session Directory (MPSD)**](/services/mpsd) | Custom multiplayer experiences (client/server and client-host). Integrates with shell for invites and gamercard joins. |
+| [**Multiplayer Manager (MPM)**](/services/mpm) | Client-host (P2P with relay), simple scenarios, ≤ 8 players. |
+
+### Simple and advanced matchmaking
+
+- [**SmartMatch**](/services/matchmaking) — traditional quick-match, session browse, custom matchmaking
+- **Xbox Looking for Group (LFG)** — find Xbox players with shared interests
+
+### Social experiences for custom-multiplayer titles
+
+- [**Multiplayer Activity (MPA)**](/services/mpa) — surface activities, invites, and recent players when you use your own matchmaking/lobby system
+
+### Secure real-time voice and text chat
+
+- [**Game Chat 2**](/services/game-chat-2) — secure in-game voice and text
+
+### Real-time networking for client-host
+
+- **Azure PlayFab Party** — cross-platform real-time networking \+ voice for client-host titles
+
+<Warning>
+  **XIM (Xbox Integrated Multiplayer) is deprecated** and not available for GDK titles. Use PlayFab Party instead.
+</Warning>

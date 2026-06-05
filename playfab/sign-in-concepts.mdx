@@ -1,0 +1,34 @@
+---
+title: "Player sign-in concepts (PlayFab + GDK)"
+description: "How Xbox and PlayFab accounts link together when a player signs in to your GDK title."
+---
+
+GDK titles that use PlayFab must authenticate players against **both** Xbox services and PlayFab.
+
+## PlayFab titles
+
+Before your game can call PlayFab services, create a title in the [PlayFab Game Manager](https://developer.playfab.com). You'll get a **PlayFab TitleId** (4–6 hex digits).
+
+<Warning>
+  The **PlayFab TitleId is not the same as your Xbox Title ID**.
+</Warning>
+
+## Xbox vs PlayFab accounts
+
+Two separate accounts:
+
+- **Xbox services account** — player-facing identity
+- **PlayFab account** — behind-the-scenes identity for PlayFab services, linked to the Xbox account in the context of your title
+
+By the end of sign-in:
+
+1. Each player has a PlayFab account provisioned in your title
+2. The Xbox and PlayFab accounts are linked to each other
+3. The player is authenticated with both services
+
+## Two ways to sign in
+
+| Option | When to use |
+| --- | --- |
+| **PlayFab Services SDK** | Recommended for any title using PlayFab services |
+| **PlayFab Party Xbox Live Helper Library** | Use only if PlayFab Party is your **only** PlayFab service AND Xbox is your only auth provider |

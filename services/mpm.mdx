@@ -1,0 +1,46 @@
+---
+title: "Multiplayer Manager (MPM)"
+description: "High-level wrapper for MPSD with state-based and event-based programming models."
+---
+
+**Multiplayer Manager (MPM)** simplifies adding multiplayer to peer-hosted titles. Wraps MPSD with a state-based / event-based API.
+
+Use MPM if your title is **client-host (peer-to-peer with relay) with ≤ 100 players** and uses Xbox services.
+
+<Warning>
+  MPM cannot be mixed with direct Multiplayer service API calls.
+</Warning>
+
+## Core concepts
+
+- **Lobby session** — persistent session for local users \+ invited friends
+- **Game session** — tracks players in a specific gameplay instance
+- **`XblMultiplayerManagerDoWork`** — pumps state. Call **every frame**.
+
+## Events
+
+`XblMultiplayerManagerDoWork` returns an array of `XblMultiplayerEvent` callbacks:
+
+```cpp
+size_t eventCount = 0;
+const XblMultiplayerEvent* events = nullptr;
+if (FAILED(XblMultiplayerManagerDoWork(&events, &eventCount))) { return; }
+
+for (auto i = 0u; i < eventCount; ++i) {
+    switch (events[i].EventType) {
+    case XblMultiplayerEventType::MemberJoined: {
+        size_t memberCount = 0;
+        XblMultiplayerEventArgsMembersCount(events[i].EventArgsHandle, &memberCount);
+        std::vector<XblMultiplayerManagerMember> members(memberCount);
+        XblMultiplayerEventArgsMembers(events[i].EventArgsHandle, memberCount, members.data());
+        break;
+    }
+    }
+}
+```
+
+## What MPM doesn't do
+
+- Persistent online servers / \> 100-player sessions
+- Server-to-server session management
+- Mixing direct Multiplayer service APIs with MPM

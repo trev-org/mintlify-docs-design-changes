@@ -1,0 +1,24 @@
+---
+title: "Multiplayer Activity (MPA)"
+description: "Surface activities, invites, and recent players when using a custom matchmaking or lobby system."
+---
+
+**Multiplayer Activity (MPA)** lets titles using custom matchmaking, lobbies, or dedicated servers integrate Xbox social experiences — activities (joins), invites, and recent players.
+
+## Terminology
+
+| Term | Meaning |
+| --- | --- |
+| **Connection string** | Freeform, title-defined string with whatever's needed to join. Opaque to MPA. |
+| **Activity** | Advertisement that a player is in a multiplayer experience. Visible in the shell. |
+| **Invite** | A request for a player to join. |
+| **Recent player** | Someone who had a meaningful interaction. |
+
+## Client flow
+
+1. Player A starts/joins a multiplayer experience → **set activity**
+2. Other players can **retrieve the activity**
+3. Player A sends **invites** to other players
+4. As players join/leave → **update the activity**
+5. Update the **recent players list**
+6. When the experience ends → **delete the activity**
