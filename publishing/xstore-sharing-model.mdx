@@ -1,0 +1,52 @@
+---
+title: "Product sharing model for games"
+description: "How digital game purchases are shared between users on Xbox consoles and Windows PCs."
+---
+
+Sharing differs between Xbox and Windows.
+
+## Key terms
+
+| Term | Meaning |
+| --- | --- |
+| **Entitlement** | A user's rights to a product |
+| **Satisfying entitlement** | An entitlement gained because the product is included in a bundle/subscription/Season Pass |
+| **License** | Digital key verifying content access (online or offline) |
+| **Home console** | The console designated as the purchasing account's offline-licensed device |
+| **Offline PC** | A Windows device with special offline-play permissions |
+
+## Xbox sharing
+
+Applies to games and durable add-ons (not consumables).
+
+### Home console sharing
+
+**Settings → Personalization → My home Xbox**. Anyone signing in there gets access to the purchaser's library — the purchaser does **not** need to be signed in.
+
+Durable add-ons must use [`XStoreAcquireLicense`](/reference/xstore) APIs to enforce access.
+
+### Roaming console (not home)
+
+When signed in and online, the purchaser gets a roaming license. Anyone signed in alongside them has full access.
+
+## Consumables policy
+
+Never shared. Always tied to the purchasing account.
+
+## Windows sharing
+
+### Default behavior
+
+- Installation: up to **10 Windows devices** per purchasing account
+- Concurrency: title runs without restriction; up to 10 devices concurrent
+
+### Restrictive licensing
+
+Publishers can request this policy. **Recommended for all non-free games.**
+
+- Installation: unlimited devices
+- Concurrency: only **2 concurrent Windows instances** (offline PC \+ roaming license)
+
+#### Offline PC
+
+Designate one PC as offline PC via Microsoft Store app. Can launch without internet (license must have been downloaded online previously). Users can change offline PC **3 times in a 365-day window**.

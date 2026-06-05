@@ -1,0 +1,43 @@
+---
+title: "Consumable-based ecosystems"
+description: "Best practices for premium in-game currency using consumable products."
+---
+
+Consumables are great for in-game economies. Two types:
+
+| Type | Behavior |
+| --- | --- |
+| **Store-managed Consumable**_(recommended)_ | Repurchaseable without fulfillment |
+| **Developer-managed Consumable** | Single purchase. Must report fulfilled before user can repurchase |
+
+Consumables are **per-user only** — they don’t follow the [content sharing model](/publishing/xstore-sharing-model).
+
+## Premium in-game currency — best practices
+
+Offer **3–6\+ tiers** with increasing value. Each tier as its own `ProductId`.
+
+### Tier example
+
+| Price | Base | Bonus % | Display name |
+| --- | --- | --- | --- |
+| \$0.99 | 100 | — | 100 Coins |
+| \$4.99 | 500 | 10% | 500 (\+50 bonus) Coins |
+| \$9.99 | 1000 | 20% | 1000 (\+200 bonus) Coins |
+| \$19.99 | 2000 | 30% | 2000 (\+600 bonus) Coins |
+| \$39.99 | 4000 | 40% | 4000 (\+1600 bonus) Coins |
+| \$79.99 | 8000 | 50% | 8000 (\+4000 bonus) Coins |
+
+## Configuring in Partner Center
+
+- **Has its own store listing** — enable to allow Store browsing
+- **Quantity** — use `1` if running your own balance service
+- **Title** — list base \+ bonus currency
+- **Store images** — graphic that scales visually with tier
+
+## Managing consumables
+
+Recommended: your own service (or middleware that uses the Microsoft Store Service APIs). Alternatively, report fulfillment from the client with `XStoreReportConsumableFulfillmentAsync`.
+
+## Returns and refunds
+
+Integrate your service with the **Clawback event service** to remove granted value on refunds.

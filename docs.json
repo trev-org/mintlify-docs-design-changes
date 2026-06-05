@@ -151,6 +151,22 @@
               "playfab/party-voice",
               "playfab/analytics"
             ]
+          },
+          {
+            "group": "Publishing & Commerce",
+            "icon": "shield-check",
+            "pages": [
+              "publishing/xstore-overview",
+              "publishing/xstore-product-types",
+              "publishing/xstore-basic-operations",
+              "publishing/xstore-consumables",
+              "publishing/xstore-bundles",
+              "publishing/xstore-sharing-model",
+              "publishing/xrs-console",
+              "publishing/xrs-pc",
+              "publishing/top-failing-console",
+              "publishing/fma"
+            ]
           }
         ]
       },

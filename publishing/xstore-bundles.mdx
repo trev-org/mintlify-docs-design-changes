@@ -1,0 +1,40 @@
+---
+title: "Bundles and Season Passes"
+description: "Use Game Bundles, Add-on Bundles, and Season Passes for higher engagement and revenue."
+---
+
+| Variant | Scope | Can include game |
+| --- | --- | --- |
+| **Game Bundle** | Across publisher catalog | Yes |
+| **Add-on Bundle** | Single game | No |
+| **Season Pass** | Single game; products added later | No |
+
+## How bundles share entitlements
+
+When a user purchases a bundle, a license is granted for each included Game and Durable. Licenses follow the [product sharing model](/publishing/xstore-sharing-model).
+
+**Consumables in a bundle** are granted once at purchase to the buyer only — never shared.
+
+## Game Bundle scenarios
+
+- **Pre-order bundle** — includes unreleased game \+ pre-order incentives
+- **Starter Edition** — game with limited features
+- **Standard Edition** — unlocks full features
+- **Deluxe Edition** — game \+ Season Pass \+ DLC \+ extras
+- **Franchise bundle** — all games in a franchise
+
+## Season Pass
+
+A Season Pass scopes to a single game and is intended for content added later.
+
+### Best practices
+
+- Must include at least **one product at release**
+- Season Pass products don’t appear in **My Games and Apps** — reference "Season Pass" in the bonus product’s name
+- Use clear descriptions: "Includes the first three story expansion DLCs"
+
+When a new product is added to the Season Pass:
+
+- Owners auto-receive a license
+- The product shows "owned" on its Store page
+- Use `XStoreDownload` APIs to download packages programmatically
