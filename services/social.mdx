@@ -2,11 +2,12 @@
 title: "Xbox social features: friends, presence, and Game Hubs"
 sidebarTitle: "Social"
 description: "Integrate Xbox social features: Social Manager for friend caching, People system relationships, Rich Presence strings, and Game Hubs for player engagement."
+icon: "user-group"
 ---
 
 Xbox services' social features connect your title to a network of over **55 million active gamers** who share achievements, clips, game clips, and activity with their friends. Every player who signs in to Xbox services brings their social graph with them — their friends list, their followers, their presence status, and their game history. By integrating the social APIs, you tap into that network organically: a friend sees a clip from your game on their activity feed, notices their buddy is playing, and jumps in.
 
-Social features are available to all titles that integrate Xbox services sign-in. Some features — Rich Presence and Achievements — require participation in the ID\@Xbox managed developer program.
+Social features are available to all titles that integrate Xbox services sign-in. Some features — Rich Presence and Achievements — require participation in the ID@Xbox managed developer program.
 
 ## Social Manager
 
@@ -105,7 +106,7 @@ You define Rich Presence string templates in Partner Center. Templates can inclu
 At runtime, you update the player's presence by writing the stat events that populate the tokens (for event-based stats) or by calling the presence API directly.
 
 <Note>
-  **Rich Presence is not available for Xbox Creators Program titles.** It requires participation in ID\@Xbox or a managed developer program.
+  **Rich Presence is not available for Xbox Creators Program titles.** It requires participation in ID@Xbox or a managed developer program.
 </Note>
 
 ### Configuring presence in Partner Center
@@ -160,7 +161,7 @@ The social flywheel on Xbox works in your favor: every achievement unlock, every
 ## Social Manager API quick reference
 
 | Function | Purpose |
-|---|---|
+| --- | --- |
 | `XblSocialManagerAddLocalUser` | Add a local user and begin populating the social graph cache |
 | `XblSocialManagerRemoveLocalUser` | Remove a user and release their social graph cache |
 | `XblSocialManagerDoWork` | Process updates and retrieve events (call once per frame) |

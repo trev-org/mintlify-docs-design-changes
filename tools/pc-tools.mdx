@@ -2,6 +2,7 @@
 title: "PC development tools: wdapp, PIX for Windows, and WDP"
 sidebarTitle: "PC Tools"
 description: "Use wdapp.exe to register and launch PC titles, PIX for Windows for DirectX 12 profiling, and Windows Device Portal for web-based device management."
+icon: "display"
 ---
 
 The GDK provides a focused set of PC-side tools that handle the three most common development tasks: getting your game registered and running, profiling GPU and CPU performance, and managing the device remotely through a browser. This page covers **wdapp.exe** (Application Management), **PIX for Windows**, and **Windows Device Portal (WDP)**.
@@ -31,10 +32,10 @@ The GDK provides a focused set of PC-side tools that handle the three most commo
     ```powershell
     # Launch by AUMID (use 'wdapp list' to discover AUMIDs)
     wdapp launch MyGame_8wekyb3d8bbwe!Game
-
+    
     # Launch by executable path
     wdapp launch "C:\MyGame\Output\Gaming.Desktop.x64\Debug\MyGame.exe"
-
+    
     # Launch and block until the process exits, then print exit code
     wdapp launch MyGame_8wekyb3d8bbwe!Game /WaitToExit /show exitCode
     ```
@@ -47,10 +48,10 @@ The GDK provides a focused set of PC-side tools that handle the three most commo
     ```powershell
     # Install a packaged build from a local path
     wdapp install "C:\MyGame\Package\MyGame_1.0.0.0_x64__pmsdash4d.msixvc"
-
+    
     # Install and invoke the PC Bootstrapper on first launch
     wdapp install /bootstrapper "C:\MyGame\Package\MyGame_1.0.0.0_x64__pmsdash4d.msixvc"
-
+    
     # Install to a specific drive
     wdapp install /drive=D "C:\MyGame\Package\MyGame_1.0.0.0_x64__pmsdash4d.msixvc"
     ```
@@ -61,10 +62,10 @@ The GDK provides a focused set of PC-side tools that handle the three most commo
     ```powershell
     # List all sideloaded packages with details
     wdapp list /d
-
+    
     # List in JSON format (useful for scripting)
     wdapp list /json
-
+    
     # Uninstall a specific package
     wdapp uninstall MyGame_1.0.0.0_x64__pmsdash4d
     ```
@@ -75,7 +76,7 @@ The GDK provides a focused set of PC-side tools that handle the three most commo
     ```powershell
     # Print all package and application identifier details
     wdapp ids
-
+    
     # Terminate a running title by AUMID
     wdapp terminate MyGame_8wekyb3d8bbwe!Game
     ```
@@ -85,7 +86,7 @@ The GDK provides a focused set of PC-side tools that handle the three most commo
 ### Common wdapp subcommands
 
 | Command | Description |
-|---|---|
+| --- | --- |
 | `wdapp ids` | Display Package Family Name (PFN) and AUMID values |
 | `wdapp launch` | Launch by AUMID or executable path |
 | `wdapp terminate` | Stop a running MSIXVC-installed title |

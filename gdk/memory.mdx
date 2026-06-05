@@ -2,6 +2,7 @@
 title: "System memory model for Xbox Series X|S and Xbox One"
 sidebarTitle: "Memory"
 description: "Understand the GDK memory model: title vs. system reservation, virtual address space limits, XMem allocator, and best practices for shipping on Xbox."
+icon: "memory"
 ---
 
 Xbox consoles expose a unified-memory architecture (UMA) where CPU and GPU share the same physical RAM. The GDK gives your title a fixed budget per console SKU and reserves the remainder for the operating system, capture pipeline, and system overlay. Staying inside that budget — and avoiding fragmentation — is one of the highest-impact things you can do for stability and certification.

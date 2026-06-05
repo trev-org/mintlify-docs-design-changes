@@ -2,6 +2,7 @@
 title: "Error handling patterns for the Microsoft GDK"
 sidebarTitle: "Error Handling"
 description: "Handle HRESULTs, async errors, and crash reporting in GDK titles. Learn the FACILITY_GAMING codes, retry strategies, and how to log to XBWatson."
+icon: "triangle-exclamation"
 ---
 
 GDK APIs follow the standard Win32 convention: synchronous calls return `HRESULT`, async calls deliver `HRESULT` through `XAsyncGetStatus`, and the runtime defines a `FACILITY_GAMING` code range for gaming-specific failures. Robust titles inspect the HRESULT, retry transient failures, and surface user-visible messaging for unrecoverable conditions.

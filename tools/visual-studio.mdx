@@ -2,16 +2,17 @@
 title: "Visual Studio integration for GDK development"
 sidebarTitle: "Visual Studio"
 description: "Set up GDK project templates, custom MSBuild platforms, Xbox Gaming Project Control, and F5 debugging in Visual Studio 2019 and 2022."
+icon: "code"
 ---
 
-The GDK installer adds first-class Visual Studio support including C++ project templates, three custom MSBuild platforms, the Xbox Gaming Project Control tool window, and a seamless F5 debug experience that handles game registration and launch automatically. Visual Studio 2019 and Visual Studio 2022 are both supported, with VS 2022 recommended for new projects.
+The GDK installer adds first-class Visual Studio support including C\+\+ project templates, three custom MSBuild platforms, the Xbox Gaming Project Control tool window, and a seamless F5 debug experience that handles game registration and launch automatically. Visual Studio 2019 and Visual Studio 2022 are both supported, with VS 2022 recommended for new projects.
 
 ## Supported platforms and toolsets
 
 The GDK registers the following custom MSBuild platforms inside Visual Studio:
 
 | Platform | Target |
-|---|---|
+| --- | --- |
 | `Gaming.Desktop.x64` | Windows PC (GDK) game development |
 | `Gaming.Xbox.XboxOne.x64` | Xbox One family consoles |
 | `Gaming.Xbox.Scarlett.x64` | Xbox Series X\|S consoles |
@@ -26,18 +27,21 @@ Each platform automatically sets the correct preprocessor defines (e.g. `_GAMING
 
 ## Project templates
 
-Install the GDK and then open **File → New → Project** in Visual Studio. Filter by **C++**, **Windows**, and **Games** to find the GDK templates.
+Install the GDK and then open **File → New → Project** in Visual Studio. Filter by **C\+\+**, **Windows**, and **Games** to find the GDK templates.
 
 <CardGroup cols={2}>
   <Card title="Direct3D 12 Desktop Game" icon="gamepad" href="/tools/visual-studio">
-    A C++ project using Direct3D 12 with the `Gaming.Desktop.x64` MSBuild platform. This is the recommended starting point for new PC GDK titles.
+    A C\+\+ project using Direct3D 12 with the `Gaming.Desktop.x64` MSBuild platform. This is the recommended starting point for new PC GDK titles.
   </Card>
+
   <Card title="Direct3D 12 Desktop Game (Classic)" icon="gamepad" href="/tools/visual-studio">
     The same Direct3D 12 setup but using the standard `x64` MSBuild platform instead of the GDK custom platform. Useful for teams that manage build system configuration manually.
   </Card>
+
   <Card title="Direct3D 12 Desktop Game Makefile" icon="terminal" href="/tools/visual-studio">
     A project that invokes an external build system (CMake, custom Makefile, etc.) while still integrating with Visual Studio's debugger and F5 launch.
   </Card>
+
   <Card title="Desktop Static Library / Desktop DLL" icon="puzzle-piece" href="/tools/visual-studio">
     Static library and DLL project templates configured with the `Gaming.Desktop.x64` platform, suitable for middleware or modular game code.
   </Card>

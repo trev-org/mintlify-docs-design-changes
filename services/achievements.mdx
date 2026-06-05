@@ -2,6 +2,7 @@
 title: "Xbox achievements: integrate Gamerscore into your title"
 sidebarTitle: "Achievements"
 description: "Integrate Xbox achievements with title-managed or event-based models, define them in Partner Center, and unlock via XblAchievementsUpdateAchievementAsync."
+icon: "trophy"
 ---
 
 Achievements are one of the most recognizable and enduring features of the Xbox platform. Players earn Gamerscore by unlocking achievements, compare completion rates with friends, and showcase their gaming history across every title they play. For your game, achievements are a powerful tool for driving engagement: they give players explicit goals to pursue, reward exploration and mastery, and encourage replayability long after the credits roll.
@@ -9,7 +10,7 @@ Achievements are one of the most recognizable and enduring features of the Xbox 
 Integrating achievements into a GDK title requires three things: configuring achievement definitions in Partner Center, choosing a processing model (title-managed or event-based), and making the right API calls at the right moments in your game.
 
 <Note>
-  **Achievements require ID\@Xbox or a managed developer program.** The Xbox Creators Program does not have access to achievements or Gamerscore. To unlock this feature, apply to [ID\@Xbox](https://www.xbox.com/Developers/id).
+  **Achievements require ID@Xbox or a managed developer program.** The Xbox Creators Program does not have access to achievements or Gamerscore. To unlock this feature, apply to [ID@Xbox](https://www.xbox.com/Developers/id).
 </Note>
 
 ## Title-managed vs. event-based achievements
@@ -48,7 +49,7 @@ For efficiently reading and displaying achievement data, use the **Achievements 
 Key Achievements Manager functions:
 
 | Function | Purpose |
-|---|---|
+| --- | --- |
 | `XblAchievementsManagerAddLocalUser` | Register a signed-in user with the Achievements Manager cache |
 | `XblAchievementsManagerRemoveLocalUser` | Unregister a user and release the cache |
 | `XblAchievementsManagerDoWork` | Process pending events and keep the cache updated (call once per frame) |
@@ -60,6 +61,7 @@ Key Achievements Manager functions:
 <Steps>
   <Step title="Create achievement definitions">
     In Partner Center, go to your title's **Xbox services → Achievements** page. For each achievement, provide:
+
     - **ID** — a unique string identifier used in API calls (for example, `"achievement_first_win"`)
     - **Name and locked description** — shown to players before unlock
     - **Unlocked description** — shown after unlock
