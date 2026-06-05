@@ -1,0 +1,55 @@
+---
+title: "Application Management (wdapp.exe)"
+description: "CLI tool to install, register, launch, list, update, and uninstall GDK PC titles."
+---
+
+`wdapp.exe` installs and launches PC GDK titles. Handles both MSIXVC and MSIXVC2 packages.
+
+<Warning>
+  Requires **Developer Mode**: **Settings → For developers → Developer Mode**.
+</Warning>
+
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `ids` | Show PFN \+ AUMID for packages |
+| `launch` | Launch by AUMID or executable path |
+| `terminate` | Terminate the specified MSIXVC-installed package |
+| `list` | List sideloaded apps |
+| `listdlc` | List installed / deployed DLC |
+| `gamefolder` | Query or set the install folder per drive |
+| `update` | Stream a build update from a share or path |
+| `install` | Install via streaming installation |
+| `register` | Register a loose-file folder |
+| `uninstall` | Terminate \+ deregister |
+| `unregister` | Unregister an app |
+| `migrate` | Migrate MSIXVC install to Flat File Install |
+
+## install
+
+```bat
+wdapp install [/l|/AllChunks] [/bootstrapper] [/drive=<X>]
+  [/ContentTypes=<list>] [/Languages=<list>] [/Devices=<list>]
+  [/Tags=<list>] [/Recipes=<list>] [/Features=<list>] [/tm] [/v]
+  { packagepath | packageURI }
+```
+
+| Flag | Purpose |
+| --- | --- |
+| `/bootstrapper` | Invoke PC Bootstrapper before app code |
+| `/drive=<X>` | Override default install drive |
+| `/tm` | Print transfer performance summary |
+| `/l` | Stop after launch chunk |
+
+## launch
+
+```bat
+wdapp launch <AUMID> | <Executable> [WaitToExit] [log[=prefix]]
+```
+
+## list
+
+```bat
+wdapp list [/d] [/json] [/includeStore]
+```

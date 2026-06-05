@@ -1,0 +1,42 @@
+---
+title: "Test Account tool (XblTestAccountGui.exe)"
+description: "Set up existing dev accounts for testing."
+---
+
+**XblTestAccountGui.exe (XBLAT)** sets up existing dev accounts for game scenario testing.
+
+## What you can do
+
+- View profile, XUID, active privileges
+- Follow / block / mute lists of XUIDs
+- Manage friends: unfollow, favorite, block, unblock, mute
+- Change reputation
+- Change a dev user's gamertag
+- Change privacy settings \+ privileges
+- Look up gamertags by XUID
+- Make authenticated Xbox services HTTP calls
+
+## Sign in
+
+Provide dev account credentials and the **correct sandbox**. The account must have access to the sandbox.
+
+## Change gamertag
+
+**Gamertag tab →** enter a modern gamertag. Dev classic gamertags always start with `2`. **Only one change per account**.
+
+## Follow many users
+
+Throttle limits:
+
+- **100 follows / 30 seconds** per player account
+- **500 follows / 12 hours** per player account
+
+## Reputation values
+
+Overall reputation = Fairplay \+ UGC \+ Communications. Raw values 0–75. Higher is better.
+
+`OverallStatIsBad` indicates **"Avoid Me"** reputation.
+
+## Run the tool
+
+Extract Xbox Live SDK to a folder, then double-click `Tools\XblTestAccountGui.exe`.

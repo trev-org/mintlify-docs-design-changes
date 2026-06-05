@@ -1,0 +1,26 @@
+---
+title: "Trace Analyzer (XblTraceAnalyzer.exe)"
+description: "Review Xbox services call patterns offline to detect violations."
+---
+
+**XblTraceAnalyzer.exe** is an offline analysis tool that finds violations in your title's Xbox services call patterns.
+
+## Workflow
+
+1. Build your title
+2. Enable tracing
+3. Deploy and launch
+4. Make at least one Xbox services call to initialize XSAPI
+5. Start tracing at the scenario you want
+6. Stop tracing
+7. Run `XblTraceAnalyzer.exe` against the trace file
+
+## Capturing the trace
+
+For GDK titles, capture with **Fiddler** on the target device, then save as a Fiddler Session file (`.saz`).
+
+## Analyze
+
+```bat
+XblTraceAnalyzer.exe -?
+```

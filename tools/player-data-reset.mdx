@@ -1,0 +1,37 @@
+---
+title: "Player Data Reset tool (XblPlayerDataReset.exe)"
+description: "Reset achievements, leaderboards, stats, and title history for test accounts in a sandbox."
+---
+
+`XblPlayerDataReset.exe` resets a player’s data in **test sandboxes** — achievements, leaderboards, stats, title history.
+
+## Reset by XUID
+
+Requires the developer account (signed in via `XblDevAccount.exe`) to have **Tools Access** permission for the specific product.
+
+<Warning>
+  **Tools Access** is a **product-level** permission. Grant it per product.
+</Warning>
+
+Grant it:
+
+1. Sign in to Partner Center as a Partner Center admin
+2. **Account settings → User management**
+3. Switch user to **Customize permissions**
+4. **Product-level permissions → Xbox Live → Tools access**
+
+```bat
+XblPlayerDataReset.exe --scid <SCID> --sandbox <SNDBX.0> --xuid <XUID1,XUID2,...>
+```
+
+## Reset by email
+
+```bat
+XblPlayerDataReset.exe --scid <SCID> --sandbox <SNDBX.0> --user <a@xboxtest.com,b@xboxtest.com>
+```
+
+## Reset by file
+
+```bat
+XblPlayerDataReset.exe --scid <SCID> --sandbox <SNDBX.0> --file <path>
+```

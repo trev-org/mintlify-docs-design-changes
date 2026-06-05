@@ -1,0 +1,40 @@
+---
+title: "PC Sandbox Switcher (XblPCSandbox.exe)"
+description: "Manage Xbox services sandboxes on PC — switch to dev sandboxes and back to RETAIL."
+---
+
+`XblPCSandbox.exe` manages the Xbox services sandbox on PC.
+
+## Find it
+
+**Start menu → Microsoft GDK Command Prompts →** latest version.
+
+<Warning>
+  Setting the sandbox requires **elevated privileges**. The tool auto-elevates.
+</Warning>
+
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `/get` | Show current sandbox (RETAIL if none set) |
+| `/set <sandbox>` | Set sandbox (e.g., `XDKS.1`). Restarts Xbox Live Auth Manager. Relaunches Store \+ Xbox App. |
+| `/launchApps` | Relaunch Microsoft Store \+ Xbox App in sandbox mode |
+| `/retail` | Reset to RETAIL |
+
+## Options
+
+| Option | Purpose |
+| --- | --- |
+| `/?` or `/help` | Help \+ troubleshooting |
+| `/noApps` | Switch sandbox without relaunching system apps |
+
+## Switch back to RETAIL
+
+```bat
+XblPCSandbox /retail
+```
+
+<Tip>
+  You must be in **RETAIL** to update the Xbox App or Gaming Services from the Microsoft Store.
+</Tip>

@@ -1,0 +1,56 @@
+---
+title: "Install and launch your PC title"
+description: "Use wdapp to install, register, and launch GDK PC titles — plus common error fixes."
+---
+
+## Install
+
+| Approach | Use case |
+| --- | --- |
+| [`wdapp install`](/tools/wdapp) | Install an MSIXVC package. Add `/bootstrapper` for the retail Bootstrapper flow. |
+| [`wdapp register`](/tools/wdapp) | Register a loose-file folder. Required for Start menu / desktop tile icons (June 2022 GDK\+). |
+
+## Launch
+
+- [`wdapp launch`](/tools/wdapp) by AUMID or executable path
+- **Windows Device Portal → Installed Apps → Start**
+- Launch the executable directly (June 2022 GDK\+)
+
+## Troubleshooting
+
+### 0x80073CFF — No valid license or sideloading policy
+
+Enable **Developer Mode**.
+
+### 0x80073CFC — The application cannot be started
+
+Uninstall \+ reinstall Gaming Runtime Services:
+
+```powershell
+get-appxpackage *gamings*
+remove-package <package fullname>
+```
+
+### 0x87E00017 — IM\_E\_UNREACHABLE\_INSTALL\_SOURCE
+
+Run `wdapp list`, then `wdapp uninstall <pfn>` for every leftover.
+
+### 0x80080203 — Missing required footprint file
+
+Move the package output directory **outside** the directory containing `MicrosoftGame.config`.
+
+### 0x80070490 — Element not found
+
+`wdapp install` is for `.msixvc` only. `.XVC` is for console packaging.
+
+### 0x80070005 — Access is denied
+
+Pass the **full path** to the `.msixvc` file.
+
+### 0x0000007B — STATUS\_INVALID\_IMAGE\_FORMAT
+
+Executable architecture doesn’t match `DesktopRegistration/ProcessorArchitecture` in `MicrosoftGame.config`.
+
+### 0x80072F78 — WININET\_E\_INVALID\_SERVER\_RESPONSE
+
+Firewall / proxy blocking `settings-win.data.microsoft.com`. Allow it.

@@ -134,6 +134,13 @@
             "pages": [
               "tools/overview",
               "tools/pc-tools",
+              "tools/wdapp",
+              "tools/launching-on-pc",
+              "tools/pix-for-windows",
+              "tools/pc-sandbox-switcher",
+              "tools/player-data-reset",
+              "tools/test-account-tool",
+              "tools/trace-analyzer",
               "tools/xbox-service-tools",
               "tools/visual-studio"
             ]
