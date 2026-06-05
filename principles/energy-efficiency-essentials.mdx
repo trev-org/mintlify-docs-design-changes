@@ -1,0 +1,189 @@
+---
+title: "Xbox Game Energy Efficiency Essentials"
+sidebarTitle: "Energy Efficiency Essentials"
+description: "Checklist of essential techniques to lower a game's power consumption without sacrificing gameplay fidelity."
+icon: "bolt"
+---
+
+The Energy Efficiency Essentials is a checklist of game-level sustainability practices authored with Xbox Game Studios and Xbox Sustainability Toolkit pilot partners. It serves as:
+
+- A foundation for sustainability in all titles.
+- A prioritization checklist for sustainability planning.
+- A consistent standard so players know what to expect.
+
+## Passive vs. opt-in features
+
+| Passive | Opt-in / opt-out |
+| --- | --- |
+| Imperceptible design choices. Capping animated lobbies at 30 FPS. | Player-facing toggles. Dedicated Eco Mode at a lower resolution. |
+
+## Preparation
+
+### Request a Certification Sustainability Power Report
+
+Late-stage or released titles can request a bespoke power report from the Certification team. Contact your Microsoft point of contact.
+
+> Validated: **Yes** · Impact: **N/A**
+
+### Use Partner Center sustainability telemetry
+
+For released titles, view average power consumption, global energy footprint, and global carbon emissions over time. Use to monitor the impact of content updates.
+
+> Validated: **Yes** · Impact: **N/A**
+
+### Access GDK tooling
+
+- Review case studies for experimentation practices.
+- Step-by-step configuration for testing.
+- Use the Power Monitor UI in Xbox Manager.
+- Request 1:1 onboarding from the Xbox Sustainability working group.
+
+> Validated: **Yes** · Impact: **N/A**
+
+## Graphics
+
+### Lower frame rate in animated menus
+
+Most menus do not need 60\+ FPS.
+
+| Menu type | Recommended Hz |
+| --- | --- |
+| Customization screens (not snappy-critical) | 30 |
+| Snappy menus | 60 |
+| Anything else | 120 is rarely necessary |
+
+Pause menus rarely need more than 30 Hz. Engine-dependent — some engines won't run menus at 30 FPS. Requires per-menu control.
+
+> Validated: **Yes** · Type: **Passive** · Impact: **High**
+
+### Lower internal resolution in menus, lobbies, and leaderboards
+
+- Drop internal resolution by 10–20% before upscaling.
+- Console upscaler can keep the menu output at 2160p.
+- Keep UI at native resolution for legibility.
+- Use modern upscalers aggressively: AMD FSR, NVIDIA DLSS, TSR, TAAU, Intel XeSS.
+- If opt-in / opt-out, default the feature **on**.
+
+> Validated: **Yes** · Type: **Passive or Opt-in/Opt-out** · Impact: **High**
+
+### Lower resolution / frame rate on an idle timer
+
+If the title detects no input for ~30 s or more in a navigable area, reduce resolution and / or frame rate.
+
+- Players often leave the game running in front-end screens between matches.
+- GPU load in lobbies can approach gameplay load. Front-end scenes are simpler, so they have headroom.
+- Streamers may want to opt out; provide a toggle.
+
+> Validated: **Yes** · Type: **Passive or Opt-in/Opt-out** · Impact: **High**
+
+### Use 2.5D for menus and lobbies
+
+A 2D backplate with camera-correct perspective, plus a 3D avatar or model in the foreground.
+
+- Case studies show ~**30% power savings** vs. fully 3D menus.
+- Load times improve.
+- FX particles still deliver depth.
+- Backplates author cleanly in any DCC tool (Unity, Unreal, Maya).
+- Lock dynamic resolution to extract the full savings.
+
+> Validated: **Yes** · Type: **Passive** · Impact: **High**
+
+### Detect controller disconnection
+
+If the primary controller is disconnected for an extended period, reduce resolution / frame rate.
+
+- On average, games spend **~11%** of duration with a controller disconnected message visible.
+- Provide opt-out for streamers.
+
+> Validated: **Yes** · Type: **Passive or Opt-in/Opt-out** · Impact: **High**
+
+### Lower frame rates on non-interactive loading screens
+
+If the player can't interact, cap the frame rate.
+
+> Validated: **Yes** · Type: **Passive** · Impact: **Low**
+
+### Reduce off-screen object updates
+
+Existing culling, LOD, and update-frequency optimizations also save energy. Examples:
+
+- LOD animation by camera distance for small objects.
+- Update some systems every Nth frame.
+- Physics collision and audio typically still need every frame.
+
+> Validated: **Yes** · Type: **Passive** · Impact: **Moderate**
+
+## Design architecture
+
+### Adopt Dynamic Power States (DPS)
+
+Lets the driver dynamically scale GPU power level based on workload.
+
+```cpp
+SetDriverHintX(DRIVER_HINT_SET_DYNAMIC_POWER, 1);
+```
+
+The GPU automatically tunes its p-state from normalized frame statistics. Pair with other Sustainability Toolkit techniques for compounding savings.
+
+> Validated: **Yes** · Type: **Passive or Opt-in/Opt-out** · Impact: **High**
+
+### Player-facing Power Saving Mode, on by default
+
+A visible toggle:
+
+- Gives players control and acclimates them to the concept.
+- Lets streamers temporarily disable for live broadcasts.
+- Signals sustainability as a studio value.
+
+> Validated: **No** · Type: **Opt-in/Opt-out** · Impact: **Moderate**
+
+### Collapse static menus into 2D backplates
+
+If there is no 3D camera or scene motion, render menus as 2D — saves CPU and GPU.
+
+> Validated: **Yes** · Type: **Passive** · Impact: **Moderate**
+
+### Split base install from high-quality assets
+
+Use **Intelligent Delivery** Features and Recipes:
+
+- Make modes (campaign, multiplayer) independently addable / removable.
+- Ship 4K and 8K asset tiers as separate installs — most players cannot use 8K.
+
+Less data downloaded means less energy spent in the grid and on the device.
+
+> Validated: **Yes** · Type: **Passive** · Impact: **Low**
+
+See [**Intelligent Delivery**](/gdk/intelligent-delivery) for the implementation guide.
+
+## Process
+
+### Time-shift job queues to off-peak / cleaner grid hours
+
+Schedule updates and downloads when grids have more renewable energy. Some non-profits provide APIs to query emissions intensity by region.
+
+> Validated: **Yes** · Type: **Passive** · Impact: **Low**
+
+## Coming soon / opportunities to validate
+
+### Save energy during the Constrained life-cycle state
+
+When the game enters Constrained (Guide opens, TCUI appears, user returns to Home, focus is lost):
+
+- Pause gameplay, drop computational demand.
+- Remain paused until the player resumes.
+
+Games can spend **~15%** of their life-cycle in Constrained, and cert data shows Constrained can use as much power as gameplay.
+
+> Validated: **Yes** · Type: **Passive** · Impact: **Moderate**
+
+## Send us feedback
+
+Reach out to [XboxSustainability@Microsoft.com](mailto:XboxSustainability@Microsoft.com) to share case studies, ask questions, or contribute to future revisions of the checklist.
+
+## Related
+
+- [Sustainability overview](/principles/sustainability-overview)
+- [Intelligent Delivery](/gdk/intelligent-delivery)
+- [Memory model](/gdk/memory)
+- [Game streaming](/gdk/game-streaming)
