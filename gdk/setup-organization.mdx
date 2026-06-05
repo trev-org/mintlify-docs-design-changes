@@ -1,0 +1,77 @@
+---
+title: "setup-organization"
+sidebarTitle: "Set up organization"
+description: "Connect Microsoft Entra ID to Partner Center and grant your team access to secure Xbox resources."
+---
+
+This guide walks you through setting up your organization in Partner Center with a free Microsoft Entra ID so members of your team can access secure Xbox resources (docs, downloads, forums).
+
+If you already have a Microsoft Entra tenant, you can [associate it with Partner Center](https://learn.microsoft.com/windows/uwp/publish/associate-azure-ad-with-partner-center).
+
+## Prerequisites
+
+- A Partner Center account that has been onboarded for Xbox development. See [ID@Xbox onboarding](/onboarding) if you haven't completed this step.
+
+## Connect Microsoft Entra ID
+
+1. Sign in to Partner Center as the **account owner** and open **Account Settings** (top-right cog menu).
+2. Under **Organization Profile** → **Tenants**, check the **Partner** and **Developer** tabs to see if a Microsoft Entra tenant is already configured.
+3. If no tenant is associated, click **Create Microsoft Entra ID** to create one free of charge.
+4. Fill in the details to create a tenant under the `yourOrganization.onmicrosoft.com` domain.
+5. The Global Administrator account is created specifically to manage the Microsoft Entra ID.
+6. Add users by signing in as the Partner Center account owner and selecting **Add User**.
+7. Have each user verify they can access the [Xbox Game Development Home](https://aka.ms/xgd).
+
+## Manage users
+
+Go to **User management** in **Account settings** while signed in with a Manager account for the relevant Microsoft Entra tenant.
+
+### Add existing users
+
+1. Select **Add existing users**.
+2. Pick one or more users from the directory.
+3. Assign **Roles** — most teams use the **Developer** role. See [Set roles or custom permissions](https://learn.microsoft.com/windows/uwp/publish/set-custom-permissions-for-account-users).
+4. Click **Save**.
+
+<Tip>
+  When adding multiple users at once, they all receive the same role. To assign different roles, repeat the process per role.
+</Tip>
+
+### Create new users
+
+<Note>
+  You must be signed in with a **Global Administrator** account to create new users.
+</Note>
+
+1. **Users** → **Add users** → **Create new users**.
+2. Enter first name, last name, and username.
+3. Optionally make the user a **Global Administrator** of your Microsoft Entra ID.
+4. Choose group membership and roles.
+5. Click **Save** and copy the temporary password from the confirmation page.
+
+### Invite outside users
+
+<Note>
+  Requires Global Administrator. Outside users cannot perform certain Visual Studio tasks (Store associations, package uploads). For those, use **Create new users**.
+</Note>
+
+1. **Users** → **Add users** → **Invite users by email**.
+2. Enter up to ten email addresses (comma- or semicolon-separated).
+3. Assign roles and save.
+
+Invited users receive an email and are added as guest users in your Microsoft Entra tenant. To resend, find the user on the **Users** page and click **Resend invitation**.
+
+## Troubleshooting access
+
+### Don't use nested groups
+
+Nested groups (a group inside another group) are not supported. Add users via flat groups or directly.
+
+### Delete and re-add
+
+If you suspect a user wasn't added correctly, click **Delete** next to their name → **Delete from account**, then re-add them and re-apply their roles.
+
+## Next steps
+
+- [Partner Center account management](https://learn.microsoft.com/partner-center/partner-center-account-setup)
+- [Add and manage multiple tenants](https://learn.microsoft.com/partner-center/multi-tenant-account)

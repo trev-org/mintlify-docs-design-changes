@@ -1,0 +1,163 @@
+---
+title: "what-is-gdk"
+sidebarTitle: "What is the GDK?"
+description: "Programming model, components, and what shipping on PC vs. Xbox means with the GDK."
+---
+
+The Microsoft Game Development Kit (GDK) is:
+
+- A set of common, classic Windows APIs that target today's PCs and are available on every Microsoft Gaming endpoint — including the current generation of Xbox consoles.
+- A set of gaming services, tools, and extensions exposed through developer-friendly APIs:
+  - **Flat C** (Win32-style) and **Simple C\+\+** (D3D-style) APIs
+  - APIs that return error codes (no exceptions)
+  - Familiar asynchronous programming patterns
+
+## On Xbox
+
+- A small, fast, secure OS optimized for running games.
+- Explicit guarantees for CPU, GPU, memory, and I/O resources available to your game.
+- Xbox-specific extensions (e.g., **DirectX 12.x**) optimized for the hardware.
+- A versioning model where the Game OS ships with the game.
+- A simpler memory model that's easier to track and predict.
+- Reliable "F5" deploy / install / iterate, with no Xbox One ERA activation failures.
+- An easier path to bring existing Windows code to Xbox.
+
+<Warning>
+  **Xbox supports only D3D12.x.** D3D11.x is not supported. If your game uses D3D11.x, move to D3D12.x first. On Windows PC, both D3D11 and D3D12 are supported.
+</Warning>
+
+## On PC
+
+- Develop, test, and use the same Microsoft gaming services (Connected Storage, Xbox services, accessibility features) as you would on Xbox.
+- Use the previously Xbox-exclusive packaging and ingestion system to ship PC games to the Microsoft Store and participate in initiatives like PC Game Pass.
+
+## The GDK programming model
+
+| Area | APIs |
+| --- | --- |
+| Application Model | WinMain & Win32 Message Loop, `RegisterAppStateChangeNotification`, `RegisterForGameInvites` |
+| Networking | WinSock2, WinHTTP |
+| File I/O | Win32 File I/O |
+| Memory | Win32 Memory APIs with Xbox extensions (`XMemAlloc`) |
+| Graphics | D3D12 / D3D11 on PC, **D3D12.x** on Xbox |
+| Audio | XAudio2 (\+ XMA on Xbox), WASAPI, ISpatialAudioClient |
+| Video | ID3D11Video / Media Foundation on PC; MFSourceReader on Xbox |
+| GameDVR / Broadcast | `XAppCapture` |
+| Input | XInput (gamepad) or **GameInput** (advanced) |
+| Connected Storage | `XGameSave` |
+| Standard UI (TCUI) | `XGameUI` |
+| Packaging & Streaming Install | `XPackage` |
+| Xbox Services API | XSAPI (flat C) |
+| Store / Commerce | `XStore` |
+
+## Anatomy of a GDK game
+
+A GDK game is "just a Win32 game" with a `WinMain`, message loop, and `WndProc`. The differences:
+
+- Call `XGameRuntimeInitialize` / `XGameRuntimeUninitialize` (required on Xbox; optional but recommended on PC).
+- Xbox uses callbacks for **Suspend**, **Constrain**, and **Resume** PLM states.
+- Xbox supports only a subset of `WM_*` messages.
+
+```cpp
+int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int nCmdShow) {
+  if (FAILED(XGameRuntimeInitialize())) return 1;
+
+  // Register class, create window, main loop...
+  MSG msg = {};
+  while (WM_QUIT != msg.message) {
+    if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    } else {
+      g_game->Tick();
+    }
+  }
+
+  XGameRuntimeUninitialize();
+  return (int)msg.wParam;
+}
+```
+
+## The Gaming Runtime
+
+The Gaming Runtime is the set of components that implement modern cross-device games on Microsoft platforms.
+
+| Component | Role |
+| --- | --- |
+| **MSIXVC** | Packaging system for Xbox and PC (Streaming Install, Intelligent Delivery, differential updates) |
+| **Installation Management** | Streaming Install, Intelligent Delivery |
+| **Connected Storage** | Cloud-based "Game Saves" |
+| **Store Commerce** | In-app purchases and more |
+| **Accessibility** | Closed Captions, Text-to-Speech, Speech-to-Text |
+| **Game Invites** | Join a multiplayer session that's already in progress |
+| **Standard Game UI** | Standardized UI (TCUI) for Xbox services workflows |
+
+On **Windows PC**, the Gaming Runtime is optional but required if you ship via the Microsoft Store (which requires MSIXVC packaging). It ships as a Microsoft Store–serviceable package and depends on Windows 10 19H1 or later.
+
+On **Xbox**, the Gaming Runtime is required — MSIXVC packaging, Connected Storage, and Xbox services are all built on top of it. It ships as part of the Game OS.
+
+## Shipping on PC
+
+You're not restricted to the GDK API surface on PC. Continue using the full Win32 surface, third-party extension libraries, and kernel-mode services (anti-cheat, etc.).
+
+The GDK simply makes it easier to:
+
+1. Get a product identity from Partner Center.
+2. Create a `MicrosoftGame.config` next to your game executable.
+3. List your VC\+\+ runtime dependencies.
+4. Package with `makepkg` into MSIXVC.
+5. Deploy and test with `wdapp` on Windows 19H1\+.
+6. Submit to Partner Center.
+
+## Shipping on Xbox
+
+Xbox games must target `WINAPI_FAMILY_GAMES` and the Xbox D3D12.x, Audio.x, and media extensions. Games run on a separate **Game OS** with explicit guarantees on CPU, GPU, memory, and I/O.
+
+The versioning model ties each game to a particular version of the Game OS. GDK games are supported across current and future Xbox console generations.
+
+## GDK async model
+
+The GDK async pattern supports:
+
+1. Async with a completion callback (or lambda)
+2. Async with polling
+3. Blocking on an async call
+4. Control over where async work executes
+5. Control over where the completion callback executes
+
+Quick callback example:
+
+```cpp
+XAsyncBlock* b = new XAsyncBlock{};
+b->context = this;
+b->queue = queue;
+b->callback = [](XAsyncBlock* async) {
+  UpdateStatus status;
+  if (SUCCEEDED(QueryUpdateStatusAsyncResult(async, &status))) {
+    printf("Update Status : %d\r\n", status);
+  }
+  delete async;
+};
+QueryUpdateStatusAsync("foo", b);
+```
+
+See [**Async programming model**](/gdk/async-programming) and [**XTaskQueue**](/gdk/async-task-queues) for details.
+
+## SDKs required
+
+| SDK | Purpose |
+| --- | --- |
+| **Windows 11 SDK (22000\+)** | Core Win32 APIs |
+| **GRDK** (Gaming Runtime Development Kit) | Headers, libs, and tools for PC \+ Xbox MSIXVC titles |
+| **GXDK** (Gaming eXtensions Development Kit) | D3D12.x, Xbox-only headers/libs, `xb*` remote tools, Visual Studio integration |
+
+Supported Visual Studio: **2022** or **2026** (recommended for the latest Gaming Runtime). Earlier versions of VS may be supported by older GDK recoveries.
+
+## Building for Xbox
+
+When targeting only the core Win32 Gaming APIs on Xbox, ensure:
+
+1. You're compiling against the `WINAPI_FAMILY_GAMES` partition (`/D "WINAPI_FAMILY=WINAPI_FAMILY_GAMES"`).
+2. You're linking against `xgameplatform.lib` (not `kernel32.lib`, `user32.lib`, etc.) and you specify `/NODEFAULTLIB`.
+
+Default Xbox project templates link against `pixevt.lib`, `d3d12_x.lib`, `xgameplatform.lib`, and `xgameruntime.lib` and use `/NODEFAULTLIB`.

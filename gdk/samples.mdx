@@ -1,0 +1,45 @@
+---
+title: "samples"
+sidebarTitle: "Samples"
+description: "Where to find Xbox-GDK-Samples for PC, Xbox console, and Xbox services scenarios."
+---
+
+The GDK samples library demonstrates how to use the GDK and Xbox extensions across the most common game development scenarios.
+
+## Public samples
+
+[**github.com/microsoft/Xbox-GDK-Samples**](https://github.com/microsoft/Xbox-GDK-Samples) — open-source samples covering:
+
+- D3D12 graphics on PC and Xbox.
+- Audio (XAudio2, WASAPI, spatial audio).
+- Input (GameInput, XInput).
+- Microsoft Store / commerce (`XStore`).
+- Connected Storage / Game Saves (`XGameSave`).
+- Xbox services (XSAPI): achievements, presence, social, multiplayer.
+- Packaging and Intelligent Delivery (`XPackage`).
+- PlayFab integration.
+
+## Secure (NDA) samples
+
+Console-specific samples that target Xbox D3D12.x extensions, XMemAlloc, Game Bar / Game DVR, and console-only middleware are available through your **Xbox Game Development Home** portal — sign in with the Microsoft Entra credentials from your Partner Center account.
+
+## Running samples
+
+### PC
+
+1. Open the sample's `.sln` in Visual Studio 2022 / 2026.
+2. Pick the **Gaming.Desktop.x64** configuration.
+3. Build and **F5** to run on your dev PC.
+
+### Xbox
+
+1. Open the sample's `.sln`.
+2. Pick the **Gaming.Xbox.XboxOne.x64** or **Gaming.Xbox.Scarlett.x64** configuration.
+3. Connect your dev kit via Xbox Manager.
+4. Build and **F5** to deploy and remote-debug.
+
+## Related
+
+- [Develop a new title with the GDK](/gdk/developing-new-titles)
+- [PC end-to-end guide](/pc-e2e/overview)
+- [Porting guides](/gdk/porting-guides)

@@ -1,0 +1,56 @@
+---
+title: "porting-guides"
+sidebarTitle: "Porting guides"
+description: "Index of porting guidance for bringing existing titles to the GDK from Xbox One ERA, FXC, Steamworks, and other platforms."
+---
+
+These guides cover the most common porting paths to the GDK.
+
+## Engine end-to-end guides
+
+For middleware engines, start with the engine-specific PC end-to-end guides:
+
+- [Unity](/pc-e2e/engines/unity)
+- [Unreal](/pc-e2e/engines/unreal)
+- [GameMaker](/pc-e2e/engines/gamemaker)
+- [Godot](/pc-e2e/engines/godot)
+- [Custom C/C\+\+ engines](/pc-e2e/engines/custom-engine)
+- [Overview: GDK and game engines](/pc-e2e/gdk-and-engines)
+
+## Xbox One ERA → GDK
+
+For existing Xbox One ERA titles, the porting guide covers:
+
+- WinRT-style API replacements with flat C / simple C\+\+ equivalents.
+- Async pattern migration (from the ERA `IAsyncOperation` model to `XAsyncBlock` / `XTaskQueue`).
+- Memory model: how to port from the ERA memory manager to the GDK Game OS memory manager (`XMemAlloc`).
+- Packaging migration to MSIXVC.
+
+See [**Memory porting**](/gdk/memory) for ERA → GDK memory specifics.
+
+## Shaders: FXC → DXC
+
+The DirectX Shader Compiler (DXC) is the modern HLSL compiler. The FXC → DXC port guide covers:
+
+- New command-line flags.
+- Updated HLSL language semantics.
+- Tooling integration in Visual Studio.
+
+## GameInput porting
+
+Migrate from `Windows.Xbox.Input` and **XInput** to the unified [**GameInput**](/gdk/input) API. The porting guide covers device enumeration, reading state, vibration, and PIX integration.
+
+## Steam → GDK / Microsoft Store
+
+For PC titles that already ship on Steam via Steamworks, this guide maps Steamworks features to Microsoft Store / Xbox services equivalents:
+
+- Achievements → XSAPI achievements
+- Cloud saves → Connected Storage (`XGameSave`)
+- Friends / presence → XSAPI social
+- Multiplayer → MPSD / PlayFab Multiplayer Lobby
+- In-app purchases → `XStore`
+
+## Related
+
+- [What is the GDK?](/gdk/what-is-gdk)
+- [Develop a new title](/gdk/developing-new-titles)

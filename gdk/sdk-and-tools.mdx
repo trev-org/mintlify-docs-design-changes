@@ -1,0 +1,99 @@
+---
+title: "sdk-and-tools"
+sidebarTitle: "SDK & tools"
+description: "Install the Windows SDK, Visual Studio, and the GDK on your development PC."
+---
+
+To develop GDK titles, install:
+
+1. **Windows SDK**
+2. **Visual Studio**
+3. **Microsoft GDK** (and GXDK for Xbox)
+
+This applies to PC, Xbox, or both targets.
+
+<Tip>
+  Create a system restore point before installing.
+</Tip>
+
+## 1. Windows SDK
+
+GDK titles are Win32-based, so the [Windows SDK](https://developer.microsoft.com/windows/downloads/windows-sdk/) is core to the developer experience. It provides:
+
+- The public **Direct3D**, **XAudio**, and **PIX for Windows** APIs (no device-specific extensions).
+- Core OS services: networking, file I/O, memory, window management, message pump.
+- The `WINAPI_FAMILY_GAMES` partition.
+- `xgameplatform.lib` — the umbrella library for `WINAPI_FAMILY_GAMES` entry points.
+- The unified [GameInput](#) API for gamepad, keyboard, mouse, touch.
+- The Process Lifetime Management (PLM) API.
+
+**Minimum required: Windows SDK version 22000\+** (Windows 11 SDK). Install via the [download page](https://developer.microsoft.com/windows/downloads/windows-sdk/) or as an optional component in the Visual Studio Installer.
+
+## 2. Visual Studio
+
+**Recommended:** Visual Studio 2022 or 2026.
+
+<Note>
+  If you install a new edition of Visual Studio **after** installing the GDK, **repair the GDK** so it integrates with the new edition. If you need to uninstall Visual Studio, **uninstall the GDK first**.
+</Note>
+
+<Warning>
+  GDK Visual Studio extension (VSIX) components aren't supported on ARM devices. Install the GDK on an **x64** development PC.
+</Warning>
+
+## 3. The GDK
+
+The GDK contains everything beyond the Windows SDK that you need to build a fully featured GDK game. Logically, the GDK includes:
+
+### Gaming Runtime
+
+Components that run on the device where the game executes:
+
+- MSIXVC packaging (package management, DLC, Intelligent Delivery, custom actions)
+- Title-callable UI (TCUI)
+- Connected Storage
+- Async block \+ thread annotation
+- Device association
+- User
+- Speech synthesis (text-to-speech)
+- Accessibility (closed captioning, high contrast)
+- Screen Time
+
+### Gaming Cloud Services
+
+Gaming-centric cloud services exposed through platform-agnostic REST APIs and source-code wrappers:
+
+- Xbox Service API (XSAPI)
+- Xbox Authentication Library (XAL)
+- Multiplayer networking
+- PlayFab
+- Microsoft Store \+ in-app purchases
+
+### Gaming device extensions
+
+Device-specific feature APIs for Xbox hardware:
+
+- DirectX 12.x
+- Audio.x
+- PIX.x
+- `XMemAlloc` and other console-specific memory APIs
+
+## PC vs. Xbox tools
+
+**PC games:**
+
+- Iterate, test, debug locally on your dev PC with standard Visual Studio tooling.
+- Use PIX for Windows plus your usual third-party utilities.
+- Optionally configure VS Remote Tools to repro on a lab PC with a specific GPU driver.
+
+**Xbox games:**
+
+- Iterate, test, debug remotely on Xbox Series X|S or Xbox One family dev kits.
+- Use PIX for Xbox.
+- Use the `xb*` command-line tools, Xbox Manager, Dev Home, and Xbox Device Portal (XDP).
+
+## Next steps
+
+- [Configure your development network access](#)
+- [Develop a new title with the GDK](/gdk/developing-new-titles)
+- [Download & install the GDK](/gdk/download-install)

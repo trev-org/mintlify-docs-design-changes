@@ -1,0 +1,82 @@
+---
+title: "dev-pc-setup"
+sidebarTitle: "Dev PC setup"
+description: "Hardware and OS requirements for developing GDK titles for Xbox and Windows."
+---
+
+Verify your development PC meets the requirements below before installing the GDK.
+
+## Hardware
+
+### Common
+
+- A fast, modern PC.
+- 30 GB of free space (GDK install).
+
+### Xbox-targeted development
+
+We recommend:
+
+- **NVMe SSD** with a **heatsink** to offset thermal throttling.
+- **10 GbE NIC** on the dev PC. The Xbox Series X Dev Kit debug NIC supports 10 GbE for faster deployments.
+- **10 GbE switch** and **Category 6a cables**. Put your dev PC and dev console on the same Ethernet switch and subnet.
+- A motherboard with **Thunderbolt 3** support (planned deployment path).
+- **4K / UHD \+ HDR** monitors and TVs to validate display features.
+
+#### Validated 10 GbE hardware reference
+
+- Netgear XS708T 8-port switch
+- AQuantia Aqtion AQN-107 PCIe 10GBase-T adapter
+- Intel Ethernet Converged Network Adapter X540-T1
+- Samsung SSD 970 EVO NVMe M.2 1 TB
+- Category 6a Ethernet cables
+
+## Operating system
+
+<Warning>
+  GDK Visual Studio (VSIX) components are **not supported on ARM devices**. Install the GDK on an x64 development PC.
+</Warning>
+
+### Developing Xbox titles
+
+Supported clients:
+
+- Windows 10 (64-bit) — Home, Pro, Enterprise
+- Windows 11 (64-bit) — Home, Pro, Enterprise
+
+Supported build servers:
+
+- Windows Server 2019 (1809\+) — Standard, Datacenter
+
+<Note>
+  GDK versions prior to June 2020 supported Windows 7 / 8 / 8.1. That support has been removed; GDK setup blocks installation on unsupported OSes.
+</Note>
+
+### Developing Windows titles (Gaming Runtime)
+
+- Windows 10 May 2019 Update or later (64-bit)
+- Windows 11 (64-bit)
+
+Notes:
+
+- The Gaming Runtime Development Kit will **not** install on 32-bit Windows.
+- Keep graphics drivers up to date for reliable remote tooling.
+
+### Testing MSIXVC-packaged PC games
+
+- Windows 10 May 2019 Update or later (64-bit)
+- **Gaming Services Runtime** (auto-installed with any Microsoft Store MSIXVC title; or install manually from the Store).
+
+## Microsoft Symbol Servers
+
+Enable Microsoft Symbol Servers to get Gaming Runtime symbols.
+
+1. Visual Studio → **Debug** → **Options** → **Symbols**.
+2. Check **Microsoft Symbol Servers**.
+
+See the [Microsoft public symbol server](https://learn.microsoft.com/windows-hardware/drivers/debugger/microsoft-public-symbols) docs for more.
+
+## Next steps
+
+- [SDK & tools requirements](/gdk/sdk-and-tools)
+- [Download & install the GDK](/gdk/download-install)
