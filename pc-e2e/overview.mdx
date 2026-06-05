@@ -1,0 +1,72 @@
+---
+title: "overview"
+sidebarTitle: "Overview"
+description: "The complete path from ID@Xbox registration through publishing a GDK game on the Microsoft Store."
+---
+
+This guide walks you through every step required to ship a GDK game on the Microsoft Store for Windows PC.
+
+## The path
+
+<Steps>
+  <Step title="Register for ID@Xbox">
+    Apply for the [ID@Xbox program](/onboarding) — required to access the GDK with Xbox Extensions and to ship to the Microsoft Store with Xbox services.
+  </Step>
+  <Step title="Set up your organization in Partner Center">
+    Connect Microsoft Entra ID and grant your team access to secure Xbox resources. See [Set up organization](/gdk/setup-organization).
+  </Step>
+  <Step title="Create a product in Partner Center">
+    Reserve a product name, get a Title ID, Store ID, MSAAppId. Configure Xbox services.
+  </Step>
+  <Step title="Set up your dev PC">
+    Install the [Windows SDK, Visual Studio, and GDK](/gdk/sdk-and-tools). Verify [hardware and OS](/gdk/dev-pc-setup).
+  </Step>
+  <Step title="Integrate the GDK">
+    Pick your path:
+
+    - [Custom C/C\+\+ engine](/pc-e2e/engines/custom-engine)
+    - [Unity](/pc-e2e/engines/unity)
+    - [Unreal](/pc-e2e/engines/unreal)
+    - [GameMaker](/pc-e2e/engines/gamemaker)
+    - [Godot](/pc-e2e/engines/godot)
+  </Step>
+  <Step title="Configure MicrosoftGame.config">
+    Copy `TitleId`, `Identity → Name`, `Identity → Publisher`, and `MSAAppId` from Partner Center into your [MicrosoftGame.config](/gdk/game-config).
+  </Step>
+  <Step title="Add optional services">
+    Layer on [Xbox services, PlayFab, achievements, in-app purchases, and more](/pc-e2e/optional-services).
+  </Step>
+  <Step title="Test with a sandbox and test accounts">
+    Use `XblPCSandbox.exe` to switch sandboxes and validate Xbox services. See [Test account tool](/tools/test-account-tool).
+  </Step>
+  <Step title="Package as MSIXVC">
+    Build with `makepkg` or your engine's tooling. See [Packaging for PC](/gdk/packaging-pc).
+  </Step>
+  <Step title="Submit to Partner Center">
+    Upload the MSIXVC, configure store listing, age ratings, pricing. Pass certification. Publish.
+  </Step>
+</Steps>
+
+## Required vs. optional
+
+| Required for every PC GDK title | Optional add-ons |
+| --- | --- |
+| ID@Xbox membership | Achievements (event-based or title-managed) |
+| Partner Center product | Game Saves (Connected Storage) |
+| `MicrosoftGame.config` | Microsoft Store in-app purchases (`XStore`) |
+| MSIXVC package | Game Chat 2 |
+| Microsoft Store certification | PlayFab (analytics, multiplayer, economy) |
+|  | Intelligent Delivery (chunked install) |
+|  | Speech / accessibility features |
+|  | Dynamic Lighting, DirectStorage |
+
+See [optional services](/pc-e2e/optional-services) for the full menu.
+
+## Engines reference
+
+- [GDK and game engines](/pc-e2e/gdk-and-engines)
+- [Unity](/pc-e2e/engines/unity)
+- [Unreal](/pc-e2e/engines/unreal)
+- [GameMaker](/pc-e2e/engines/gamemaker)
+- [Godot](/pc-e2e/engines/godot)
+- [Custom C/C\+\+ engine](/pc-e2e/engines/custom-engine)

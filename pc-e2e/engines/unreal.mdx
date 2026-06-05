@@ -1,0 +1,203 @@
+---
+title: "unreal"
+sidebarTitle: "Unreal"
+description: "Integrate GDK plug-ins and platform extensions into Unreal Engine to target Win64, Xbox Series X|S, and Xbox One."
+---
+
+Epic Games distributes the GDK platform extensions and plug-ins for Unreal Engine. With Unreal Engine 5.7, Microsoft GDK plug-ins build on the **Win64** platform — unifying PC builds, reducing cook time, enabling single-executable scenarios, and improving compatibility with other Win64 plug-ins.
+
+<Warning>
+  **WinGDK is legacy** and no longer receives feature updates. Use the Microsoft GDK plug-ins on Win64 for all new PC GDK projects. Epic provides a migration tool to port WinGDK projects to Win64.
+</Warning>
+
+## Prerequisites
+
+- [Unreal Engine 4.27 or later](https://aka.ms/ue_download) (some plug-ins require newer versions)
+- Visual Studio 2019 (16.9) or later
+- Windows SDK 22000 or later
+- Windows 10 (1809\+) or Windows 11
+- April 2021 GDK Update 2 or later
+
+## Access
+
+Membership in an [Xbox Developer Program](https://aka.ms/gdk_id) (e.g., ID@Xbox) is required for PC, Xbox Series X|S, and Xbox One development. Request access to Unreal Engine's Developer Community GDK group via [the access request form](https://aka.ms/ue_gdk_access).
+
+## Key GDK plug-ins
+
+| Plug-in | Platforms | Min engine |
+| --- | --- | --- |
+| **Microsoft GDK Runtime** (`MSGamingRuntime`) | Win64 | UE 5.7\+ |
+| **Microsoft GDK Store** (`MSGameStore`) | Win64 | UE 5.7\+ |
+| **Online Subsystem GDK** (`OnlineSubsystemGDK`) | Win64, WinGDK, XB1, XSX | UE 4.27\+ |
+
+- **GDK Runtime** — GDK runtime features (game saves, Xbox user selection).
+- **GDK Store** — auto-generates MSIXVC packages for Xbox PC App submission.
+- **Online Subsystem GDK** — engine abstraction over XSAPI for achievements, friends, matchmaking, sign-in, store purchases.
+
+## Additional plug-ins
+
+| Plug-in | Platforms | Min engine |
+| --- | --- | --- |
+| Game Input Base | Win64, WinGDK, XB1, XSX | UE 5.4\+ |
+| Game Input (Windows) | Win64, WinGDK | UE 5.4\+ |
+| Xbox Common Game Input | XB1, XSX | UE 5.4\+ |
+| GDK Package Chunk Installer | all GDK platforms | UE 5.7\+ |
+| GDK Virtual Keyboard | all GDK platforms | UE 5.7\+ |
+| Windows Virtual Keyboard | Win64 | UE 5.7\+ |
+
+## GDK Platform Extensions
+
+The GDK-specific code lives in **Platform Extensions** delivered as a single interdependent download. Extensions include `Engine\Platforms` source for:
+
+- **WinGDK** (legacy)
+- **Xbox One** (XB1 in UE5; XboxOneGDK in UE4)
+- **Xbox Series X|S** (XSX)
+
+You need the **GDK with Xbox Extensions (GDKx)** regardless of target. The GitHub-only GDK is not supported with these extensions.
+
+## GDK & engine version compatibility
+
+Each engine release notes which GDK main version Epic validated. The config:
+
+```text
+Engine\Platforms\GDK\Config\GDK_SDK.json
+```
+
+```json
+{
+  "MainVersion": "250402",
+  "MinVersion":  "240604",
+  "MaxVersion":  "250499"
+}
+```
+
+You can edit `MaxVersion` to use a newer GDK, but compatibility outside Epic's validated range isn't guaranteed.
+
+## Setup
+
+<Steps>
+  <Step title="Acquire GDK Platform Extensions">
+    From Epic via the GDK access request.
+  </Step>
+  <Step title="Regenerate project files">
+    Run `GenerateProjectFiles.bat` in your engine root. WinGDK, XB1, and XSX appear in the Visual Studio Solution Platform dropdown.
+  </Step>
+  <Step title="Rebuild the editor">
+    Confirm WinGDK / XB1 / XSX show up in the Platforms dropdown in the Unreal Editor.
+  </Step>
+  <Step title="Enable GDK plug-ins">
+    **Edit → Plugins** → enable Microsoft GDK Runtime, Store, and Online Subsystem GDK. Restart the editor.
+
+    Also enable for compilation in your build target:
+
+    ```csharp
+    EnablePlugins.AddRange([
+      "MSGameStore",
+      "MSGamingRuntime",
+      "OnlineSubsystemGDK",
+    ]);
+    ```
+
+    <Note>
+      A subset of plug-ins is enabled by default for XB1 and XSX. See `UEBuildXboxCommon.cs` in UBT.
+    </Note>
+  </Step>
+</Steps>
+
+## Configure title data
+
+In **Project Settings**:
+
+- **Platform Settings** → Xbox One / Xbox Series X|S
+- **Plugin Settings** → MS Gaming (PC GDK) plug-in settings
+
+Use **Associate with Partner Center** to sign in and auto-populate `MicrosoftGame.config` values.
+
+Example `DefaultEngine.ini` (auto-written by the plug-in):
+
+```ini
+[/Script/MSGamingSupport.MSGamingSettings]
+TitleId=00000000
+PrimaryServiceConfigId=00000000-0000-0000-0000-000000000000
+ProductId=ProductValue
+ContentId=ContentIDValue
+PackageName=PackageName
+StoreId=0000000000
+DefaultDisplayName=Test Game
+PublisherName=CN=PublisherValue
+PublisherDisplayName=Test Company
+EKBID=EKBIDValue
+MSAAppId=MSAppIdValue
+bRequireXboxLive=True
+bUseSimplifiedUserModel=True
+ManifestVersion=1
+```
+
+For Intelligent Delivery via the chunk installer plug-in:
+
+```ini
+[StreamingInstall]
+DefaultProviderName=GDKPackageChunkInstall
+```
+
+## Online Subsystem GDK
+
+In your engine `.ini`:
+
+```ini
+[OnlineSubsystem]
+DefaultPlatformService=GDK
+
+[OnlineSubsystemGDK]
+eEnabled=True
+AchievementMode=2017   ; title-managed achievements (must match Partner Center config)
+StatsMode=2013         ; event-based stats
+PrimaryServiceConfigId=00000000-0000-0000-0000-000000000000
+```
+
+Map Unreal achievement names to Partner Center achievement IDs in `Platforms\GDK\Config\OSS\Achievements.json`:
+
+```json
+{
+  "AchievementEventName": "NotUsedInAchievement2017",
+  "AchievementMap": {
+    "achievement 1": 1,
+    "achievement 2": 2
+  }
+}
+```
+
+Pass `GDK_SUBSYSTEM` in `Online::GetSubsystem()` calls.
+
+<Note>
+  Online Subsystem GDK uses Azure PlayFab Party directly via GDK PlayFabParty plug-ins as a Socket Subsystem.
+</Note>
+
+## Build, cook, package
+
+Use the [Unreal Automation Tool](https://aka.ms/ue_uat):
+
+```bat
+RunUAT BuildCookRun -project=TestGame -Platform=Win64 -build -cook -stage -pak ^
+        -archive -archivedirectory=C:\TestGame\ -package
+```
+
+Or use the Unreal Editor: **Platforms → Cook Content / Package Project** per platform. Output is an `.xvc` (console) or `.msixvc` (Win64).
+
+## Test
+
+Add `-deploy -run` to the UAT command or use the Project Launcher's **Launch** settings.
+
+For packages generated by the Editor UI, use the GDK tools to install and launch outside the editor (Project Launcher doesn't support this). See [Launching on PC](/tools/launching-on-pc).
+
+With Microsoft GDK plug-ins on Win64, [Play In Editor (PIE)](https://aka.ms/ue_pie) supports Xbox Services testing directly in the editor.
+
+## Visual Studio integration
+
+Install the **Visual Studio Tools for Unreal Engine** and **Visual Studio debugger tools for Unreal Engine** components from the Visual Studio Installer's _Game development with C\+\+_ workload for native `uplugin` support and Blueprint debugging.
+
+## Related
+
+- [GDK and game engines](/pc-e2e/gdk-and-engines)
+- [Custom C/C\+\+ engine](/pc-e2e/engines/custom-engine)
+- [PlayFab Unreal Quick Start](https://aka.ms/pf_ue_quickstart)

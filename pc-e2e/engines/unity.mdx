@@ -1,0 +1,145 @@
+---
+title: "unity"
+sidebarTitle: "Unity"
+description: "Integrate the GDK with your Unity project to ship to Windows, Xbox Series X|S, and Xbox One from one codebase."
+---
+
+The Microsoft GDK packages for Unity — co-developed by Microsoft and Unity — let you target Windows x64, Xbox Series X|S, and Xbox One with the same configuration and code base.
+
+## Prerequisites
+
+- [Unity Editor 2021.3 or later](https://aka.ms/unity_gdk_engine)
+- Visual Studio 2019 (16.9) or later
+- Windows SDK 22000 or later
+- Windows 10 (1809\+) or Windows 11
+- October 2023 GDK Update 4 or later
+- Valid Unity license if targeting Xbox consoles
+
+<Warning>
+  Unity published a security advisory affecting specific Unity Engine versions. Review the [Unity Security Update Advisory](https://aka.ms/unity_security) before shipping.
+</Warning>
+
+## GDK packages for Unity
+
+| Package | Targets | How to get it |
+| --- | --- | --- |
+| **Microsoft GDK API** | PC \+ Console | Unity Registry (Package Manager) |
+| **Microsoft GDK Tools** | PC \+ Console | Unity Registry |
+| **Microsoft GDK Tools for Xbox** | Console only | Direct download via Unity Xbox Discussions |
+| **GXDK Input System** | Console only | Unity Xbox Discussions |
+| **Game Core Render Pipeline** | Console only | Unity Xbox Discussions |
+
+The **GDK API package** provides C# wrappers for native APIs — access Xbox network services (achievements, cloud saves, leaderboards) directly from C#.
+
+The **GDK Tools package** generates `MicrosoftGame.config`, packages your PC game, and integrates Partner Center association.
+
+Console packages require:
+
+- The GDK from the [Xbox Developer Downloads portal](https://aka.ms/gdkdl).
+- The **Xbox Series X|S and Xbox One Add-ons for Unity Editor** installed on every dev machine.
+
+<Note>
+  You must belong to ID@Xbox (or an equivalent Xbox Developer program) and request access to the Unity Xbox Discussions site before you can get the console packages.
+</Note>
+
+## Install the packages
+
+### From the Unity Registry (PC packages)
+
+1. **Window** → **Package Manager** → **Unity Registry**.
+2. Search **gdk**.
+3. Install **Microsoft GDK API**, then **Microsoft GDK Tools**.
+
+### From tarball (console packages)
+
+1. **Package Manager** → **\+** → **Add package from tarball**.
+2. Select the `.tgz` you downloaded from Unity Xbox Discussions.
+3. Install.
+
+<Tip>
+  Unity packages are per-project. New projects need to reinstall. Editor add-ons are per-machine.
+</Tip>
+
+## Configure your project
+
+<Steps>
+  <Step title="Create a GDK Settings Asset">
+    After installing the API \+ Tools packages, use the new GDK menu to create a **GDK Settings Asset**. This adds GDK-specific entries to **Project Settings** for configuring your title.
+
+    With the Xbox Tools package \+ add-ons installed, the settings include tabs for each platform.
+  </Step>
+  <Step title="Create a Microsoft Game Config Asset">
+    Generate the `MicrosoftGame.config` and supporting files from the new asset menu.
+  </Step>
+  <Step title="Associate the Game Config with your GDK Settings">
+    Open **GDK Project Settings** and link the Microsoft Game Config Asset so it's used during build and packaging.
+  </Step>
+  <Step title="Edit the Game Config in Unity">
+    Select the asset in the Project window — its configurable fields appear in the Inspector.
+  </Step>
+  <Step title="Associate with Partner Center">
+    Use the **Store Association wizard** inside the Microsoft Game Config Editor to sign in to your Microsoft account and map values from Partner Center automatically. Make sure to copy **Package/Identity/Publisher** from Partner Center into the **Publisher** field.
+  </Step>
+</Steps>
+
+## Use the C# wrappers
+
+The GDK API package ships a C# wrapper layer over the native GDK. Call XSAPI, XGameSave, XStore, and other APIs directly from your Unity scripts.
+
+## Samples
+
+### Registry samples
+
+Shipped with the **Microsoft GDK API package**. Find them on the **Samples** tab of the package in the Unity Registry. Coverage: Achievements, Cloud Saves, Game Saves, In-Game Store, Leaderboards, Sign-In, Speech Synthesizer, Users.
+
+<Note>
+  These samples depend on the Unity **Input System** package.
+</Note>
+
+### GDK download samples
+
+Included with the GDK download:
+
+| Sample | What it shows |
+| --- | --- |
+| `UnityAchievements` | `XblAchievement` query and update |
+| `UnityInGameStore` | `XStore` catalog, entitlements, license queries |
+| `UnityLeaderboardsTitleManaged` | Title-managed leaderboards and social/global queries |
+| `UnitySimpleMPSD` | MPSD \+ SmartMatch session and matchmaking |
+| `UnityRumble` | Multiplayer Manager (MPM) \+ PlayFab Party |
+| `UnityRumblePlayFabMultiplayer` | PlayFab Multiplayer session and matchmaking |
+| `UnitySimpleHttpCall` | Xbox networking HTTP send/receive |
+| `UnitySimpleWebSockets` | HTTP Client Web Sockets |
+| `UnitySimplePLM` | PLM event handling |
+| `UnityAssetWorkflow` (Xbox only) | Console-side asset iteration tooling |
+
+### Handheld best practices
+
+[Unity HandheldBestPractices](https://aka.ms/hhexpsample_unity) — C# patterns for Windows handhelds (ROG Xbox Ally, etc.). Doesn't use the GDK directly; demonstrates the right Windows APIs to use.
+
+## Build and package
+
+### Windows
+
+GDK Settings control shell visuals, localization, and packaging. No special Build Profile settings required. After build, Unity emits an MSIXVC under `MSIXVC/`.
+
+### Xbox
+
+- Install **GDK Tools for Xbox** and the Editor add-ons.
+- Set **Shell Visuals Mode** = **Copy Only** — Unity copies Store images into the build folder for you.
+- In **Project Settings → Player → Publisher Settings**, set **Package Encryption**:
+  - **Development** for sideload / `xbapp install` / `Build and Run`.
+  - **Submission** for Partner Center uploads. Submission packages **cannot** be sideloaded.
+- In **Build Profiles**, set target to **Xbox One** or **Xbox Series**, build type to **Development** or **Master**, deploy method to **Package**.
+- Output is an `.xvc` under `XVC/`.
+
+## Test in Play Mode
+
+GDK-based projects need extra setup to work in Play Mode. See [Test in Play Mode](https://aka.ms/unity_gdk_pie).
+
+## Related
+
+- [GDK and game engines](/pc-e2e/gdk-and-engines)
+- [PC end-to-end overview](/pc-e2e/overview)
+- [Unreal](/pc-e2e/engines/unreal)
+- [PlayFab Unity SDK](https://aka.ms/unity_playfab)

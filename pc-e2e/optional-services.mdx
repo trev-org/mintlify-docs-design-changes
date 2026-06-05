@@ -1,0 +1,102 @@
+---
+title: "optional-services"
+sidebarTitle: "Optional services"
+description: "Optional Xbox services, PlayFab features, and platform capabilities to layer on top of a GDK title."
+---
+
+A GDK title can ship without any of the features below. Pick the ones that fit your design.
+
+## Xbox services
+
+<CardGroup cols={2}>
+  <Card title="Achievements" icon="trophy" href="/services/achievements">
+    Event-based or title-managed achievements with gamerscore.
+  </Card>
+
+  <Card title="Game Saves" icon="floppy-disk" href="/gdk/game-saves">
+    Cloud-synced save state via Connected Storage / `XGameSave`.
+  </Card>
+
+  <Card title="Social" icon="user-group" href="/services/social">
+    Friends, followers, presence.
+  </Card>
+
+  <Card title="Rich Presence" icon="signal" href="/services/rich-presence">
+    Localized strings describing what the player is doing.
+  </Card>
+
+  <Card title="Multiplayer" icon="users" href="/services/multiplayer">
+    MPSD sessions, MPM, matchmaking, multiplayer activity.
+  </Card>
+
+  <Card title="Player Data" icon="database" href="/services/player-data">
+    Stats and leaderboards.
+  </Card>
+
+  <Card title="Game Chat 2" icon="microphone" href="/services/game-chat">
+    Cross-platform voice chat.
+  </Card>
+
+  <Card title="People system" icon="users-rectangle" href="/services/people-system">
+    Friends, followers, blocked players.
+  </Card>
+</CardGroup>
+
+## Microsoft Store / Commerce
+
+- [`XStore` commerce overview](/reference/xstore) — catalog, entitlements, in-app purchases.
+- DLC and add-ons via Partner Center.
+- Bundles and subscriptions.
+
+## PlayFab
+
+<CardGroup cols={2}>
+  <Card title="PlayFab overview" icon="server" href="/playfab/overview">
+    LiveOps backend.
+  </Card>
+
+  <Card title="Player sign-in" icon="key" href="/playfab/player-sign-in">
+    Anonymous, Microsoft account, custom auth.
+  </Card>
+
+  <Card title="Lobby & Matchmaking" icon="users" href="/playfab/multiplayer-lobby">
+    Multiplayer session and matchmaking.
+  </Card>
+
+  <Card title="Party + Voice" icon="phone" href="/playfab/party-voice">
+    Voice chat and party data sync.
+  </Card>
+
+  <Card title="Economy" icon="cart-shopping" href="/playfab/economy">
+    Catalogs, currencies, transactions.
+  </Card>
+
+  <Card title="Leaderboards & Stats" icon="chart-line" href="/playfab/leaderboards-stats">
+    Player progression and competitive rankings.
+  </Card>
+
+  <Card title="Analytics" icon="chart-pie" href="/playfab/analytics">
+    Insights and player behavior.
+  </Card>
+
+  <Card title="Microsoft Store integration" icon="store" href="/playfab/microsoft-store">
+    Validate entitlements from Microsoft Store via PlayFab.
+  </Card>
+</CardGroup>
+
+## Platform features
+
+- [Intelligent Delivery](/gdk/intelligent-delivery) — chunked install, language packs.
+- [DirectStorage](/gdk/directstorage) — fast NVMe-friendly asset streaming.
+- [Dynamic Lighting](/gdk/dynamic-lighting) — RGB peripheral integration.
+- [Game streaming](/gdk/game-streaming) — cloud-aware streaming behaviors.
+- [Cross-gen support](/gdk/cross-gen) — Xbox One \+ Series X|S.
+- [Text-to-Speech](/gdk/text-to-speech) — accessibility-aligned TTS.
+- [Localization](/gdk/localization) — language packs and resources.
+
+## Accessibility & principles
+
+- [Accessibility overview](/principles/accessibility-overview)
+- [Speech accessibility user settings](/principles/speech-accessibility)
+- [Localization & globalization](/principles/localization-globalization)
+- [Security overview](/principles/security-overview)

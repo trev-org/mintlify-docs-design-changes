@@ -1,0 +1,61 @@
+---
+title: "gdk-and-engines"
+sidebarTitle: "GDK and engines"
+description: "Overview of how the GDK works with Unity, Unreal, GameMaker, Godot, and custom C/C++ engines."
+---
+
+The Microsoft GDK provides APIs for everything related to the Xbox ecosystem on PC and Xbox. You can use the GDK in three ways:
+
+1. **Direct C/C\+\+** — call GDK APIs directly from a game written from scratch (use the GDK project templates).
+2. **Game engine with GDK integration** — use Unity, Unreal, GameMaker, or another engine that has Microsoft-supported GDK plug-ins or extensions.
+3. **Custom C/C\+\+ engine** — integrate the GDK headers, libs, and DLLs into your in-house engine.
+
+Download the GDK from [GitHub](https://github.com/microsoft/GDK).
+
+## Pick your engine guide
+
+<CardGroup cols={2}>
+  <Card title="Unity" icon="cube" href="/pc-e2e/engines/unity">
+    Microsoft GDK API \+ Tools packages for Unity. Targets Windows, Xbox Series X|S, and Xbox One from one project.
+  </Card>
+
+  <Card title="Unreal Engine" icon="u" href="/pc-e2e/engines/unreal">
+    Microsoft GDK plug-ins (Win64) and GDK Platform Extensions (consoles), distributed by Epic.
+  </Card>
+
+  <Card title="GameMaker" icon="gamepad" href="/pc-e2e/engines/gamemaker">
+    GMEXT-GDK extension for Microsoft Store on PC.
+  </Card>
+
+  <Card title="Godot" icon="circle" href="/pc-e2e/engines/godot">
+    Open-source Xbox Godot Sample for Xbox on PC.
+  </Card>
+
+  <Card title="Custom C/C++ engine" icon="code" href="/pc-e2e/engines/custom-engine">
+    Integrate the GDK and XSAPI directly into your engine.
+  </Card>
+</CardGroup>
+
+## What every engine path shares
+
+Regardless of engine, every GDK PC title needs:
+
+- A **Partner Center product** with a Title ID, Store ID, and MSAAppId.
+- A **`MicrosoftGame.config`** with the values from Partner Center.
+- An **MSIXVC package** (built by `makepkg`, your engine's tooling, or the editor).
+- A **test sandbox** and at least one **test account**.
+
+See:
+
+- [PC end-to-end overview](/pc-e2e/overview) — the full path from registration to publish.
+- [Optional services](/pc-e2e/optional-services) — features you can add on top.
+- [Onboarding](/onboarding) — ID@Xbox registration.
+
+## Why "Win64" instead of "WinGDK"?
+
+Microsoft and engine partners have aligned on building GDK PC titles on the standard **Win64** platform — unifying the PC build path across storefronts, reducing cook time, and improving plug-in compatibility.
+
+- **Unreal**: Microsoft GDK plug-ins target Win64 in UE 5.7\+. WinGDK is legacy.
+- **Unity**: GDK API and Tools packages target Windows from the standard Windows build profile.
+
+For custom engines, use the `WINAPI_FAMILY_DESKTOP_APP` API partition on PC — the full Win32 surface is available.

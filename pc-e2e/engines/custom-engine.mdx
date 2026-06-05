@@ -1,0 +1,180 @@
+---
+title: "custom-engine"
+sidebarTitle: "Custom engine"
+description: "Integrate the GDK and XSAPI into a C/C++ engine that doesn't have built-in GDK support."
+---
+
+Use this guide if your game uses a C/C\+\+ engine without built-in GDK support and you're preparing for Microsoft Store on PC.
+
+## What you need
+
+To integrate the GDK into a C/C\+\+ game, you need:
+
+1. **Headers** for GDK and Xbox Services API (XSAPI).
+2. **Import libraries** for GDK exports.
+3. **XSAPI static or import libraries** (XSAPI ships as both static and dynamic).
+4. **Dynamic-link libraries** if you're using dynamic XSAPI.
+
+Games interact with two ecosystem components — **Gaming Runtime Services (GRTS)** and **XSAPI**:
+
+| Component | GRTS (dynamic only) | XSAPI (dynamic) | XSAPI (static) |
+| --- | --- | --- | --- |
+| Headers | XUser, XGameSave, XGameUI, etc. | `profile_c.h`, `achievements_c.h`, etc. | `profile_c.h`, `achievements_c.h`, etc. |
+| Import library | `xgameruntime.lib` | `Microsoft.Xbox.Services.GDK.C.Thunks.lib` | `Microsoft.Xbox.Services.142.GDK.C.lib` |
+| DLL | `xgameruntime.dll` \+ a few others (installed by GRTS) | `Microsoft.Xbox.Services.GDK.C.Thunks.dll` (ship with game) | Not required |
+
+<Note>
+  For plug-in-based architectures (functionality spread across multiple DLLs), **use `Thunks.dll`** (dynamic). Static-linking XSAPI into multiple DLLs gives each DLL its own global state — `XblInitialize` in one DLL doesn't initialize others, sharing handles can crash.
+</Note>
+
+## Project setup
+
+<Steps>
+  <Step title="Target x64">
+    Visual Studio → **Build → Configuration Manager → Active solution platform = x64**.
+  </Step>
+  <Step title="Add include paths">
+    Add to **Configuration Properties → VC\+\+ Directories → Include Directories**:
+
+    ```text
+    C:\Program Files (x86)\Microsoft GDK\[GDK version]\GRDK\GameKit\Include
+    C:\Program Files (x86)\Microsoft GDK\[GDK version]\GRDK\ExtensionLibraries\Xbox.Services.API.C\Include
+    C:\Program Files (x86)\Microsoft GDK\[GDK version]\GRDK\ExtensionLibraries\Xbox.LibHttpClient\Include
+    ```
+
+    `[GDK version]` is `YYMMSV` (e.g., `220600` for June 2022).
+
+    <Note>
+      For GDK June 2024 or earlier, the include paths are under `DesignTime\CommonConfiguration\Neutral\Include`.
+    </Note>
+  </Step>
+  <Step title="Add library paths">
+    Add to **VC\+\+ Directories → Library Directories**:
+
+    ```text
+    C:\Program Files (x86)\Microsoft GDK\[GDK version]\GRDK\GameKit\Lib\amd64
+    C:\Program Files (x86)\Microsoft GDK\[GDK version]\GRDK\ExtensionLibraries\Xbox.Services.API.C\Lib\x64\Release
+    C:\Program Files (x86)\Microsoft GDK\[GDK version]\GRDK\ExtensionLibraries\Xbox.LibHttpClient\Lib\x64
+    ```
+  </Step>
+  <Step title="Link libraries">
+    Add to **Linker → Input → Additional Dependencies**:
+
+    ```text
+    xgameruntime.lib
+    Microsoft.Xbox.Services.GDK.C.Thunks.lib   (or Microsoft.Xbox.Services.142.GDK.C.lib if static)
+    libHttpClient.GDK.lib
+    ```
+  </Step>
+  <Step title="Add preprocessor defines">
+    **C/C\+\+ → Command Line → Additional Options**:
+
+    ```text
+    /D "_GAMING_DESKTOP" /D "WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP"
+    ```
+  </Step>
+  <Step title="Add MicrosoftGame.config">
+    Create one next to your `.exe` (and any run-in-editor `.exe` your engine spawns). Default skeleton:
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <Game configVersion="1">
+      <Identity Name="Direct3DGame1_test" Publisher="CN=Publisher" Version="1.0.0.0"/>
+      <ExecutableList>
+        <Executable Name="Direct3DGame1_test.exe" Id="Game" Alias="Direct3DGame1_test.exe"/>
+      </ExecutableList>
+      <ShellVisuals DefaultDisplayName="Direct3DGame1_test"
+                    PublisherDisplayName="PublisherName"
+                    Square480x480Logo="LargeLogo.png"
+                    Square150x150Logo="GraphicsLogo.png"
+                    Square44x44Logo="SmallLogo.png"
+                    Description="Direct3DGame1_test"
+                    ForegroundText="light"
+                    BackgroundColor="#000040"
+                    SplashScreenImage="SplashScreen.png"
+                    StoreLogo="StoreLogo.png"/>
+    </Game>
+    ```
+  </Step>
+  <Step title="Copy required DLLs">
+    Copy these next to your `.exe`:
+
+    - `Microsoft.Xbox.Services.GDK.C.Thunks.dll` (dynamic XSAPI only) — `...\Xbox.Services.API.C\Lib\x64\[Debug|Release]`
+    - `XCurl.dll` — `...\Xbox.XCurl.API\Redist\x64`
+    - `libHttpClient.GDK.dll` — `...\Xbox.LibHttpClient\Redist\x64`
+
+    If your engine launches a different `.exe` for run-in-editor, copy the DLLs there too.
+  </Step>
+</Steps>
+
+## Update MicrosoftGame.config from Partner Center
+
+In Partner Center → your game → **Game setup → Identity details → Show Details**:
+
+| Partner Center | MicrosoftGame.config |
+| --- | --- |
+| Xbox Title ID | `TitleId` |
+| Package/Identity/Name | `Identity → Name` |
+| Package/Identity/Publisher | `Identity → Publisher` |
+| Xbox services → Xbox Settings → MSAAppId | `MSAAppId` |
+
+See [MicrosoftGame.config overview](/gdk/game-config).
+
+## Initialize the runtime and XSAPI
+
+```cpp
+#include <XGameRuntime.h>
+#include <xsapi-c/services_c.h>
+
+// Initialize GDK
+HRESULT hr = XGameRuntimeInitialize();
+if (FAILED(hr)) {
+    if (hr == E_GAMERUNTIME_DLL_NOT_FOUND || hr == E_GAMERUNTIME_VERSION_MISMATCH) {
+        MessageBoxW(nullptr,
+            L"Game Runtime is not installed on this system or needs updating.",
+            g_szAppName, MB_ICONERROR | MB_OK);
+    }
+    return 1;
+}
+
+// Initialize XSAPI
+XblInitArgs xblArgs = {};
+xblArgs.scid = "00000000-0000-0000-0000-000000000000"; // your SCID
+hr = XblInitialize(&xblArgs);
+if (FAILED(hr)) {
+    // handle failure
+}
+```
+
+## Uninitialize
+
+Always uninit the GDK before exit. XSAPI cleans itself up.
+
+```cpp
+XGameRuntimeUninitialize();
+```
+
+## Test Xbox services
+
+### Create test accounts
+
+See [test accounts](/services/overview).
+
+### Switch sandbox
+
+1. Sandbox ID in **Partner Center → Xbox services → Gameplay Settings** (e.g., `ABCDEF.0`).
+2. **Start** → **Microsoft GDK Command Prompts**.
+3. `XblPCSandbox.exe <sandbox ID>`.
+4. Sign in to the Xbox App with your test account.
+
+## Publish
+
+1. Confirm GDK \+ XSAPI integration is complete.
+2. Create an MSIXVC package — see [Packaging for PC](/gdk/packaging-pc).
+3. Submit at [Partner Center](https://partner.microsoft.com/dashboard).
+
+## Related
+
+- [GDK and game engines](/pc-e2e/gdk-and-engines)
+- [Packaging for PC](/gdk/packaging-pc)
+- [Develop a new title](/gdk/developing-new-titles)
