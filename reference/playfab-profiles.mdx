@@ -1,0 +1,48 @@
+---
+title: "PlayFab Profiles API reference"
+sidebarTitle: "Profiles"
+icon: "user"
+description: "Read and update player profile, display name, avatar URL, and linked-account metadata."
+---
+
+## Client profile
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Client/GetPlayerProfile` | Read the signed-in player's profile (`PlayerProfileModel`) |
+| `POST /Client/UpdateUserTitleDisplayName` | Change the display name |
+| `POST /Client/UpdateAvatarUrl` | Set the avatar URL |
+| `POST /Client/GetAccountInfo` | Auth provider links and friendly metadata |
+
+## Profiles entity API (server)
+
+Entity API — use the entity token from `GetEntityToken`.
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Profile/GetProfile` | Read by entity key |
+| `POST /Profile/GetProfiles` | Batch read |
+| `POST /Profile/GetTitlePlayersFromMasterPlayerAccountIds` | Map master accounts to title player entities |
+| `POST /Profile/SetDisplayName` | Update entity display name |
+| `POST /Profile/SetProfileLanguage` | Locale |
+| `POST /Profile/SetProfilePolicy` | EntityPolicies (permission grants) |
+
+## Server admin lookups
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Server/GetPlayerProfile` | Read any player's profile |
+| `POST /Server/GetUserAccountInfo` | Auth provider info |
+| `POST /Server/GetPlayersInSegment` | Enumerate by PlayerStream segment |
+| `POST /Admin/UpdateUserTitleDisplayName` | Force a display name change |
+
+## Common types
+
+- `PlayerProfileModel` — display name, country, locations, statistics summary, virtual currencies, contact emails, linked accounts.
+- `EntityKey` — entity type \+ ID (master player account, title player account, group, character, title).
+- `EntityProfileBody` — entity-level profile with policies, files, and objects.
+
+## See also
+
+- [Authentication](/reference/playfab-authentication)
+- [Player data](/reference/playfab-player-data)

@@ -1,0 +1,91 @@
+---
+title: "PlayFab API reference overview"
+sidebarTitle: "Overview"
+icon: "book-open"
+description: "How PlayFab exposes services through REST, SDKs, and real-time messaging — plus where to find each per-service reference."
+---
+
+PlayFab APIs are organized into REST groups, a unified C SDK (Services C API), and per-service native libraries for Party, Lobby, and Matchmaking. This index points to the service-specific reference pages.
+
+## Surface
+
+- **REST APIs** — versioned per service. All requests use HTTPS to `https://<TitleID>.playfabapi.com` (or a regional endpoint).
+- **Services C API** — the unified GDK-ready C library used by Xbox titles.
+- **PlayFab Party** — C/C\+\+ realtime data \+ voice transport.
+- **PlayFab Multiplayer (Lobby \+ Matchmaking)** — C/C\+\+ \+ Unity for matchmaking and lobby management.
+- **Real-time messages** — WebSocket messages for Lobby and Matchmaking events.
+
+## Authentication
+
+All calls require a session token. Acquire one with a login method (`LoginWithXbox`, `LoginWithCustomID`, etc.) and pass it as the `X-Authorization` header.
+
+See [Authenticate players with PlayFab and Xbox services](/playfab/player-sign-in) for the GDK integration story.
+
+## Per-service references
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/reference/playfab-authentication">
+    Login providers, account linking, session tokens.
+  </Card>
+
+  <Card title="Player Data" icon="database" href="/reference/playfab-player-data">
+    User data, internal data, publisher data, read-only data.
+  </Card>
+
+  <Card title="Title Data" icon="file-lines" href="/reference/playfab-title-data">
+    Versioned configuration delivered to clients.
+  </Card>
+
+  <Card title="Economy / Inventory" icon="coins" href="/reference/playfab-economy">
+    Catalog v2, inventory v2, marketplace, transactions.
+  </Card>
+
+  <Card title="Lobby & Matchmaking" icon="users" href="/reference/playfab-lobby-matchmaking">
+    Lobby create / search / member updates and matchmaking queues.
+  </Card>
+
+  <Card title="Party" icon="phone" href="/reference/playfab-party">
+    Realtime voice and data transport.
+  </Card>
+
+  <Card title="Multiplayer Servers" icon="server" href="/reference/playfab-multiplayer-servers">
+    Build management, allocation, VMs.
+  </Card>
+
+  <Card title="CloudScript" icon="code" href="/reference/playfab-cloudscript">
+    Server-side handlers, Azure Functions integration.
+  </Card>
+
+  <Card title="Insights & Analytics" icon="chart-pie" href="/reference/playfab-insights">
+    PlayStream events, custom events, telemetry.
+  </Card>
+
+  <Card title="Statistics & Leaderboards" icon="chart-line" href="/reference/playfab-statistics">
+    Versioned leaderboards, entity statistics.
+  </Card>
+
+  <Card title="Groups" icon="users-rectangle" href="/reference/playfab-groups">
+    Guilds, clans, role membership.
+  </Card>
+
+  <Card title="Profiles" icon="address-card" href="/reference/playfab-profiles">
+    Entity profile model, language, files, objects.
+  </Card>
+
+  <Card title="PlayStream events" icon="wave-square" href="/reference/playfab-playstream-events">
+    Full event model catalog — Player, Inventory, CloudScript, Networking, etc.
+  </Card>
+
+  <Card title="Errors" icon="circle-exclamation" href="/reference/playfab-errors">
+    Global API method error codes and HTTP status mapping.
+  </Card>
+
+  <Card title="API access policy" icon="shield" href="/reference/playfab-access-policy">
+    Per-API access control and permission policy.
+  </Card>
+</CardGroup>
+
+## See also
+
+- [PlayFab overview (conceptual)](/playfab/overview)
+- [PlayFab player sign-in](/playfab/player-sign-in)

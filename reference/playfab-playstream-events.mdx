@@ -1,0 +1,127 @@
+---
+title: "PlayFab PlayStream Events reference"
+sidebarTitle: "PlayStream Events"
+icon: "wave-square"
+description: "Catalog of system-emitted PlayStream events organized by domain — Player, Inventory, CloudScript, Networking, and more."
+---
+
+PlayStream events are emitted by PlayFab services for every meaningful change. Subscribe via Rules (segment-triggered) or pipe to Insights / external archive. Most events are also available in real-time via the PlayStream debugger.
+
+## Player and identity
+
+Emitted from Authentication, Account management, and Player Profile services.
+
+- `player_created`, `player_logged_in`, `player_authenticated`, `entity_created`, `entity_logged_in`, `entity_deleted`
+- `player_added_title`, `player_removed_title`, `logged_in_to_title`
+- `player_linked_account`, `player_unlinked_account`, `player_identity_link_added`, `player_identity_link_removed`
+- `player_completed_password_reset`, `player_password_reset_link_sent`, `title_initiated_player_password_reset`
+- `player_changed_avatar`, `player_displayname_changed`, `player_updated_contact_email`, `player_verified_contact_email`, `player_updated_login_email`
+- `player_tag_added`, `player_tag_removed`
+- `player_banned`, `player_data_exported`, `player_device_info`, `player_reported_as_abusive`
+- `auth_token_validated`, `character_created`
+- `title_deleted_master_player`, `title_profile_view_constraints_changed`, `player_custom_properties_changed`
+
+## Player profile (Entity Profile)
+
+- `access_policy_updated`, `avatar_url_updated`, `contact_email_updated`, `files_changed`, `language_updated`, `objects_updated`
+- `entity_files_set`, `entity_language_updated`, `entity_objects_set`
+
+## Inventory and economy
+
+From Economy v2 and the legacy inventory APIs.
+
+- Catalog v1: `title_catalog_updated`, `title_store_updated`
+- Catalog v2: `item_created`, `item_updated`, `item_deleted`, `item_publish_requested`, `item_moderation_state_changed`, `item_reported`, `review_reported`, `reviews_takedown_requested`
+- Inventory: `items_added`, `items_subtracted`, `items_updated`, `items_deleted`, `items_expired`, `items_purchased`, `items_redeemed`, `items_transferred`, `items_clawback_completed`, `items_clawback_reversal_completed`, `marketplace_transaction_redeemed`
+- Character / virtual currency: `character_consumed_item`, `character_inventory_item_added`, `character_vc_item_purchased`, `character_virtual_currency_balance_changed`
+- Player VC: `player_consumed_item`, `player_inventory_item_added`, `player_vc_item_purchased`, `player_virtual_currency_balance_changed`, `entity_virtual_currency_balances_changed`
+- Purchasing: `player_started_purchase`, `player_paid_for_purchase`
+- Player set / profile property: `player_set_profile_property`
+
+## Stats, leaderboards, and segmentation
+
+- `statistic_updated`
+- `player_statistic_changed`, `player_statistic_deleted`
+- `character_statistic_changed`, `character_statistic_deleted`
+- `entity_rank_on_leaderboard_version_ended`, `leaderboard_version_ended`, `player_ranked_on_leaderboard_version`
+- `title_statistic_version_changed`, `title_statistic_deleted`
+- `segment_entered`, `segment_exited`, `api_operation`
+
+## CloudScript and Functions
+
+- `cloudscript_executed`, `entity_executed_cloud_script`, `player_executed_cloudscript`, `player_triggered_action_executed_cloudscript`
+- `title_added_cloudscript`, `title_published_cloudscript`, `title_scheduled_cloudscript_executed`
+- `function_executed`, `function_registered`, `function_unregistered`
+- `player_triggered_action_executed_function`, `title_scheduled_function_executed`
+
+## Groups
+
+- `group_created`, `group_updated`
+- `group_members_added`, `group_members_removed`, `members_added`, `members_removed`
+- `group_role_created`, `group_role_updated`, `group_role_deleted`, `role_updated`
+- `group_role_members_added`, `group_role_members_removed`, `members_role_updated`
+- `player_updated_membership`
+
+## Multiplayer Servers
+
+- Builds: `build_alias_created`, `build_alias_updated`, `build_alias_deleted`, `build_deleted`, `build_region_status_changed`, `build_region_updated`, `build_region_utilization`, `create_build_initiated`, `enabled_for_title`, `game_asset_deleted`
+- Certificates: `certificate_uploaded`, `certificate_deleted`
+- Servers: `server_requested`, `server_state_changed`, `crash_detected`, `monitoring_output_saved`
+- VMs: `vm_assigned`, `vm_game_certificates_deployed`, `vm_remote_user_created`, `vm_remote_user_deleted`, `vm_state_change`, `vm_unassignment_started`, `vm_unhealthy`
+- Secrets: `secret_added`, `secret_deleted`
+
+## Matchmaking and Networking
+
+- Matchmaking: `title_queue_config_updated`, `match_found`, `ticket_completed`, `user_ticket_invited`
+- Networking: `client_authentication_completed`, `client_connected_to_network`, `client_initialization_completed`, `client_network_created`, `client_network_destroyed`, `client_network_information_received`, `client_request_failed`, `data_received_by_clients`, `data_sent_by_clients`, `moderation_service_request_count`, `player_disconnected_from_network`, `unity_client_initialization_completed`, `unreal_client_initialization_completed`
+
+## Experimentation and targeting
+
+- `experiment_created`, `experiment_updated`, `experiment_deleted`
+- `experiment_start_requested`, `experiment_stop_requested`
+- `exclusion_group_created`, `exclusion_group_updated`, `exclusion_group_deleted`
+- `player_experiment_variants_changed`
+- `player_churn_prediction_changed`
+
+## Title configuration
+
+- API: `title_api_settings_changed`, `title_permission_policy_changed`
+- Title data: `title_news_updated`, `title_secret_key_changed`, `title_data_updated`, `title_data_override_deleted`, `title_activated`, `title_deactivated`
+- Tasks: `title_aborted_task`, `title_completed_task`, `title_created_task`, `title_deleted_task`, `title_started_task`, `title_updated_task`
+- Telemetry: `apikey_activated`, `apikey_created`, `apikey_deactivated`, `apikey_deleted`
+- Limits: `title_exceeded_limit`, `title_limit_changed`, `title_requested_limit_change`, `export_completed`
+- General: `tenancy_connector_onboard`, `studio_tier_updated`
+- Alerts: `title_client_rate_limited_alert`, `title_high_error_rate_alert`, `title_saved_survey`
+
+## Communications
+
+- `player_registered_push_notifications`, `sent_email`, `sent_push_notification`, `email_sent`, `push_notification_sent`
+- Display name filter: `display_name_filtered`, `player_display_name_filtered`
+- Photon helper: `player_photon_session_authenticated`
+
+## PlayStream control plane
+
+- `action_executed`, `action_failed`
+- `player_action_executed`, `player_ad_campaign_attribution`
+
+## Ad placement
+
+- `player_ad_closed`, `player_ad_ended`, `player_ad_opened`, `player_ad_rewarded`, `player_ad_started`
+
+## Game saves
+
+- `gamesave_version_finalized`, `gamesave_version_marked_known_good`
+
+## Sessions
+
+- `client_focus_change`, `client_session_start`
+
+## Studio / addons
+
+- `studio_created`, `studio_user_added`, `studio_user_invited`, `studio_user_removed`
+- `title_addon_changed`
+
+## See also
+
+- [PlayFab Insights](/reference/playfab-insights)
+- [CloudScript](/reference/playfab-cloudscript)

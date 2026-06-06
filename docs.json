@@ -297,7 +297,25 @@
           {
             "group": "PlayFab API",
             "icon": "server",
-            "pages": []
+            "pages": [
+              "reference/playfab-overview",
+              "reference/playfab-authentication",
+              "reference/playfab-player-data",
+              "reference/playfab-profiles",
+              "reference/playfab-economy",
+              "reference/playfab-title-data",
+              "reference/playfab-lobby-matchmaking",
+              "reference/playfab-party",
+              "reference/playfab-multiplayer-servers",
+              "reference/playfab-cloudscript",
+              "reference/playfab-insights",
+              "reference/playfab-statistics",
+              "reference/playfab-groups",
+              "reference/playfab-friends",
+              "reference/playfab-playstream-events",
+              "reference/playfab-errors",
+              "reference/playfab-access-policy"
+            ]
           }
         ]
       }

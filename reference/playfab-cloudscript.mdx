@@ -1,0 +1,55 @@
+---
+title: "PlayFab CloudScript API reference"
+sidebarTitle: "CloudScript"
+icon: "code"
+description: "Server-side handlers, Azure Functions integration, and the legacy revisioned JavaScript runtime."
+---
+
+CloudScript lets you run trusted server-side code on behalf of a player. Two implementations:
+
+## CloudScript (legacy JavaScript)
+
+Versioned JavaScript files hosted by PlayFab.
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Client/ExecuteCloudScript` | Run a function as the signed-in player |
+| `POST /Server/ExecuteCloudScript` | Run server-side (handlers may run with elevated context) |
+| `POST /Admin/UpdateCloudScript` | Publish a new revision |
+| `POST /Admin/GetCloudScriptRevision` | Fetch revision contents |
+| `POST /Admin/GetCloudScriptVersions` | List revisions |
+
+## CloudScript using Azure Functions (Functions)
+
+The successor model — your code lives in Azure Functions (HTTP triggers), and PlayFab Title can register them as named handlers.
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /CloudScript/ExecuteFunction` | Invoke a registered function |
+| `POST /CloudScript/ListFunctions` | List registered functions |
+| `POST /CloudScript/RegisterHttpFunction` | Register an HTTP-triggered function |
+| `POST /CloudScript/UnregisterFunction` | Unregister |
+| `POST /CloudScript/RegisterQueuedFunction` | Queue-trigger function |
+| `POST /CloudScript/RegisterEventHubFunction` | Event Hub trigger |
+
+## Player-triggered actions
+
+Automatically run a function (or legacy script) when a player matches a segment or fires a PlayStream event.
+
+Configured in the Game Manager under **Automation \> Rules** and **Scheduled Tasks**. PlayStream events emitted:
+
+- `cloudscript_executed`
+- `entity_executed_cloud_script`
+- `player_executed_cloudscript`
+- `player_triggered_action_executed_cloudscript`
+- `title_added_cloudscript`
+- `title_published_cloudscript`
+- `title_scheduled_cloudscript_executed`
+- `function_executed`, `function_registered`, `function_unregistered`
+- `player_triggered_action_executed_function`
+- `title_scheduled_function_executed`
+
+## See also
+
+- [PlayFab Insights](/reference/playfab-insights)
+- [PlayStream Events](/reference/playfab-playstream-events)

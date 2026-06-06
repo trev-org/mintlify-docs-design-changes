@@ -1,0 +1,40 @@
+---
+title: "PlayFab Friends API reference"
+sidebarTitle: "Friends"
+icon: "user-group"
+description: "Friends list, friend requests, and cross-platform friend mapping."
+---
+
+The Friends API manages the per-player friend graph stored in PlayFab. For Xbox-only social graphs, also see the Xbox [People](/services/people-system) and [Social](/services/social) services.
+
+## Reading the friend list
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Client/GetFriendsList` | Local-player friends including external provider links |
+| `POST /Client/GetFriendLeaderboard` | Friend-only leaderboard slice |
+| `POST /Server/GetFriendsList` | Friends for any player |
+| `POST /Server/GetFriendLeaderboard` | Server-side friend leaderboard |
+
+## Modifying friends
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Client/AddFriend` | Send a friend request |
+| `POST /Client/RemoveFriend` | Remove |
+| `POST /Client/SetFriendTags` | Tag friends |
+| `POST /Server/AddFriend` / `RemoveFriend` / `SetFriendTags` | Server-side equivalents |
+
+## Cross-provider friend lookup
+
+`GetFriendsList` supports `XboxToken`, `FacebookToken`, `SteamId`, and PSN sources — PlayFab returns mapped PlayFab entity links so you can resolve friends across providers.
+
+## Tags
+
+Freeform string tags per friend — useful for grouping (`favorite`, `recent_squad`).
+
+## See also
+
+- [PlayFab Profiles](/reference/playfab-profiles)
+- [PlayFab Groups](/reference/playfab-groups)
+- [Xbox Social](/services/social)

@@ -1,0 +1,51 @@
+---
+title: "PlayFab Statistics and Leaderboards API reference"
+sidebarTitle: "Statistics & Leaderboards"
+icon: "chart-line"
+description: "Versioned entity statistics and leaderboards — the modern Stats v2 surface and the legacy player-stat APIs."
+---
+
+PlayFab Stats v2 (also known as Stats Definitions / Entity Leaderboards) is the current API. Use it for new titles. Legacy player-stat APIs are still supported but feature-frozen.
+
+## Stats v2 — statistic definitions
+
+- `POST /Statistics/CreateStatisticDefinition` — author a stat (columns, aggregation, version increment).
+- `POST /Statistics/UpdateStatisticDefinition`, `DeleteStatisticDefinition`.
+- `POST /Statistics/ListStatisticDefinitions`.
+- `POST /Statistics/IncrementStatisticVersion` — close current version, start a new one.
+
+## Stats v2 — reading and writing statistics
+
+- `POST /Statistics/UpdateStatistics` — set / set-if-better / increment a stat for an entity.
+- `POST /Statistics/GetStatistics`, `GetStatisticsForEntities`.
+
+## Stats v2 — leaderboards
+
+- `POST /Leaderboards/GetLeaderboard`
+- `POST /Leaderboards/GetLeaderboardAroundEntity`
+- `POST /Leaderboards/GetLeaderboardForEntities`
+- `POST /Leaderboards/GetFriendLeaderboardForEntity`
+- `POST /Leaderboards/GetLeaderboardDefinition`, `CreateLeaderboardDefinition`, `UpdateLeaderboardDefinition`, `DeleteLeaderboardDefinition`, `ListLeaderboardDefinitions`.
+- `POST /Leaderboards/IncrementLeaderboardVersion`.
+- `POST /Leaderboards/UpdateLeaderboardEntries`, `DeleteLeaderboardEntries`.
+
+## Legacy player statistics
+
+- Client / Server `GetPlayerStatistics`, `UpdatePlayerStatistics`.
+- `GetPlayerStatisticVersions`.
+- `GetFriendLeaderboard`, `GetLeaderboard`, `GetLeaderboardAroundPlayer`, `GetLeaderboardAroundCharacter`.
+
+## PlayStream events
+
+- `statistic_updated`
+- `player_statistic_changed`, `player_statistic_deleted`
+- `character_statistic_changed`, `character_statistic_deleted`
+- `entity_rank_on_leaderboard_version_ended`
+- `leaderboard_version_ended`
+- `player_ranked_on_leaderboard_version`
+- `title_statistic_version_changed`, `title_statistic_deleted`
+
+## See also
+
+- [Leaderboards & Stats (concepts)](/playfab/leaderboards-stats)
+- [Player data](/reference/playfab-player-data)

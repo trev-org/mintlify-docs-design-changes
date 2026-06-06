@@ -1,0 +1,48 @@
+---
+title: "PlayFab API access policy reference"
+sidebarTitle: "API access policy"
+icon: "shield"
+description: "Per-API access control, anti-cheat rules, and the permission policy model used to restrict client-callable methods."
+---
+
+The API Access Policy controls which Client APIs are callable, how they're rate-limited, and what tokens they accept.
+
+## Default posture
+
+New titles start with the **Restrictive** policy. Anything not strictly required is disabled. Tighten further before production.
+
+## Policy structure
+
+A policy is an ordered list of rules. Each rule is `(Action, Resource, Predicate, Effect)`:
+
+- **Action** — the method (e.g., `Client/LoginWithCustomID`).
+- **Resource** — the resource scope (`pfrn:api--*` for all APIs, or a specific path).
+- **Predicate** — conditional expression (e.g., `req.PlayFabId == res.PlayFabId`).
+- **Effect** — `Allow` or `Deny`.
+
+Rules evaluate in order; the first match wins. The implicit default at the end is `Deny`.
+
+## Recommended hardening
+
+- Disable `UpdateUserData` if you only mutate data via Server / CloudScript.
+- Disable `UpdateUserPublisherData` unless your title needs cross-title shared state.
+- Disable `WritePlayerEvent` from clients and route through `WriteTelemetryEvent`.
+- Disable `UpdatePlayerStatistics` from clients and use CloudScript handlers.
+- Disable Client `ExecuteCloudScript` for handlers that must be server-only.
+
+## Endpoints
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Admin/GetPolicy` | Read current policy |
+| `POST /Admin/UpdatePolicy` | Replace policy |
+
+## PlayStream events emitted
+
+- `title_api_settings_changed`
+- `title_permission_policy_changed`
+
+## See also
+
+- [Authentication](/reference/playfab-authentication)
+- [Errors](/reference/playfab-errors)

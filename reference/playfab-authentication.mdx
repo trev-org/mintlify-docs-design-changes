@@ -1,0 +1,63 @@
+---
+title: "PlayFab Authentication API reference"
+sidebarTitle: "Authentication"
+icon: "key"
+description: "Login providers, account linking, account creation, and session-token management."
+---
+
+## Login providers
+
+Each provider creates a PlayFab player on first login and returns an authenticated session token.
+
+| Method | Use case |
+| --- | --- |
+| `LoginWithXbox` | Xbox Live token — the canonical GDK flow |
+| `LoginWithCustomID` | Anonymous / device-bound logins |
+| `LoginWithEmailAddress` / `LoginWithPlayFab` | Username/password |
+| `LoginWithGoogleAccount` / `LoginWithGooglePlayGamesServices` | Google |
+| `LoginWithIOSDeviceID` / `LoginWithAndroidDeviceID` | Per-device anonymous on mobile |
+| `LoginWithSteam` / `LoginWithSteamId` | Steam |
+| `LoginWithPSN` / `LoginWithNintendoSwitchAccount` / `LoginWithNintendoServiceAccount` | Other consoles |
+| `LoginWithApple` | Sign in with Apple |
+| `LoginWithOpenIdConnect` | Generic OIDC providers |
+| `LoginWithFacebook` / `LoginWithFacebookInstantGamesId` | Meta |
+| `LoginWithTwitch` | Twitch |
+| `LoginWithKongregate` / `LoginWithGameCenter` | Other |
+| `LoginWithServerCustomId` | Server-only flow |
+| `AuthenticateGameServerWithCustomId` | Dedicated game server login |
+
+## Account creation
+
+| Method | Use case |
+| --- | --- |
+| `RegisterPlayFabUser` | Create a PlayFab account by email/username |
+| `AddUsernamePassword` | Add login credentials to an existing player |
+
+## Account linking and unlinking
+
+For every external provider above, there's a matching `Link*` and `Unlink*` method (e.g., `LinkXboxAccount` / `UnlinkXboxAccount`, `LinkCustomID` / `UnlinkCustomID`, `LinkSteamAccount` / `UnlinkSteamAccount`).
+
+## Password and recovery
+
+- `SendAccountRecoveryEmail`
+- `ResetPassword`
+- `AddOrUpdateContactEmail`
+
+## Sessions
+
+- `ValidateEntityToken`
+- `RefreshGameSession` (when supported)
+- Bans: `GetUserBans`, `BanUsers` (admin), `RevokeAllBansForUser` (admin)
+
+## Entity authentication (Entity model)
+
+PlayFab's modern model authenticates **entities** (title player, character, group, namespace).
+
+- `GetEntityToken` — exchange a client session for an entity token used by Entity APIs (Data, Profiles, Inventory v2).
+- `LoginWithXbox` (and other login methods) return both a player session and an entity token.
+
+## See also
+
+- [Player sign-in (concepts)](/playfab/player-sign-in)
+- [PlayFab Profiles](/reference/playfab-profiles)
+- [PlayFab Errors](/reference/playfab-errors)

@@ -1,0 +1,43 @@
+---
+title: "PlayFab Title Data API reference"
+sidebarTitle: "Title Data"
+icon: "file-lines"
+description: "Versioned configuration delivered to clients — plus title news, override segments, and secret keys."
+---
+
+Title Data is the key-value config store that ships with your title. Use it for tunable values (drop rates, feature flags, season IDs).
+
+## Client methods
+
+| Method | Description |
+| --- | --- |
+| `GetTitleData` | Read public title data |
+| `GetTitleNews` | News items shown to players |
+| `GetTitlePublicKey` | RSA public key for asymmetric encryption |
+
+## Server methods
+
+| Method | Description |
+| --- | --- |
+| `GetTitleData` / `SetTitleData` | Public title data |
+| `GetTitleInternalData` / `SetTitleInternalData` | Server-only config |
+| `GetTitleNews` / `AddNews` | News items |
+
+## Admin methods
+
+- Title-data history, secret keys, overrides per segment.
+- `SetTitleDataAndOverrides` for segment-targeted values.
+- `GetTitleDataOverride` to read the merged value for a given segment.
+
+## PlayStream events emitted
+
+- `title_data_updated`
+- `title_data_override_deleted`
+- `title_news_updated`
+- `title_secret_key_changed`
+- `title_activated` / `title_deactivated`
+
+## See also
+
+- [PlayStream Events](/reference/playfab-playstream-events)
+- [CloudScript](/reference/playfab-cloudscript)

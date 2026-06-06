@@ -1,0 +1,46 @@
+---
+title: "PlayFab Player Data API reference"
+sidebarTitle: "Player Data"
+icon: "database"
+description: "Per-player key-value data — user data, internal data, publisher data, read-only data."
+---
+
+PlayFab exposes several player-data scopes — distinguished by who can read or write each.
+
+| Scope | Client read | Client write | Server write |
+| --- | --- | --- | --- |
+| **UserData** | yes | yes | yes |
+| **UserReadOnlyData** | yes | no | yes |
+| **UserInternalData** | no | no | yes |
+| **UserPublisherData** | yes (across publisher's titles) | yes | yes |
+| **UserPublisherReadOnlyData** | yes | no | yes |
+| **UserPublisherInternalData** | no | no | yes |
+
+## Client methods
+
+- `GetUserData`, `UpdateUserData`
+- `GetUserPublisherData`, `UpdateUserPublisherData`
+- `GetUserReadOnlyData`, `GetUserPublisherReadOnlyData`
+
+## Server methods
+
+- `GetUserData`, `UpdateUserData`
+- `GetUserInternalData`, `UpdateUserInternalData`
+- `GetUserPublisherData`, `UpdateUserPublisherData`
+- `GetUserPublisherInternalData`, `UpdateUserPublisherInternalData`
+- `GetUserReadOnlyData`, `UpdateUserReadOnlyData`
+- `GetUserPublisherReadOnlyData`, `UpdateUserPublisherReadOnlyData`
+
+## Character data
+
+If you use Characters, parallel methods exist for `CharacterData`, `CharacterReadOnlyData`, `CharacterInternalData`.
+
+## Entity Objects and Files (recommended for new titles)
+
+The Entity model replaces UserData for new designs. See [PlayFab Profiles](/reference/playfab-profiles) for `GetObjects` / `SetObjects` and the Files API.
+
+## See also
+
+- [PlayFab Profiles](/reference/playfab-profiles)
+- [PlayFab Title Data](/reference/playfab-title-data)
+- [PlayFab Economy](/reference/playfab-economy)

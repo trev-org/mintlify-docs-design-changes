@@ -1,0 +1,54 @@
+---
+title: "PlayFab Lobby and Matchmaking API reference"
+sidebarTitle: "Lobby & Matchmaking"
+icon: "users"
+description: "Multiplayer Lobby (rooms) and Matchmaking (queues, tickets, ML matching) APIs plus real-time messages."
+---
+
+## Lobby
+
+Lobbies are the persistent / pre-game grouping primitive.
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Lobby/CreateLobby` | Create with initial members and config |
+| `POST /Lobby/FindLobbies` | Search by query string |
+| `POST /Lobby/JoinLobby` / `JoinLobbyAsServer` | Join |
+| `POST /Lobby/LeaveLobby` / `LeaveLobbyAsServer` | Leave |
+| `POST /Lobby/GetLobby` | Read current state |
+| `POST /Lobby/UpdateLobby` / `UpdateLobbyAsServer` | Update properties / search keys / membership lock |
+| `POST /Lobby/SubscribeToLobbyResource` / `UnsubscribeFromLobbyResource` | Realtime notifications |
+| `POST /Lobby/InviteToLobby` | Send invite |
+| `POST /Lobby/RemoveMember` | Kick |
+
+Real-time WebSocket messages: lobby updates, member add/remove, invite received.
+
+## Matchmaking
+
+Matchmaking is queue-based with ticket lifecycles.
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Match/CreateMatchmakingTicket` | Submit a ticket |
+| `POST /Match/CreateServerMatchmakingTicket` | Server-side submission |
+| `POST /Match/CreateServerBackfillTicket` | Backfill an existing match |
+| `POST /Match/GetMatchmakingTicket` | Poll status |
+| `POST /Match/CancelMatchmakingTicket` | Cancel |
+| `POST /Match/CancelAllMatchmakingTicketsForPlayer` | Cancel all |
+| `POST /Match/GetMatch` | Read match details once `Matched` |
+| `POST /Match/JoinMatchmakingTicket` | Add a player to an existing ticket |
+| `POST /Match/ListMatchmakingTicketsForPlayer` | Active tickets |
+| `POST /Match/GetQueueStatistics` | Queue metrics |
+
+Real-time WebSocket messages: ticket status changes, match found.
+
+## Types
+
+- `Lobby`, `LobbyMember`, `LobbyOwner`
+- `MatchmakingTicket`, `MatchedTicket`, `MatchmakingPlayer`, `MatchmakingQueueAttribute`
+- `EntityKey`
+
+## See also
+
+- [Lobby & Matchmaking (concepts)](/playfab/multiplayer-lobby)
+- [PlayFab Party](/reference/playfab-party)

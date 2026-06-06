@@ -1,0 +1,68 @@
+---
+title: "PlayFab Multiplayer Servers API reference"
+sidebarTitle: "Multiplayer Servers"
+icon: "server"
+description: "Builds, regions, asset uploads, allocation, VM lifecycle, certificates, and secrets for dedicated game servers."
+---
+
+PlayFab Multiplayer Servers (also called PlayFab Game Servers) provides Linux and Windows container-based dedicated server hosting.
+
+## Builds
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /MultiplayerServer/CreateBuildWithCustomContainer` | Custom container image |
+| `POST /MultiplayerServer/CreateBuildWithManagedContainer` | Managed container with your game assets |
+| `POST /MultiplayerServer/CreateBuildWithProcessBasedServer` | Process-based (Windows only) |
+| `POST /MultiplayerServer/ListBuildSummariesV2` | List builds |
+| `POST /MultiplayerServer/GetBuild` | Detail |
+| `POST /MultiplayerServer/DeleteBuild` | Delete |
+| `POST /MultiplayerServer/UpdateBuildRegions` | Adjust region capacity / standby |
+| `POST /MultiplayerServer/UpdateBuildName` / `UpdateBuildAlias` | Aliases |
+
+## Build aliases
+
+Move traffic between builds with a stable alias.
+
+- `CreateBuildAlias`, `UpdateBuildAlias`, `DeleteBuildAlias`, `ListBuildAliases`, `GetBuildAlias`.
+
+## Asset and certificate management
+
+- `GetAssetUploadUrl` / `ListAssetSummaries` / `DeleteAsset`
+- `UploadCertificate` / `GetCertificateSummary` / `DeleteCertificate`
+- `ListCertificateSummaries`
+
+## Allocation and matchmaking integration
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /MultiplayerServer/RequestMultiplayerServer` | Allocate a server now |
+| `POST /MultiplayerServer/GetMultiplayerServerDetails` | Inspect an allocated server |
+| `POST /MultiplayerServer/ListMultiplayerServers` | List allocations |
+| `POST /MultiplayerServer/ShutdownMultiplayerServer` | Force shutdown |
+| `POST /MultiplayerServer/RequestPartyService` | (Party servers) request |
+
+## VMs
+
+- `ListVirtualMachineSummaries` / `GetServerBackfillTicket`
+- `EnableMultiplayerServersForTitle`
+
+## Secrets and resources
+
+- `UploadSecret`, `ListSecretSummaries`, `DeleteSecret`
+- Quotas: `GetTitleEnabledForMultiplayerServersStatus`, `GetTitleMultiplayerServersQuotas`
+
+## PlayStream events emitted
+
+- `build_alias_created`, `build_alias_updated`, `build_alias_deleted`, `build_deleted`
+- `build_region_status_changed`, `build_region_updated`, `build_region_utilization`
+- `certificate_uploaded`, `certificate_deleted`
+- `crash_detected`, `monitoring_output_saved`
+- `server_requested`, `server_state_changed`
+- `vm_assigned`, `vm_state_change`, `vm_unhealthy`, `vm_unassignment_started`
+- `secret_added`, `secret_deleted`
+
+## See also
+
+- [Lobby & Matchmaking](/reference/playfab-lobby-matchmaking)
+- [PlayFab Errors](/reference/playfab-errors)

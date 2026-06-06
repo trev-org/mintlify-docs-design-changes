@@ -1,0 +1,64 @@
+---
+title: "PlayFab Groups API reference"
+sidebarTitle: "Groups"
+icon: "users-rectangle"
+description: "Guilds, clans, and role-based group membership for entity-scoped social organization."
+---
+
+Groups are entity-scoped containers (guilds, clans, parties) with roles, membership, and applications.
+
+## Group lifecycle
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Group/CreateGroup` | Create |
+| `POST /Group/GetGroup` | Read |
+| `POST /Group/UpdateGroup` | Update display name / metadata |
+| `POST /Group/DeleteGroup` | Delete |
+| `POST /Group/ListGroupsByMember` | List groups containing an entity |
+
+## Members
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Group/AddMembers` | Add by entity key |
+| `POST /Group/RemoveMembers` | Remove |
+| `POST /Group/ListGroupMembers` | List |
+| `POST /Group/ChangeMemberRole` | Move between roles |
+
+## Roles
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Group/CreateRole` | Add a role |
+| `POST /Group/UpdateRole` | Rename / reconfigure |
+| `POST /Group/DeleteRole` | Delete |
+| `POST /Group/ListGroupRoles` | List |
+| `POST /Group/IsMember` | Membership check |
+
+## Applications and invitations
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Group/ApplyToGroup` | Member requests to join |
+| `POST /Group/AcceptGroupApplication` / `RemoveGroupApplication` | Owner moderates |
+| `POST /Group/ListGroupApplications` | List pending |
+| `POST /Group/InviteToGroup` | Group invites a player |
+| `POST /Group/AcceptGroupInvitation` / `RemoveGroupInvitation` | Player decides |
+| `POST /Group/ListGroupInvitations` | List pending |
+| `POST /Group/ListMembershipOpportunities` | Pending for the player |
+| `POST /Group/BlockEntity` / `UnblockEntity` | Block list |
+| `POST /Group/ListGroupBlocks` | List blocks |
+
+## PlayStream events
+
+- `group_created`, `group_updated`
+- `group_members_added`, `group_members_removed`, `members_added`, `members_removed`
+- `group_role_created`, `group_role_updated`, `group_role_deleted`, `role_updated`
+- `group_role_members_added`, `group_role_members_removed`, `members_role_updated`
+- `player_updated_membership`
+
+## See also
+
+- [Authentication](/reference/playfab-authentication)
+- [Profiles](/reference/playfab-profiles)

@@ -1,0 +1,62 @@
+---
+title: "PlayFab error codes reference"
+sidebarTitle: "Errors"
+icon: "circle-exclamation"
+description: "Standard PlayFab error codes returned from REST APIs and SDKs, plus HTTP status mapping and retry strategy."
+---
+
+Every PlayFab response includes a `code`, an `errorCode` enum value, and a string `errorMessage`. The HTTP status code is a coarse hint; the `errorCode` is the precise reason.
+
+## Response envelope
+
+```json
+{
+  "code": 400,
+  "status": "BadRequest",
+  "error": "InvalidParams",
+  "errorCode": 1000,
+  "errorMessage": "Invalid input parameters",
+  "errorDetails": { "PlayFabId": [ "Required" ] },
+  "data": null
+}
+```
+
+## HTTP status code mapping
+
+| HTTP | Meaning | Common `errorCode` values |
+| --- | --- | --- |
+| 200 | Success | `Success` (0) |
+| 400 | Bad request | `InvalidParams`, `InvalidPartnerResponse`, missing required field |
+| 401 | Unauthorized | `NotAuthenticated`, `InvalidSessionTicket`, `InvalidEntityToken` |
+| 403 | Forbidden | `NotAuthorized`, `APIClientRequestRateLimitExceeded`, `AccountBanned` |
+| 404 | Not found | `AccountNotFound`, `ItemNotFound`, `LobbyDoesNotExist` |
+| 409 | Conflict | `ConcurrentEditError`, `ConflictingExperiments` |
+| 429 | Too many requests | `APIClientRequestRateLimitExceeded` |
+| 500 | Server error | `InternalServerError` |
+| 503 | Service unavailable | `ServiceUnavailable` |
+
+## Common error code families
+
+- **1000–1099** — input validation, authentication, basic API problems.
+- **1100–1199** — account / linking / banning.
+- **1200–1299** — inventory, currency, stores.
+- **1400–1499** — CloudScript and Functions.
+- **1500–1599** — PlayStream and segmentation.
+- **1600–1699** — Multiplayer (Lobby, Matchmaking, Servers).
+- **1700–1799** — Profiles / Files / Objects.
+- **1800–1899** — Catalog v2 / Inventory v2.
+- **1900–1999** — Statistics / Leaderboards.
+
+## Recommended retry strategy
+
+1. **429 / 503** — honor `Retry-After`; exponential back off with jitter; cap retries.
+2. **500** — retry once with back off.
+3. **401 with `InvalidSessionTicket` / `InvalidEntityToken`** — re-authenticate (`LoginWith*`) and retry.
+4. **400 / 403 / 404 / 409** — do not retry; fix the input or surface to the player.
+5. **HTTP timeout / no response** — retry idempotent operations only.
+
+## See also
+
+- [HTTP response status codes (source)](https://learn.microsoft.com/gaming/playfab/api-references/http-response-status-codes)
+- [Authentication](/reference/playfab-authentication)
+- [Xbox Live error codes](/reference/xbl-error-codes)

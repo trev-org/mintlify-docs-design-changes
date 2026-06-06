@@ -1,0 +1,56 @@
+---
+title: "PlayFab Party API reference"
+sidebarTitle: "Party"
+icon: "phone"
+description: "Realtime voice + data transport with cross-platform support, voice chat, and Xbox Live helper layer."
+---
+
+PlayFab Party provides a low-latency, cross-platform mesh for voice chat and game data over UDP, with codec support and Xbox Live integration.
+
+## C/C\+\+ API surface
+
+Core classes (mapped to flat C entry points):
+
+- `PartyManager` — singleton, lifecycle: `Initialize`, `Cleanup`, `CreateLocalUser`, `CreateNewNetwork`, `ConnectToNetwork`.
+- `PartyLocalUser` — local end-user identity (Xbox xuid or other token).
+- `PartyNetwork` — the joined / created mesh: `AuthenticateLocalUser`, `ConnectChatControl`, `CreateEndpoint`, `LeaveNetwork`.
+- `PartyEndpoint` — per-network endpoint used to send / receive game data: `SendMessage` (reliable / unreliable / sequenced).
+- `PartyChatControl` — per-user voice chat handle: `SetVoicePermissions`, `SetTextToSpeechProfile`, `PopulateAvailableTextToSpeechProfiles`.
+- `PartyVoiceProfile` — TTS voice metadata.
+
+## State changes
+
+Process once per frame:
+
+- `PartyManager::StartProcessingStateChanges` / `FinishProcessingStateChanges`
+- Drain `PartyStateChange` array — events for network connections, chat control state, message arrival, endpoint creation.
+
+## Unity API
+
+Mirror of the C/C\+\+ API exposed through `Microsoft.PlayFab.Party` C# classes:
+
+- `PartyXblManager` — Xbox-Live-helper integration.
+- `PartyManager`, `PartyNetwork`, `PartyEndpoint`, `PartyChatControl`.
+- Coroutine helpers for connect / authenticate / leave.
+
+## Xbox Live helper layer (`partyxbl`)
+
+Makes `LoginWithXbox` to Party trivial:
+
+- `PartyXblManager::CreateLocalChatUser` — build a Party local user from an `XUserHandle`.
+- `PartyXblManager::LoginToPlayFab` — acquire PlayFab entity tokens from the Xbox token.
+- `PartyXblManager::GetEntityIdsFromXboxLiveUserIds` — map xuids to entity IDs.
+- `PartyXblChatPermissionOptions` — Xbox-controlled per-direction chat permissions.
+
+## Voice chat features
+
+- Voice activity detection.
+- Speech-to-text and text-to-speech (selectable voice profiles).
+- Per-user volume, per-endpoint receive filters.
+- Transcription reporting (privacy-aware).
+
+## See also
+
+- [Party & Voice (concepts)](/playfab/party-voice)
+- [Game Chat 2 (Xbox-only)](/services/game-chat)
+- [PlayFab Lobby & Matchmaking](/reference/playfab-lobby-matchmaking)

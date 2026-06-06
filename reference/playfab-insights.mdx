@@ -1,0 +1,56 @@
+---
+title: "PlayFab Insights and Analytics API reference"
+sidebarTitle: "Insights & Analytics"
+icon: "chart-pie"
+description: "Custom event ingestion, PlayStream archive, Insights performance scaling, and Experimentation APIs."
+---
+
+## Custom events (telemetry ingest)
+
+Ingest one or many events into the PlayFab analytics pipeline.
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Events/WriteEvents` | Write player / character events |
+| `POST /Events/WriteTelemetryEvents` | Telemetry pipeline (cheaper, no retention requirements) |
+| `POST /Events/WriteTitleEvents` | Title-scoped events |
+| `POST /Event/GetEventSamplingRatio` | Read sampling configuration |
+| `POST /Event/SetEventSamplingRatio` | Tune sampling |
+
+## Insights data explorer (compute scaling)
+
+Manages the Insights compute cluster used for ad-hoc queries.
+
+- `POST /Insights/GetDetails` — current configuration.
+- `POST /Insights/GetLimits` — plan limits.
+- `POST /Insights/SetPerformance` — scale up/down.
+- `POST /Insights/GetOperationStatus`, `GetPendingOperations`.
+- `POST /Insights/SetStorageRetention`.
+
+## PlayStream and event search
+
+- `POST /PlayStream/GetPlayerEvents` — stream of a player's events.
+- `POST /Events/GetEventArchiveDestination`, `SetEventArchiveDestination` — push events into Azure Blob.
+
+## Experimentation
+
+- Experiments: `CreateExperiment`, `GetExperiments`, `UpdateExperiment`, `DeleteExperiment`, `StartExperiment`, `StopExperiment`.
+- Exclusion groups: `CreateExclusionGroup`, `UpdateExclusionGroup`, `DeleteExclusionGroup`.
+- Treatment lookup: `GetTreatmentAssignment` — returns the variants for a player.
+
+PlayStream events: `experiment_created`, `experiment_updated`, `experiment_deleted`, `experiment_start_requested`, `experiment_stop_requested`, `exclusion_group_created`, `exclusion_group_updated`, `exclusion_group_deleted`, `player_experiment_variants_changed`.
+
+## Segmentation
+
+Segments are managed in Game Manager. Server APIs to enumerate by segment:
+
+- `POST /Server/GetPlayersInSegment`
+- `POST /Server/GetAllSegments`
+- `POST /Server/GetPlayerSegments`
+
+PlayStream events: `segment_entered`, `segment_exited`.
+
+## See also
+
+- [Analytics (concepts)](/playfab/analytics)
+- [CloudScript](/reference/playfab-cloudscript)

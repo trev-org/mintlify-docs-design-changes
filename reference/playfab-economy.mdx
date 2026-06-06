@@ -1,0 +1,55 @@
+---
+title: "PlayFab Economy v2 API reference"
+sidebarTitle: "Economy v2"
+icon: "coins"
+description: "Catalog v2, Inventory v2, transactions, currencies, and Microsoft Store reconciliation."
+---
+
+Economy v2 is the current PlayFab commerce surface. It supersedes the legacy Catalog v1 and Virtual Currency APIs.
+
+## Catalog
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Catalog/SearchItems` | Search the published catalog with filter / select expressions |
+| `POST /Catalog/GetItem` / `GetItems` | Fetch by ID |
+| `POST /Catalog/CreateDraftItem` / `UpdateDraftItem` / `DeleteItem` | Author |
+| `POST /Catalog/PublishDraftItem` | Promote draft to live |
+| `POST /Catalog/GetCatalogConfig` / `UpdateCatalogConfig` | Title-level config |
+| `POST /Catalog/GetEntityItemReview` / `ReviewItem` / `ReportItem` / `ReportItemReview` | Ratings and reviews |
+| `POST /Catalog/CreateUploadUrls` | Pre-signed URLs for uploading item images and binaries |
+
+## Inventory
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Inventory/GetInventoryItems` | Read |
+| `POST /Inventory/GetInventoryCollectionIds` | Per-character or per-stash collections |
+| `POST /Inventory/AddInventoryItems` | Grant items |
+| `POST /Inventory/SubtractInventoryItems` | Consume |
+| `POST /Inventory/UpdateInventoryItems` | Replace stack data |
+| `POST /Inventory/DeleteInventoryItems` | Remove |
+| `POST /Inventory/PurchaseInventoryItems` | Buy with virtual currency |
+| `POST /Inventory/RedeemMicrosoftStoreInventoryItems` | Microsoft Store entitlement reconciliation |
+| `POST /Inventory/RedeemAppleAppStoreInventoryItems` | App Store |
+| `POST /Inventory/RedeemGooglePlayInventoryItems` | Google Play |
+| `POST /Inventory/RedeemSteamInventoryItems` | Steam |
+| `POST /Inventory/ExecuteInventoryOperations` | Atomic multi-op |
+
+## Transactions
+
+| Endpoint | Description |
+| --- | --- |
+| `POST /Inventory/GetTransactionHistory` | Audit trail per entity |
+
+## Types
+
+- `CatalogItem` — ID, type, title, description, tags, images, prices, alternate IDs.
+- `InventoryItem` — amount, stack ID, display properties.
+- `PurchasePriceAmount` — currency item ID \+ amount.
+
+## See also
+
+- [PlayFab Economy](/playfab/economy)
+- [Microsoft Store integration](/playfab/microsoft-store)
+- [XStore](/reference/xstore)
