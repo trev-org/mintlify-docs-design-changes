@@ -19,7 +19,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Get Started",
+        "tab": "XBOX Game Development Documentation",
         "groups": [
           {
             "group": "Get Started",
@@ -48,7 +48,7 @@
         "tab": "Build & Develop",
         "groups": [
           {
-            "group": "Build and Develop (Core Features)",
+            "group": "Core Features",
             "pages": [
               "gdk/game-config",
               "gdk/microsoftgameconfig-editor",
@@ -73,7 +73,7 @@
             ]
           },
           {
-            "group": "PC End-to-End Guide",
+            "group": "GDK and Game Engines Integration",
             "icon": "rocket",
             "pages": [
               "pc-e2e/overview",
@@ -131,10 +131,10 @@
         ]
       },
       {
-        "tab": "Xbox Console Only Features",
+        "tab": "XBOX Console Only Features",
         "groups": [
           {
-            "group": "Xbox Console Features",
+            "group": "Console Features",
             "pages": [
               "gdk/console-overview",
               "gdk/audio",
@@ -151,7 +151,7 @@
         ]
       },
       {
-        "tab": "Tools",
+        "tab": "Development Tools",
         "groups": [
           {
             "group": "Tools",
