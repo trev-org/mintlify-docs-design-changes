@@ -293,6 +293,11 @@
               "reference/xsapi-json",
               "reference/xbl-error-codes"
             ]
+          },
+          {
+            "group": "PlayFab API",
+            "icon": "server",
+            "pages": []
           }
         ]
       }
