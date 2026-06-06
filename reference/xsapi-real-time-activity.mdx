@@ -1,0 +1,28 @@
+---
+title: "XSAPI Real-Time Activity (real_time_activity_c) reference"
+sidebarTitle: "Real-Time Activity"
+icon: "bolt"
+description: "Connection state, resync events, and subscription error handling for the RTA WebSocket that powers presence, social, and multiplayer change notifications."
+---
+
+Real-Time Activity (RTA) is the WebSocket layer behind every change notification in XSAPI. You don't subscribe directly — features like multiplayer, social, and presence do that internally — but you handle connection state and resync events.
+
+## Connection state
+
+| Function | Description |
+| --- | --- |
+| `XblRealTimeActivityAddConnectionStateChangeHandler` / `Remove` | Subscribe to connect / disconnect events |
+| `XblRealTimeActivityConnectionStateChangeHandler` | Callback signature |
+| `XblRealTimeActivityAddResyncHandler` / `Remove` | Subscribe to resync (re-fetch) events |
+| `XblRealTimeActivityResyncHandler` | Callback signature |
+| `XblRealTimeActivitySubscriptionErrorHandler` | Subscription error callback signature |
+
+## Types
+
+Enums: `XblRealTimeActivityConnectionState`, `XblRealTimeActivitySubscriptionState`. Handle: `XblRealTimeActivitySubscriptionHandle`.
+
+## See also
+
+- [Multiplayer change subscriptions](/reference/xsapi-multiplayer)
+- [Presence change handlers](/reference/xsapi-presence)
+- [Social change handlers](/reference/xsapi-social)

@@ -1,0 +1,33 @@
+---
+title: "XSAPI User Statistics (user_statistics_c) reference"
+sidebarTitle: "User Statistics"
+icon: "chart-line"
+description: "Query single or multiple user stats across one or more service configurations, and subscribe to stat changes."
+---
+
+## Queries
+
+| Function | Description |
+| --- | --- |
+| `XblUserStatisticsGetSingleUserStatisticAsync` / `Result` / `ResultSize` | One stat for one user |
+| `XblUserStatisticsGetSingleUserStatisticsAsync` / `Result` / `ResultSize` | Multiple stats for one user |
+| `XblUserStatisticsGetMultipleUserStatisticsAsync` / `Result` / `ResultSize` | Stats for many users in one SCID |
+| `XblUserStatisticsGetMultipleUserStatisticsForMultipleServiceConfigurationsAsync` / `Result` / `ResultSize` | Cross-SCID query |
+
+## Subscriptions
+
+| Function | Description |
+| --- | --- |
+| `XblUserStatisticsTrackStatistics` / `XblUserStatisticsStopTrackingStatistics` | Track or untrack stats |
+| `XblUserStatisticsStopTrackingUsers` | Stop tracking a user |
+| `XblUserStatisticsAddStatisticChangedHandler` / `Remove` | Receive change events |
+| `XblStatisticChangedHandler` | Callback signature |
+
+## Types
+
+Structs: `XblRequestedStatistics`, `XblServiceConfigurationStatistic`, `XblStatistic`, `XblStatisticChangeEventArgs`, `XblUserStatisticsResult`.
+
+## See also
+
+- [Player data](/services/player-data)
+- [Title Managed Stats](/reference/xsapi-title-managed-stats)

@@ -1,0 +1,42 @@
+---
+title: "XSAPI Multiplayer Activity (multiplayer_activity_c) reference"
+sidebarTitle: "Multiplayer Activity"
+icon: "person-running"
+description: "Set, query, and clear a player's joinable activity; send invites; track recent players via the MPA service."
+---
+
+The `multiplayer_activity_c` module is the simpler, REST-style alternative to MPSD for advertising a joinable activity, sending invites, and reporting recent players.
+
+## Activities
+
+| Function | Description |
+| --- | --- |
+| `XblMultiplayerActivitySetActivityAsync` | Publish or update an activity |
+| `XblMultiplayerActivityGetActivityAsync` / `Result` / `ResultSize` | Read activities |
+| `XblMultiplayerActivityDeleteActivityAsync` | Clear the activity |
+
+## Invites
+
+| Function | Description |
+| --- | --- |
+| `XblMultiplayerActivitySendInvitesAsync` | Send invites to one or more xuids |
+| `XblMultiplayerActivityAddInviteHandler` / `Remove` | Receive invite events |
+| `XblMultiplayerActivityInviteHandler` | Callback signature |
+
+## Recent players
+
+| Function | Description |
+| --- | --- |
+| `XblMultiplayerActivityUpdateRecentPlayers` | Add encounters to the local recent-player buffer |
+| `XblMultiplayerActivityFlushRecentPlayersAsync` | Push buffered encounters to the service |
+
+## Types
+
+Structs: `XblMultiplayerActivityInfo`, `XblMultiplayerActivityInviteData`, `XblMultiplayerActivityRecentPlayerUpdate`.
+
+Enums: `XblMultiplayerActivityEncounterType`, `XblMultiplayerActivityJoinRestriction`, `XblMultiplayerActivityPlatform`.
+
+## See also
+
+- [Multiplayer Activity (overview)](/services/multiplayer-activity)
+- [Multiplayer](/services/multiplayer)

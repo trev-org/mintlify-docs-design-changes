@@ -1,0 +1,42 @@
+---
+title: "XSAPI Achievements Manager (achievements_manager_c) reference"
+sidebarTitle: "Achievements Manager"
+icon: "trophy"
+description: "Cached, event-driven achievement state for games with multiple local users — do-work driven, similar to Social Manager."
+---
+
+Achievements Manager caches achievement state per local user and surfaces changes as events you process in a `DoWork` loop. Prefer this over raw `XblAchievements*` calls when you have multiple local users or want a single source of truth across frames.
+
+## Lifecycle
+
+| Function | Description |
+| --- | --- |
+| `XblAchievementsManagerAddLocalUser` | Begin tracking achievements for a user |
+| `XblAchievementsManagerRemoveLocalUser` | Stop tracking |
+| `XblAchievementsManagerIsUserInitialized` | Initial cache populated? |
+| `XblAchievementsManagerDoWork` | Drain events each frame |
+
+## Queries
+
+| Function | Description |
+| --- | --- |
+| `XblAchievementsManagerGetAchievement` | One achievement |
+| `XblAchievementsManagerGetAchievements` | All achievements |
+| `XblAchievementsManagerGetAchievementsByState` | Filter by state |
+| `XblAchievementsManagerResultGetAchievements` | Read items from a result handle |
+| `XblAchievementsManagerResultDuplicateHandle` / `CloseHandle` | Lifetime |
+
+## Updates
+
+| Function | Description |
+| --- | --- |
+| `XblAchievementsManagerUpdateAchievement` | Update progress |
+
+## Events
+
+Struct `XblAchievementsManagerEvent`. Enums: `XblAchievementsManagerEventType`, `XblAchievementsManagerSortOrder`. Handle: `XblAchievementsManagerResultHandle`.
+
+## See also
+
+- [Achievements](/services/achievements)
+- [XSAPI Social Manager](/reference/social-manager)

@@ -1,0 +1,54 @@
+---
+title: "XSAPI Context and Globals (xbox_live_context_c, xbox_live_global_c) reference"
+sidebarTitle: "XSAPI Context"
+icon: "gear"
+description: "Create per-user XSAPI contexts, tune library-wide settings, register service-call routed handlers, and override sandbox / SCID configuration."
+---
+
+## Per-user context (`xbox_live_context_c`)
+
+| Function | Description |
+| --- | --- |
+| `XblContextCreateHandle` | Create a context for an `XUserHandle` |
+| `XblContextDuplicateHandle` / `CloseHandle` | Lifetime |
+| `XblContextGetUser` | Underlying user |
+| `XblContextGetXboxUserId` | xuid |
+
+## Context settings (`xbox_live_context_settings_c`)
+
+HTTP retry and timeouts:
+
+- `XblContextSettingsGetHttpRetryDelay` / `SetHttpRetryDelay`
+- `XblContextSettingsGetHttpTimeoutWindow` / `SetHttpTimeoutWindow`
+- `XblContextSettingsGetLongHttpTimeout` / `SetLongHttpTimeout`
+- `XblContextSettingsGetWebsocketTimeoutWindow` / `SetWebsocketTimeoutWindow`
+- `XblContextSettingsGetUseCrossPlatformQosServers` / `SetUseCrossPlatformQosServers`
+
+## Global (`xbox_live_global_c`)
+
+Lifecycle: `XblInitialize`, `XblCleanupAsync`, `XblGetAsyncQueue`, `XblGetScid`.
+
+Memory hooks: `XblMemSetFunctions`, `XblMemGetFunctions`.
+
+Routing and overrides: `XblAddServiceCallRoutedHandler`, `XblRemoveServiceCallRoutedHandler`, `XblSetApiType`, `XblSetOverrideConfiguration`, `XblSetOverrideLocale`, `XblDisableAssertsForXboxLiveThrottlingInDevSandboxes`.
+
+Types and enums: `XblInitArgs`, `XblServiceCallRoutedArgs`, `XblApiType`, `XblConfigSetting`.
+
+## Types and HTTP call helpers (`types_c`, `http_call_c`)
+
+From `types_c`: handle `XblContextHandle`, struct `XblGuid`.
+
+From `http_call_c`: build authenticated REST calls with `XblHttpCallCreate`, the `XblHttpCallRequestSet*` / `XblHttpCallGetResponse*` families, perform with `XblHttpCallPerformAsync`, and clean up with `XblHttpCallCloseHandle`. Enum `XblHttpCallResponseBodyType`. Handle `XblHttpCallHandle`.
+
+## Errors (`errors_c`)
+
+`XblGetErrorCondition`, enum `XblErrorCondition`.
+
+## Platform hooks (`platform_c`)
+
+Local-storage callbacks for custom storage backends: `XblLocalStorageSetHandlers`, `XblLocalStorageReadHandler`, `XblLocalStorageWriteHandler`, `XblLocalStorageClearHandler`, plus the matching `*Complete` callbacks. Handle `XblClientOperationHandle`. Enums `XblClientOperationResult`, `XblLocalStorageWriteMode`.
+
+## See also
+
+- [XSAPI overview](/reference/xsapi-overview)
+- [libHttpClient](/reference/httpclient)

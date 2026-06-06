@@ -1,0 +1,35 @@
+---
+title: "XSAPI Title Storage (title_storage_c) reference"
+sidebarTitle: "Title Storage"
+icon: "database"
+description: "Upload, download, list, and delete trusted / untrusted / session / global title-storage blobs."
+---
+
+## Lifecycle and queries
+
+| Function | Description |
+| --- | --- |
+| `XblTitleStorageGetQuotaAsync` / `Result` | Quota |
+| `XblTitleStorageGetBlobMetadataAsync` / `Result` | List metadata |
+| `XblTitleStorageBlobMetadataResultGetItems` | Read items |
+| `XblTitleStorageBlobMetadataResultGetNextAsync` / `Result` / `HasNext` | Paginate |
+| `XblTitleStorageBlobMetadataResultDuplicateHandle` / `CloseHandle` | Lifetime |
+
+## I/O
+
+| Function | Description |
+| --- | --- |
+| `XblTitleStorageDownloadBlobAsync` / `Result` | Download |
+| `XblTitleStorageUploadBlobAsync` / `Result` | Upload |
+| `XblTitleStorageDeleteBlobAsync` | Delete |
+
+## Types
+
+Struct: `XblTitleStorageBlobMetadata`. Handle: `XblTitleStorageBlobMetadataResultHandle`.
+
+Enums: `XblTitleStorageBlobType`, `XblTitleStorageETagMatchCondition`, `XblTitleStorageType`.
+
+## See also
+
+- [Cloud storage](/services/cloud-storage)
+- [Game saves](/gdk/game-saves)

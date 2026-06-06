@@ -1,0 +1,51 @@
+---
+title: "XSAPI Achievements (achievements_c) reference"
+sidebarTitle: "XSAPI Achievements"
+icon: "trophy"
+description: "Query, update, and observe Xbox achievements via XblAchievements* APIs."
+---
+
+The `achievements_c` module covers querying achievement metadata and progress, updating progress, and observing unlock and progress-change events.
+
+## Query
+
+| Function | Description |
+| --- | --- |
+| `XblAchievementsGetAchievementsForTitleIdAsync` / `Result` | Get all achievements for a title |
+| `XblAchievementsGetAchievementAsync` / `Result` | Get a specific achievement |
+| `XblAchievementsResultGetAchievements` | Read items from a result handle |
+| `XblAchievementsResultGetNextAsync` / `Result` / `HasNext` | Paginate |
+| `XblAchievementsResultDuplicateHandle` / `CloseHandle` | Lifetime management |
+
+## Update
+
+| Function | Description |
+| --- | --- |
+| `XblAchievementsUpdateAchievementAsync` | Update achievement progress |
+| `XblAchievementsUpdateAchievementForTitleIdAsync` | Update for a specific title ID |
+
+## Notifications
+
+| Function | Description |
+| --- | --- |
+| `XblAchievementUnlockAddNotificationHandler` / `Remove` | Subscribe to unlock notifications |
+| `XblAchievementUnlockHandler` | Callback signature |
+| `XblAchievementsAddAchievementProgressChangeHandler` / `Remove` | Subscribe to progress changes |
+| `XblAchievementsProgressChangeHandler` | Callback signature |
+
+## Structures
+
+`XblAchievement`, `XblAchievementMediaAsset`, `XblAchievementProgression`, `XblAchievementRequirement`, `XblAchievementReward`, `XblAchievementTimeWindow`, `XblAchievementTitleAssociation`, `XblAchievementUnlockEvent`, `XblAchievementProgressChangeEntry`, `XblAchievementProgressChangeEventArgs`.
+
+## Enumerations
+
+`XblAchievementMediaAssetType`, `XblAchievementOrderBy`, `XblAchievementParticipationType`, `XblAchievementProgressState`, `XblAchievementRewardType`, `XblAchievementType`, `XblAchievementRarityCategory`.
+
+## Handle
+
+`XblAchievementsResultHandle`.
+
+## See also
+
+- [Achievements (overview)](/services/achievements)
+- [XSAPI Achievements Manager](/reference/xsapi-achievements-manager)

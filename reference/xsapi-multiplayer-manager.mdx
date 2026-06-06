@@ -1,0 +1,57 @@
+---
+title: "XSAPI Multiplayer Manager (multiplayer_manager_c) reference"
+sidebarTitle: "Multiplayer Manager"
+icon: "people-group"
+description: "Higher-level multiplayer orchestration over MPSD: lobby + game sessions, matchmaking, invites, joinability, and per-frame events."
+---
+
+Multiplayer Manager (MPM) wraps `multiplayer_c` with a lobby \+ game session model, do-work events, matchmaking helpers, and invite flows. Pick MPM unless you need raw MPSD control.
+
+## Lifecycle
+
+| Function | Description |
+| --- | --- |
+| `XblMultiplayerManagerInitialize` | Initialize MPM with a lobby template |
+| `XblMultiplayerManagerDoWork` | Drain events each frame |
+
+## Joinability and matchmaking
+
+`XblMultiplayerManagerJoinability` / `XblMultiplayerManagerSetJoinability`, `XblMultiplayerManagerFindMatch`, `XblMultiplayerManagerCancelMatch`, `XblMultiplayerManagerMatchStatus`, `XblMultiplayerManagerEstimatedMatchWaitTime`, `XblMultiplayerManagerSetAutoFillMembersDuringMatchmaking`, `XblMultiplayerManagerAutoFillMembersDuringMatchmaking`, `XblMultiplayerManagerSetQosMeasurements`.
+
+## Lobby session
+
+Local users: `XblMultiplayerManagerLobbySessionAddLocalUser`, `XblMultiplayerManagerLobbySessionRemoveLocalUser`.
+
+Local-member props: `XblMultiplayerManagerLobbySessionSetLocalMemberProperties`, `DeleteLocalMemberProperties`, `SetLocalMemberConnectionAddress`.
+
+Queries: `XblMultiplayerManagerLobbySessionConstants`, `XblMultiplayerManagerLobbySessionSessionReference`, `XblMultiplayerManagerLobbySessionCorrelationId`, `XblMultiplayerManagerLobbySessionPropertiesJson`, `XblMultiplayerManagerLobbySessionLocalMembers`, `XblMultiplayerManagerLobbySessionLocalMembersCount`, `XblMultiplayerManagerLobbySessionMembers`, `XblMultiplayerManagerLobbySessionMembersCount`, `XblMultiplayerManagerLobbySessionHost`, `XblMultiplayerManagerLobbySessionIsHost`.
+
+Writes: `XblMultiplayerManagerLobbySessionSetProperties`, `SetSynchronizedHost`, `SetSynchronizedProperties`.
+
+Invites: `XblMultiplayerManagerLobbySessionInviteFriends`, `XblMultiplayerManagerLobbySessionInviteUsers`.
+
+## Game session
+
+Flow: `XblMultiplayerManagerJoinLobby`, `XblMultiplayerManagerJoinGame`, `XblMultiplayerManagerJoinGameFromLobby`, `XblMultiplayerManagerLeaveGame`.
+
+Queries: `XblMultiplayerManagerGameSessionActive`, `XblMultiplayerManagerGameSessionConstants`, `XblMultiplayerManagerGameSessionSessionReference`, `XblMultiplayerManagerGameSessionCorrelationId`, `XblMultiplayerManagerGameSessionPropertiesJson`, `XblMultiplayerManagerGameSessionMembers`, `XblMultiplayerManagerGameSessionMembersCount`, `XblMultiplayerManagerGameSessionHost`, `XblMultiplayerManagerGameSessionIsHost`.
+
+Writes: `XblMultiplayerManagerGameSessionSetProperties`, `SetSynchronizedHost`, `SetSynchronizedProperties`.
+
+## Members
+
+`XblMultiplayerManagerMemberAreMembersOnSameDevice`, struct `XblMultiplayerManagerMember`, helper `XblMultiplayerConnectionAddressDeviceTokenPair`.
+
+## Events
+
+Struct `XblMultiplayerEvent`. Enums: `XblMultiplayerEventType`, `XblMultiplayerJoinability`, `XblMultiplayerMatchStatus`, `XblMultiplayerSessionType`.
+
+Event argument accessors: `XblMultiplayerEventArgsFindMatchCompleted`, `XblMultiplayerEventArgsMember`, `XblMultiplayerEventArgsMembers`, `XblMultiplayerEventArgsMembersCount`, `XblMultiplayerEventArgsPerformQoSMeasurements`, `XblMultiplayerEventArgsPropertiesJson`, `XblMultiplayerEventArgsXuid`, plus `XblMultiplayerPerformQoSMeasurementsArgs`.
+
+Handle: `XblMultiplayerEventArgsHandle`.
+
+## See also
+
+- [Multiplayer (overview)](/services/multiplayer)
+- [Multiplayer (raw MPSD)](/reference/xsapi-multiplayer)
+- [Matchmaking](/reference/xsapi-matchmaking)

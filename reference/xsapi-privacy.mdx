@@ -1,0 +1,34 @@
+---
+title: "XSAPI Privacy (privacy_c) reference"
+sidebarTitle: "Privacy"
+icon: "shield"
+description: "Check user permissions, query mute and avoid lists, and validate anonymous-user actions."
+---
+
+Use `privacy_c` to check what a player is allowed to do with respect to other players — voice chat, share content, view profiles — and to enumerate the local user's mute and avoid lists.
+
+## Permission checks
+
+| Function | Description |
+| --- | --- |
+| `XblPrivacyCheckPermissionAsync` / `Result` / `ResultSize` | Check one permission against one target |
+| `XblPrivacyBatchCheckPermissionAsync` / `Result` / `ResultSize` | Batch of permissions and targets |
+| `XblPrivacyCheckPermissionForAnonymousUserAsync` / `Result` / `ResultSize` | Check for an anonymous target type |
+
+## Mute and avoid lists
+
+| Function | Description |
+| --- | --- |
+| `XblPrivacyGetAvoidListAsync` / `Result` / `ResultCount` | Avoid list |
+| `XblPrivacyGetMuteListAsync` / `Result` / `ResultCount` | Mute list |
+
+## Types
+
+Structs: `XblPermissionCheckResult`, `XblPermissionDenyReasonDetails`.
+
+Enums: `XblAnonymousUserType`, `XblPermission`, `XblPermissionDenyReason`, `XblPrivacySetting`, `XblPrivilege`.
+
+## See also
+
+- [Social](/services/social)
+- [Game Chat](/services/game-chat)

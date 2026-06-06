@@ -1,0 +1,50 @@
+---
+title: "XSAPI Social Manager (social_manager_c) reference"
+sidebarTitle: "Social Manager (deep dive)"
+icon: "users"
+description: "Cached, event-driven social graph for multiple local users — do-work driven, with filtered user groups and rich presence tracking."
+---
+
+Social Manager caches every relationship and presence record per local user and surfaces changes as events you process in a `DoWork` loop. This is the recommended way to integrate social state into a running game.
+
+## Lifecycle
+
+| Function | Description |
+| --- | --- |
+| `XblSocialManagerAddLocalUser` | Begin tracking |
+| `XblSocialManagerRemoveLocalUser` | Stop tracking |
+| `XblSocialManagerDoWork` | Drain events each frame |
+| `XblSocialManagerGetLocalUsers` / `GetLocalUserCount` | Local user enumeration |
+
+## User groups
+
+Filter or fix the cached graph into reusable groups.
+
+| Function | Description |
+| --- | --- |
+| `XblSocialManagerCreateSocialUserGroupFromFilters` | Filter group |
+| `XblSocialManagerCreateSocialUserGroupFromList` | Static list group |
+| `XblSocialManagerUpdateSocialUserGroup` | Update a list group |
+| `XblSocialManagerDestroySocialUserGroup` | Release |
+| `XblSocialManagerUserGroupGetType` / `GetFilters` / `GetLocalUser` / `GetUsers` / `GetUsersTrackedByGroup` | Inspect a group |
+
+## Presence and rich presence
+
+| Function | Description |
+| --- | --- |
+| `XblSocialManagerSetRichPresencePollingStatus` | Toggle background polling |
+| `XblSocialManagerPresenceRecordIsUserPlayingTitle` | Quick check |
+
+## Types
+
+Structs: `XblPreferredColor`, `XblSocialManagerEvent`, `XblSocialManagerPresenceRecord`, `XblSocialManagerPresenceTitleRecord`, `XblSocialManagerUser`, `XblTitleHistory`.
+
+Handle: `XblSocialManagerUserGroupHandle`.
+
+Enums: `XblPresenceFilter`, `XblRelationshipFilter`, `XblSocialManagerEventType`, `XblSocialManagerExtraDetailLevel`, `XblSocialUserGroupType`.
+
+## See also
+
+- [Social Manager (basic)](/reference/social-manager) — quick-reference
+- [Social](/services/social)
+- [Presence](/reference/xsapi-presence)

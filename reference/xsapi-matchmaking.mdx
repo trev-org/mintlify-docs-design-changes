@@ -1,0 +1,31 @@
+---
+title: "XSAPI Matchmaking (matchmaking_c) reference"
+sidebarTitle: "Matchmaking"
+icon: "handshake"
+description: "SmartMatch tickets and hopper statistics over the multiplayer service."
+---
+
+## Tickets
+
+| Function | Description |
+| --- | --- |
+| `XblMatchmakingCreateMatchTicketAsync` / `Result` | Submit a ticket to a hopper |
+| `XblMatchmakingDeleteMatchTicketAsync` | Cancel a ticket |
+| `XblMatchmakingGetMatchTicketDetailsAsync` / `Result` / `ResultSize` | Query a ticket |
+
+## Hoppers
+
+| Function | Description |
+| --- | --- |
+| `XblMatchmakingGetHopperStatisticsAsync` / `Result` / `ResultSize` | Wait times, players in queue |
+
+## Types
+
+Structs: `XblCreateMatchTicketResponse`, `XblHopperStatisticsResponse`, `XblMatchTicketDetailsResponse`.
+
+Enums: `XblPreserveSessionMode`, `XblTicketStatus`.
+
+## See also
+
+- [Multiplayer](/services/multiplayer)
+- [Multiplayer Manager](/reference/xsapi-multiplayer-manager)

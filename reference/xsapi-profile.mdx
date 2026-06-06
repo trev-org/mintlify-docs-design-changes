@@ -1,0 +1,23 @@
+---
+title: "XSAPI Profile (profile_c) reference"
+sidebarTitle: "Profile"
+icon: "address-card"
+description: "Fetch user profile details — gamertag, real name, gamerpic, account tier — individually or in batches."
+---
+
+## Functions
+
+| Function | Description |
+| --- | --- |
+| `XblProfileGetUserProfileAsync` / `Result` | One user |
+| `XblProfileGetUserProfilesAsync` / `Result` / `ResultCount` | Many users |
+| `XblProfileGetUserProfilesForSocialGroupAsync` / `Result` / `ResultCount` | Filter by social group |
+
+## Structure
+
+`XblUserProfile` — gamertag, real name, app display name, profile pic URL, account tier, gender.
+
+## See also
+
+- [Social](/services/social)
+- [Profile cards (XGameUI)](/reference/xgameui)

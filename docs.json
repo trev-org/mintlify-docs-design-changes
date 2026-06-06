@@ -268,7 +268,26 @@
               "reference/xsapi-overview",
               "reference/social-manager",
               "reference/microsoftgameconfig-schema",
-              "reference/microsoftgameconfig-elements"
+              "reference/microsoftgameconfig-elements",
+              "reference/xsapi-achievements",
+              "reference/xsapi-achievements-manager",
+              "reference/xsapi-multiplayer",
+              "reference/xsapi-multiplayer-manager",
+              "reference/xsapi-multiplayer-activity",
+              "reference/xsapi-presence",
+              "reference/xsapi-privacy",
+              "reference/xsapi-social",
+              "reference/xsapi-social-manager",
+              "reference/xsapi-profile",
+              "reference/xsapi-leaderboard",
+              "reference/xsapi-matchmaking",
+              "reference/xsapi-real-time-activity",
+              "reference/xsapi-events",
+              "reference/xsapi-title-storage",
+              "reference/xsapi-stats",
+              "reference/xsapi-string-verify",
+              "reference/xsapi-user-statistics",
+              "reference/xsapi-context"
             ]
           }
         ]

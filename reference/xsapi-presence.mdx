@@ -1,0 +1,43 @@
+---
+title: "XSAPI Presence (presence_c) reference"
+sidebarTitle: "Presence"
+icon: "signal"
+description: "Set and query presence records, including rich presence strings, and subscribe to device or title presence changes."
+---
+
+## Get and set presence
+
+| Function | Description |
+| --- | --- |
+| `XblPresenceSetPresenceAsync` | Set your title's presence for the local user |
+| `XblPresenceGetPresenceAsync` / `Result` | Read one user's record |
+| `XblPresenceGetPresenceForMultipleUsersAsync` / `Result` / `ResultCount` | Bulk query |
+| `XblPresenceGetPresenceForSocialGroupAsync` / `Result` / `ResultCount` | Query a social group |
+
+## Records
+
+| Function | Description |
+| --- | --- |
+| `XblPresenceRecordGetXuid` | Owner xuid |
+| `XblPresenceRecordGetUserState` | High-level state |
+| `XblPresenceRecordGetDeviceRecords` | Per-device records |
+| `XblPresenceRecordDuplicateHandle` / `CloseHandle` | Lifetime |
+
+## Change handlers
+
+`XblPresenceAddDevicePresenceChangedHandler` / `Remove`, `XblPresenceDevicePresenceChangedHandler`, `XblPresenceAddTitlePresenceChangedHandler` / `Remove`, `XblPresenceTitlePresenceChangedHandler`.
+
+Tracking helpers: `XblPresenceTrackUsers`, `XblPresenceStopTrackingUsers`, `XblPresenceTrackAdditionalTitles`, `XblPresenceStopTrackingAdditionalTitles`.
+
+## Types
+
+Structs: `XblPresenceBroadcastRecord`, `XblPresenceDeviceRecord`, `XblPresenceQueryFilters`, `XblPresenceRichPresenceIds`, `XblPresenceTitleRecord`.
+
+Enums: `XblPresenceBroadcastProvider`, `XblPresenceDetailLevel`, `XblPresenceDeviceType`, `XblPresenceMediaIdType`, `XblPresenceTitleState`, `XblPresenceTitleViewState`, `XblPresenceUserState`.
+
+Handle: `XblPresenceRecordHandle`.
+
+## See also
+
+- [Rich Presence (overview)](/services/rich-presence)
+- [Social Manager](/reference/social-manager)

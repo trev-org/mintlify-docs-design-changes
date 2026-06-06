@@ -1,0 +1,33 @@
+---
+title: "XSAPI Social (social_c) reference"
+sidebarTitle: "Social"
+icon: "user-group"
+description: "Query social relationships, subscribe to changes, and submit reputation feedback."
+---
+
+## Relationships
+
+| Function | Description |
+| --- | --- |
+| `XblSocialGetSocialRelationshipsAsync` / `Result` | Fetch the local user's friends/follows |
+| `XblSocialRelationshipResultGetRelationships` | Read items |
+| `XblSocialRelationshipResultGetTotalCount` / `HasNext` / `GetNextAsync` / `GetNextResult` | Paginate |
+| `XblSocialRelationshipResultDuplicateHandle` / `CloseHandle` | Lifetime |
+
+## Change events
+
+`XblSocialAddSocialRelationshipChangedHandler`, `XblSocialRemoveSocialRelationshipChangedHandler`.
+
+## Reputation feedback
+
+`XblSocialSubmitReputationFeedbackAsync`, `XblSocialSubmitBatchReputationFeedbackAsync`.
+
+## Types
+
+Structs: `XblReputationFeedbackItem`, `XblSocialRelationship`, `XblSocialRelationshipChangeEventArgs`. Handle: `XblSocialRelationshipResultHandle`. Enums: `XblReputationFeedbackType`, `XblSocialNotificationType`, `XblSocialRelationshipFilter`.
+
+## See also
+
+- [Social (overview)](/services/social)
+- [Social Manager](/reference/social-manager)
+- [People system](/services/people-system)

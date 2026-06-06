@@ -1,0 +1,80 @@
+---
+title: "XSAPI Multiplayer (multiplayer_c) reference"
+sidebarTitle: "XSAPI Multiplayer"
+icon: "users"
+description: "Multiplayer Session Directory (MPSD) sessions, search handles, transfer handles, activity, invites, and session state subscriptions."
+---
+
+The `multiplayer_c` module is the raw MPSD API surface. Use it directly when you need full control of session JSON. For higher-level orchestration, prefer [Multiplayer Manager](/reference/xsapi-multiplayer-manager).
+
+## Sessions — read
+
+| Function | Description |
+| --- | --- |
+| `XblMultiplayerGetSessionAsync` / `Result` | Read a session by reference |
+| `XblMultiplayerGetSessionByHandleAsync` / `Result` | Read a session by handle |
+| `XblMultiplayerQuerySessionsAsync` / `Result` / `ResultCount` | Query sessions |
+
+## Sessions — write
+
+| Function | Description |
+| --- | --- |
+| `XblMultiplayerWriteSessionAsync` / `Result` | Write by session reference |
+| `XblMultiplayerWriteSessionByHandleAsync` / `Result` | Write by handle |
+
+## Session handles (in-memory session object)
+
+Lifecycle: `XblMultiplayerSessionCreateHandle`, `XblMultiplayerSessionDuplicateHandle`, `XblMultiplayerSessionCloseHandle`, `XblMultiplayerSessionCompare`.
+
+References and IDs: `XblMultiplayerSessionReferenceCreate`, `XblMultiplayerSessionReferenceIsValid`, `XblMultiplayerSessionReferenceToUriPath`, `XblMultiplayerSessionReferenceParseFromUriPath`, `XblMultiplayerSessionSessionReference`.
+
+Session state: `XblMultiplayerSessionEtag`, `XblMultiplayerSessionTimeOfSession`, `XblMultiplayerSessionInfo`, `XblMultiplayerSessionGetInfo`, `XblMultiplayerSessionGetInitializationInfo`, `XblMultiplayerSessionWriteStatus`, `XblMultiplayerSessionSubscribedChangeTypes`, `XblMultiplayerSessionSetSessionChangeSubscription`.
+
+Constants and properties: `XblMultiplayerSessionSessionConstants`, `XblMultiplayerSessionSessionProperties`, `XblMultiplayerSessionRoleTypes`, `XblMultiplayerSessionGetRoleByName`, `XblMultiplayerSessionMatchmakingServer`, `XblMultiplayerSessionMembersAccepted`, `XblMultiplayerSessionHostCandidates`, `XblMultiplayerSessionRawServersJson`.
+
+Member manipulation: `XblMultiplayerSessionAddMemberReservation`, `XblMultiplayerSessionJoin`, `XblMultiplayerSessionLeave`, `XblMultiplayerSessionGetMember`, `XblMultiplayerSessionMembers`, `XblMultiplayerSessionCurrentUser`.
+
+Current-user actions: `XblMultiplayerSessionCurrentUserSetStatus`, `XblMultiplayerSessionCurrentUserSetCustomPropertyJson`, `XblMultiplayerSessionCurrentUserDeleteCustomPropertyJson`, `XblMultiplayerSessionCurrentUserSetEncounters`, `XblMultiplayerSessionCurrentUserSetGroups`, `XblMultiplayerSessionCurrentUserSetMembersInGroup`, `XblMultiplayerSessionCurrentUserSetQosMeasurements`, `XblMultiplayerSessionCurrentUserSetServerQosMeasurements`, `XblMultiplayerSessionCurrentUserSetRoles`, `XblMultiplayerSessionCurrentUserSetSecureDeviceAddressBase64`.
+
+Constants setters: `XblMultiplayerSessionConstantsSetCapabilities`, `XblMultiplayerSessionConstantsSetCloudComputePackageJson`, `XblMultiplayerSessionConstantsSetMaxMembersInSession`, `XblMultiplayerSessionConstantsSetMeasurementServerAddressesJson`, `XblMultiplayerSessionConstantsSetMemberInitialization`, `XblMultiplayerSessionConstantsSetPeerToHostRequirements`, `XblMultiplayerSessionConstantsSetPeerToPeerRequirements`, `XblMultiplayerSessionConstantsSetQosConnectivityMetrics`, `XblMultiplayerSessionConstantsSetTimeouts`, `XblMultiplayerSessionConstantsSetVisibility`.
+
+Session property setters: `XblMultiplayerSessionSetClosed`, `XblMultiplayerSessionSetLocked`, `XblMultiplayerSessionSetAllocateCloudCompute`, `XblMultiplayerSessionSetCustomPropertyJson`, `XblMultiplayerSessionDeleteCustomPropertyJson`, `XblMultiplayerSessionSetHostDeviceToken`, `XblMultiplayerSessionSetInitializationSucceeded`, `XblMultiplayerSessionSetMatchmakingResubmit`, `XblMultiplayerSessionSetMatchmakingServerConnectionPath`, `XblMultiplayerSessionSetMatchmakingTargetSessionConstantsJson`, `XblMultiplayerSessionSetMutableRoleSettings`, `XblMultiplayerSessionSetRawServersJson`, `XblMultiplayerSessionSetServerConnectionStringCandidates`, `XblMultiplayerSessionPropertiesSetJoinRestriction`, `XblMultiplayerSessionPropertiesSetKeywords`, `XblMultiplayerSessionPropertiesSetReadRestriction`, `XblMultiplayerSessionPropertiesSetTurnCollection`.
+
+## Search handles (advertised sessions)
+
+Create / delete: `XblMultiplayerCreateSearchHandleAsync` / `Result`, `XblMultiplayerDeleteSearchHandleAsync`. Query: `XblMultiplayerGetSearchHandlesAsync` / `Result` / `ResultCount`.
+
+Handle accessors: `XblMultiplayerSearchHandleGetId`, `GetSessionReference`, `GetCreationTime`, `GetCustomSessionPropertiesJson`, `GetJoinRestriction`, `GetMemberCounts`, `GetNumberAttributes`, `GetSessionClosed`, `GetSessionOwnerXuids`, `GetStringAttributes`, `GetTags`, `GetVisibility`. Lifetime: `XblMultiplayerSearchHandleDuplicateHandle`, `CloseHandle`.
+
+## Activity, invites, and transfer
+
+Activity: `XblMultiplayerSetActivityAsync`, `XblMultiplayerClearActivityAsync`, `XblMultiplayerGetActivitiesForUsersAsync` / `Result` / `ResultCount`, `XblMultiplayerGetActivitiesForSocialGroupAsync` / `Result` / `ResultCount`, plus the `WithProperties` variants.
+
+Invites: `XblMultiplayerSendInvitesAsync` / `Result`.
+
+Transfer handles: `XblMultiplayerSetTransferHandleAsync` / `Result`.
+
+Secure device address helper: `XblFormatSecureDeviceAddress` (`XblFormattedSecureDeviceAddress`).
+
+## Subscriptions
+
+Real-time: `XblMultiplayerSetSubscriptionsEnabled`, `XblMultiplayerSubscriptionsEnabled`.
+
+Handlers: `XblMultiplayerAddSessionChangedHandler` / `Remove`, `XblMultiplayerSessionChangedHandler`, `XblMultiplayerAddConnectionIdChangedHandler` / `Remove`, `XblMultiplayerConnectionIdChangedHandler`, `XblMultiplayerAddSubscriptionLostHandler` / `Remove`, `XblMultiplayerSessionSubscriptionLostHandler`.
+
+## Key types
+
+Handles: `XblMultiplayerSessionHandle`, `XblMultiplayerSearchHandle`.
+
+Core structs: `XblMultiplayerSessionReference`, `XblMultiplayerSessionReferenceUri`, `XblMultiplayerSessionHandleId`, `XblMultiplayerSessionConstants`, `XblMultiplayerSessionProperties`, `XblMultiplayerSessionMember`, `XblMultiplayerSessionMemberRole`, `XblMultiplayerSessionInfo`, `XblMultiplayerSessionInitArgs`, `XblMultiplayerSessionInitializationInfo`, `XblMultiplayerActivityDetails`, `XblMultiplayerMatchmakingServer`, `XblMultiplayerArbitrationServer`, `XblMultiplayerInviteHandle`, `XblMultiplayerSessionCapabilities`, `XblMultiplayerSessionChangeEventArgs`, `XblMultiplayerSessionTag`, `XblMultiplayerSessionNumberAttribute`, `XblMultiplayerSessionStringAttribute`, `XblMultiplayerSessionQuery`, `XblMultiplayerSessionQueryResult`, `XblMultiplayerRole`, `XblMultiplayerRoleType`, `XblMultiplayerMemberInitialization`, `XblMultiplayerPeerToHostRequirements`, `XblMultiplayerPeerToPeerRequirements`, `XblDeviceToken`, `XblMultiplayerTournamentsServer`, `XblMultiplayerTournamentTeam`, `XblTournamentGameResultWithRank`, `XblTournamentReference`, `XblTournamentTeamResult`.
+
+## Enumerations
+
+`XblMatchmakingStatus`, `XblMultiplayerInitializationStage`, `XblMultiplayerMeasurementFailure`, `XblMultiplayerMetrics`, `XblMultiplayerSessionChangeTypes`, `XblMultiplayerSessionMemberStatus`, `XblMultiplayerSessionRestriction`, `XblMultiplayerSessionStatus`, `XblMultiplayerSessionVisibility`, `XblMultiplayerSessionWriteMode`, `XblMutableRoleSettings`, `XblNetworkAddressTranslationSetting`, `XblTournamentArbitrationState`, `XblTournamentArbitrationStatus`, `XblTournamentGameResult`, `XblTournamentGameResultSource`, `XblTournamentRegistrationReason`, `XblTournamentRegistrationState`, `XblWriteSessionStatus`.
+
+## See also
+
+- [Multiplayer (overview)](/services/multiplayer)
+- [Multiplayer Manager](/reference/xsapi-multiplayer-manager)
+- [Multiplayer Activity](/reference/xsapi-multiplayer-activity)
+- [Matchmaking](/reference/xsapi-matchmaking)

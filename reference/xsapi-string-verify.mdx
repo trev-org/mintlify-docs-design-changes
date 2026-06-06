@@ -1,0 +1,23 @@
+---
+title: "XSAPI String Verify (string_verify_c) reference"
+sidebarTitle: "String Verify"
+icon: "shield-check"
+description: "Validate user-entered strings against Microsoft's policy and profanity filter before display or storage."
+---
+
+Use `string_verify_c` for guild names, clan tags, custom statuses, in-game chat, and any other user-authored strings you display or persist.
+
+## Functions
+
+| Function | Description |
+| --- | --- |
+| `XblStringVerifyStringAsync` / `Result` / `ResultSize` | One string |
+| `XblStringVerifyStringsAsync` / `Result` / `ResultSize` | Batch |
+
+## Types
+
+Struct: `XblVerifyStringResult`. Enum: `XblVerifyStringResultCode`.
+
+## See also
+
+- [Game Chat](/services/game-chat) and the system stays moderated end-to-end.

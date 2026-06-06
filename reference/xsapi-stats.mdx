@@ -1,0 +1,35 @@
+---
+title: "XSAPI Stats (user_statistics_c and title_managed_statistics_c) reference"
+sidebarTitle: "Stats"
+icon: "chart-column"
+description: "Read and update event-based user stats and write / delete title-managed stats."
+---
+
+## Event-based stats (`user_statistics_c`)
+
+Queries:
+
+- `XblUserStatisticsGetSingleUserStatisticAsync` / `Result` / `ResultSize`
+- `XblUserStatisticsGetSingleUserStatisticsAsync` / `Result` / `ResultSize`
+- `XblUserStatisticsGetMultipleUserStatisticsAsync` / `Result` / `ResultSize`
+- `XblUserStatisticsGetMultipleUserStatisticsForMultipleServiceConfigurationsAsync` / `Result` / `ResultSize`
+
+Tracking and change events:
+
+- `XblUserStatisticsTrackStatistics`, `XblUserStatisticsStopTrackingStatistics`, `XblUserStatisticsStopTrackingUsers`
+- `XblUserStatisticsAddStatisticChangedHandler`, `XblUserStatisticsRemoveStatisticChangedHandler`, `XblStatisticChangedHandler`
+
+Types: `XblRequestedStatistics`, `XblServiceConfigurationStatistic`, `XblStatistic`, `XblStatisticChangeEventArgs`, `XblUserStatisticsResult`.
+
+## Title-managed stats (`title_managed_statistics_c`)
+
+- `XblTitleManagedStatsWriteAsync`
+- `XblTitleManagedStatsUpdateStatsAsync`
+- `XblTitleManagedStatsDeleteStatsAsync`
+
+Struct: `XblTitleManagedStatistic`. Enum: `XblTitleManagedStatType`.
+
+## See also
+
+- [Player data](/services/player-data)
+- [Leaderboards (XSAPI)](/reference/xsapi-leaderboard)
