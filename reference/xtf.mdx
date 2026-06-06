@@ -1,0 +1,128 @@
+---
+title: "Xbox Tools Framework (XTF) reference"
+sidebarTitle: "Xbox Tools Framework (XTF)"
+icon: "screwdriver-wrench"
+description: "Programmatic control of Xbox dev kits: applications, consoles, console manager, debug monitor, file I/O, input, remote run, users, and the wider XTF API surface."
+---
+
+The **Xbox Tools Framework (XTF)** is the COM/C API behind the `xb*` command-line tools (`xbapp`, `xbconnect`, `xbcopy`, `xbrun`, `xbuser`, and so on). Use XTF directly when you need to embed dev kit control into custom build, deployment, or test infrastructure.
+
+## XtfApplication
+
+App lifecycle, deployment, and dev/install management on a target.
+
+### IXtfApplicationClient (selected methods)
+
+`Launch`, `Resume`, `Suspend`, `Constrain`, `Unconstrain`, `Terminate`, `Deploy`, `DeployEx`, `DeployToTitleScratch`, `Uninstall`, `GetInstalled`, `GetDlc`, `MarkAppAsProvisioned`, `QueryExecutionState`, `DebugEnable`, `DebugQuery`, `SetDefaultApp`, `Snap`, `EnableGlobalOption`.
+
+### IXtfDeployCallback
+
+`OnDeployInitialized`, `OnDeployChangeEvaluation`, `OnDeployFileProgress`, `OnDeployExtraFileDetected`, `OnDeployExtraFileRemoved`, `OnDeployMetrics`, `OnDeployError`.
+
+### Factory
+
+`XtfCreateApplicationClient`.
+
+## XtfConsoleControl
+
+Per-console settings, processes, system time, screenshot capture, and power.
+
+### IXtfConsoleControlClient
+
+`GetAllSettings`, `GetConfigSettings`, `GetConfigValue`, `SetConfigValue`, `GetSystemTime`, `GetRunningProcesses`, `GenerateStackDump`, `QueryConnectedStandby`, `QueryConnectedStandbyEx`, `SendMessageToUpdateSvc`, `UpdatesPending`, `ShutdownConsole`.
+
+### Callbacks
+
+`IXtfConfigSettingsCallback::OnFoundSetting`, `IXtfRunningProcessCallback::OnFoundProcess`.
+
+### Functions
+
+`XtfCreateConsoleControlClient`, `XtfCaptureScreenshot`.
+
+### Types
+
+`XTFCONFIGSETTING`, `XTFPROCESSINFO`, `XTFSYSTEMTIME`.
+
+## XtfConsoleManager
+
+Maintain the list of known consoles and the default target.
+
+### IXtfConsoleManager
+
+`AddConsole`, `RemoveConsole`, `EnumerateConsoles`, `GetConsole`, `GetDefaultConsole`, `SetDefaultConsole`.
+
+### Callbacks
+
+`IXtfConsoleManagerCallback`, `IXtfEnumerateConsolesCallback`.
+
+Factory: `XtfCreateConsoleManager`. Lookup: `XtfGetDefaultAddress`. Type: `XTFCONSOLEDATA`.
+
+## XtfDebugMonitor
+
+Stream `OutputDebugString` output from the console back to your tool.
+
+- `IXtfDebugMonitorClient::Start`, `Stop`.
+- Callback: `IXtfDebugMonitorCallback::OnOutputDebugString`.
+- Factory: `XtfCreateDebugMonitorClient`.
+- Struct: `XTF_OUTPUT_DEBUG_STRING_DATA`.
+
+## XtfFileIO
+
+File operations against a console.
+
+- `IXtfFileIOClient`: `CopyFiles`, `CreateDirectory`, `RemoveDirectory`, `DeleteFiles`, `FindFiles`, `GetFileAttributes`, `SetFileAttributes`, `GetFileInfo`, `GetFileSize`.
+- `IXtfBatchFileIOClient::CopyFiles`.
+- Callbacks: `IXtfCopyFileCallback`, `IXtfFindFileCallback`.
+- Factory: `XtfCreateFileIOClient`.
+- Types: `XTFFILEINFO`, `XTFFILEIORESERVED`.
+
+## XtfInput
+
+Inject virtual gamepad input.
+
+- `IXtfInputClient`: `ConnectGamepad`, `DisconnectGamepad`, `DisconnectAllGamepads`, `SendGamepadReport`, `SendGamepadReportEx`, `SendGamepadReportWithAudio`.
+- Factory: `XtfCreateInputClient`.
+- Structures: `GAMEPAD_REPORT`, `GAMEPAD_REPORT_EX`, `GAMEPAD_VIBRATION`.
+- Enums: `GAMEPAD_BUTTONS`, `GAMEPAD_MORE_BUTTONS`.
+
+## XtfRemoteRun
+
+Run commands on the console and stream stdin/stdout back.
+
+- `IXtfRemoteRunClient::Run`.
+- `IXtfRemoteRunCallback::Input`, `Output`.
+- Factory: `XtfCreateRemoteRunClient`.
+
+## XtfUser
+
+User sign-in, sign-out, and controller pairing.
+
+- `IXtfUserClient`: `AddUser`, `AddSponsoredUser`, `DeleteUser`, `DeleteAllUsers`, `ListUsers`, `ListUsersEx`, `SigninUser`, `SigninUserId`, `SignoutUser`, `SignoutUserId`, `PairControllerWithUser`, `PairControllerWithUserId`.
+- Factory: `XtfCreateUserClient`.
+- Structures: `XTF_USER_DATA`, `XTF_USER_DATA_V2`.
+- Enum: `XTF_USER_AGE_GROUP`.
+
+## Additional Xtf APIs (`xtfapi`)
+
+App orchestration helpers: `XtfPullAuditionApp`, `XtfPullRegisterApp`, `XtfPullSupplyMock`, `XtfPullUnregisterApp`.
+
+Console info: `XtfCloseConsoleInfoList`, `XtfGetAvailableSpaceForAppInstallation`, `XtfGetConsoleFieldValue`, `XtfGetConsoleInfoList`, `XtfGetSavedConsoleAddress`, `XtfGetSystemUpTime`, `XtfWaitForConsoleOSReady`, `XtfWaitForConsoleState`.
+
+Credentials: `XtfAddCredential`, `XtfRemoveCredential`, `XtfCloseCredentialInfoList`, `XtfGetCredentialInfoCount`, `XtfGetCredentialInfoList`, `XtfGetCredentialServerName`, `XtfGetCredentialUserName`.
+
+Debug: `XtfCaptureOutputBegin`, `XtfCaptureOutputEnd`, `XtfDebugStringCallback`, `XtfDebugStringErrorCallback`, `XtfGetErrorText`, `XtfGetErrorTextA`.
+
+Game clips: `XtfCaptureRecordedGameClip`.
+
+Package info: `XtfClosePackageInfo`, `XtfGetAumid`, `XtfGetCountofAppUserModelIds`, `XtfGetPackageFullName`, `XtfRegisterAllPackagesOnDrive`, `XtfRegisterNetworkSharePackage`, `XtfRegisterPackage`, `XtfRegisterPackageOnDrive`, `XtfUnregisterPackage`.
+
+Title OS: `XtfCacheTitleOS`, `XtfGetCachedTitleOSVersions`, `XtfGetCachedTitleOSVersionsCallback`, `XtfGetTitleOSFourPartVersion`, `XtfGetTitleOSState`, `XtfGetTitleProcessMemoryReports`, `XtfRemoveTitleOSFromCache`, `XtfRemoveTitleOSFromCacheByVersion`, `XtfShutdownTitleOS`, `XtfStartTitleOS`, `XtfStartTitleOSByGameConfig`, `XtfStartTitleOSByVersion`.
+
+Overlay folders: `XtfClearAllOverlayFolders`, `XtfGetOverlayFolder`, `XtfSetOverlayFolder`.
+
+Structures: `FourPartVersion`. Enums: `XtfConsoleCertType`, `XtfConsoleFieldId`, `XtfConsoleFieldType`.
+
+## See also
+
+- [Xbox service tools](/tools/xbox-service-tools)
+- [Tools API](/reference/tools-api)

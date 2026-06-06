@@ -1,0 +1,57 @@
+---
+title: "libHttpClient (HCHttp / HCWebSocket / HCMock / HCTrace) reference"
+sidebarTitle: "libHttpClient"
+icon: "globe"
+description: "Cross-platform HTTP client and WebSocket library underlying XSAPI — includes provider extension points, mocking, and tracing."
+---
+
+`libHttpClient` is the low-level HTTP / WebSocket library that XSAPI uses under the hood. It's available directly if you want HTTP/WebSocket without taking a dependency on XSAPI — e.g., for custom REST integrations.
+
+## httpClient — consumer API
+
+### Library lifecycle
+
+`HCInitialize`, `HCCleanup`, `HCCleanupAsync`, `HCGetLibVersion`, `HCMemSetFunctions`, `HCMemGetFunctions`, `HCSetGlobalProxy`.
+
+Types: `HCInitArgs`, `WebSocketCompletionResult`.
+
+### HTTP calls
+
+- Lifecycle: `HCHttpCallCreate`, `HCHttpCallDuplicateHandle`, `HCHttpCallCloseHandle`, `HCHttpCallGetId`.
+- Request: `HCHttpCallRequestSetUrl`, `HCHttpCallRequestSetHeader`, `HCHttpCallRequestSetRequestBodyBytes`, `HCHttpCallRequestSetRequestBodyString`, `HCHttpCallRequestSetRequestBodyReadFunction`, `HCHttpCallRequestSetRetryAllowed`, `HCHttpCallRequestSetRetryCacheId`, `HCHttpCallRequestSetRetryDelay`, `HCHttpCallRequestSetTimeout`, `HCHttpCallRequestSetTimeoutWindow`, `HCHttpCallRequestSetSSLValidation`.
+- Perform: `HCHttpCallPerformAsync`.
+- Response: `HCHttpCallResponseGetHeader`, `HCHttpCallResponseGetHeaderAtIndex`, `HCHttpCallResponseGetNumHeaders`, `HCHttpCallResponseGetNetworkErrorCode`, `HCHttpCallResponseGetPlatformNetworkErrorMessage`, `HCHttpCallResponseGetResponseBodyBytes`, `HCHttpCallResponseGetResponseBodyBytesSize`, `HCHttpCallResponseGetResponseString`, `HCHttpCallResponseGetStatusCode`, `HCHttpCallResponseSetResponseBodyWriteFunction`.
+- Tracing: `HCHttpCallSetTracing`.
+- Url helper: `HCHttpCallGetRequestUrl`.
+
+### Routed handlers
+
+`HCAddCallRoutedHandler`, `HCRemoveCallRoutedHandler`, `HCAddWebSocketRoutedHandler`, `HCRemoveWebSocketRoutedHandler`.
+
+### WebSockets
+
+- Lifecycle: `HCWebSocketCreate`, `HCWebSocketDuplicateHandle`, `HCWebSocketCloseHandle`.
+- Connect/disconnect: `HCWebSocketConnectAsync`, `HCWebSocketDisconnect`, `HCGetWebSocketConnectResult`.
+- Send: `HCWebSocketSendMessageAsync`, `HCWebSocketSendBinaryMessageAsync`, `HCGetWebSocketSendMessageResult`.
+- Headers / proxy: `HCWebSocketSetHeader`, `HCWebSocketSetProxyUri`, `HCWebSocketSetProxyDecryptsHttps`.
+- Event functions: `HCWebSocketGetEventFunctions`.
+
+## httpProvider — provider extension API
+
+Implement these if you need to replace the default HTTP / WebSocket provider (e.g., to plug in a platform-native stack).
+
+Selected functions: `HCSetHttpCallPerformFunction`, `HCGetHttpCallPerformFunction`, `HCSetWebSocketFunctions`, `HCGetWebSocketFunctions`, `HCHttpCallGetContext`, `HCHttpCallSetContext`, plus parallel `HCHttpCallRequestGet*` / `HCHttpCallResponseSet*` accessors so the provider can read requests and post responses.
+
+## mock — testing API
+
+`HCMockAddMock`, `HCMockCallCreate`, `HCMockClearMocks`, `HCMockRemoveMock`, `HCMockResponseSetHeader`, `HCMockResponseSetNetworkErrorCode`, `HCMockResponseSetResponseBodyBytes`, `HCMockResponseSetStatusCode`, `HCMockSetMockMatchedCallback`.
+
+## trace — diagnostics API
+
+`HCSettingsGetTraceLevel`, `HCSettingsSetTraceLevel`, `HCTraceImplGetAreaVerbosity`, `HCTraceImplSetAreaVerbosity`, `HCTraceImplMessage`, `HCTraceSetClientCallback`, `HCTraceSetPlatformCallbacks`, `HCTraceSetTraceToDebugger`. Enum: `HCTraceLevel`.
+
+## See also
+
+- [XSAPI overview](/reference/xsapi-overview)
+- [XCurl](/reference/xcurl)
+- [Networking](/gdk/networking)

@@ -1,0 +1,57 @@
+---
+title: "Windows Device Portal extended URIs (Front Panel, Recovery, Unattended Setup)"
+sidebarTitle: "WDP extended"
+icon: "server"
+description: "Devkit-only Windows Device Portal endpoints for front panel, remote recovery, and unattended setup configuration."
+---
+
+This page complements the main [WDP REST API](/reference/wdp-rest) reference with the dev-kit-only endpoints used by build farms, lab automation, and unattended provisioning.
+
+## Front Panel (`/ext/frontpanel`)
+
+Programmatic control of the dev kit front panel LCD.
+
+- `GET /ext/frontpanel` — query state.
+- `WebSocket /ext/frontpanel` — streaming updates and input.
+
+See [XFrontPanelDisplay](/reference/xfrontpaneldisplay) for the in-game API.
+
+## Remote Recovery (`/ext/update/remote`)
+
+Kick off a remote recovery / OS re-image on the target.
+
+- `POST /ext/update/remote` — begin a remote recovery operation.
+
+## Unattended Setup (`/ext/unattendedsetup`)
+
+Endpoints for unattended dev kit provisioning and per-quickaction configuration. Use these to script first-boot setup on lab machines.
+
+### `/ext/unattendedsetup/apply`
+
+- `POST` — apply pending configuration.
+
+### `/ext/unattendedsetup/configure`
+
+- `GET` — read current configuration.
+- `POST` — push a new configuration.
+
+### `/ext/unattendedsetup/default`
+
+- `GET` — read defaults.
+- `POST` — set defaults.
+- `DELETE` — clear defaults.
+
+### `/ext/unattendedsetup/quickaction`
+
+- `GET` — list defined quick actions.
+- `POST` — add or update a quick action.
+
+### `/ext/unattendedsetup/test`
+
+- `POST` — validate configuration without applying it.
+
+## See also
+
+- [WDP REST API](/reference/wdp-rest)
+- [XFrontPanelDisplay](/reference/xfrontpaneldisplay)
+- [Xbox service tools](/tools/xbox-service-tools)

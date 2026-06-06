@@ -1,0 +1,53 @@
+---
+title: "Xbox PC Remote Iteration API reference"
+sidebarTitle: "Remote Iteration"
+icon: "share-from-square"
+description: "Programmatic deployment, launch, and file transfer to a remote test PC for iterative development."
+---
+
+The Remote Iteration API lets your build / test tooling deploy, launch, and copy files to a remote Windows test PC without going through the editor or command line.
+
+## Deployment and game lifecycle
+
+| Function | Description |
+| --- | --- |
+| `WdRegisterRemoteXboxGame` | Register a game package on the remote PC |
+| `WdLaunchRemoteGame` | Launch the registered game (`WdLaunchOptions`, `WdLaunchMode`) |
+| `WdResumeRemoteGame` | Resume a suspended game |
+| `WdTerminateRemoteGame` | Terminate the game |
+
+## File copy
+
+| Function | Description |
+| --- | --- |
+| `WdRemoteCopy` | Copy files / directories between dev PC and target |
+| `WdCancelRemoteCopy` | Cancel an in-progress copy |
+
+Callbacks: `WdCopyFilesStatusCallback`, `WdCopyErrorCallback`.
+
+## Cancellation handles
+
+| Function | Description |
+| --- | --- |
+| `WdCreateCancellationHandle` | Create a token |
+| `WdDuplicateCancellationHandle` | Duplicate it |
+| `WdCloseCancellationHandle` | Release it |
+
+## Types
+
+| Type | Purpose |
+| --- | --- |
+| `WdCancellationHandle` | Cancellation token |
+| `WdCopyFileProgressInfo` | Per-file progress |
+| `WdCopyOperationSummary` | Final summary |
+| `WdCopyOptions` / `WdCopySearchOptions` | Copy semantics |
+| `WdCopyStatusCallbacks` | Bundle of callbacks for a single operation |
+| `WdLaunchOptions` | Launch options |
+| `WdCopyDirection` | PC → target or target → PC |
+| `WdCopyErrorSeverity` | Warning / error / fatal |
+| `WdLaunchMode` | Foreground / background / debug |
+
+## See also
+
+- [Launching on PC](/tools/launching-on-pc)
+- [WDApp](/tools/wdapp)

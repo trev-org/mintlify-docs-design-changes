@@ -11,8 +11,8 @@
   "navbar": {
     "links": [
       {
-        "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
-        "label": "Collaborate with us in GitHub"
+        "href": "https://developer.microsoft.com/en-us/games/",
+        "label": "XBOX Game Dev"
       }
     ]
   },
@@ -252,7 +252,14 @@
               "reference/gameinput-extended",
               "reference/touch-adaptation-kit",
               "reference/dstorage",
-              "reference/xfrontpaneldisplay"
+              "reference/xfrontpaneldisplay",
+              "reference/xnetworking",
+              "reference/xcurl",
+              "reference/remote-iteration",
+              "reference/pix3",
+              "reference/xtf",
+              "reference/httpclient",
+              "reference/wdp-extended"
             ]
           },
           {

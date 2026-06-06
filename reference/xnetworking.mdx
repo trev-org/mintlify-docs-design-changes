@@ -1,0 +1,66 @@
+---
+title: "XNetworking API reference"
+sidebarTitle: "XNetworking"
+icon: "wifi"
+description: "Connectivity hints, preferred local UDP ports, certificate verification, statistics, and configuration settings."
+---
+
+`XNetworking` provides the networking helpers that complement raw Winsock/WinHTTP — connectivity hints, multiplayer port preference, certificate validation, and stats.
+
+## Connectivity hints
+
+| Function | Description |
+| --- | --- |
+| `XNetworkingGetConnectivityHint` | Sync query for current connectivity (`XNetworkingConnectivityHint`) |
+| `XNetworkingRegisterConnectivityHintChanged` / `XNetworkingUnregisterConnectivityHintChanged` | Subscribe to changes |
+| `XNetworkingConnectivityHintChangedCallback` | Callback signature |
+
+## Preferred local UDP multiplayer port
+
+Used when you want your peer-to-peer port to align with what the system advertises (firewall traversal, UPnP).
+
+| Function | Description |
+| --- | --- |
+| `XNetworkingQueryPreferredLocalUdpMultiplayerPort` | Sync query |
+| `XNetworkingQueryPreferredLocalUdpMultiplayerPortAsync` / `XNetworkingQueryPreferredLocalUdpMultiplayerPortAsyncResult` | Async |
+| `XNetworkingRegisterPreferredLocalUdpMultiplayerPortChanged` / `XNetworkingUnregisterPreferredLocalUdpMultiplayerPortChanged` | Subscribe to changes |
+| `XNetworkingPreferredLocalUdpMultiplayerPortChangedCallback` | Callback signature |
+
+## Server certificate validation
+
+Look up TLS endpoint security info before making sensitive requests.
+
+| Function | Description |
+| --- | --- |
+| `XNetworkingQuerySecurityInformationForUrlAsync` / `Result` / `ResultSize` | UTF-8 URL |
+| `XNetworkingQuerySecurityInformationForUrlUtf16Async` / `Result` / `ResultSize` | UTF-16 URL |
+| `XNetworkingVerifyServerCertificate` | Verify a pre-fetched certificate |
+
+Struct: `XNetworkingSecurityInformation`, `XNetworkingThumbprint`, `XNetworkingThumbprintType`.
+
+## Statistics
+
+| Function | Description |
+| --- | --- |
+| `XNetworkingQueryStatistics` | Aggregate networking stats (`XNetworkingStatisticsBuffer`, `XNetworkingTcpQueuedReceivedBufferUsageStatistics`, `XNetworkingStatisticsType`) |
+
+## Configuration settings
+
+| Function | Description |
+| --- | --- |
+| `XNetworkingQueryConfigurationSetting` | Read a config knob |
+| `XNetworkingSetConfigurationSetting` | Write a config knob |
+
+Enum: `XNetworkingConfigurationSetting`.
+
+## Enumerations
+
+| Enum | Purpose |
+| --- | --- |
+| `XNetworkingConnectivityCostHint` | Metered / unrestricted |
+| `XNetworkingConnectivityLevelHint` | Limited / Internet / IPv4-only / etc. |
+
+## See also
+
+- [Networking](/gdk/networking)
+- [Networking (API)](/reference/networking)

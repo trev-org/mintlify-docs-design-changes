@@ -1,0 +1,60 @@
+---
+title: "PIX3 API reference"
+sidebarTitle: "PIX3"
+icon: "magnifying-glass-chart"
+description: "Mark up CPU and GPU timelines, take captures, record memory events, query power metrics, and read performance counters."
+---
+
+PIX3 is the in-process instrumentation API for PIX captures (timing and GPU). Use it to annotate your timelines, drive captures from code, and report counters.
+
+## Event markup
+
+All three families have overloads accepting `void*` command list / queue context plus `PCSTR` or `PCWSTR` format strings.
+
+| Family | Description |
+| --- | --- |
+| `PIXBeginEvent` / `PIXEndEvent` | Bracket an event |
+| `PIXBeginRetailEvent` / `PIXEndRetailEvent` | Retail-safe event (kept in shipping builds) |
+| `PIXSetMarker` / `PIXSetRetailMarker` | Instantaneous marker |
+| `PIXScopedEvent` | RAII scoped event |
+
+Color helpers: `PIX_COLOR`, `PIX_COLOR_INDEX`.
+
+## Captures
+
+| Function | Description |
+| --- | --- |
+| `PIXBeginCapture` | Start a programmatic capture (`PIXCaptureParameters`) |
+| `PIXEndCapture` | Stop the capture |
+| `PIXGetCaptureState` | Query current capture state |
+
+## Memory and counters
+
+| Function | Description |
+| --- | --- |
+| `PIXRecordMemoryAllocationEvent` / `PIXRecordMemoryFreeEvent` | Annotate allocator activity |
+| `PIXReportCounter` | Report a custom counter sample |
+
+## Power and performance metrics
+
+| Function | Description |
+| --- | --- |
+| `PIXGetPowerMetrics` | Read CPU / GPU / memory power consumption (`PIXPowerMetrics`) |
+
+## Performance counters
+
+| Function | Description |
+| --- | --- |
+| `ConfigurePMCs` | Configure CPU PMCs |
+| `ConfigureNBPMCs` | NorthBridge PMCs |
+| `ConfigureL2IPMCs` | L2 instruction PMCs |
+| `GetPMCValue` | Read a configured counter |
+
+## GPU captures
+
+See the PIX3 GPU captures section of the SDK for advanced GPU capture flags. The standard `PIXBeginCapture` / `PIXEndCapture` work for both timing and GPU when you set the appropriate `PIXCaptureParameters` flags.
+
+## See also
+
+- [PIX for Windows](/tools/pix-for-windows)
+- [Tools API](/reference/tools-api)

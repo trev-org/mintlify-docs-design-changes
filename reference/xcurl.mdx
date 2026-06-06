@@ -1,0 +1,24 @@
+---
+title: "XCurl API reference"
+sidebarTitle: "XCurl"
+icon: "globe"
+description: "libcurl-compatible HTTP client for the GDK with custom memory hooks and suspend / resume."
+---
+
+`XCurl` is the Xbox build of libcurl. It exposes the standard libcurl API plus a few platform extensions for memory management and process lifecycle.
+
+## Platform extensions
+
+| Function | Description |
+| --- | --- |
+| `xcurl_global_init_mem` | Initialize libcurl with custom allocator callbacks |
+| `xcurl_global_suspend` | Suspend libcurl activity (e.g., on PLM constrain) |
+| `xcurl_global_resume` | Resume libcurl activity |
+
+All standard `curl_easy_*`, `curl_multi_*`, and `curl_global_*` entry points are available. Ship `XCurl.dll` (from `GRDK/ExtensionLibraries/Xbox.XCurl.API/Redist/x64`) with your title.
+
+## See also
+
+- [Networking](/gdk/networking)
+- [HttpClient (libHttpClient)](/reference/httpclient)
+- [Custom engine integration](/pc-e2e/engines/custom-engine)
