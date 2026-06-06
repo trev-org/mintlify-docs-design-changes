@@ -1,0 +1,83 @@
+---
+title: "Xbox services JSON object reference"
+sidebarTitle: "XSAPI JSON objects"
+icon: "brackets-curly"
+description: "Schemas for every JSON payload used by Xbox services REST APIs."
+---
+
+This index lists every JSON object Xbox services accept or return. Use these schemas when building REST integrations or interpreting server-to-server responses.
+
+## Achievements
+
+- **Achievement** — single achievement (id, title, description, progress, gamerscore reward).
+- **Achievement Update** — update payload for `POST /users/xuid/achievements/{scid}/update`.
+
+## Activities and sessions
+
+- **ActivityRecord** / **ActivityRequest**
+- **MultiplayerActivityDetails**, **MultiplayerSessionReference**, **MultiplayerSessionRequest**, **MultiplayerSession**, **AggregateSessionsResponse**
+- **SessionEntry**
+
+## Stats and leaderboards
+
+- **BatchRequest**, **UserClaims**, **PagingInfo**
+- **Property**
+
+## Game clips / media
+
+- **GameClip**, **GameClipsServiceErrorResponse**, **GameClipThumbnail**, **GameClipUri**, **GetClipResponse**, **QueryClipsResponse**
+- **MediaAsset**, **MediaRecord**, **MediaRequest**
+
+## Game and player records
+
+- **GameMessage**, **GameResult**, **GameSession**, **GameSessionSummary**, **Player**, **TitleAssociation**, **TitleBlob**, **TitleRecord**, **TitleRequest**, **UserTitle**
+
+## Inventory
+
+- **inventoryItem**, **quotaInfo**
+
+## Matchmaking
+
+- **HopperStatsResults**, **MatchTicket**
+
+## People and presence
+
+- **PeopleList**, **Person**, **PersonSummary**
+- **DeviceEndpoint**, **DeviceRecord**, **PresenceRecord**, **LastSeenRecord**, **RichPresenceRequest**
+
+## Privacy
+
+- **PermissionCheckBatchRequest**, **PermissionCheckBatchResponse**, **PermissionCheckBatchUserResponse**, **PermissionCheckResponse**, **PermissionCheckResult**
+- **ResetReputation**
+- **Feedback**
+
+## Profile and users
+
+- **Profile**, **User**, **UserList**, **UserSettings**, **XuidList**
+
+## Achievements progression
+
+- **Progression**, **Requirement**, **Reward**
+
+## Service errors
+
+- **ServiceError**, **ServiceErrorResponse**
+
+## String validation
+
+- **VerifyStringResult**
+
+## Upload
+
+- **InitialUploadRequest**, **InitialUploadResponse**
+
+## Enumerations used in JSON
+
+GameClip enums: **GameClipSource**, **GameClipState**, **GameClipType**, **GameClipUriType**, **GameClipVisibility**, **ThumbnailSource**, **ThumbnailType**.
+
+Privacy: **PermissionId**.
+
+## See also
+
+- [XSAPI REST URIs](/reference/xsapi-rest)
+- [XSAPI overview](/reference/xsapi-overview)

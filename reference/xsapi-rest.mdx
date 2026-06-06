@@ -1,0 +1,135 @@
+---
+title: "Xbox services REST URI reference"
+sidebarTitle: "XSAPI REST URIs"
+icon: "server"
+description: "REST endpoints exposed by Xbox services for server-to-server scenarios and cross-platform XSAPI integrations."
+---
+
+Xbox services expose a REST surface. Use it when calling from servers, web back-ends, or platforms where the native XSAPI C library isn't available. All requests require an XSTS token (acquired through XBL auth) in `Authorization: XBL3.0 x=<userhash>;<XSTSToken>`.
+
+## Achievements
+
+- `GET /users/xuid({xuid})/achievements`
+- `GET /users/xuid({xuid})/achievements/{scid}/{achievementid}`
+- `POST /users/xuid({xuid})/achievements/{scid}/update`
+
+## Gamerpic
+
+- `PUT /users/me/gamerpic`
+
+## Leaderboards
+
+- `GET /scids/{scid}/leaderboards/{leaderboardname}`
+- `GET /scids/{scid}/leaderboards/{leaderboardname}?include=valuemetadata`
+- `GET /users/xuid({xuid})/scids/{scid}/stats/{statname)/people/{all|favorite}`
+
+## Lists (Pins, etc.)
+
+- `GET / DELETE / POST / PUT /users/xuid(xuid)/lists/PINS/{listname}`
+- `POST /users/xuid(xuid)/lists/PINS/{listname}/ContainsItems`
+- `POST /users/xuid(xuid)/lists/PINS/{listname}/index({index})?insertIndex={insertIndex}`
+- `DELETE / POST /users/xuid(xuid)/lists/PINS/{listname}/RemoveItems`
+
+## Marketplace
+
+- Inventory: `GET /users/me/inventory`, `GET /inventory/{itemID}`, `POST /users/me/consumables/{itemID}`
+- EDS media: `GET /media/{marketplaceId}/browse`, `crossMediaGroupSearch`, `singleMediaGroupSearch`, `details`, `contentRating`, `fields`, `metadata/mediaGroups`, `metadata/mediaGroups/{mediagroup}/mediaItemTypes`, `metadata/mediaItemTypes`, `metadata/mediaItemTypes/{mediaItemType}/fields`, `metadata/mediaItemTypes/{mediaitemtype}/queryrefiners` (\+ `{queryrefinername}`, \+ `{queryRefiner}/subQueryRefinerValues`), `metadata/mediaItemTypes/{mediaitemtype}/sortorders`
+
+## Matchmaking
+
+- `POST /serviceconfigs/{scid}/hoppers/{hoppername}`
+- `GET /serviceconfigs/{scid}/hoppers/{name}/stats`
+- `DELETE /serviceconfigs/{scid}/hoppers/{hoppername}/tickets/{ticketid}`
+
+## Multiplayer Activity
+
+- Activities: `GET / PUT / DELETE /titles/{titleId}/users/{xuid}/activities`, `POST /titles/{titleId}/activities/query`
+- Recent players: `POST /titles/{titleId}/recentplayers`, `POST /titles/{titleId}/recentplayers/server`, `POST /titles/{titleId}/recentplayergroups/server`
+- Invites: `POST /titles/{titleId}/invites`, `POST /titles/{titleId}/invites/server`
+
+## People
+
+- `GET /users/{ownerId}/people`
+- `GET /users/{ownerId}/people/{targetid}`
+- `POST /users/{ownerId}/people/xuids`
+- `GET /users/{ownerId}/summary`
+
+## Presence
+
+- `POST /users/batch`
+- `GET /users/me`
+- `GET /users/me/groups/{moniker}`
+- `GET /users/xuid({xuid})`
+- `POST / DELETE /users/xuid({xuid})/devices/current/titles/current`
+- `GET /users/xuid({xuid})/groups/{moniker}`, `.../broadcasting`, `.../broadcasting/count`
+
+## Privacy
+
+- `GET /users/{ownerId}/people/mute`
+- `GET /users/{ownerId}/people/avoid`
+- `GET / POST /users/{requestorId}/permission/validate`
+
+## Profile
+
+- `POST /users/batch/profile/settings`
+- `GET /users/{userId}/profile/settings/people/{userList}?settings={settings}`
+
+## Session Directory (MPSD)
+
+- Handles: `POST /handles`, `GET / DELETE /handles/{handleId}`, `GET / PUT /handles/{handleId}/session`, `POST /handles/query` (\+ `?include=relatedInfo`)
+- Batch: `POST /serviceconfigs/{scid}/batch`
+- Sessions: `GET /serviceconfigs/{scid}/sessions`
+- Templates: `GET /serviceconfigs/{scid}/sessiontemplates` (\+ `/{sessionTemplateName}`)
+- Template batch: `POST /serviceconfigs/{scid}/sessiontemplates/{sessionTemplateName}/batch`
+- Template sessions: `GET /serviceconfigs/{scid}/sessiontemplates/{sessionTemplateName}/sessions`, `GET / PUT /…/sessions/{sessionName}`
+- Member operations: `DELETE /…/sessions/{sessionName}/members/{index}`, `DELETE /…/sessions/{sessionName}/members/me`
+- Server operations: `DELETE /…/sessions/{sessionName}/servers/{server-name}`
+
+## Title History (achievements)
+
+- `GET /users/xuid({xuid})/history/titles`
+
+## Title Storage
+
+Global storage:
+
+- `GET /global/scids/{scid}`, `GET /global/scids/{scid}/data/{path}`, `GET /global/scids/{scid}/data/{pathAndFileName},{type}`
+
+JSON (per-user / batch):
+
+- `POST /json/users/batch/scids/{scid}/data/{pathAndFileName},json`
+- `GET /json/users/xuid({xuid})/scids/{scid}`, `GET /json/…/data/{path}`, `GET / PUT / DELETE /json/…/data/{pathAndFileName},json`
+
+Session storage:
+
+- `GET /sessions/{sessionId}/scids/{scid}`, `GET /…/data/{path}`, `GET / PUT / DELETE /…/data/{pathAndFileName},{type}`
+
+Trusted platform (signed):
+
+- `POST /trustedplatform/users/batch/scids/{scid}/data/{pathAndFileName},{type}`
+- `GET /trustedplatform/users/xuid({xuid})/scids/{scid}` (\+ `/data/{path}`, `/data/{pathAndFileName},{type}` GET / PUT / DELETE)
+
+Untrusted platform:
+
+- `POST /untrustedplatform/users/batch/scids/{scid}/data/{pathAndFileName},{type}`
+- `GET /untrustedplatform/users/xuid({xuid})/scids/{scid}` (\+ `/data/{path}`, `/data/{pathAndFileName},{type}` GET / PUT / DELETE)
+
+## System strings validation
+
+- `POST /system/strings/validate`
+
+## Users (messaging)
+
+- `GET /users/xuid({xuid})/inbox`, `GET / DELETE /users/xuid({xuid})/inbox/{messageId}`
+- `POST /users/xuid({xuid})/outbox`
+
+## User statistics
+
+- `POST /batch`
+- `GET /users/xuid({xuid})/scids/{scid}/stats` (\+ `?include=valuemetadata`)
+
+## See also
+
+- [XSAPI overview](/reference/xsapi-overview)
+- [XSAPI JSON objects](/reference/xsapi-json)
+- [Xbox Live HRESULT codes](/reference/xbox-live-hresult)

@@ -1,0 +1,36 @@
+---
+title: "Xbox Live HRESULT error codes"
+sidebarTitle: "Xbox Live error codes"
+description: "FACILITY_XBOX and FACILITY_HTTP HRESULTs returned by XSAPI and the Xbox services REST surface."
+icon: "circle-exclamation"
+---
+
+XSAPI returns HRESULTs in the `FACILITY_XBOX` and `FACILITY_HTTP` ranges. Use [`XblGetErrorCondition`](/reference/xsapi-context-and-globals) to map an HRESULT into a coarse condition (`XblErrorCondition`) for retry policy decisions.
+
+## Common condition buckets
+
+| Condition | When you see it |
+| --- | --- |
+| **Auth** | XBL token expired or refused |
+| **Network** | TLS, socket, DNS failures |
+| **Rate-limited** | Service throttling |
+| **HTTP client** | 4xx — the call is malformed; fix and retry |
+| **HTTP server** | 5xx — transient; back off and retry |
+| **Generic error** | Other |
+
+## Decoding HRESULTs
+
+- `FACILITY_HTTP` HRESULTs encode the HTTP status code directly: `HRESULT_FROM_WIN32(HTTP_E_STATUS_BAD_REQUEST)`, etc.
+- `FACILITY_XBOX` HRESULTs carry XSAPI-specific service errors.
+
+## Diagnosing failures
+
+1. Call `HCHttpCallResponseGetNetworkErrorCode` and `HCHttpCallResponseGetStatusCode` on the failed [HTTP call handle](/reference/xsapi-http-call).
+2. If you have an XSAPI HRESULT, run it through `XblGetErrorCondition` for the bucket.
+3. Use [`XblHttpCallSetTracing`](/reference/xsapi-http-call) on individual calls to log full request / response data.
+
+## See also
+
+- [GDK error codes (XGameErr.h)](/reference/error-codes)
+- [Error handling](/gdk/error-handling)
+- [XSAPI Context, Settings, and Globals](/reference/xsapi-context-and-globals)

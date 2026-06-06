@@ -287,7 +287,12 @@
               "reference/xsapi-stats",
               "reference/xsapi-string-verify",
               "reference/xsapi-user-statistics",
-              "reference/xsapi-context"
+              "reference/xsapi-context",
+              "reference/xsapi-context-and-globals",
+              "reference/xsapi-rest",
+              "reference/xsapi-rest-overview",
+              "reference/xsapi-json",
+              "reference/xbl-error-codes"
             ]
           }
         ]
