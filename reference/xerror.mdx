@@ -1,0 +1,31 @@
+---
+title: "XError API reference"
+sidebarTitle: "XError"
+icon: "bug"
+description: "Register a global error handler for unrecoverable GDK errors."
+---
+
+`XError` lets you install a process-wide callback that's invoked when the GDK detects a critical error — useful for centralized telemetry, crash reporting, and last-chance logging.
+
+## Functions
+
+| Function | Description |
+| --- | --- |
+| `XErrorSetCallback` | Install the error callback |
+| `XErrorSetOptions` | Configure callback behavior (`XErrorOptions` flags) |
+| `XErrorCallback` | Callback signature |
+
+## Pattern
+
+```cpp
+void CALLBACK MyErrorCallback(HRESULT hr, const char* message, void* context) {
+  // Log to telemetry, write a minidump hint, etc.
+}
+
+XErrorSetCallback(MyErrorCallback, nullptr);
+```
+
+## See also
+
+- [Error handling](/gdk/error-handling)
+- [Error codes](/reference/error-codes)

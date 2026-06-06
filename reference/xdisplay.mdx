@@ -1,0 +1,33 @@
+---
+title: "XDisplay API reference"
+sidebarTitle: "XDisplay"
+icon: "tv"
+description: "HDR mode negotiation and display timeout deferrals."
+---
+
+`XDisplay` lets your title query and enable HDR modes and defer the system display-sleep timer when needed.
+
+## HDR
+
+| Function | Description |
+| --- | --- |
+| `XDisplayTryEnableHdrMode` | Attempt to switch into an HDR mode that matches your preference |
+
+## Display timeout deferral
+
+| Function | Description |
+| --- | --- |
+| `XDisplayAcquireTimeoutDeferral` | Prevent the display from sleeping while the deferral is held |
+| `XDisplayCloseTimeoutDeferralHandle` | Release the deferral |
+
+## Types
+
+| Type | Purpose |
+| --- | --- |
+| `XDisplayHdrModeInfo` | Returned HDR mode capabilities (peak luminance, color volume) |
+| `XDisplayHdrModePreference` | Caller's preferred HDR behavior |
+| `XDisplayHdrModeResult` | What the system did in response to the request |
+
+## See also
+
+- [Dynamic lighting](/gdk/dynamic-lighting)

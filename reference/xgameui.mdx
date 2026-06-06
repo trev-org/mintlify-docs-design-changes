@@ -1,0 +1,65 @@
+---
+title: "XGameUI API reference"
+sidebarTitle: "XGameUI"
+icon: "window-maximize"
+description: "Title-callable UI (TCUI): system dialogs, pickers, invites, achievements view, text entry, and web authentication."
+---
+
+`XGameUI` is the GDK's surface for **Title-Callable UI (TCUI)** — the standard system dialogs and pickers Xbox provides on behalf of titles (profile cards, player picker, achievements view, invite send, etc.).
+
+## Show standard UI flows
+
+| Function | What it shows |
+| --- | --- |
+| `XGameUiShowAchievementsAsync` / `XGameUiShowAchievementsResult` | Achievements view |
+| `XGameUiShowErrorDialogAsync` / `XGameUiShowErrorDialogResult` | System error dialog |
+| `XGameUiShowMessageDialogAsync` / `XGameUiShowMessageDialogResult` | Message dialog |
+| `XGameUiShowPlayerPickerAsync` / `XGameUiShowPlayerPickerResult` / `XGameUiShowPlayerPickerResultCount` | Player picker |
+| `XGameUiShowPlayerProfileCardAsync` / `XGameUiShowPlayerProfileCardResult` | Profile card |
+| `XGameUiShowSendGameInviteAsync` / `XGameUiShowSendGameInviteResult` | Send a multiplayer invite |
+| `XGameUiShowMultiplayerActivityGameInviteAsync` / `XGameUiShowMultiplayerActivityGameInviteResult` | MPA-based invite |
+| `XGameUiShowStateShareAsync` / `XGameUiShowStateShareResult` | State share UI |
+| `XGameUiShowTextEntryAsync` / `XGameUiShowTextEntryResult` / `XGameUiShowTextEntryResultSize` | Modal text-entry dialog |
+| `XGameUiShowWebAuthenticationAsync` / `XGameUiShowWebAuthenticationResult` / `XGameUiShowWebAuthenticationResultSize` | Web auth flow |
+| `XGameUiShowWebAuthenticationWithOptionsAsync` | Web auth with extra options |
+
+## Inline text entry
+
+For in-engine text entry (no modal dialog), use the inline APIs:
+
+| Function | Description |
+| --- | --- |
+| `XGameUiTextEntryOpen` | Start inline text entry |
+| `XGameUiTextEntryClose` | Stop inline text entry |
+| `XGameUiTextEntryGetState` | Current text state |
+| `XGameUiTextEntryGetExtents` | Bounding box of the IME |
+| `XGameUiTextEntryUpdatePositionHint` | Where the IME should appear |
+| `XGameUiTextEntryUpdateVisibility` | Show/hide |
+
+## Notifications
+
+| Function | Description |
+| --- | --- |
+| `XGameUiSetNotificationPositionHint` | Hint for where system notifications should appear |
+
+## Custom UI callbacks
+
+For games that want to render TCUI inside their own UI layer:
+
+- `XGameUISetUICallbacks` — register custom UI callbacks (`XGameUIUICallbacks`).
+- `XGameUISet<DialogType>UIResponse` family — push responses for picker, profile card, achievements, invites, etc.
+- `XGameUIShow<DialogType>UICallback` family — receive show-dialog requests.
+
+## Types
+
+| Type | Purpose |
+| --- | --- |
+| `XGameUiMessageDialogButton` | Button enum for message dialogs |
+| `XGameUiNotificationPositionHint` | Notification placement |
+| `XGameUiTextEntryChangeTypeFlags` | Edit-event flags |
+| `XGameUiTextEntryInputScope` | Input scope (email, URL, password…) |
+| `XGameUiTextEntryPositionHint` / `XGameUiTextEntryExtents` / `XGameUiTextEntryOptions` | Inline IME placement |
+| `XGameUiTextEntryVisibilityFlags` | Show/hide flags |
+| `XGameUiWebAuthenticationOptions` / `XGameUiWebAuthenticationResultData` | Web auth params and result |
+| `XGameUIPlayerPickerInfo` | Player picker config |
+| `XGameUICallbackHandle` | Custom UI callback handle |

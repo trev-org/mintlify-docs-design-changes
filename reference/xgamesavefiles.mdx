@@ -1,0 +1,21 @@
+---
+title: "XGameSaveFiles API reference"
+sidebarTitle: "XGameSaveFiles"
+icon: "folder-open"
+description: "Win32-style save folder helpers for games that prefer files on disk over the XGameSave container model."
+---
+
+`XGameSaveFiles` is the file-system view of game saves — a per-user folder you can read and write with regular Win32 file I/O. Use this instead of `XGameSave` when you want a familiar file-based save model. The system still backs the folder with Connected Storage for cloud roaming.
+
+## Functions
+
+| Function | Description |
+| --- | --- |
+| `XGameSaveFilesGetFolderWithUiAsync` | Prompt the user (if needed) and resolve the save folder path |
+| `XGameSaveFilesGetFolderWithUiResult` | Retrieve the resolved path |
+| `XGameSaveFilesGetRemainingQuota` | Bytes available before save quota fills up |
+
+## See also
+
+- [XGameSave](/reference/xgamesave) — container/blob model for finer-grained roaming control
+- [Game Saves](/gdk/game-saves)

@@ -1,0 +1,33 @@
+---
+title: "XGameActivation API reference"
+sidebarTitle: "XGameActivation"
+icon: "bell"
+description: "Receive activation events when the game is launched via a multiplayer invite, protocol URI, or toast notification."
+---
+
+`XGameActivation` replaces the deprecated `XGameInvite` and `XGameProtocol` APIs. It delivers a single, unified callback for all activation reasons.
+
+## Functions
+
+| Function | Description |
+| --- | --- |
+| `XGameActivationRegisterForEvent` | Register a callback for activation events |
+| `XGameActivationUnregisterForEvent` | Stop receiving activation events |
+| `XGameActivationCallback` | Callback signature — receives `XGameActivationInfo` |
+| `XGameActivationAcceptPendingInvite` | Accept a pending invite delivered with the activation |
+
+## Types
+
+| Type | Purpose |
+| --- | --- |
+| `XGameActivationInfo` | Activation payload (URI, invite handle, etc.) |
+| `XGameActivationType` | Why the game activated (invite, protocol, toast, etc.) |
+
+## Deprecated
+
+The legacy `XGameInvite` and `XGameProtocol` APIs still exist for compatibility. New code should use `XGameActivation` instead.
+
+## See also
+
+- [Multiplayer Activity](/services/multiplayer-activity)
+- [XLauncher](/reference/xlauncher)

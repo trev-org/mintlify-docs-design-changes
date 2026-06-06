@@ -1,0 +1,29 @@
+---
+title: "XPersistentLocalStorage API reference"
+sidebarTitle: "XPersistentLocalStorage"
+icon: "hard-drive"
+description: "Allocate and prompt for Persistent Local Storage (PLS) — a guaranteed per-device per-package storage area."
+---
+
+Persistent Local Storage (PLS) is a reserved on-device storage area allocated to your title that survives across launches and OS reboots. Use it for local-only data that doesn't need to roam (caches, telemetry, downloaded content metadata).
+
+## Functions
+
+| Function | Description |
+| --- | --- |
+| `XPersistentLocalStorageGetPath` | Get the absolute path to the title's PLS folder |
+| `XPersistentLocalStorageGetPathSize` | Compute required buffer size for the path |
+| `XPersistentLocalStorageGetSpaceInfo` | Free and reserved bytes (`XPersistentLocalStorageSpaceInfo`) |
+| `XPersistentLocalStoragePromptUserForSpaceAsync` | Prompt the user to grant additional space |
+| `XPersistentLocalStoragePromptUserForSpaceResult` | Retrieve the result of the prompt |
+| `XPersistentLocalStorageMountForPackage` | Mount PLS for a related package (e.g., DLC) |
+
+## When to use PLS vs. Connected Storage
+
+- **PLS** — large, local-only, device-bound data. Caches, downloads, screenshots, etc.
+- [**Connected Storage / XGameSave**](/reference/xgamesave) — game saves that should roam across devices.
+
+## See also
+
+- [Storage](/gdk/storage)
+- [`PersistentLocalStorage` element in MicrosoftGame.config](/reference/microsoftgameconfig-elements)

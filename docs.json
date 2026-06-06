@@ -234,7 +234,20 @@
               "reference/xappcapture",
               "reference/wdp-rest",
               "reference/error-codes",
-              "reference/error-codes-detailed"
+              "reference/error-codes-detailed",
+              "reference/xmem",
+              "reference/xdisplay",
+              "reference/xthread",
+              "reference/xerror",
+              "reference/xlauncher",
+              "reference/xsystem",
+              "reference/xgame",
+              "reference/xgameevent",
+              "reference/xgameactivation",
+              "reference/xpersistentlocalstorage",
+              "reference/xgameui",
+              "reference/xasync",
+              "reference/xgamesavefiles"
             ]
           },
           {

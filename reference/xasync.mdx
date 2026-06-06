@@ -1,0 +1,49 @@
+---
+title: "XAsync API reference"
+sidebarTitle: "XAsync"
+icon: "shuffle"
+description: "Building blocks for the GDK async pattern: XAsyncBlock, cancellation, status queries, and async providers."
+---
+
+`XAsync` is the foundation under every `*Async` API in the GDK. `XAsyncBlock` is the per-operation control block; `XAsyncProvider` is the building block for implementing your own async APIs.
+
+## Consumer-facing API (`XAsync`)
+
+| Function | Description |
+| --- | --- |
+| `XAsyncGetStatus` | Wait for or poll an operation's status |
+| `XAsyncGetResultSize` | Get the size of the result payload |
+| `XAsyncCancel` | Cancel an in-flight async operation |
+| `XAsyncRun` | Run a free-standing async work item |
+| `XAsyncCompletionRoutine` | Callback signature for completion |
+| `XAsyncWork` | Work-function signature for `XAsyncRun` |
+
+### Key structure
+
+| Type | Purpose |
+| --- | --- |
+| `XAsyncBlock` | Per-operation control block: callback, context, queue, status |
+
+## Provider-facing API (`XAsyncProvider`)
+
+Use these when you implement an async API of your own (e.g., wrapping a long-running platform call).
+
+| Function | Description |
+| --- | --- |
+| `XAsyncBegin` | Begin an async operation |
+| `XAsyncSchedule` | Schedule the work portion |
+| `XAsyncComplete` | Mark complete and store result |
+| `XAsyncGetResult` | Retrieve the result inside the result function |
+| `XAsyncProvider` | Provider function signature |
+
+### Provider types
+
+| Type | Purpose |
+| --- | --- |
+| `XAsyncProviderData` | Passed into the provider function |
+| `XAsyncOp` | The current op (`Begin`, `DoWork`, `GetResult`, `Cancel`, `Cleanup`) |
+
+## See also
+
+- [Async programming model](/gdk/async-programming)
+- [XTaskQueue](/reference/xtaskqueue) for dispatch

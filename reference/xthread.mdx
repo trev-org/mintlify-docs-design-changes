@@ -1,0 +1,20 @@
+---
+title: "XThread API reference"
+sidebarTitle: "XThread"
+icon: "microchip"
+description: "Mark threads as time-sensitive and assert that long-running work doesn't block them."
+---
+
+`XThread` lets you opt threads in to the GDK's time-sensitive scheduling class so the OS prioritizes them and you can assert against unintended blocking calls.
+
+## Functions
+
+| Function | Description |
+| --- | --- |
+| `XThreadSetTimeSensitive` | Mark the current thread as time-sensitive |
+| `XThreadIsTimeSensitive` | Query whether the current thread is time-sensitive |
+| `XThreadAssertNotTimeSensitive` | Debug assert when blocking code runs on a time-sensitive thread |
+
+## When to use
+
+Tag your render and audio threads as time-sensitive, then use `XThreadAssertNotTimeSensitive` in functions known to block (file I/O, mutex acquisition, etc.) to catch accidental blocking during development.

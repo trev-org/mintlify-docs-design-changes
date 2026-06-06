@@ -1,0 +1,96 @@
+---
+title: "XMem API reference"
+sidebarTitle: "XMem"
+icon: "memory"
+description: "Memory allocation, heap statistics, physical pages, and write watches on Xbox."
+---
+
+`XMem` is the Xbox-extended memory allocator. On PC, the GDK uses the standard Win32 heap; on Xbox, you should use `XMem` so the GDK can track and account memory against your title.
+
+## Allocation
+
+| Function | Description |
+| --- | --- |
+| `XMemAlloc` | Allocate memory with tag and attributes |
+| `XMemAllocDefault` | Allocate with default attributes |
+| `XMemFree` | Free memory allocated with `XMemAlloc` |
+| `XMemFreeDefault` | Free with default attributes |
+| `XMemMakeTag` | Build a 4-byte tag from a string for allocation tracking |
+
+## Physical pages
+
+| Function | Description |
+| --- | --- |
+| `XMemAllocatePhysicalPages` | Reserve physical pages |
+| `XMemFreePhysicalPages` | Release physical pages |
+| `XMemMapPhysicalPages` | Map physical pages into virtual address space |
+| `XMemMapPhysicalPagesScatter` | Scatter-map multiple physical regions |
+| `XMemTransferMemory` | Transfer ownership of pages between heaps |
+
+## Virtual memory
+
+| Function | Description |
+| --- | --- |
+| `XMemVirtualAlloc` | Allocate virtual memory range |
+| `XMemVirtualQuery` | Query attributes of a virtual address |
+| `XMemPreallocateFreeSpace` | Pre-reserve VA space to avoid fragmentation |
+
+## Write watch
+
+| Function | Description |
+| --- | --- |
+| `XMemGetWriteWatch` | Get list of modified pages since the last reset |
+| `XMemResetWriteWatch` | Reset write-watch state |
+| `XMemResumeWriteWatch` | Resume write-watch tracking after a pause |
+
+## Statistics
+
+| Function | Description |
+| --- | --- |
+| `XMemGetAllocationStatistics` | Stats per allocator ID |
+| `XMemGetAllocationHysteresis` | Hysteresis settings |
+| `XMemSetAllocationHysteresis` | Set hysteresis to delay free → commit cycles |
+| `XMemGetTitleHeap` | Handle to the title's default heap |
+| `XMemGetPhysicalMemoryLayout` | Physical memory partitioning |
+| `XMemGetWorkingSetStatistics` | Working set stats |
+| `XMemIsToolsMemAvailable` | Check whether tools-only memory is accessible |
+
+## Win32 heap integration
+
+| Function | Description |
+| --- | --- |
+| `XMemCreateWin32Heap` | Create a Win32 heap backed by XMem tracking |
+| `XMemGetWin32HeapName` / `XMemSetWin32HeapName` | Heap name (for diagnostics) |
+| `XMemGetWin32HeapStatistics` | Per-heap statistics |
+| `XMemSetWin32HeapTrackingHooks` | Install heap tracking hooks |
+
+## Hooks and options
+
+| Function | Description |
+| --- | --- |
+| `XMemSetAllocationHooks` | Register alloc/free/realloc hooks for instrumentation |
+| `XMemSetOption` | Tune allocator behavior |
+| `PHEAP_TRACK_ALLOC_ROUTINE` / `PHEAP_TRACK_FREE_ROUTINE` / `PHEAP_TRACK_REALLOC_ROUTINE` | Heap-tracking callback signatures |
+| `XMEMALLOC_ROUTINE` / `XMEMFREE_ROUTINE` | Allocator/free callback signatures |
+| `XMEM_SET_ALLOCATION_HOOKS` | Convenience macro for installing hooks |
+
+## Key types
+
+| Type | Purpose |
+| --- | --- |
+| `XALLOC_ATTRIBUTES` | Allocation attribute flags |
+| `XMEM_ALLOCATION_HOOKS` | Hook registration struct |
+| `XMEM_BASIC_INFORMATION` | Page info from `XMemVirtualQuery` |
+| `XMEM_HEAP_STATISTICS` | Per-heap counts and sizes |
+| `XMEM_OPTION` | Allocator option key/value |
+| `XMEM_PHYSICAL_MEMORY_LAYOUT` | Physical layout description |
+| `XMEM_WORKING_SET_STATISTICS` | Working set stats |
+| `WIN32_HEAP_STATISTICS` | Win32 heap stats |
+| `XALLOC_ALLOCATOR_IDS` | Built-in allocator IDs (graphics, audio, file, etc.) |
+| `XMEM_OPTIONS` | Option keys |
+| `XMEM_TRANSFER_TYPE` | Memory transfer modes |
+
+## See also
+
+- [Memory model](/gdk/memory)
+- [System overview](/reference/system-overview)

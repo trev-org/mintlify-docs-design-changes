@@ -1,0 +1,46 @@
+---
+title: "XSystem API reference"
+sidebarTitle: "XSystem"
+icon: "computer"
+description: "Console ID, device type, sandbox ID, analytics info, runtime info, and handle tracking."
+---
+
+`XSystem` exposes system-wide identifiers and capabilities your title can query.
+
+## Identifiers
+
+| Function | Description |
+| --- | --- |
+| `XSystemGetConsoleId` | Per-console identifier |
+| `XSystemGetAppSpecificDeviceId` | Per-title, per-device identifier |
+| `XSystemGetXboxLiveSandboxId` | Current Xbox services sandbox |
+| `XSystemGetDeviceType` | `XSystemDeviceType` (Xbox One, One X, Series S/X, PC) |
+
+## Runtime info
+
+| Function | Description |
+| --- | --- |
+| `XSystemGetRuntimeInfo` | Runtime version, OS edition, etc. (`XSystemRuntimeInfo`) |
+| `XSystemGetAnalyticsInfo` | Analytics-safe IDs (`XSystemAnalyticsInfo`) |
+
+## Bandwidth control
+
+| Function | Description |
+| --- | --- |
+| `XSystemAllowFullDownloadBandwidth` | Allow the game to consume all available download bandwidth |
+
+## Handle tracking
+
+| Function | Description |
+| --- | --- |
+| `XSystemHandleTrack` | Register a handle for tracking |
+| `XSystemHandleCallback` | Callback when handle state changes |
+| `XSystemIsHandleValid` | Validity check |
+
+## Enumerations
+
+| Type | Purpose |
+| --- | --- |
+| `XSystemDeviceType` | Console/PC SKU classification |
+| `XSystemHandleCallbackReason` | Why the handle callback fired |
+| `XSystemHandleType` | Handle category |
