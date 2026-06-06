@@ -286,7 +286,6 @@
               "reference/xsapi-title-storage",
               "reference/xsapi-stats",
               "reference/xsapi-string-verify",
-              "reference/xsapi-user-statistics",
               "reference/xsapi-context",
               "reference/xsapi-context-and-globals",
               "reference/xsapi-rest",
