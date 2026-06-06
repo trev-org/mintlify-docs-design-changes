@@ -1,0 +1,86 @@
+---
+title: "DirectStorage API reference (IDStorageFactoryX, queues, status arrays)"
+sidebarTitle: "DirectStorage"
+icon: "bolt"
+description: "Detailed reference for the DirectStorage interfaces, requests, queues, and statistics on Xbox."
+---
+
+The DirectStorage API on Xbox is built around the `IDStorageFactoryX` interface, `IDStorageFileX` files, and `IDStorageQueueX` queues. Use this reference alongside [DirectStorage](/gdk/directstorage) for the conceptual overview.
+
+## Factory
+
+### IDStorageFactoryX
+
+- `CreateQueue` — create a request queue.
+- `CreateStatusArray` — create a status array for completion polling.
+- `OpenFile` — open a file for reading.
+- `SetCpuAffinity` — pin the DStorage worker thread.
+- `SetDebugFlags` — enable debug logging.
+- `SetStagingBufferSize` — tune the staging buffer.
+
+### IDStorageFactoryX1 (extension)
+
+- `GetStats` — retrieve runtime statistics.
+
+Factory creation: `DStorageGetFactory`.
+
+## Files
+
+### IDStorageFileX
+
+- `Close` — close the file.
+- `GetHandle` — get the underlying handle.
+
+## Queues
+
+### IDStorageQueueX
+
+- `EnqueueRequest` — submit a request (`DSTORAGE_REQUEST`).
+- `EnqueueSignal` — signal an event after preceding requests complete.
+- `EnqueueStatus` — update a status array entry.
+- `Submit` — kick off submitted work.
+- `Query` — query queue state (`DSTORAGE_QUEUE_INFO`).
+- `CancelRequestsWithTag` — cancel by tag.
+- `GetErrorEvent` — event for error notifications.
+- `RetrieveErrorRecord` — retrieve the last error.
+- `Close`.
+
+### IDStorageQueueX1 (extension)
+
+- `EnqueueSetEvent` — set a Windows event after preceding requests complete.
+
+## Status arrays
+
+### IDStorageStatusArrayX
+
+- `GetHResult` — result of a particular index.
+- `IsComplete` — completion check.
+
+## Requests and structures
+
+| Struct | Purpose |
+| --- | --- |
+| `DSTORAGE_REQUEST` | A single read request |
+| `DSTORAGE_REQUEST_OPTIONS` | Compression mode, source type, decompression options |
+| `DSTORAGE_QUEUE_DESC` | Queue creation parameters |
+| `DSTORAGE_QUEUE_INFO` | Runtime queue state |
+| `DSTORAGE_PRIORITY_STATS` | Stats per priority |
+| `DSTORAGE_STATS` | Aggregate stats |
+| `DSTORAGE_ERROR_RECORD` | Per-error diagnostic record |
+
+## Enumerations
+
+| Enum | Purpose |
+| --- | --- |
+| `DSTORAGE_PRIORITY` | Request priority (Realtime, High, Normal, Low) |
+| `DSTORAGE_REQUEST_SOURCE_TYPE` | File vs. memory source |
+| `DSTORAGE_COMMAND_TYPE` | Command kind (read, status, signal) |
+| `DSTORAGE_BCPACK_MODE` | BCPack texture decompression mode |
+| `DSTORAGE_SWIZZLE_MODE` | Texture swizzle on decompression |
+| `DSTORAGE_STAGING_BUFFER_SIZE` | Predefined staging sizes |
+| `DSTORAGE_DEBUG` | Debug flag bits |
+
+## See also
+
+- [DirectStorage](/gdk/directstorage) — conceptual overview
+- [Storage](/gdk/storage)

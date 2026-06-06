@@ -1,0 +1,35 @@
+---
+title: "XFrontPanelDisplay API reference (devkit only)"
+sidebarTitle: "XFrontPanelDisplay"
+icon: "display"
+description: "Devkit-only API to draw to the Xbox dev kit front panel and read its buttons and lights."
+---
+
+The Xbox Series X Dev Kit has a small LCD and capacitive button panel on the front. `XFrontPanelDisplay` lets your title push images, status, and read input back from it — useful for build status, network test indicators, or in-progress operations.
+
+<Note>
+  **Devkit only.** This API is not available on retail consoles.
+</Note>
+
+## Functions
+
+| Function | Description |
+| --- | --- |
+| `XFrontPanelIsSupported` | Check whether a front panel is present |
+| `XFrontPanelGetScreenDimensions` | Pixel width and height |
+| `XFrontPanelGetScreenPixelFormat` | Pixel format |
+| `XFrontPanelPresentBuffer` | Draw a frame |
+| `XFrontPanelSetDisplayName` | Set the title shown in the panel header |
+| `XFrontPanelGetButtonStates` | Read button input |
+| `XFrontPanelSetLightStates` / `XFrontPanelGetLightStates` | Control button backlights |
+
+## Enumerations
+
+| Enum | Purpose |
+| --- | --- |
+| `XFrontPanelButton` | Hardware buttons |
+| `XFrontPanelLight` | Backlight LEDs |
+
+## See also
+
+- [Xbox service tools](/tools/xbox-service-tools)

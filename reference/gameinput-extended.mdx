@@ -1,0 +1,57 @@
+---
+title: "GameInput extended (XInputOnGameInput + deprecated APIs)"
+sidebarTitle: "GameInput (extended)"
+icon: "gamepad"
+description: "Modern GameInput interfaces, deprecated GameInput surface, and the XInput-over-GameInput compatibility shim."
+---
+
+This page supplements the main [GameInput](/reference/gameinput) reference with two additional surfaces.
+
+## XInputOnGameInput — the XInput compatibility shim
+
+Provides classic `XINPUT_*` APIs implemented on top of GameInput so legacy code can run unchanged.
+
+### Functions
+
+| Function | Description |
+| --- | --- |
+| `XInputOnGameInputInitialize` / `XInputOnGameInputUninitialize` | Initialize the shim |
+| `XInputEnable` | Enable / disable input |
+| `XInputGetState` / `XInputGetStateWithToken` | Read controller state |
+| `XInputSetState` / `XInputSetStateEx` | Set vibration |
+| `XInputGetCapabilities` | Controller capabilities |
+| `XInputGetBatteryInformation` | Battery state |
+| `XInputGetAudioDeviceIds` | Headset audio device IDs |
+| `XInputGetDeviceId` | Device ID for a slot |
+| `XInputGetKeystroke` | Polled keystroke events |
+
+### Structures
+
+`XINPUT_BATTERY_INFORMATION`, `XINPUT_CAPABILITIES`, `XINPUT_GAMEPAD`, `XINPUT_KEYSTROKE`, `XINPUT_STATE`, `XINPUT_VIBRATION`, `XINPUT_VIBRATION_EX`.
+
+## Deprecated GameInput surface
+
+Kept for code migrating from older GDK builds. Do not use in new code — use the current GameInput API.
+
+### Deprecated `IGameInput` methods
+
+`EnableOemDeviceSupport`, `FindDeviceFromObject`, `FindDeviceFromPlatformHandle`, `GetTemporalReading`, `RegisterGuideButtonCallback`.
+
+### Deprecated `IGameInputDevice` methods
+
+`AcquireExclusiveRawDeviceAccess`, `ExecuteRawDeviceIoControl`, `GetBatteryState`, `GetRawDeviceFeature`, `PowerOff`, `ReleaseExclusiveRawDeviceAccess`, `SendInputSynchronizationHint`, `SetHapticMotorState`, `SetInputSynchronizationState`, `SetRawDeviceFeature`.
+
+### Deprecated `IGameInputReading` methods
+
+`GetMotionState`, `GetTouchCount`, `GetTouchState`, `GetUiNavigationState`.
+
+### Deprecated functions, structures, enums
+
+- Function: `GameInputGuidButtonCallback`.
+- Structs: `GameInputBatteryState`, `GameInputControllerAxisInfo`, `GameInputControllerButtonInfo`, `GameInputHapticFeedbackMotorInfo`, `GameInputHapticFeedbackParams`, `GameInputHapticWaveformInfo`, `GameInputMotionInfo`, `GameInputMotionState`, `GameInputRawDeviceItemCollectionInfo`, `GameInputRawDeviceReportItemInfo`, `GameInputString`, `GameInputTouchSensorInfo`, `GameInputTouchState`, `GameInputUiNavigationInfo`, `GameInputUiNavigationState`.
+- Enums: `GameInputBatteryStatus`, `GameInputDeviceCapabilities`, `GameInputLocation`, `GameInputMotionAccuracy`, `GameInputRawDeviceItemCollectionKind`, `GameInputRawDevicePhysicalUnitKind`, `GameInputRawDeviceReportItemFlags`, `GameInputTouchShape`, `GameInputUiNavigationButtons`.
+
+## See also
+
+- [GameInput](/reference/gameinput) — current API
+- [Input](/gdk/input)

@@ -247,7 +247,12 @@
               "reference/xpersistentlocalstorage",
               "reference/xgameui",
               "reference/xasync",
-              "reference/xgamesavefiles"
+              "reference/xgamesavefiles",
+              "reference/audio-apis",
+              "reference/gameinput-extended",
+              "reference/touch-adaptation-kit",
+              "reference/dstorage",
+              "reference/xfrontpaneldisplay"
             ]
           },
           {

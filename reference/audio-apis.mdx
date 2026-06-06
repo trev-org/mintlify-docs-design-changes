@@ -1,0 +1,90 @@
+---
+title: "Audio API reference (XAudio2, XMA, XAPU, XDSP, Shape, ACP HAL)"
+sidebarTitle: "Audio APIs"
+icon: "music"
+description: "XAudio2 helpers, XMA codec helpers, XAPU/XDSP audio offload, Shape DMA/EqComp/FiltVol/PCM/SRC/XMA contexts, and the ACP HAL."
+---
+
+The GDK ships a suite of audio APIs that go well beyond stock XAudio2 — from Xbox hardware-accelerated processing (XAPU, XDSP) to direct ACP HAL control. Most titles only use a small subset; the categories below summarize what's available.
+
+## XAudio2 helpers (`XAudio2Xbox`)
+
+| Function | Description |
+| --- | --- |
+| `XAudio2CreateWithSharedContexts` | Create an XAudio2 instance that shares processing contexts with other Xbox audio components |
+
+Structure: `FXLOUDNESS_PARAMETERS`.
+
+## XMA2 helpers (`XMA2Defs`)
+
+XMA2 is the Xbox compressed audio format. The defs library provides bit-level frame and packet helpers:
+
+- Frame queries: `GetXmaFrameBitPosition`, `GetXmaFrameLengthInBits`, `GetLastXmaFrameBitPosition`.
+- Packet queries: `GetXmaPacketFirstFrameOffsetInBits`, `GetXmaPacketFrameCount`, `GetXmaPacketMetadata`, `GetXmaPacketSkipCount`.
+- Block / sample math: `GetXmaBlockContainingSample`, `GetXmaDecodePositionForSample`, `GetXmaSampleRate`.
+- Channel masks: `GetStandardChannelMaskFromXmaMask`, `GetXmaChannelMaskFromStandardMask`.
+- Format helpers: `LocalizeXma2Format`.
+
+Format structures: `XMA2PACKET`, `XMA2STREAMFORMAT`, `XMA2WAVEFORMAT`, `XMA2WAVEFORMATEX`, `XMASTREAMFORMAT`, `XMAWAVEFORMAT`.
+
+## XAPU (Audio Processing Unit)
+
+Low-latency on-chip audio offload.
+
+- Lifecycle: `XApuConnect`, `XApuDisconnect`.
+- Commands: `XApuEnqueueCommand`, `XApuDequeueResult`, `XApuGetResultCount`.
+- Utilization: `XApuGetUtilization`.
+
+Key types: `XApuCommandId`, `XApuConnectInputParameters`, `XApuConnectOutputParameters`, `XApuDecodeConvertActivateCommand`, `XApuDecodeConvertCommand`, `XApuResult`, `XApuUtilization`.
+
+Enums: `XApuCommandOptions`, `XApuCommandType`, `XApuConnectOptions`, `XApuProcessType`, `XApuStateOptions`, `XAPU Errors`.
+
+## XDSP (Audio offload DSP)
+
+- Lifecycle: `XDspConnect`, `XDspConnectWithMaximumStreamLimit`, `XDspDisconnect`, `XDspActivate`, `XDspDeactivate`.
+- Commands: `XDspSubmitCommand`, `XDspSubmitCommandWithEnvelope`.
+
+Types: `XDspActivationParameters`, `XDspCommand`, `XDspStatus`, `XDspClientHandle`, `XDspStreamHandle`.
+
+Enums: `XDspActivationOptions`, `XDspProcessType`, `XDSP Errors`.
+
+### Math helpers (PC/legacy `XDSP` namespace)
+
+FFT and signal math: `FFT`, `FFT4`, `FFT8`, `FFT16`, `FFTPolar`, `FFTInterleaved`, `IFFTDeinterleaved`, `FFTUnswizzle`, `Interleave`, `Deinterleave`, `vmulComplex`, `ButterflyDIT4_1`, `ButterflyDIT4_4`, `FFTInitializeUnityTable`, `ISPOWEROF2`.
+
+## ACP HAL
+
+Direct access to the Audio Co-Processor hardware abstraction layer. Used by middleware that controls DMA, mix, and codec contexts at the lowest level.
+
+- `IAcpHal` interface: `Connect`, `Disconnect`, `SubmitCommand`, `PopMessage`, `GetNumMessages`.
+- Lifecycle: `AcpHalCreate`, `AcpHalAllocateShapeContexts`, `AcpHalReleaseShapeContexts`.
+- Command and message structs: `ACP_COMMAND_*`, `ACP_MESSAGE_*`, `SHAPE_CONTEXTS`, `SHARED_SHAPE_CONTEXTS`.
+
+## Shape contexts
+
+Fine-grained DSP context manipulation for hardware DMA, PCM, source-rate conversion, XMA decoding, EQ/compression, and filter/volume.
+
+- **ShapeContexts**: `ShapePeakMagnitudeToDecibel`.
+- **ShapeDmaContext** (`SHAPE_DMA_CONTEXT`): `Get/SetShapeDmaAudioBuffer`, `Get/SetShapeDmaBufferFull`, `Get/SetShapeDmaChannel`, `Get/SetShapeDmaFloatSamples`, `Get/SetShapeDmaNumChannels`, `Get/SetShapeDmaNumFrames`, `Get/SetShapeDmaReadPointer`, `Get/SetShapeDmaWritePointer`, `Get/SetShapeDmaReadWriteFull`, `Increment*`, plus peak/utilization queries.
+- **ShapeEqCompContext** (`SHAPE_EQCOMP_CONTEXT`): get/set attack, release, threshold, ratio, gain, filter coefficients, sidechain mode, compressor and expander modes, log gain, delay elements, gain reduction. Helpers: `ShapeSignedTo/FromU*`.
+- **ShapeFiltVolContext** (`SHAPE_FILTVOL_CONTEXT`): get/set frequency, Q, output gain, mode, input headroom.
+- **ShapeFlowGraph**: `SetShapeAllocMixBufferCommand`, `SetShapeDmaCommand`, `SetShapeEqCompCommand`, `SetShapeFiltVolCommand`, `SetShapeSrcCommand`.
+- **ShapePcmContext** (`SHAPE_PCM_CONTEXT`): PCM playback buffer, loop count, loop end/start, format, mode, read pointer.
+- **ShapeSrcContext** (`SHAPE_SRC_CONTEXT`): pitch, sampling, XMA blocks to skip, peak magnitudes.
+- **ShapeXmaContext** (`SHAPE_XMA_CONTEXT`): XMA input/output buffers, loop ranges, packet metadata, error status, subframe decode/skip control.
+
+## AudioStateMonitor
+
+Monitor render and capture audio device state changes.
+
+- Render: `CreateRenderAudioStateMonitor`, `CreateRenderAudioStateMonitorForCategory`, `CreateRenderAudioStateMonitorForCategoryAndDeviceId`, `CreateRenderAudioStateMonitorForCategoryAndDeviceRole`.
+- Capture: `CreateCaptureAudioStateMonitor`, `CreateCaptureAudioStateMonitorForCategory`, `CreateCaptureAudioStateMonitorForCategoryAndDeviceId`, `CreateCaptureAudioStateMonitorForCategoryAndDeviceRole`.
+- `IAudioStateMonitor`: `GetSoundLevel`, `RegisterCallback`, `UnregisterCallback`.
+- Types: `AudioStateMonitorCallback`, `AudioStateMonitorSoundLevel`, `AudioStateMonitorRegistrationHandle`.
+
+## See also
+
+- [Audio](/gdk/audio)
+- [Text-to-speech](/gdk/text-to-speech)
+- [XSpeechSynthesizer](/reference/xspeechsynthesizer)
+- [XAppCapture](/reference/xappcapture) for capture-side audio metadata

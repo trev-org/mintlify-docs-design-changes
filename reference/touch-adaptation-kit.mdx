@@ -1,0 +1,62 @@
+---
+title: "Touch Adaptation Kit reference"
+sidebarTitle: "Touch Adaptation Kit"
+icon: "hand-pointer"
+description: "Declarative touch layouts for Xbox Cloud Gaming, mapping touch input to virtual gamepad, keyboard, and mouse events."
+---
+
+The Touch Adaptation Kit (TAK) lets your title ship a JSON-based touch layout that the Xbox streaming client renders on touch devices. Use it to expose virtual joysticks, buttons, dpads, throttles, and sensors that map to whatever input your game expects.
+
+## Layout structure
+
+| Element | Purpose |
+| --- | --- |
+| **Layout** | Top-level layout container |
+| **Content** | Layout body |
+| **Styles** | Visual styling resources |
+| **Color Palette** | Reusable colors |
+| **Layer** | Z-ordered group of controls |
+| **Layer action** | Action that activates a layer |
+| **Orientation** | Portrait / landscape variants |
+| **Wheel** | Radial control |
+| **Control cluster** | Group of related controls |
+| **Inner wheel** | Nested radial control |
+
+## Touch controls
+
+| Control | Purpose |
+| --- | --- |
+| **Button** | Tappable button |
+| **Joystick** | Virtual analog stick |
+| **Directional pad** | Four/eight-way dpad |
+| **Arcade buttons** | Multi-button fighting game cluster |
+| **Throttle** | Analog throttle (racing, flight) |
+| **Touchpad** | Free-form 2D input |
+| **Blank control** | Spacer / hit-test region |
+
+## Sensor controls
+
+| Control | Maps to |
+| --- | --- |
+| **Accelerometer** | Device tilt |
+| **Gyroscope** | Angular velocity |
+
+## Styling and components
+
+Shared property types you compose into the controls above:
+
+- **Action** — input mapping target.
+- **Asset** — image asset reference.
+- **Axis** / **ThrottleAxis** — axis configuration.
+- **Color** / **HexColor** / **ColorReference** — colors.
+- **Deadzone** — dead-zone radius.
+- **Icon** — SVG/PNG icon.
+- **Joystick Outline and Directional Indicator** — joystick visuals.
+- **Knob** — knob graphic.
+- **ResponseCurve** — input response shaping.
+- **Stroke** — outline styling.
+
+## See also
+
+- [Game streaming](/gdk/game-streaming)
+- [XGameStreaming](/reference/xgamestreaming)
