@@ -1,0 +1,102 @@
+---
+title: "Xbox Texture Compressor (XBTC)"
+sidebarTitle: "Texture Compressor"
+icon: "file-zipper"
+description: "XBTC — the offline texture-compression and packaging pipeline for Xbox titles. Archive format, batch configuration, and GPU-decompression integration."
+---
+
+**XBTC** is the offline texture pipeline that compresses, layouts, and packages textures for Xbox Series X|S titles. It targets the on-disk format that DirectStorage and Sampler Feedback consume natively, and integrates with the BCPack / Zlib GPU-decompression path.
+
+## What XBTC does
+
+1. Takes source textures (DDS, PNG, EXR, RAW) and per-asset configuration.
+2. Compresses to the right BC format (BC1–7) with the right block layout for the Xbox Series X|S sampler.
+3. Packages into an **XBTC archive** — a tiled, BCPack-compressed format optimized for streaming.
+4. Optionally writes shader / sampler mapping metadata.
+
+## XBTC.exe
+
+Command-line invocation:
+
+```bat
+XBTC.exe -c texture-config.json -o output.xbtc input/textures/
+```
+
+Key flags:
+
+- `-c <config.json>` — JSON batch configuration (see below).
+- `-o <output.xbtc>` — output archive path.
+- `-platform Scarlett` — target hardware (Xbox Series X|S).
+- `-jobs N` — parallel compression.
+- `-verbose` — detailed logging.
+
+## Archive format
+
+An `.xbtc` archive contains:
+
+- **Header** — platform, version, manifest.
+- **Manifest** — list of textures with name, format, mip count, tile layout.
+- **Tile data** — BCPack-compressed tiles ready for GPU decompression.
+
+The archive is mmap-friendly — DirectStorage requests can target individual tiles by offset.
+
+## JSON batch configuration
+
+Describes how each texture should be compressed:
+
+```json
+{
+  "textures": [
+    {
+      "input": "character_albedo.png",
+      "format": "BC7",
+      "mode": "streaming",
+      "mips": "auto",
+      "tileSize": 64
+    },
+    {
+      "input": "foliage_normal.png",
+      "format": "BC5",
+      "mode": "streaming",
+      "mips": "auto",
+      "linearSampling": false
+    },
+    {
+      "input": "ui_atlas.png",
+      "format": "BC1",
+      "mode": "static",
+      "mips": 1
+    }
+  ]
+}
+```
+
+Key fields:
+
+- **format** — BC1, BC3, BC4, BC5, BC6H, BC7.
+- **mode** — `streaming` (tiled for SFS) or `static` (whole texture loaded at once).
+- **mips** — explicit count or `auto`.
+- **tileSize** — in KB; default 64.
+- **linearSampling** — affects swizzle.
+
+## Integration with the game
+
+At runtime:
+
+1. Open the archive once at level load (mmap).
+2. Resolve texture handles via the manifest.
+3. Create reserved D3D resources sized per the texture's mip count.
+4. Use [DirectStorage](/gdk/directstorage) to load tiles on demand, driven by [Sampler Feedback](/gdk/sampler-feedback).
+
+## Best practices
+
+1. **Run XBTC once per asset change**, not per build. Cache the archive in your art pipeline.
+2. **Profile compression vs. visual quality** per format — BC7 isn't always better than BC1 for the cost.
+3. **Tune tile size** to match your SFS feedback granularity.
+4. **Group related textures** in the same archive to maximize seek efficiency.
+
+## See also
+
+- [Graphics overview](/gdk/graphics-overview)
+- [DirectStorage](/gdk/directstorage)
+- [Sampler Feedback](/gdk/sampler-feedback)

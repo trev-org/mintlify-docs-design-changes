@@ -1,0 +1,75 @@
+---
+title: "Ray tracing on Xbox Series X|S (XDXR)"
+sidebarTitle: "Ray tracing"
+icon: "sun"
+description: "Xbox DXR (XDXR), BVH builders, standalone traversal, k-DOP optimization, offline RTPSO, and best practices for ray tracing on Xbox Series X|S."
+---
+
+Xbox Series X|S supports hardware ray tracing through a tuned variant of DirectX Raytracing called **XDXR** (Xbox DXR). XDXR extends the DXR programming model with explicit BVH (Bounding Volume Hierarchy) management, standalone traversal, k-DOP optimization, and offline RTPSO compilation.
+
+## XDXR overview
+
+The shader model and entry points (`TraceRay`, hit / miss / intersection shaders, RTPSO construction) are the same as PC DXR. XDXR adds:
+
+- **Explicit BVH builders** — control quality vs. build cost on a per-mesh basis.
+- **Standalone traversal** — run traversal in a compute shader (separate from the ray-tracing pipeline) when you want custom intersection logic or hybrid algorithms.
+- **BVH compression** — reduce BVH memory footprint.
+- **k-DOP optimization** — use k-discrete-oriented-polytope bounds to tighten leaves.
+- **Offline RTPSO** — precompile the ray-tracing pipeline state object for instant startup.
+
+## Hardware design
+
+The RDNA2 ray-accelerator hardware on Xbox Series X|S performs:
+
+- **Box intersection** — fixed-function ray vs. AABB.
+- **Triangle intersection** — fixed-function ray vs. triangle.
+- **Traversal** — driven by the SP, with the ray-accelerator pipeline issuing intersection tests.
+
+This means BVH quality and shape directly drive ray-tracing performance — more than on competing GPUs that fully fix-function traversal.
+
+## BVH builders
+
+XDXR exposes multiple builders so you can match build cost to use case:
+
+| Builder | When to use |
+| --- | --- |
+| Fast trace | High-quality BVH, slower build. Use for static or rarely-rebuilt geometry. |
+| Fast build | Quick build, lower trace performance. Use for dynamic skinned meshes. |
+| Refit | Re-fit existing BVH leaves after vertex updates — fastest for animation. |
+
+Choose per-instance — your static world geometry probably uses Fast Trace while your animated characters use Fast Build \+ Refit.
+
+## Standalone traversal
+
+For hybrid algorithms (e.g., screen-space reflections falling back to BVH traversal) you can issue traversal from a compute shader, sidestepping the ray-tracing pipeline. This unlocks:
+
+- Custom ray packing.
+- Sharing wave-uniform work across rays.
+- Mixing traversal with other compute workloads in the same shader.
+
+## BVH compression and k-DOP
+
+BVH memory can dominate ray-tracing budgets. XDXR offers:
+
+- **BVH compression** — lossless compression on built BVHs.
+- **k-DOP leaves** — replace AABB leaves with tighter k-DOPs for non-axis-aligned geometry. Pay a small intersection cost for big traversal wins.
+
+## Offline RTPSO
+
+Compile the entire RTPSO during the build pipeline and ship it byte-identical. At runtime you skip the long ray-tracing-pipeline compile and load the precompiled state. Critical for shipping titles — avoids long first-frame stalls.
+
+## Best practices
+
+1. **Profile in PIX** — hardware counters reveal whether you're traversal-bound, intersection-bound, or shader-bound.
+2. **Match builder to use case** — don't use Fast Trace for skinned meshes; don't use Fast Build for static world geometry.
+3. **Keep BVH compact** — enable compression, consider k-DOPs for buildings / non-axis-aligned props.
+4. **Use standalone traversal** for hybrid paths instead of falling back to full ray-tracing pipelines.
+5. **Cache build results** between frames when geometry doesn't change.
+6. **Offline-compile RTPSOs** — always.
+7. **Mind ray coherence** — random rays hammer the cache; sort or pack rays where possible.
+
+## See also
+
+- [Graphics overview](/gdk/graphics-overview)
+- [Mesh shaders](/gdk/mesh-shaders)
+- [PIX for Windows](/tools/pix-for-windows)

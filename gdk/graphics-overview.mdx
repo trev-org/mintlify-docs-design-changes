@@ -1,0 +1,79 @@
+---
+title: "Xbox graphics overview: D3D12.x, GPU architecture, and feature stack"
+sidebarTitle: "Graphics overview"
+icon: "image"
+description: "Tour of Xbox graphics: D3D12.x, Xbox Series X|S GPU architecture, texture layouts, HDR, 120Hz, and the new-feature stack (ray tracing, mesh shaders, VRS, sampler feedback)."
+---
+
+Graphics on Xbox is built on a hardware-tuned variant of Direct3D 12 — **D3D12.x**. It exposes the same shader model and pipeline as desktop D3D12 plus Xbox-specific extensions: monolithic PSO serialization, hardware overlays, native resource management, GPU memory layout control, and the new-feature stack on Xbox Series X|S.
+
+## D3D12.x at a glance
+
+- **Same conceptual API as PC D3D12** — command lists, root signatures, PSOs, descriptors.
+- **Native resource management** — you allocate GPU memory directly via `XMemAlloc` and bind it to D3D resources. No driver-side suballocator.
+- **Monolithic PSO serialization** — PSOs ship pre-compiled and load instantly. See [Serialized PSOs](#).
+- **Tessellation off-chip** — the Xbox One ESRAM-aware off-chip tessellation path is still available where it wins.
+- **Frame scheduling and presentation** — explicit present queues, GPU pacing, and hardware overlays for HUD / video.
+- **Color and depth compression** — hardware DCC and Cmask. Decode-and-discard paths exposed when you need to read back compressed data.
+- **Suspend / resume** — D3D state, command queues, and resources survive PLM suspend; flush rules apply.
+
+## Xbox Series X|S GPU architecture
+
+- **RDNA2-based GPU** with compute units, fixed-function ROPs, and the texture / sampler hardware.
+- **GARLIC / ONION memory paths** define which CPU writes are GPU-visible and at what cost. Choose the right path for streaming, vertex buffers, and constants.
+- **Texture layouts** — Xbox Series X|S texture layouts are documented and tunable for streaming.
+- **Dolby Vision** — supported on Gen9 Xbox Gaming.
+- **120Hz output** — supported with display-mode helpers.
+- **HDR output** — use [XDisplay](/reference/xdisplay) to negotiate the right HDR mode.
+
+## New feature stack (Xbox Series X|S)
+
+<CardGroup cols={2}>
+  <Card title="Ray tracing (XDXR)" icon="sun" href="/gdk/raytracing">
+    Xbox DXR — BVH builders, standalone traversal, k-DOP optimization, offline RTPSO, best practices.
+  </Card>
+
+  <Card title="Mesh shaders" icon="diagram-project" href="/gdk/mesh-shaders">
+    Meshlets, culling, and the new pipeline that replaces vertex / hull / domain / geometry stages.
+  </Card>
+
+  <Card title="Variable Rate Shading" icon="grid" href="/gdk/vrs">
+    Render fewer shading samples in regions of low visual importance.
+  </Card>
+
+  <Card title="Sampler Feedback (SFS)" icon="layer-group" href="/gdk/sampler-feedback">
+    Streaming textures based on what the GPU actually samples — the storage-feedback loop.
+  </Card>
+
+  <Card title="Xbox Texture Compressor" icon="file-zipper" href="/gdk/xbox-texture-compressor">
+    XBTC tool, archive format, JSON batch configuration.
+  </Card>
+
+  <Card title="Enhanced Barriers" icon="shield" href="#">
+    Replace legacy resource barriers with the D3D12 Enhanced Barriers model.
+  </Card>
+</CardGroup>
+
+## Differences from PC
+
+Key differences from PC D3D12:
+
+- **No swapchain abstraction** — you present directly into hardware overlay surfaces.
+- **No implicit memory residency** — you manage GPU residency explicitly.
+- **Different barrier costs** — the Xbox Series X|S RDNA2 cache hierarchy benefits from coarse-grained barriers.
+- **PSO serialization** — PSOs are byte-identical across consoles and load instantly.
+- **D3D12.x-only extensions** — use the `D3D12_FEATURE_DATA_*` queries to gate on capability rather than `D3D_FEATURE_LEVEL`.
+
+## Tools
+
+- **PIX for Xbox** — capture GPU timing, frame, memory, and shader explorer. See [PIX for Windows](/tools/pix-for-windows) for the PC equivalent.
+- **GPU Trace** — long-running timing capture with hardware counters.
+- **Mesh and Texture Viewer** — inspect resources at runtime.
+- **Xbox Texture Compressor (XBTC)** — offline texture pipeline.
+- **Shader Explorer (PIX)** — shader optimization workflows.
+
+## See also
+
+- [Memory](/gdk/memory) — system memory model that backs GPU resources
+- [DirectStorage](/gdk/directstorage) — GPU-decompressible asset streaming
+- [DirectX-Specs](https://microsoft.github.io/DirectX-Specs/) — canonical D3D12 specification

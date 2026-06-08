@@ -1,0 +1,71 @@
+---
+title: "Sampler Feedback Streaming (SFS) on Xbox Series X|S"
+sidebarTitle: "Sampler Feedback"
+icon: "layer-group"
+description: "Sampler Feedback for Streaming — read back which mip / tile the GPU actually sampled and stream only that."
+---
+
+**Sampler Feedback** is a D3D12 feature that records, per-region, which mip levels and tiles the GPU actually sampled during a draw. **Sampler Feedback for Streaming (SFS)** combines that telemetry with the storage stack (DirectStorage) to load only the texture data that's actually needed.
+
+The result: huge VRAM savings, faster level loads, and the ability to ship higher-quality textures that the GPU only pages in on-demand.
+
+## Why Sampler Feedback
+
+Games traditionally guess what mip level a texture will need (distance-based heuristics) and over-load to be safe. SFS replaces guessing with measurement:
+
+1. Texture is bound as a **reserved resource** (only some tiles resident in memory).
+2. During a draw, sampler feedback records which tiles the sampler tried to read.
+3. After the draw, the engine reads the feedback map back.
+4. **Missing tiles are streamed in** via DirectStorage; **unused tiles are evicted**.
+
+## API model
+
+Two new D3D12 resource types:
+
+- **MinMip feedback resource** — records the minimum mip level sampled per region.
+- **MipRegionUsed feedback resource** — records which mip regions were sampled at all.
+
+Bind them alongside the source texture in your root signature. The driver writes feedback during normal sampling — zero shader changes required.
+
+## The streaming loop
+
+A typical SFS frame:
+
+1. Render the scene with reserved-resource textures and bound feedback resources.
+2. After the frame, GPU-copy feedback resources to a CPU-readable buffer.
+3. CPU reads feedback, compares against what's currently resident.
+4. Issue DirectStorage requests for the deltas — load missing tiles, evict unused ones.
+5. Update the tile mapping for the next frame.
+
+Latency is typically 1–2 frames — fine for streaming because the camera moves smoothly.
+
+## Why Xbox Series X|S is good at this
+
+- **NVMe \+ DirectStorage** — sub-millisecond tile loads from the SSD.
+- **GPU-decompressible BCPack / Zlib** — decompress directly into tile memory.
+- **Hardware texture coalescing** — the sampler hardware writes feedback at a fine granularity without GPU stalls.
+
+## When to use SFS
+
+Great for:
+
+- Large open-world textures with high resolution.
+- Procedural / megatexture pipelines.
+- Titles shipping on Xbox Series S where VRAM is tighter.
+
+Skip for:
+
+- Small textures where the entire texture fits in VRAM and tiling overhead isn't worth it.
+- UI / static screen textures.
+
+## Tuning
+
+- **Tile size** — 64KB is the typical default; smaller tiles give finer feedback but more bookkeeping.
+- **Feedback granularity** — trade off resolution of feedback against memory.
+- **Eviction policy** — keep recently-used tiles even if a frame says they're unused (camera could turn back).
+
+## See also
+
+- [Graphics overview](/gdk/graphics-overview)
+- [DirectStorage](/gdk/directstorage)
+- [Xbox Texture Compressor](/gdk/xbox-texture-compressor)

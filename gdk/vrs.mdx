@@ -1,0 +1,54 @@
+---
+title: "Variable Rate Shading (VRS) on Xbox Series X|S"
+sidebarTitle: "VRS"
+icon: "grid"
+description: "Render fewer shading samples in regions of low visual importance, with per-draw, per-primitive, and per-pixel VRS modes."
+---
+
+**Variable Rate Shading (VRS)** lets you reduce shading rate (the number of shader invocations per pixel) in regions where the visual difference is imperceptible. The Xbox Series X|S hardware supports the same VRS surface as PC D3D12 with native rate combiners and image-based VRS.
+
+## Why VRS
+
+Shading cost dominates most modern frames. VRS lets you keep full-rate shading where the eye notices — character faces, near foliage, sharp specular reflections — and drop to 1×2, 2×2, or 4×4 rates in regions that don't (motion-blurred areas, dark scenes, periphery for foveated rendering).
+
+Typical wins: 10–20% frame-time reduction with no visible quality loss when applied carefully.
+
+## VRS tiers
+
+| Tier | What you get |
+| --- | --- |
+| Tier 1 | Per-draw VRS — set rate on `IASetPipelineState`. Cheap, coarse. |
+| Tier 2 | Per-primitive VRS via SV\_ShadingRate \+ image-based VRS via a screen-space texture. Fine-grained. |
+
+Xbox Series X|S supports Tier 2.
+
+## API surface
+
+- `RSSetShadingRate(rate, combiners)` — per-draw shading rate.
+- `RSSetShadingRateImage(image)` — binds a screen-tile texture (typically 8×8 or 16×16 tiles) that supplies a rate per region.
+- `SV_ShadingRate` semantic — written from the vertex / mesh shader for per-primitive control.
+- **Combiners** — per-stage merging of the per-draw, per-primitive, and per-image rates (passthrough, override, min, max, sum).
+
+## Where to apply VRS
+
+Practical approaches:
+
+- **Motion-based** — build a velocity buffer; reduce rate where pixel velocity is high.
+- **Luminance-based** — reduce rate in dark or saturated areas.
+- **Distance / depth-based** — reduce rate at long range or behind DoF.
+- **Foveated (cloud streaming)** — reduce rate at frame periphery for cloud-streamed players, knowing the encoder will compress those regions hard anyway.
+- **Material-based** — selectively reduce rate per-material via `SV_ShadingRate`.
+
+## Best practices
+
+1. **Author the VRS image at quarter resolution or coarser** — saves bandwidth.
+2. **Update VRS image early in the frame** — don't read from it the same frame you write it.
+3. **Combine with TAA carefully** — TAA can hide VRS artifacts but can also magnify temporal flicker on hard edges.
+4. **Profile against shading-rate-1×1 baseline in PIX** — confirm wins are real, not measurement noise.
+5. **A/B with screenshots** — set aside artist time to compare rate masks.
+
+## See also
+
+- [Graphics overview](/gdk/graphics-overview)
+- [Sampler Feedback](/gdk/sampler-feedback)
+- [DirectStorage](/gdk/directstorage)

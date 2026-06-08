@@ -137,7 +137,13 @@
               "gdk/directstorage",
               "gdk/dynamic-lighting",
               "gdk/game-streaming-overview",
-              "gdk/cloud-aware-api"
+              "gdk/cloud-aware-api",
+              "gdk/graphics-overview",
+              "gdk/raytracing",
+              "gdk/mesh-shaders",
+              "gdk/vrs",
+              "gdk/sampler-feedback",
+              "gdk/xbox-texture-compressor"
             ]
           }
         ]

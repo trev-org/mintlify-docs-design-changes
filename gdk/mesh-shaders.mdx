@@ -1,0 +1,72 @@
+---
+title: "Mesh shaders on Xbox Series X|S"
+sidebarTitle: "Mesh shaders"
+icon: "diagram-project"
+description: "Replace the vertex / hull / domain / geometry stages with the unified mesh-shader pipeline. Meshlets, culling, and Xbox-specific tuning."
+---
+
+Mesh shaders replace the legacy vertex / hull / domain / geometry pipeline with a single compute-like stage producing a list of triangles. They're a clean way to express GPU-driven rendering, fine-grained per-meshlet culling, and unconventional geometry generation.
+
+## Why mesh shaders
+
+The legacy pipeline is rigid — every vertex passes through fixed stages, and culling happens late. Mesh shaders let you:
+
+- **Skip work earlier** — cull entire meshlets before any vertices process.
+- **Generate geometry inline** — LOD, tessellation, or procedural detail in the same shader.
+- **Share data across triangles** — thread-group scope means inter-vertex computation is cheap.
+- **Drive rendering from the GPU** — the amplification stage decides how many mesh shader groups to dispatch.
+
+## Pipeline
+
+The pipeline has two stages:
+
+1. **Amplification shader (optional)** — reads source data and dispatches a variable number of mesh-shader groups.
+2. **Mesh shader** — outputs up to N vertices and M primitives per thread group (compile-time constants).
+
+There's no vertex / hull / domain / geometry stage. The rasterizer consumes the mesh-shader output directly.
+
+## Meshlets
+
+Meshes are split offline into **meshlets** — small (typically 64–128 vertices, 124–256 triangles) chunks that fit in a mesh-shader thread group. Each meshlet ships with:
+
+- A bounding sphere or AABB for culling.
+- A normal cone for backface culling.
+- Index data packed for cache coherence.
+
+The amplification shader runs early culling (frustum, occlusion, backface) and only dispatches mesh-shader groups for visible meshlets.
+
+## Meshlet culling example
+
+Typical hierarchy:
+
+1. **Frustum cull** the meshlet's bounding sphere against the view frustum.
+2. **Cone-cull** using the meshlet's normal cone and view direction (drops backfacing meshlets).
+3. **Occlusion cull** against a Hi-Z buffer or last-frame depth (optional).
+4. Dispatch the surviving meshlets to the mesh shader.
+
+## Xbox Series X|S tuning
+
+- **Wave size 32** — design meshlet sizes around full waves to avoid wasted lanes.
+- **Out-of-order rasterization** — mesh shader output can interleave with other dispatches.
+- **Cache footprint** — meshlets that fit in L1 dramatically outperform those that spill. Profile with PIX.
+- **Amplification dispatch** — keep amplification thread groups small (~32) to minimize launch overhead.
+
+## When to use mesh shaders
+
+Great for:
+
+- Heavy GPU-driven worlds with explicit visibility.
+- Procedural geometry (terrain LOD, vegetation tiles).
+- Skinned meshes with per-bone meshlets and fast skinning in the amp shader.
+- Tile rendering pipelines.
+
+Skip for:
+
+- Simple opaque geometry that already vertex-shaded fine — no win.
+- Pipelines whose meshlets you can't precompute offline.
+
+## See also
+
+- [Graphics overview](/gdk/graphics-overview)
+- [Ray tracing](/gdk/raytracing)
+- [VRS](/gdk/vrs)
