@@ -96,19 +96,11 @@
             "pages": [
               "services/overview",
               "services/player-data",
-              "services/achievements-eb-vs-tm",
-              "services/stats-eb-vs-tm",
               "services/achievements",
               "services/multiplayer",
               "services/social",
               "services/cloud-storage",
-              "services/multiplayer-intro",
-              "services/mpsd",
-              "services/mpm",
-              "services/mpa",
-              "services/matchmaking",
               "services/game-chat",
-              "services/test-accounts",
               "services/rich-presence",
               "services/multiplayer-activity",
               "services/people-system"
@@ -383,6 +375,46 @@
     {
       "source": "/pc-e2e/publish-your-game",
       "destination": "/publishing/overview",
+      "permanent": true
+    },
+    {
+      "source": "/services/achievements-eb-vs-tm",
+      "destination": "/services/player-data",
+      "permanent": true
+    },
+    {
+      "source": "/services/stats-eb-vs-tm",
+      "destination": "/services/player-data",
+      "permanent": true
+    },
+    {
+      "source": "/services/multiplayer-intro",
+      "destination": "/services/multiplayer",
+      "permanent": true
+    },
+    {
+      "source": "/services/mpsd",
+      "destination": "/services/multiplayer",
+      "permanent": true
+    },
+    {
+      "source": "/services/mpm",
+      "destination": "/services/multiplayer",
+      "permanent": true
+    },
+    {
+      "source": "/services/mpa",
+      "destination": "/services/multiplayer-activity",
+      "permanent": true
+    },
+    {
+      "source": "/services/matchmaking",
+      "destination": "/services/multiplayer",
+      "permanent": true
+    },
+    {
+      "source": "/services/test-accounts",
+      "destination": "/tools/test-account-tool",
       "permanent": true
     }
   ]
