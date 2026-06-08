@@ -1,0 +1,85 @@
+---
+title: "XStore on PC: DRM, license tokens, mismatched accounts, sandboxes"
+sidebarTitle: "XStore on PC"
+icon: "windows"
+description: "PC-specific XStore considerations — basic DRM, license tokens for service validation, mismatched-store-account handling, and sandbox switching for store operations."
+---
+
+Windows PC introduces complications XStore on Xbox doesn't have: the Microsoft Store account on the PC may differ from the player's Xbox account, sandboxes affect store operations differently, and license-token flows let your services verify ownership without trusting the client.
+
+## Basic DRM and license checks
+
+XStore on PC includes a basic DRM check: the title verifies it has an active license before allowing gameplay. The check runs at startup via `XStoreQueryGameLicenseAsync`.
+
+If no license is found:
+
+1. Show the player a Store UI to purchase or sign in.
+2. Don't let gameplay proceed without an active license.
+
+For titles with high piracy risk, layer additional checks:
+
+- Validate the license via [license tokens](#license-tokens-for-service-validation) from your service.
+- Periodically re-check `XStoreQueryGameLicenseAsync` during gameplay; revoke on license loss.
+
+## Open vs. restrictive licensing
+
+Two PC licensing models:
+
+- **Open licensing** — the player can run the title with any Microsoft Store account that has a license. Useful for shared PCs.
+- **Restrictive licensing** — the player must be signed in with the licensed Microsoft Account. Used when titles want stronger anti-piracy.
+
+Configure in Partner Center under your product's Properties.
+
+## License tokens for service validation
+
+If your game server needs to confirm the player owns the title (e.g., before granting an in-game asset), use **license tokens**:
+
+1. Client calls `XStoreQueryLicenseTokenAsync` to get a short-lived signed token.
+2. Client sends the token to your service.
+3. Your service validates the token's signature with the Microsoft public key.
+4. Your service trusts the token's claims about license state.
+
+This avoids the client claiming ownership without proof, and avoids your service polling Microsoft Store APIs per session.
+
+## Mismatched store account scenarios
+
+A common PC issue: the player is signed in to Windows / the Xbox app with one Microsoft Account, but the **Microsoft Store** is signed in with a different account.
+
+XStore APIs follow the Store's signed-in account, which can lead to:
+
+- Title shows "buy" even though the Xbox-signed-in player owns it on the other account.
+- Purchase succeeds against the wrong account.
+
+Handle by:
+
+1. Detect the mismatch — compare `XUserGetId` to `XStoreQueryGameLicenseAsync` info.
+2. Show UI explaining the mismatch and offer to switch.
+3. If the player can't switch, offer to redirect them through the Xbox app to fix the Store account.
+
+## Sandbox switching for store operations
+
+The Xbox services sandbox (set via `XblPCSandbox.exe`) doesn't fully control what sandbox the Store uses on PC. Store operations need an additional step:
+
+1. Switch the Xbox services sandbox.
+2. Re-launch the **Microsoft Store app** in the new sandbox context.
+3. Verify with `XStoreQueryGameLicenseAsync` returns dev-sandbox data.
+
+Failing to switch Store properly leads to confusing test results where Xbox services see the dev sandbox but Store calls hit RETAIL.
+
+## Testing checklist for PC commerce
+
+Before submitting:
+
+1. **Test with a test account that owns nothing** — verify the buy / trial / sign-in flow.
+2. **Test with a test account that owns the base game** — verify no "buy" prompts appear.
+3. **Test mismatched store accounts** — sign in to Windows with one account, Store with another.
+4. **Test trial → buy flow** — verify the trial license switches to full license without restart.
+5. **Test offline launch** — PC titles must launch and play offline (no Store contact) for a reasonable cached-license window.
+6. **Test sandbox switching** — confirm Store calls return dev-sandbox products after the switch.
+
+## See also
+
+- [XStore deep dive](/publishing/xstore-deep-dive)
+- [XStore S2S APIs](/publishing/xstore-server-to-service)
+- [PC Sandbox Switcher](/tools/pc-sandbox-switcher)
+- [Launching on PC](/tools/launching-on-pc)

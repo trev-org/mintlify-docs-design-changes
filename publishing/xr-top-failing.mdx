@@ -1,0 +1,110 @@
+---
+title: "Top failing certification tests and how to avoid them"
+sidebarTitle: "Top failing tests"
+icon: "chart-line-down"
+description: "Most-failed Xbox Requirements in recent submissions — stability, multiplayer joinability, achievement gating, privilege checks, and DLC handling."
+---
+
+Most certification failures cluster around a small set of recurring problems. Addressing them before submission cuts your turnaround dramatically.
+
+## Console: top failing tests
+
+### 1. XR-001 Title Stability
+
+Crashes, hangs, deadlocks during long play sessions, suspend / resume cycles, or specific hardware configs.
+
+**Avoid by:**
+
+- Running soak tests through PLM cycles (suspend, constrain, resume).
+- Testing across Xbox Series X, Series S, and Xbox One SKUs.
+- Catching async failure paths — timeouts, throttle responses, network drops.
+- Using `XErrorSetCallback` to log unrecoverable errors before the OS terminates the title.
+
+### 2. XR-064 Joinable Game Sessions and Online Play
+
+Advertised joinability fails when an external player tries to join. Causes:
+
+- Advertising as joinable while the session is full.
+- Forgetting to clear the advertised activity when the session ends.
+- Mixing PlayFab Lobby joinability with XSAPI MPSD activity inconsistently.
+
+**Avoid by:** keeping advertised state and actual session state synchronized through [Multiplayer Activity (MPA)](/services/multiplayer-activity); always clear the activity on session end.
+
+### 3. XR-067 Maintaining Multiplayer Session State
+
+Session state diverges across members. Causes:
+
+- Not handling `XblMultiplayerSessionChangedHandler` for remote updates.
+- Writing session updates without ETag-conditional reasoning.
+- Mixing MPSD direct writes with Multiplayer Manager state.
+
+**Avoid by:** picking one model ([raw MPSD](/reference/xsapi-multiplayer) or [Multiplayer Manager](/reference/xsapi-multiplayer-manager)) and sticking to it; honor ETags.
+
+### 4. XR-045 Xbox User and Account Privileges
+
+Title exposes communication, UGC, or multiplayer features without checking the user has the privilege.
+
+**Avoid by:** call `XUserCheckPrivilege` before every feature that maps to a privilege; show platform UI (`XUserResolvePrivilegeWithUiAsync`) when the user lacks it.
+
+### 5. XR-074 Loss of Connectivity to Xbox and Partner Services
+
+Title crashes, hangs, or shows infinite loading on disconnect.
+
+**Avoid by:** every service call has a timeout and a graceful-degrade path; use offline UI states; cache the last-known good data.
+
+### 6. XR-129 Intelligent Delivery Content Management
+
+Chunk selection or language switch doesn't match `MicrosoftGame.config`.
+
+**Avoid by:** test every declared chunk; validate language switching at runtime; use `XPackageEnumerateChunkAvailability` and `XPackageEstimateDownloadSize`.
+
+### 7. XR-130 Xbox Console Families and Generations
+
+Title ships only one config and underperforms on Xbox Series S or One.
+
+**Avoid by:** query `XSystemGetDeviceType` and adapt resolution, asset quality, and feature toggles; test on each SKU.
+
+### 8. XR-052 User State and Title-Save Location
+
+Save data is stored in the wrong location or doesn't roam.
+
+**Avoid by:** use [XGameSave (Connected Storage)](/reference/xgamesave) for roaming saves; use [Persistent Local Storage](/reference/xpersistentlocalstorage) only for local-only data.
+
+### 9. XR-055 / XR-057 Achievements
+
+Base achievements gated behind paid DLC, or unreachable through normal gameplay.
+
+**Avoid by:** audit every base achievement against a 100%-completion playthrough using only base game content.
+
+### 10. XR-112 / XR-115 User and Controller during Activation / PLM
+
+User context lost on resume; second controller can't join mid-session.
+
+**Avoid by:** subscribe to `XUserRegisterForChangeEvent` and `XUserRegisterForDeviceAssociationChanged`; never cache `XUserHandle` across PLM transitions without revalidating.
+
+## PC: top failing tests
+
+PC-specific failures concentrate around:
+
+- **XR-007 PC Cross-Network Data Usage** — declare cross-network data flows in the privacy policy.
+- **XR-074 PC variant** — same as console: handle Xbox / partner service connectivity loss.
+- **Sandbox not switched back to RETAIL** before submission — packages tested in a dev sandbox can fail certification.
+- **Packaging issues from `makepkg`** — missing dependencies, wrong content IDs, no `Submission Validator` log.
+
+## Pre-submission checklist
+
+Before submitting:
+
+1. Run [Submission Validator](/publishing/packages) on the final package; resolve every failure.
+2. Sweep XR-001 with an automated soak (8–12 hours through PLM cycles).
+3. Run XR-074 by killing your network mid-multiplayer-match and observing reconnect behavior.
+4. Spot-check XR-045 by signing in a Child account and confirming features gate correctly.
+5. Verify XR-130 by testing on every supported console SKU.
+6. Run accessibility (XR adjacent) checks via [MGATS](/principles/mgats) before final cert.
+
+## See also
+
+- [Xbox Requirements](/publishing/xbox-requirements)
+- [Failure Mode Analysis](/publishing/xr-fma)
+- [Certification](/publishing/certification)
+- [Pre-release testing](/publishing/pre-release)

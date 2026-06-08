@@ -1,0 +1,98 @@
+---
+title: "Certification Failure Mode Analysis (FMA)"
+sidebarTitle: "FMA: Cert failure analysis"
+icon: "triangle-exclamation"
+description: "What each Xbox Requirement failure means at test time — root causes, common implementation pitfalls, and remediation patterns."
+---
+
+When an Xbox Requirement (XR) fails during certification, the cert report lists the XR ID and a short reason. **Failure Mode Analysis (FMA)** documentation explains the underlying root causes for each failure-prone XR and how to fix them.
+
+Use this page as the cross-reference. For the canonical XR list see [Xbox Requirements](/publishing/xbox-requirements).
+
+## How to read an FMA entry
+
+Each FMA covers:
+
+- **Failure mode** — what the tester observed.
+- **Root causes** — typical implementation bugs that lead to the failure.
+- **Remediation** — specific code, config, or content changes.
+- **Verification** — how to confirm internally before resubmission.
+
+## Failure-prone XRs
+
+These XRs see the highest cert-failure rates and have detailed FMA guidance.
+
+### Stability and quality
+
+- **XR-001 Title Stability** — crashes, hangs, deadlocks, or extended unresponsiveness.
+- **XR-003 Title Quality for Submission** — placeholder strings, missing localization, broken UI, debug output left in.
+
+### Identity and accounts
+
+- **XR-013 Linking Microsoft Accounts with Publisher Accounts** — account-linking flows must be reversible, consented, and offline-tolerant.
+- **XR-014 Personal Information** — don't display, store, or transmit PII without explicit consent and a privacy policy.
+- **XR-045 Xbox User and Account Privileges** — check privileges via `XUserCheckPrivilege` before exposing communication, UGC, or multiplayer features.
+- **XR-046 Display Name and Gamerpic** — always use the platform-provided gamertag / gamerpic; never substitute your own profanity-filter pass.
+- **XR-047 / XR-048 User Profile Access and Profile Settings Usage** — respect user-controlled profile visibility and settings.
+
+### Communications
+
+- **XR-015 Managing Player Communication** — voice / text chat must honor mute lists and communication settings; pass through Game Chat 2 or PlayFab Party rather than custom transports.
+- **XR-018 User-Generated Content** — reporting, takedown, and moderation paths must exist for any UGC.
+
+### Achievements
+
+- **XR-055 Achievements** — unlocks must be reachable through normal gameplay; titles can't gate base achievements behind paid DLC.
+- **XR-057 No Additional Purchase Requirements for Base Achievements** — the base achievement set must be unlockable without any IAP.
+
+### Multiplayer and online play
+
+- **XR-064 Joinable Game Sessions and Online Play** — advertised joinability must succeed; broken or stale activities are a hard fail.
+- **XR-067 Maintaining Multiplayer Session State** — session state must update consistently across all members and survive transient network blips.
+- **XR-070 Xbox Friends List** — friend-presence integration must reflect XSAPI social truth.
+- **XR-074 Loss of Connectivity to Xbox and Partner Services** — graceful offline fallback; no infinite spinners or crash on disconnect.
+
+### Activation and PLM
+
+- **XR-112 Establishing a User and Controller During Initial Activation and Resume** — first activation must establish a default user \+ controller; resume must restore the same state.
+- **XR-115 Addition and Removal of Users or Controllers During Gameplay** — hot user / controller add / remove must work mid-session without crashing.
+
+### Pricing and store presence
+
+- **XR-036 Title Pricing Information** — any in-title display of pricing must read live from XStore APIs, not from baked-in strings.
+- **XR-022 Official Naming Standards** — use the platform-correct product names (Microsoft Store, Xbox Series X|S, etc.).
+
+### Streaming Install and DLC
+
+- **XR-034 Streaming Install Initial Play Marker** — the title must reach a playable state before the streaming-install "initial play" milestone fires.
+- **XR-037 Dependencies on Content Packages** — don't crash if optional packages are missing; query for availability before use.
+- **XR-123 Installation of DLC During Gameplay** — DLC install while playing must work without freezing.
+- **XR-129 Intelligent Delivery Content Management** — chunk selection and language switches must work as declared in `MicrosoftGame.config`.
+
+### Console families
+
+- **XR-130 Xbox Console Families and Generations** — cross-gen titles must adapt graphics, memory, and feature use per console SKU.
+
+### Game DVR and screenshots
+
+- **XR-131 Game DVR and Screenshots** — capture must work in every supported display mode; respect privacy when voice is in-frame.
+
+### Local storage
+
+- **XR-133 Local Storage Write Limitations** — stay within the daily write budget; don't checkpoint excessively.
+
+## Common remediation patterns
+
+Across many FMA entries, the same patterns appear:
+
+1. **Privilege gates everywhere** — `XUserCheckPrivilege` before any communication / UGC / multiplayer feature.
+2. **Async state-change handling** — register for `XUserRegisterForChangeEvent`, controller-association changes, and PLM events; never assume state is stable.
+3. **Honor cached service state** — don't hard-fail on a single bad service response; degrade gracefully.
+4. **Use platform UI for system flows** — sign-in, account linking, store, profile cards all go through TCUI ([XGameUI](/reference/xgameui)).
+5. **Test on all SKUs** — a working build on Xbox Series X often fails on Series S memory or Xbox One performance.
+
+## See also
+
+- [Xbox Requirements catalog](/publishing/xbox-requirements)
+- [Top failing tests](/publishing/xr-top-failing)
+- [Certification](/publishing/certification)

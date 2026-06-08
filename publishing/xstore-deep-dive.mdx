@@ -1,0 +1,160 @@
+---
+title: "XStore Commerce — product types, trials, DLC, and bundles"
+sidebarTitle: "XStore deep dive"
+icon: "cart-shopping"
+description: "Choosing product types, configuring Partner Center, granting DLC, trials, consumables, bundles / season passes, and product sharing."
+---
+
+The [XStore API](/reference/xstore) is the runtime side of Microsoft Store commerce. This page is the conceptual companion — how to model your products in Partner Center and choose the right XStore flows for each scenario.
+
+## Choosing the right product type
+
+| Product type | When to use |
+| --- | --- |
+| **Durable** | One-time-buy unlocks: expansions, character packs, weapon skins. Content is inside the base package. |
+| **Durable with packages** | One-time-buy with its own MSIXVC: expansion that ships separate assets. |
+| **Consumable (Microsoft Store-managed)** | In-game currency — Store tracks the balance and deducts on report. |
+| **Consumable (Developer-managed)** | One-shot consumable that your game tracks (e.g., XP boost token). |
+| **Add-on Bundle** | Collection of existing add-ons sold as one product. |
+| **Season Pass** | Like an add-on bundle but can be empty at launch and grow with new releases. |
+| **Subscription** | Recurring entitlement — configured by Microsoft, not self-serve. |
+
+## Initial Partner Center configuration
+
+Before XStore APIs do anything useful, you need:
+
+1. A Partner Center product with a TitleId, StoreId, and MSAAppId.
+2. Your title's `MicrosoftGame.config` updated with those values.
+3. **Xbox services** enabled on the product (for licensing checks).
+4. Sandbox switched to a dev sandbox where the product is published.
+5. Test accounts with access to that sandbox.
+
+See [Sandboxes](/publishing/sandboxes) and [Game Setup](/publishing/game-setup).
+
+## Enabling development and testing
+
+Two non-obvious steps trip up new XStore integrations:
+
+- **Product testing setup** — publish the product to your dev sandbox (not just RETAIL) before calling `XStoreQueryProductsAsync`.
+- **Licensing setup** — some flows require the product to be Marked-as-Provisioned in the sandbox, especially for offline / pre-launch testing.
+
+## Granting access to add-on content
+
+After purchase, your title needs to check entitlement and unlock content:
+
+1. Call `XStoreQueryAddOnLicensesAsync` to enumerate licenses.
+2. For each, check `XblStoreAddonLicense::IsActive`.
+3. Use `XStoreAcquireLicenseForDurablesAsync` for durables that need an active license check.
+4. For durable-with-packages, call `XPackageMount` / `XPackageMountWithUiAsync` to mount and consume the content.
+
+Key detail: licenses can be revoked (refunds, family-sharing changes). Subscribe to `XStoreRegisterPackageLicenseLost` to react.
+
+## Implementing trials
+
+Two trial models:
+
+- **Time-limited trial** — Store grants a license that expires after N minutes / hours of play.
+- **Usage-limited trial** — player gets a trial license, your title gates content based on progress (level-cap, feature-lock).
+
+Check trial status with `XStoreQueryGameLicenseAsync`:
+
+```cpp
+XStoreGameLicense license;
+// ...
+if (license.isTrial) {
+  if (license.isTrialOwnedByThisUser) {
+    // Player owns the trial — enforce trial restrictions
+    // license.trialTimeRemainingInSeconds tells you how long is left
+  }
+}
+```
+
+When the trial expires or the player wants to upgrade, call `XStoreShowPurchaseUIAsync` to present the upgrade flow.
+
+## DLC management
+
+With durable-with-packages DLC:
+
+1. Use `XPackageEnumeratePackages` to list DLC packages and check availability.
+2. For each, `XPackageMount` makes the content readable.
+3. Use `XPackageInstallChunksAsync` to install chunks on demand.
+4. Monitor with `XPackageRegisterInstallationProgressChanged` to update UI.
+
+For checking updates (your game or DLC):
+
+- `XStoreQueryPackageUpdatesAsync` — enumerates updates available.
+- `XStoreDownloadAndInstallPackageUpdatesAsync` — trigger install.
+
+## Consumables
+
+For Microsoft Store–managed consumables (currency):
+
+```cpp
+// Read the balance
+XStoreQueryConsumableBalanceRemainingAsync(...);
+
+// Player buys: Store shows the UI and reports the new balance
+XStoreShowPurchaseUIAsync(...);
+
+// Player spends in-game: report the amount you consumed
+XStoreReportConsumableFulfillmentAsync(
+  context, storeProductId, quantity, trackingId, ...);
+```
+
+The `trackingId` lets you reconcile if your title crashes between debit and report.
+
+For developer-managed consumables, the title is responsible for tracking the balance — typically using PlayFab Economy v2 or your own backend.
+
+## Bundles and season passes
+
+Add-on bundles and season passes are surfaced as single Store products that grant child entitlements. To detect ownership:
+
+1. `XStoreQueryAddOnLicensesAsync` returns one license per child product.
+2. For bundle-only entitlements (no child product fits), check `XStoreQueryEntitledProductsAsync`.
+
+UI: it's a good practice to surface both "buy the bundle" and "buy individual items" when both products exist.
+
+## Product sharing model
+
+Xbox supports several sharing scenarios:
+
+- **Home Xbox** — the home console can play digital titles purchased by the owner without sign-in.
+- **Family sharing** — family members of the buyer can access the purchase.
+- **PC Xbox Play Anywhere** — single purchase grants both console and PC entitlement.
+
+The XStore licensing layer handles these transparently. Your title doesn't usually need to know which path granted access — just check the license is active.
+
+## How to use a durable without a package
+
+"Durable without backing package" (DWOBS) is useful for content already inside the base package that's gated behind a purchase. Configure as durable with no associated package, then:
+
+1. Query the license at runtime.
+2. Unlock content via your own gameplay state if active.
+
+This avoids shipping a 0-byte package just to hold the entitlement.
+
+## Checking for updates
+
+In-game, when the player launches a multiplayer feature that requires the current build:
+
+```cpp
+XStoreQueryGameAndDlcPackageUpdatesAsync(...);
+```
+
+If the player is behind, prompt them to update (via `XStoreDownloadAndInstallPackageUpdatesAsync`) before joining online play.
+
+## Troubleshooting
+
+Most common XStore integration issues:
+
+- **Product not found in dev sandbox** — publish the product to that sandbox first.
+- **Trial license shows `isTrialOwnedByThisUser = false`** — the test account doesn't own a trial; acquire it through the Store UI in that sandbox first.
+- **`XStoreReportConsumableFulfillmentAsync` returns success but balance doesn't update** — you reported with a duplicate trackingId; the Store ignored it as a retry.
+- **DLC license drops mid-session** — family-sharing context changed; handle gracefully and re-fetch licenses.
+
+## See also
+
+- [XStore API](/reference/xstore)
+- [Manage products from services (server-side)](/publishing/xstore-server-to-service)
+- [PC-specific XStore considerations](/publishing/xstore-pc)
+- [Add-ons (Partner Center)](/publishing/add-ons)

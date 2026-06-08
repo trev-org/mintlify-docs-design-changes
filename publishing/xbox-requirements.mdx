@@ -1,0 +1,136 @@
+---
+title: "Xbox Requirements (XRs): the certification policy reference"
+sidebarTitle: "Xbox Requirements"
+icon: "clipboard-check"
+description: "Catalog of every Xbox Requirement (XR) tested during certification — stability, content, services, privacy, multiplayer, DLC, and Series X|S generation rules."
+---
+
+**Xbox Requirements (XRs)** are the certification policies every Xbox title must meet. They cover stability, content quality, services usage, privacy, multiplayer behavior, and platform-specific rules for Xbox Series X|S generations.
+
+Use this page as the canonical index. Each XR is tested during [certification](/publishing/certification); the [Failure Mode Analysis](/publishing/xr-fma) covers what to fix when a test fails.
+
+## Why XRs exist
+
+XRs ensure every Xbox title:
+
+- Doesn't crash on basic activation, sign-in, or controller-add flows.
+- Respects user privacy, communication preferences, and content settings.
+- Honors multiplayer guarantees other titles depend on (joinable sessions, presence, invites).
+- Behaves correctly across console generations and during DLC install / install / Quick Resume.
+- Meets store-listing quality for art, metadata, and pricing display.
+
+## How to read an XR
+
+Each XR is:
+
+- **Numbered** (XR-001, XR-007, etc.) and **named** for its concern.
+- **Tested or untested** — some XRs are documentation requirements (publisher policy); most have explicit cert tests.
+- **Per-platform** — most apply to both Xbox console and PC; some are platform-specific.
+- **Versioned** — XRs change over time. Track the change history before resubmission.
+
+## XR catalog summary
+
+### Stability and submission quality
+
+| XR | Topic |
+| --- | --- |
+| XR-001 | Title stability — no crashes, hangs, or freezes |
+| XR-003 | Title quality for submission — known-good state for first-pass review |
+
+### Identity, accounts, and privacy
+
+| XR | Topic |
+| --- | --- |
+| XR-013 | Linking Microsoft Accounts with publisher accounts |
+| XR-014 | Player data and personal information |
+| XR-045 | Xbox network and account privileges |
+| XR-046 | Display name and gamerpic usage |
+| XR-047 | User-profile access |
+| XR-048 | Profile settings usage |
+
+### Communication and UGC
+
+| XR | Topic |
+| --- | --- |
+| XR-015 | Managing player communications |
+| XR-018 | User-generated content — moderation and reporting |
+| XR-132 | Service access limitations — throttling and quotas |
+
+### Content rating and metadata
+
+| XR | Topic |
+| --- | --- |
+| XR-006 | Title assets and metadata |
+| XR-017 | Title ratings (IARC, ESRB, PEGI) |
+| XR-022 | Official naming standards |
+| XR-036 | In-title pricing information |
+| XR-062 | Achievement names and descriptions |
+
+### Achievements and player data
+
+| XR | Topic |
+| --- | --- |
+| XR-052 | User state, title-save location, roaming, dependencies |
+| XR-055 / XR-057 | Achievements — unlock paths, no purchase requirements for base set |
+| XR-133 | Local storage write limitations |
+
+### Multiplayer and services
+
+| XR | Topic |
+| --- | --- |
+| XR-007 | Cross-network play, data usage, companion app interactions |
+| XR-064 | Joinable game sessions and online play |
+| XR-067 | Maintaining multiplayer session state |
+| XR-070 | Xbox friends list integration |
+| XR-074 | Loss of connectivity to Xbox / partner services |
+| XR-109 | Linking between apps |
+| XR-124 | Game invitations |
+
+### Activation, suspend / resume, users / controllers
+
+| XR | Topic |
+| --- | --- |
+| XR-112 | Establishing user and controller during initial activation and resume |
+| XR-115 | Adding and removing users or controllers during gameplay |
+| XR-131 | Display mode support for Game DVR and screenshots |
+
+### DLC and Intelligent Delivery
+
+| XR | Topic |
+| --- | --- |
+| XR-034 | Streaming Install initial-play marker |
+| XR-037 | Dependencies on content packages |
+| XR-123 | Installation / unlock of game add-ons or consumables during gameplay |
+| XR-129 | Intelligent Delivery content management |
+
+### Console families and previews
+
+| XR | Topic |
+| --- | --- |
+| XR-083 | XDK / ADK version compliance |
+| XR-117 | Demos, trials, and betas |
+| XR-130 | Xbox console families and generations — Series X | S support |
+
+## Beta and Game Preview
+
+Xbox Game Preview and Beta titles have a tailored subset of XRs that allow incomplete features in clearly-labeled programs. See the Beta and Game Preview supporting docs for which XRs are waived and which are still tested.
+
+## PC-specific XRs
+
+Windows PC builds add additional XRs for:
+
+- Cross-network data usage (XR-007 PC variant).
+- Xbox Network terminology for PC and mobile.
+- Top failing test cases for PC.
+- Xbox Network Services data-processing addendum (privacy compliance for PC and mobile).
+
+## Change history
+
+XRs are revised over time. Before resubmitting, check the latest console XR change history in Partner Center to confirm whether a new test was added in your build's timeframe.
+
+## See also
+
+- [Certification](/publishing/certification) — the process that tests XRs
+- [Failure Mode Analysis](/publishing/xr-fma) — what to do when an XR fails
+- [Top failing tests](/publishing/xr-top-failing) — most common cert failures and how to avoid them
+- [Cert Bypass program](/publishing/cert-bypass-program) — fast track for trusted publishers

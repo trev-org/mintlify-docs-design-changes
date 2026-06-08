@@ -1,0 +1,128 @@
+---
+title: "Manage products from your services (S2S Microsoft Store APIs)"
+sidebarTitle: "XStore S2S APIs"
+icon: "network-wired"
+description: "Server-side Microsoft Store APIs for querying entitlements, fulfilling consumables, granting products, Game Pass detection, and clawback processing."
+---
+
+When your game server needs to act on commerce data — verify a purchase, fulfill currency, grant rewards — it talks directly to Microsoft Store **service-to-service (S2S) APIs** rather than going through the client. These APIs are at `collections.mp.microsoft.com` and `purchase.mp.microsoft.com`.
+
+## When to use S2S
+
+Use S2S APIs from your trusted game services for:
+
+- **Authoritative entitlement checks** — server validates the client's claim of ownership.
+- **Cross-device fulfillment** — player buys on Xbox, claims the reward on PC via your service.
+- **Subscription management** — query and modify subscription state.
+- **Refund / clawback handling** — detect and reverse rewards when Microsoft processes a refund.
+- **Game Pass detection** — grant Game Pass-only features when the player is subscribed.
+
+Never embed S2S credentials in clients.
+
+## Authenticating your service
+
+S2S APIs require an Azure AD app token:
+
+1. Register an Azure AD application.
+2. Configure it with the Microsoft Store API permissions.
+3. From your service, acquire a token via the client-credentials flow:
+
+```http
+POST https://login.microsoftonline.com/<tenant>/oauth2/v2.0/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&client_id=<your-app-id>
+&client_secret=<secret>
+&scope=https://onestore.microsoft.com/b2b/keys/create/collections.readonly
+  https://onestore.microsoft.com/b2b/keys/create/purchase
+```
+
+Different endpoints need different scopes — see the per-endpoint docs.
+
+## Requesting a User Store ID
+
+Most S2S calls reference a specific user via a **User Store ID** (a short-lived signed token).
+
+From the client, your title calls `XStoreGetUserCollectionsIdAsync` or `XStoreGetUserPurchaseIdAsync`, then sends the returned key to your service. The service uses it as the user identity in S2S calls.
+
+For backend-only flows (no client involvement), you can also request a User Store ID via X-tokens or OAuth 2.0; see the dedicated guide.
+
+## Query user entitlements
+
+Main endpoint:
+
+```http
+POST collections.mp.microsoft.com/v9.0/collections/publisherQuery
+Authorization: Bearer <token>
+```
+
+Payload includes the user store ID and a list of product IDs to check. Response returns ownership / expiration / quantity for each.
+
+Use this to:
+
+- Verify the player owns the DLC they're claiming.
+- Compute consumable balances.
+- Detect subscription state.
+
+## Detect Xbox Game Pass
+
+Game Pass is a subscription product. Query for the Game Pass subscription via:
+
+```http
+POST collections.mp.microsoft.com/v9.0/collections/publisherQuery
+```
+
+with the Game Pass product ID. If the response includes an active entitlement, grant Game Pass-only features in your service.
+
+## Fulfill / consume Microsoft Store-managed consumables
+
+When the player spends a Store-managed consumable:
+
+```http
+POST collections.mp.microsoft.com/v8.0/collections/consume
+```
+
+Payload: product ID, quantity, idempotency tracking ID, user store ID. Use a deterministic tracking ID so retries don't double-deduct.
+
+## Grant a product to a user
+
+```http
+POST purchase.mp.microsoft.com/v7.0/purchases/grant
+```
+
+Used for backend-driven rewards (e.g., promo codes, support refunds). The granted product appears in the player's library.
+
+## Subscriptions
+
+- **Query recurrences** — `purchase.mp.microsoft.com/v8.0/b2b/recurrences/query`
+- **Change a recurrence** — `purchase.mp.microsoft.com/v8.0/b2b/recurrences/{recurrenceId}/change`
+
+Use these to extend a subscription, cancel a recurrence, or change billing cadence in response to support actions.
+
+## Refunds and clawbacks
+
+When Microsoft processes a refund, your service needs to claw back any in-game rewards.
+
+Two APIs:
+
+- **Clawback v1** (`purchase.mp.microsoft.com/v8.0/b2b/orders/query`) — query refunded orders within a time window.
+- **Clawback v2** (`purchase.mp.microsoft.com/v8.0/b2b/clawback/sastoken`) — get a SAS token to receive clawback events asynchronously via Azure Storage.
+
+Clawback v2 scales better for high-volume titles — events stream into an Azure queue you process at your pace.
+
+## Fine-grained rate limiting
+
+Microsoft Store APIs use per-tenant rate limits with different budgets per endpoint. The response includes `Retry-After` and rate-limit headers. Implement:
+
+- Exponential backoff with jitter on 429.
+- Per-endpoint budget tracking.
+- Coalescing duplicate queries.
+
+See the fine-grained rate-limiting reference for the exact budgets and headers.
+
+## See also
+
+- [XStore deep dive (client side)](/publishing/xstore-deep-dive)
+- [XStore API](/reference/xstore)
+- [PC-specific XStore considerations](/publishing/xstore-pc)
