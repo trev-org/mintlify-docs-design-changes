@@ -58,6 +58,26 @@ Most engines wrap `XMemAlloc` behind their own allocator and apply tags based on
 
 When the player invokes the Xbox guide or a system dialog, your title may be moved into a constrained execution state with reduced CPU, GPU, and memory. Listen for the platform suspend / constrain notifications and shed non-essential work, particularly audio mix complexity and streaming I/O.
 
+## Virtual memory allocator
+
+For large reservations and games that manage their own allocators on top of OS pages, use `XMemVirtualAlloc` / `XMemVirtualFree`. These map directly to the GDK virtual-memory subsystem, support large pages, and let you commit and decommit regions independently — important when your engine pre-reserves a multi-GB address range up front.
+
+## Writeable memory-mapped files
+
+GDK supports writeable memory-mapped files for cases where multiple subsystems (or a tool and your title) need shared access to a backing file with random-access semantics. Prefer memory-mapped files over hand-rolled buffered I/O for save scratch space, on-disk caches, and inter-process scratch data.
+
+## Kernel memory usage
+
+Kernel allocations (handles, file mappings, network buffers, GPU resources) count against your title's budget. Profile kernel usage with the platform memory diagnostics — runaway handle counts or fragmented allocations show up here long before they surface as `E_OUTOFMEMORY`.
+
+## Cross-core memory costs
+
+Accessing memory from a different CPU core than the one that produced it incurs cache-coherency traffic. Lay out producer/consumer data structures by core (per-core arenas, single-writer queues) and avoid pinging shared cache lines across cores during the frame.
+
+## Porting your memory model from XDK
+
+XDK titles that used the Xbox One SDK's allocator can migrate incrementally: keep your custom allocator for hot paths and route everything else through XMem first, then move hot paths over once profiling shows parity. The porting guide in the GDK docs lists the XDK-to-GDK allocator API mappings.
+
 ## See also
 
 - [XMem API reference](https://learn.microsoft.com/en-us/gaming/gdk/_content/gc/reference/system/xmem/xmem_members)

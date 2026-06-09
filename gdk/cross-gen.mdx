@@ -25,6 +25,10 @@ Cross-generation ("cross-gen") development means shipping a single Microsoft Sto
 
 The **multi-platform** approach is recommended for any title that wants to take real advantage of Series X|S hardware (DirectStorage, mesh shaders, sampler feedback, hardware-accelerated ray tracing). It keeps your old-gen build small and lets you ship Series-only features without runtime branching.
 
+### Backcompat-only titles
+
+If you do not ship a native Series X|S binary, your Xbox One title still runs on Series X|S through **backwards compatibility** — the system emulates the Xbox One environment. You do not need to do anything to enable this, but you also do not get any Series X|S hardware benefits beyond the platform-level FPS Boost and Auto HDR features that the system applies for free.
+
 ## Project configuration
 
 In Visual Studio, set the project platform to **Gaming.Xbox.XboxOne.x64** for the Xbox One family and **Gaming.Xbox.Scarlett.x64** for the Xbox Series X|S family. Most teams maintain both configurations side-by-side in the same solution and use shared source files with `#if defined(_GAMING_XBOX_SCARLETT)` guards for the truly platform-specific paths.

@@ -17,9 +17,11 @@ Xbox consoles provide a rich, multi-tier audio pipeline that covers everything f
   <Card title="WASAPI" icon="wave-square" href="https://learn.microsoft.com/en-us/windows/win32/coreaudio/wasapi">
     Windows Audio Session API — the lowest-level audio interface. Provides direct access to the render and capture endpoints with minimal latency.
   </Card>
+
   <Card title="XAudio2" icon="sliders" href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-apis-portal">
     Microsoft's cross-platform audio graph engine. Supports mixing, submix routing, 3D positional audio via X3DAudio, and DSP effects via XAPO.
   </Card>
+
   <Card title="Spatial Audio (Dolby Atmos)" icon="headphones" href="https://learn.microsoft.com/en-us/windows/win32/coreaudio/spatial-sound">
     Object-based audio routed through the platform spatial audio pipeline. Automatically adapts to Dolby Atmos-capable receivers, headphones, or stereo fallback.
   </Card>
@@ -58,6 +60,15 @@ Xbox consoles provide a rich, multi-tier audio pipeline that covers everything f
   </Tab>
 </Tabs>
 
+## XAPU and XDSP (Xbox console)
+
+Xbox Series X|S and Xbox One include dedicated audio offload silicon. The GDK exposes it through two C APIs:
+
+- **XAPU** — fixed-function audio processing units. The most common use is single-stream **Opus decoding** offloaded from the CPU. XAPU is ideal for streaming music or heavy voice-line playback.
+- **XDSP** — programmable DSP primitives: convolution, FFT/IFFT, enveloping, and impulse-response reduction. Use XDSP to run reverb, custom filters, and HRTF-style processing without burning CPU time.
+
+Both APIs are Xbox-console-only. On PC, fall back to XAudio2 effects or your own engine DSP.
+
 ## Spatial audio on Xbox
 
 Xbox Series X|S supports hardware-accelerated Dolby Atmos decoding. When you submit audio objects through the spatial audio pipeline, the OS renderer applies head-related transfer function (HRTF) processing or passes the object metadata to a Dolby Atmos–capable receiver directly over HDMI.
@@ -71,7 +82,7 @@ The player configures their preferred spatial audio format in **Settings → Vol
 ## Key APIs
 
 | API | Purpose |
-|---|---|
+| --- | --- |
 | `XAudio2Create` | Initialize an XAudio2 engine instance |
 | `IXAudio2::CreateMasteringVoice` | Create the mastering voice that routes to the audio endpoint |
 | `IXAudio2::CreateSourceVoice` | Create a source voice for a PCM, ADPCM, or XMA2 stream |

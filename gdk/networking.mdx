@@ -115,7 +115,7 @@ See the [Multiplayer](/services/multiplayer) page for a full breakdown of these 
 ## Key APIs summary
 
 | API | Purpose |
-|---|---|
+| --- | --- |
 | `WSAStartup` / `WSACleanup` | Initialize and tear down the WinSock runtime |
 | `socket` / `bind` / `connect` | Standard WinSock socket lifecycle |
 | `send` / `recv` / `sendto` / `recvfrom` | Standard data transfer |
@@ -123,6 +123,24 @@ See the [Multiplayer](/services/multiplayer) page for a full breakdown of these 
 | `PartyManager::Initialize` | Initialize PlayFab Party |
 | `PartyManager::CreateLocalUser` | Register a signed-in player with Party |
 | `PartyNetwork::ConnectToNetwork` | Join or create a Party network |
+
+## QoS packet tagging
+
+Tag latency-sensitive outbound traffic (gameplay updates, voice) with DSCP/QoS markers so that the console network stack and home routers can prioritize them over background traffic. The GDK exposes per-socket QoS APIs; tag once at socket creation and avoid hot-path retagging.
+
+## Reserved ports and firewall exceptions
+
+A range of Xbox-system ports is reserved for platform services (Live, Party, system telemetry) and cannot be bound by titles. Ship a list of game-specific UDP/TCP ports in your packaging metadata so the console firewall can open them automatically — do not assume players will configure their home routers.
+
+## HTTP stacks: xCurl and WinHTTP
+
+- **xCurl** — libcurl-compatible HTTP client recommended for GDK titles. Cross-platform, supports HTTP/2, easy to plug into existing engines that already speak libcurl.
+- **WinHTTP** — Windows-native HTTP client, also available on Xbox. Pick WinHTTP when you already depend on it for tooling/services parity.
+- Custom HTTP stacks are allowed but must be debuggable through the standard platform network capture tooling.
+
+## XDK migration
+
+Titles porting from Xbox One ERA (XDK) replace XDK-era socket and HTTP APIs with WinSock \+ xCurl/WinHTTP. The migration guide maps every XDK web-request and game-mesh API to its GDK equivalent.
 
 ## See also
 
