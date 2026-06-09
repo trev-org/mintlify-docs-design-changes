@@ -1,0 +1,997 @@
+/* =====================================================================
+   XBOX Game Development Kit — custom theme
+   Implements the Figma "Theme UI" design system (light + dark) on top of
+   Mintlify defaults. Tokens are taken directly from the Figma variables.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   Design tokens
+   --------------------------------------------------------------------- */
+:root {
+  /* Surfaces */
+  --xbox-bg: #ffffff;
+  --xbox-surface: #ffffff;
+  --xbox-surface-subtle: #fafaf9;
+  --xbox-surface-muted: #f5f5f4;
+
+  /* Borders */
+  --xbox-border: #e4e4e7;
+  --xbox-border-muted: #e7e5e4;
+
+  /* Text */
+  --xbox-text-main: #09090b;
+  --xbox-text-subtle: #52525c;
+  --xbox-text-muted: #78716c;
+
+  /* Brand */
+  --xbox-green: #127C10;
+  --xbox-green-active: #127C10;
+  --xbox-green-fg: #ffffff;
+
+  /* System */
+  --xbox-radius: 0px;
+  --xbox-topbar-button-size: 2.125rem;
+}
+
+.dark {
+  --xbox-bg: #09090b;
+  --xbox-surface: #141414;
+  --xbox-surface-subtle: #1c1917;
+  --xbox-surface-muted: #44403c;
+
+  --xbox-border: #27272a;
+  --xbox-border-muted: #292524;
+
+  --xbox-text-main: #fafafa;
+  --xbox-text-subtle: #9f9fa9;
+  --xbox-text-muted: #78716c;
+
+  --xbox-green: #127C10;
+  --xbox-green-active: #127C10;
+  --xbox-green-fg: #ffffff;
+}
+
+/* ---------------------------------------------------------------------
+   Global — typography + a faint brand wash on the dark background
+   --------------------------------------------------------------------- */
+body {
+  font-feature-settings:
+    "calt" 0,
+    "liga" 0;
+  letter-spacing: -0.1px;
+}
+
+.callout {
+  border-radius: 0px;
+}
+
+#almond-background-color {
+  background-color: #fff !important;
+  background-image: none !important;
+}
+
+/* Subtle purple wash sampled from the dark design background gradient. */
+.dark #almond-background-color,
+.dark #background-color {
+  background-color: var(--xbox-bg) !important;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(114, 36, 179, 0.02) 0%,
+      rgba(114, 36, 179, 0.02) 100%
+    ),
+    linear-gradient(90deg, var(--xbox-bg) 0%, var(--xbox-bg) 100%);
+}
+
+/* ---------------------------------------------------------------------
+   Page chrome — navbar, sidebar, content, TOC dividers
+   --------------------------------------------------------------------- */
+:root {
+  --xbox-page-gutter: 2rem;
+  --xbox-sidebar-width: 16rem;
+  --xbox-content-width: 42rem;
+  --xbox-toc-width: 15rem;
+}
+
+#navbar {
+  background-color: #fff;
+  border-bottom: 1px solid var(--xbox-border);
+}
+
+#navbar > div.z-0.absolute.inset-0 {
+  background-color: #fff;
+}
+
+.dark #navbar,
+.dark #navbar > div.z-0.absolute.inset-0 {
+  background-color: var(--xbox-bg);
+}
+
+#navbar > div.z-10.mx-auto.relative > div.relative > div.flex.items-center {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: var(--xbox-page-gutter);
+  padding-right: var(--xbox-page-gutter);
+}
+
+#content-container {
+  border-radius: 0px;
+  border: none;
+}
+
+.almond-layout {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Desktop frame: 32px gutter, 256px sidebar, centered 672px content,
+   240px TOC, 32px gutter (Figma 25:13382). */
+#sidebar-content {
+  background-color: #fff;
+  padding-top: 0.25rem;
+  padding-left: 1.75rem;
+  padding-right: 0.25rem;
+}
+
+.dark #sidebar-content {
+  background-color: var(--xbox-bg);
+}
+
+/* Fallback rails for the theme's fixed sidebar. Desktop uses real borders in
+   the media query below so the gutter and sidebar width match the design. */
+#sidebar-content::before,
+#sidebar-content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px solid var(--xbox-border);
+}
+
+#sidebar-content::before {
+  left: 2rem;
+}
+
+.card {
+  border-radius: 0px;
+}
+
+/* Assistant side panel — remove the theme's inset spacing and rounded sheet corners. */
+div.sticky.shrink-0:has(> #chat-assistant-sheet) {
+  padding: 0 !important;
+  border-radius: 0px;
+}
+
+#chat-assistant-sheet {
+  border-radius: 0px !important;
+}
+
+/* The visible assistant input frame is the rounded wrapper, not the transparent textarea. */
+.chat-assistant-floating-input .rounded-2xl:has(#chat-assistant-textarea),
+#chat-assistant-sheet .rounded-2xl:has(#chat-assistant-textarea),
+#chat-assistant-textarea {
+  border-radius: 0px;
+}
+
+#chat-assistant-sheet .rounded-2xl:has(#chat-assistant-textarea) > div:last-child {
+  padding-bottom: 0.5rem;
+}
+
+#sidebar-content::after {
+  right: 0;
+}
+
+@media (min-width: 1024px) {
+  #sidebar-content {
+    left: var(--xbox-page-gutter);
+    width: var(--xbox-sidebar-width);
+    padding: 0.5rem 0 0rem;
+    border-left: 1px solid var(--xbox-border);
+    border-right: 1px solid var(--xbox-border);
+    box-sizing: border-box;
+  }
+
+  #sidebar-content::before,
+  #sidebar-content::after {
+    display: none;
+  }
+
+  #content-container {
+    margin-left: calc(var(--xbox-page-gutter) + var(--xbox-sidebar-width));
+    padding-left: 0;
+    padding-right: var(--xbox-page-gutter);
+  }
+
+  html[data-assistant-state="open"] #content-container {
+    padding-right: 0;
+  }
+
+  #content-container > div {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    column-gap: 0;
+  }
+
+  #content-area {
+    flex: 0 1 var(--xbox-content-width);
+    max-width: var(--xbox-content-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1280px) {
+  #content-container > div {
+    padding-right: var(--xbox-toc-width);
+    box-sizing: border-box;
+  }
+
+  html[data-assistant-state="open"] #content-container > div {
+    padding-right: 0;
+  }
+
+  #content-side-layout {
+    position: fixed;
+    flex: 0 0 var(--xbox-toc-width);
+    width: var(--xbox-toc-width);
+    max-width: none;
+    top: calc(3.5rem + var(--banner-height, 0px));
+    right: var(--xbox-page-gutter);
+    bottom: 0;
+    height: calc(100dvh - 3.5rem - var(--banner-height, 0px));
+    transform: none;
+    margin-right: 0;
+    border-left: 1px solid var(--xbox-border);
+    border-right: 1px solid var(--xbox-border);
+    box-sizing: border-box;
+  }
+
+  #table-of-contents-layout {
+    height: calc(100% - 0.5rem);
+    width: 100%;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    padding-left: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  #content-side-layout #table-of-contents {
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    border-left: 0;
+    border-right: 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+#table-of-contents {
+  margin-top: 0;
+  padding-top: 0;
+  border-left: 1px solid var(--xbox-border);
+  border-right: 1px solid var(--xbox-border);
+  padding-right: 0.75rem;
+}
+
+/* "On this page" eyebrow — small uppercase muted label, no icon (Figma). */
+#table-of-contents h2 button {
+  padding-left: calc(1rem + 2px);
+  text-transform: uppercase;
+  color: var(--xbox-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: normal;
+}
+
+#table-of-contents h2 button:hover {
+  color: var(--xbox-text-muted);
+}
+
+.dark #table-of-contents h2 button,
+.dark #table-of-contents h2 button:hover {
+  color: #9f9fa9;
+}
+
+#table-of-contents h2 button svg {
+  display: none;
+}
+
+#table-of-contents h2 button span {
+  margin-left: 0 !important;
+}
+
+/* ---------------------------------------------------------------------
+   Top navigation — square tabs with a filled active state (Figma 8014:3297)
+   --------------------------------------------------------------------- */
+/* Secondary navbar links — outlined "Button" component (Figma 8014:3313):
+   surface fill, 1px border, square corners.
+   In the almond theme `.navbar-link` is a class on the <li> wrapper and the
+   label color lives on the inner <a>, so both are scoped under #navbar to
+   beat the theme's Tailwind utility classes. */
+#navbar .navbar-link {
+  gap: 2px;
+  padding: 6px 14px;
+  min-height: var(--xbox-topbar-button-size);
+  background-color: var(--xbox-surface);
+  border: 1px solid var(--xbox-border-muted);
+  border-radius: var(--xbox-radius);
+  box-sizing: border-box;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+#navbar .navbar-link a {
+  color: var(--xbox-text-main);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.1px;
+}
+
+#navbar .navbar-link:hover {
+  background-color: var(--xbox-surface-subtle);
+}
+
+.dark #navbar .navbar-link {
+  background-color: var(--xbox-bg);
+  border: 1px solid var(--xbox-surface-muted);
+}
+
+.dark #navbar .navbar-link a {
+  color: var(--xbox-text-main);
+}
+
+/* Dark-mode hover — subtle background lift only (scoped to match the dark
+   base rule's specificity so it wins). */
+.dark #navbar .navbar-link:hover {
+  background-color: var(--xbox-surface-subtle);
+}
+
+.nav-tabs-item {
+  color: var(--xbox-text-muted);
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.nav-tabs-item:hover {
+  color: var(--xbox-text-main);
+}
+
+/* Active tab — compact filled square box behind the label (Figma 8014:3307).
+   Mintlify's tab is full navbar height, so the box is drawn as an inset
+   ::before inside an isolated stacking context to sit above the navbar's
+   own background layers but behind the label. */
+.nav-tabs-item[data-active] {
+  position: relative;
+  isolation: isolate;
+  color: #09090b;
+}
+
+.dark .nav-tabs-item[data-active] {
+  color: #fafafa;
+}
+
+.nav-tabs-item[data-active]::before {
+  content: "";
+  position: absolute;
+  inset: 12px -12px;
+  z-index: -1;
+  border-radius: var(--xbox-radius);
+  background-color: #f5f5f4;
+}
+
+.dark .nav-tabs-item[data-active]::before {
+  background-color: #141414;
+}
+
+/* Left-align the primary nav tabs next to the logo (Figma top menu layout).
+   Mintlify's almond theme bundles the tabs with the navbar links in a
+   right-aligned group; these overrides shrink the logo cluster, let the
+   tab/link group grow from the left, and pin the navbar link to the right.
+   Selectors are anchored on the stable .nav-logo / .nav-tabs hooks. */
+@media (min-width: 1024px) {
+  /* Logo wrapper — size to the logo instead of growing (its default
+     flex-1 is what pushed the tabs to the right edge). */
+  #navbar div:has(> a > .nav-logo) {
+    flex: 0 0 auto;
+  }
+
+  /* Keep the logo image at its natural width */
+  #navbar .nav-logo {
+    max-width: none;
+  }
+
+  /* Right cluster — grow to fill the remaining width */
+  #navbar div:has(> div > div > .nav-tabs) {
+    flex: 1 1 auto;
+  }
+
+  /* Tab + link group — start from the left, beside the logo */
+  #navbar div:has(> div > .nav-tabs) {
+    flex: 1 1 auto;
+    margin-left: 24px;
+    justify-content: flex-start;
+  }
+
+  /* Navbar link (GitHub) — stays pinned to the far right */
+  #navbar nav[aria-label="Main"] {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  /* Promote Mintlify's theme toggle from the sidebar footer into the top bar.
+     The existing button keeps its behavior; this only changes its desktop
+     placement and frame. */
+  .almond-nav-bottom-section {
+    position: fixed;
+    top: calc(var(--banner-height, 0px) + 0.6875rem);
+    right: calc(var(--assistant-sheet-width, 0px) + var(--xbox-page-gutter));
+    z-index: 50;
+    width: auto;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .almond-nav-bottom-section-divider {
+    display: none;
+  }
+
+  .almond-nav-bottom-section > .flex {
+    padding: 0;
+    gap: 0;
+    pointer-events: auto;
+  }
+
+  .almond-nav-bottom-section button[aria-label="Toggle dark mode"],
+  #navbar .xbox-theme-toggle-button {
+    display: inline-flex !important;
+    align-items: center;
+    position: relative;
+    width: var(--xbox-topbar-button-size) !important;
+    height: var(--xbox-topbar-button-size) !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    background-color: var(--xbox-surface) !important;
+    border: 1px solid var(--xbox-border-muted) !important;
+    border-radius: var(--xbox-radius) !important;
+    box-sizing: border-box;
+    color: #44403c !important;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .almond-nav-bottom-section
+    button[aria-label="Toggle dark mode"]
+    > div:first-child,
+  #navbar .xbox-theme-toggle-button > div:first-child {
+    display: flex !important;
+    width: auto !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+  .almond-nav-bottom-section
+    button[aria-label="Toggle dark mode"]
+    > div:last-child,
+  #navbar .xbox-theme-toggle-button > div:last-child {
+    display: none !important;
+  }
+
+  .almond-nav-bottom-section button[aria-label="Toggle dark mode"] svg,
+  #navbar .xbox-theme-toggle-button svg {
+    display: none !important;
+    width: 1rem !important;
+    height: 1rem !important;
+    color: currentColor !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .light
+    .almond-nav-bottom-section
+    button[aria-label="Toggle dark mode"]
+    svg:first-of-type,
+  .light #navbar .xbox-theme-toggle-button svg:first-of-type,
+  :root:not(.dark)
+    .almond-nav-bottom-section
+    button[aria-label="Toggle dark mode"]
+    svg:first-of-type,
+  :root:not(.dark) #navbar .xbox-theme-toggle-button svg:first-of-type,
+  .dark
+    .almond-nav-bottom-section
+    button[aria-label="Toggle dark mode"]
+    svg:last-of-type,
+  .dark #navbar .xbox-theme-toggle-button svg:last-of-type {
+    display: block !important;
+  }
+
+  .dark .almond-nav-bottom-section button[aria-label="Toggle dark mode"],
+  .dark #navbar .xbox-theme-toggle-button {
+    background-color: var(--xbox-bg) !important;
+    border-color: #27272A !important;
+    color: #9f9fa9 !important;
+  }
+}
+
+/* Primary CTA button — solid Xbox green, square corners.
+   The visible button is the inner <a> (the theme paints bg-primary-dark +
+   rounded-lg there and fades it with hover:opacity-[0.9]); the #topbar-cta-button
+   <li> is just a wrapper, so style the anchor and keep the wrapper transparent. */
+#topbar-cta-button {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+#topbar-cta-button a {
+  background-color: var(--xbox-green);
+  color: var(--xbox-green-fg);
+  border-radius: var(--xbox-radius);
+  border: none;
+  transition: background-color 0.15s ease;
+}
+
+#topbar-cta-button a:hover {
+  background-color: var(--xbox-green-active);
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------
+   Sidebar navigation
+   --------------------------------------------------------------------- */
+sidebar-title,
+sidebar-group-header {
+  color: var(--xbox-text-main);
+  font-weight: 500;
+}
+
+#sidebar-content li a {
+  color: var(--xbox-text-subtle);
+  border-radius: var(--xbox-radius);
+}
+
+#sidebar-content li a:hover {
+  color: black;
+  background-color: transparent !important;
+}
+
+.dark #sidebar-content li a:hover {
+  color: #cecece;
+}
+
+/* Active page — green text with a green leading rule (Figma 8014:3348) */
+#sidebar-content li[data-active] > a,
+#sidebar-content li[data-active] a {
+  color: var(--xbox-green-active);
+  font-weight: 500;
+  background-color: transparent;
+  border-left: 0;
+  border-radius: 0;
+}
+
+#sidebar-content li:not([data-active]):hover::before,
+#sidebar-content li[data-active]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -0.5rem;
+  z-index: 1;
+  width: 1px;
+}
+
+#sidebar-content li:not([data-active]):hover::before {
+  background-color: #cecece;
+}
+
+#sidebar-content li[data-active]::before {
+  width: 2px;
+  background-color: var(--xbox-green-active);
+}
+
+/* ---------------------------------------------------------------------
+   Search + Ask AI
+   --------------------------------------------------------------------- */
+#search-bar-entry {
+  border-radius: var(--xbox-radius);
+  border: 1px solid var(--xbox-border-muted);
+  background-color: #fff;
+  box-shadow: none;
+}
+
+.dark #search-bar-entry {
+  background-color: #000;
+  border-color: #27272A;
+}
+
+#assistant-entry {
+  border-radius: var(--xbox-radius);
+  border: 1px solid var(--xbox-border-muted);
+  box-shadow: none;
+}
+
+.dark #assistant-entry {
+  border-color: #27272A;
+}
+
+/* ---------------------------------------------------------------------
+   Page header
+   --------------------------------------------------------------------- */
+#page-title {
+  color: var(--xbox-text-main);
+  font-weight: 500;
+  letter-spacing: -0.7px;
+}
+
+eyebrow,
+breadcrumb-item {
+  color: var(--xbox-text-muted);
+}
+
+/* ---------------------------------------------------------------------
+   Cards (Card / CardGroup / Columns) — square, elevated surfaces
+   Figma: Core Topics / Build Paths cards (bg #141414, 16px padding)
+   --------------------------------------------------------------------- */
+card {
+  background-color: var(--xbox-surface);
+  border: 1px solid var(--xbox-border);
+  border-radius: var(--xbox-radius);
+  box-shadow: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+card:hover {
+  border-color: var(--xbox-green-active);
+  background-color: var(--xbox-surface-subtle);
+}
+
+/* Card title -> main text, description -> subtle text */
+card .font-semibold,
+card h2,
+card h3 {
+  color: var(--xbox-text-main);
+  font-weight: 500;
+}
+
+card p {
+  color: var(--xbox-text-subtle);
+}
+
+/* The card's icon picks up the brand green */
+card .icon,
+card svg {
+  color: var(--xbox-green-active);
+}
+
+/* ---------------------------------------------------------------------
+   Callouts (Note / Warning / Tip / Info)
+   --------------------------------------------------------------------- */
+callout {
+  border-radius: var(--xbox-radius);
+  border: 1px solid var(--xbox-border);
+}
+
+details.accordion,
+details.accordion summary {
+  border-radius: var(--xbox-radius);
+}
+
+/* ---------------------------------------------------------------------
+   Steps
+   --------------------------------------------------------------------- */
+step {
+  color: var(--xbox-text-subtle);
+}
+
+/* ---------------------------------------------------------------------
+   Code blocks + groups
+   --------------------------------------------------------------------- */
+code-block,
+code-group {
+  border-radius: var(--xbox-radius);
+  border: 1px solid var(--xbox-border);
+  overflow: hidden;
+}
+
+.code-block,
+.code-block [data-component-part="code-block-root"] {
+  border-radius: var(--xbox-radius);
+}
+
+/* ---------------------------------------------------------------------
+   Frames / images
+   --------------------------------------------------------------------- */
+frame img {
+  border-radius: var(--xbox-radius);
+}
+
+/* ---------------------------------------------------------------------
+   Tabs
+   --------------------------------------------------------------------- */
+tabs {
+  border-radius: var(--xbox-radius);
+}
+
+/* ---------------------------------------------------------------------
+   Table of contents
+   --------------------------------------------------------------------- */
+toc-item {
+  color: var(--xbox-text-subtle);
+}
+
+toc-item:hover {
+  color: var(--xbox-text-main);
+}
+
+#table-of-contents-content .toc-item,
+#table-of-contents-content .toc-item > a,
+toc-item[data-active]:not([data-active-deepest]) {
+  color: var(--xbox-text-subtle) !important;
+  border-left-color: transparent !important;
+  text-shadow: none !important;
+}
+
+#table-of-contents-content .toc-item:has(> a:hover),
+#table-of-contents-content .toc-item > a:hover {
+  color: var(--xbox-text-main) !important;
+  border-left-color: #cecece !important;
+}
+
+toc-item[data-active-deepest],
+#table-of-contents-content .toc-item[data-active-deepest],
+#table-of-contents-content .toc-item[data-active-deepest] > a {
+  color: var(--xbox-green-active) !important;
+}
+
+#table-of-contents-content .toc-item[data-active-deepest][data-depth="0"]
+  > a {
+  border-left-width: 2px;
+  border-left-color: var(--xbox-green-active) !important;
+}
+
+#table-of-contents-content
+  .toc-item[data-active-deepest]:not([data-depth="0"]) {
+  border-left-width: 2px;
+  border-left-color: var(--xbox-green-active) !important;
+}
+
+#table-of-contents-content
+  .toc-item[data-active-deepest]:not([data-depth="0"])
+  > a {
+  border-left-color: transparent !important;
+}
+
+/* ---------------------------------------------------------------------
+   Pagination
+   --------------------------------------------------------------------- */
+#pagination .pagination-prev,
+#pagination .pagination-next {
+  border-radius: var(--xbox-radius);
+  border: 1px solid var(--xbox-border);
+}
+
+#pagination .pagination-prev:hover,
+#pagination .pagination-next:hover {
+  border-color: var(--xbox-green-active);
+}
+
+/* ---------------------------------------------------------------------
+   Tables
+   --------------------------------------------------------------------- */
+#content-area table {
+  border: 1px solid var(--xbox-border);
+}
+
+#content-area th {
+  padding: 0.75rem 1rem;
+  color: var(--xbox-text-main);
+  font-weight: 700;
+  background-color: var(--xbox-surface-subtle);
+}
+
+#content-area td {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--xbox-border);
+}
+
+/* ---------------------------------------------------------------------
+   Inline links inside prose
+   --------------------------------------------------------------------- */
+mdx-content a:not(card a) {
+  color: var(--xbox-green-active);
+}
+
+/* =====================================================================
+   Landing page (index.mdx)
+   ===================================================================== */
+
+/* Hero banner — gradient stand-in for the Figma controller artwork */
+.xbox-hero {
+  position: relative;
+  width: 100%;
+  height: 238px;
+  margin: 8px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--xbox-radius);
+  background:
+    radial-gradient(
+      120% 140% at 80% -20%,
+      rgba(114, 36, 179, 0.45) 0%,
+      rgba(114, 36, 179, 0) 55%
+    ),
+    radial-gradient(
+      120% 160% at 0% 120%,
+      rgba(18, 124, 16, 0.55) 0%,
+      rgba(18, 124, 16, 0) 60%
+    ),
+    linear-gradient(135deg, #127C10 0%, #0a0a0c 55%, #1a0b2e 100%);
+  border: 1px solid var(--xbox-border);
+}
+
+.xbox-hero-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    60% 80% at 50% 50%,
+    rgba(18, 124, 16, 0.35) 0%,
+    rgba(18, 124, 16, 0) 70%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.xbox-hero-logo {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Quick Access — wide cards with text + a colored thumbnail */
+.xbox-quick-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.xbox-quick-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  gap: 4px;
+  text-decoration: none;
+  background-color: var(--xbox-surface);
+  border: 1px solid var(--xbox-border);
+  border-radius: var(--xbox-radius);
+  overflow: hidden;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.xbox-quick-card:hover {
+  border-color: var(--xbox-green-active);
+  background-color: var(--xbox-surface-subtle);
+}
+
+.xbox-quick-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.xbox-quick-body h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  color: var(--xbox-text-main);
+}
+
+.xbox-quick-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--xbox-text-subtle);
+}
+
+.xbox-quick-link {
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--xbox-green-active);
+}
+
+.xbox-quick-thumb {
+  min-height: 130px;
+  background-color: var(--xbox-surface-subtle);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Quick Access thumbnails — Xbox controller artwork */
+.xbox-thumb-1 {
+  background-image: url("/images/f4a157fea56a539d15829292d6085de4a488869c.png");
+}
+
+.xbox-thumb-2 {
+  background-image: url("/images/e71580110a12d4c9bd4e22b52c7e88910bbd0e6c.png");
+}
+
+.xbox-thumb-3 {
+  background-image: url("/images/63098df10ce12967da3aab598d9b594c3f64abe2.png");
+}
+
+.xbox-thumb-4 {
+  background-image: url("/images/02d728eff6c92e2ab04c47fafb1a51b18cf9cbf7.png");
+}
+
+/* "Start building" call to action */
+.xbox-cta-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0 8px;
+}
+
+.xbox-cta-primary,
+.xbox-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--xbox-radius);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.xbox-cta-primary {
+  background-color: var(--xbox-green);
+  color: #ffffff;
+  border: 1px solid var(--xbox-green);
+}
+
+.xbox-cta-primary:hover {
+  background-color: var(--xbox-green-active);
+  border-color: var(--xbox-green-active);
+}
+
+.xbox-cta-secondary {
+  background-color: transparent;
+  color: var(--xbox-text-main);
+  border: 1px solid var(--xbox-border);
+}
+
+.xbox-cta-secondary:hover {
+  border-color: var(--xbox-green-active);
+  color: var(--xbox-green-active);
+}
+
+/* Stack Quick Access thumbnails below text on small screens */
+@media (max-width: 640px) {
+  .xbox-quick-card {
+    grid-template-columns: 1fr;
+  }
+
+  .xbox-quick-thumb {
+    min-height: 88px;
+  }
+}
