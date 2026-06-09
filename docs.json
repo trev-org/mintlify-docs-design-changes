@@ -31,7 +31,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "XBOX Game Development Documentation",
+        "tab": "Get Started",
         "groups": [
           {
             "group": "Get Started",
@@ -140,7 +140,7 @@
         ]
       },
       {
-        "tab": "XBOX Console Only Features",
+        "tab": "Console Only Features",
         "groups": [
           {
             "group": "Console Features",
