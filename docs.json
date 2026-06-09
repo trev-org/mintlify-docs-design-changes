@@ -293,7 +293,8 @@
               "reference/xasyncprovider",
               "reference/xgameruntimetypes",
               "reference/xgamesave-wrapper"
-            ]
+            ],
+            "icon": "microchip"
           },
           {
             "group": "Xbox Services API",
@@ -324,7 +325,8 @@
               "reference/xsapi-rest",
               "reference/xsapi-rest-overview",
               "reference/xsapi-json"
-            ]
+            ],
+            "icon": "xbox"
           },
           {
             "group": "PlayFab API",
