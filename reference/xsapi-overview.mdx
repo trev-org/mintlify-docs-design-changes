@@ -2,6 +2,7 @@
 title: "Xbox Services API (XSAPI) overview"
 sidebarTitle: "XSAPI Overview"
 description: "Overview of the Xbox Services API (XSAPI): XSAPI C vs direct REST endpoints, libHttpClient, key API areas, and how to get started for GDK titles."
+icon: "book-open"
 ---
 
 Xbox services expose two ways for your game to interact with the Xbox Live back-end: the **Xbox Services API (XSAPI)** client library and the **Xbox services REST endpoints** called directly. For all GDK titles, Microsoft recommends using the XSAPI C-based API. This page explains both approaches, their trade-offs, and the key areas of the XSAPI C surface.
@@ -20,7 +21,7 @@ Xbox services expose two ways for your game to interact with the Xbox Live back-
     - Some features — such as writing game events — are **only available through XSAPI** and cannot be replicated via raw REST calls.
     - Full control over memory allocation and thread dispatch through the GDK async model.
 
-    **Header:** `microsoft.xbox.services.h`  
+    **Header:** `microsoft.xbox.services.h`\
     **Library:** `Microsoft.Xbox.Services.14x.GDK.C.lib`
   </Tab>
   <Tab title="Xbox services REST endpoints">
@@ -52,24 +53,31 @@ See the [libHttpClient reference](https://learn.microsoft.com/en-us/gaming/gdk/d
   <Card title="Social Manager" icon="users" href="/reference/social-manager">
     Efficiently manage and cache the local user's friends list and social graph. Uses a polling model: call `XblSocialManagerDoWork` each frame to receive change events.
   </Card>
+
   <Card title="Achievements" icon="trophy" href="/services/achievements">
     Unlock, query, and display Xbox achievements. Includes both the classic Achievements API and the newer Achievements Manager for simplified graph caching.
   </Card>
+
   <Card title="Stats & Leaderboards" icon="chart-bar" href="/reference/xsapi-overview">
     Write title-managed statistics and query leaderboards. Stats drive the Xbox leaderboard service.
   </Card>
+
   <Card title="Multiplayer" icon="gamepad" href="/services/multiplayer">
     Create and manage multiplayer sessions, implement matchmaking, and integrate with Multiplayer Activity. Also includes Multiplayer Manager for common patterns.
   </Card>
+
   <Card title="Presence" icon="circle-dot" href="/services/social">
     Set and query rich presence strings that display in the Xbox social graph for active players.
   </Card>
+
   <Card title="Privacy" icon="shield-halved" href="/services/social">
     Check privacy settings before exposing one user's content or identity to another user.
   </Card>
+
   <Card title="Profile" icon="id-card" href="/services/social">
     Query gamertag, gamerpic, and other profile fields for any Xbox user.
   </Card>
+
   <Card title="Title Storage" icon="database" href="/services/player-data">
     Per-user and global title storage for arbitrary data that does not fit in Connected Storage (XGameSave).
   </Card>
@@ -130,7 +138,7 @@ See the [libHttpClient reference](https://learn.microsoft.com/en-us/gaming/gdk/d
 For the full API reference organized by functional area, see the [XSAPI C reference](https://learn.microsoft.com/en-us/gaming/gdk/docs/reference/live/xsapi-c/atoc-xsapi-c). Major namespaces include:
 
 | Header | Contents |
-|---|---|
+| --- | --- |
 | `achievements_c.h` | Achievement unlock and query |
 | `achievements_manager_c.h` | Cached achievement graph |
 | `social_manager_c.h` | Social graph caching and presence |

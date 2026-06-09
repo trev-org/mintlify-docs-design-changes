@@ -2,11 +2,12 @@
 title: "XStore API reference for in-game commerce"
 sidebarTitle: "XStore"
 description: "Reference for the XStore API: create a store context, query products, initiate purchases, manage game licenses, and acquire DLC package licenses."
+icon: "cart-shopping"
 ---
 
 The XStore API provides in-game commerce functionality: querying the Microsoft Store catalog, initiating purchases through the system UI, verifying game licenses, and acquiring licenses for owned DLC packages. All XStore operations are asynchronous and follow the standard GDK `XAsyncBlock` pattern.
 
-**Header:** `XStore.h`  
+**Header:** `XStore.h`\
 **Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
 
 ---
@@ -14,7 +15,7 @@ The XStore API provides in-game commerce functionality: querying the Microsoft S
 ## Key types
 
 | Type | Description |
-|---|---|
+| --- | --- |
 | `XStoreContextHandle` | Opaque handle to a store context for a specific user. Required for all store queries and purchases. |
 | `XStoreProduct` | Struct describing a Store product: store ID, title, description, price, images, and type flags |
 | `XStoreSku` | A SKU within a product (e.g. the standard edition vs. deluxe edition) |

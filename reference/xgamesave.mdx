@@ -2,11 +2,12 @@
 title: "XGameSave API reference for cloud game saves"
 sidebarTitle: "XGameSave"
 description: "Reference for the XGameSave Connected Storage API: initialize a provider, create containers, read and write blobs, and delete save data."
+icon: "floppy-disk"
 ---
 
 The XGameSave API implements **Connected Storage** — the GDK's roaming, fault-tolerant cloud save system. Save data is organized into **containers** (named groups) each containing one or more **blobs** (named byte arrays). Writes are transactional: you stage changes into an `XGameSaveUpdate` and then submit the whole update atomically. If the device loses power mid-write, the previous save state remains intact.
 
-**Header:** `XGameSave.h`  
+**Header:** `XGameSave.h`\
 **Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
 
 ---
@@ -14,7 +15,7 @@ The XGameSave API implements **Connected Storage** — the GDK's roaming, fault-
 ## Key types
 
 | Type | Description |
-|---|---|
+| --- | --- |
 | `XGameSaveProviderHandle` | Opaque handle to an initialized save provider for a specific user |
 | `XGameSaveContainerHandle` | Opaque handle to an open container within a provider |
 | `XGameSaveUpdateHandle` | Opaque handle to a pending update (set of blob writes/deletes) |

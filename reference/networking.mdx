@@ -2,6 +2,7 @@
 title: "Networking API reference for GDK titles"
 sidebarTitle: "Networking"
 description: "Reference for the GDK networking API surface: Winsock2, WinHTTP, secure socket usage on Xbox, and the XNetworking helper API for connectivity diagnostics."
+icon: "network-wired"
 ---
 
 The GDK exposes networking through familiar Win32 APIs (Winsock2 and WinHTTP) plus a small **XNetworking** helper API for connectivity state, NAT type, and approved-socket diagnostics on Xbox. There is no GDK-specific socket replacement — you write standard sockets code, but on Xbox console you must register every socket descriptor with the platform via `MicrosoftGame.config`.

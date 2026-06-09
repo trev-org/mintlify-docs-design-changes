@@ -2,11 +2,12 @@
 title: "XPackage API reference for DLC and content"
 sidebarTitle: "XPackage"
 description: "Reference for the XPackage API: enumerate packages, mount DLC, check chunk availability, estimate download sizes, and monitor install progress."
+icon: "box"
 ---
 
 The XPackage API lets your game enumerate, mount, and manage installed packages — including the base game package and any downloadable content (DLC). You can check which content chunks are already available locally, trigger installation of missing chunks, monitor install progress, and mount a DLC package to access its files.
 
-**Header:** `XPackage.h`  
+**Header:** `XPackage.h`\
 **Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
 
 ---
@@ -14,7 +15,7 @@ The XPackage API lets your game enumerate, mount, and manage installed packages 
 ## Key types
 
 | Type | Description |
-|---|---|
+| --- | --- |
 | `XPackageMountHandle` | Opaque handle to a mounted package. Use `XPackageGetMountPath` to get the file system path. |
 | `XPackageInstallationMonitorHandle` | Handle to a progress monitor for a package installation. |
 | `XPackageChunkAvailability` | Enum: `Ready` (installed), `Pending` (queued), `Paused`, `Unknown` |

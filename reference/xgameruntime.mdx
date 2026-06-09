@@ -2,12 +2,13 @@
 title: "XGameRuntime initialization API reference"
 sidebarTitle: "XGameRuntime"
 description: "Reference for XGameRuntimeInitialize and XGameRuntimeUninitialize: call these at process startup and exit before using any other GDK feature."
+icon: "power-off"
 ---
 
 The XGameRuntime API is the entry point for all GDK functionality. Before your game calls any other GDK function, it must call `XGameRuntimeInitialize()` to load and version-check the Gaming Runtime (`xgameruntime.dll`). When the process is about to exit, call `XGameRuntimeUninitialize()` to cleanly shut down all runtime services.
 
-**Header:** `XGameRuntimeInit.h`  
-**Library:** `xgameruntime.lib`  
+**Header:** `XGameRuntimeInit.h`\
+**Library:** `xgameruntime.lib`\
 **Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
 
 ---
