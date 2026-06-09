@@ -240,7 +240,6 @@
             "pages": [
               "reference/error-codes-overview",
               "reference/error-codes",
-              "reference/error-codes-detailed",
               "reference/xbl-error-codes",
               "reference/playfab-errors"
             ]
@@ -459,6 +458,11 @@
     {
       "source": "/services/test-accounts",
       "destination": "/tools/test-account-tool",
+      "permanent": true
+    },
+    {
+      "source": "/reference/error-codes-detailed",
+      "destination": "/reference/error-codes",
       "permanent": true
     }
   ]
