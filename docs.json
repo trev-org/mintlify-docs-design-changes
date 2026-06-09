@@ -2,11 +2,14 @@
   "$schema": "https://mintlify.com/docs.json",
   "name": "XBOX Game Development Documentation",
   "theme": "almond",
-  "favicon": "/images/favicon.svg",
+  "favicon": {
+    "light": "/images/We_Are_Xbox_Email-Signature_200x200.png",
+    "dark": "/images/We_Are_Xbox_Email-Signature_200x200.png"
+  },
   "colors": {
-    "primary": "#127C10",
-    "light": "#127C10",
-    "dark": "#127C10"
+    "primary": "#008746",
+    "light": "#008746",
+    "dark": "#008746"
   },
   "navbar": {
     "links": [
@@ -49,7 +52,8 @@
               "gdk/developing-new-titles",
               "gdk/samples",
               "gdk/porting-guides",
-              "gdk/security-requirements"
+              "gdk/security-requirements",
+              "gdk/atg-engagement"
             ]
           }
         ]
@@ -127,7 +131,10 @@
               "playfab/multiplayer-lobby",
               "playfab/leaderboards-stats",
               "playfab/party-voice",
-              "playfab/analytics"
+              "playfab/analytics",
+              "playfab/identity",
+              "playfab/live-service-management",
+              "playfab/player-progression"
             ]
           }
         ]
@@ -193,7 +200,8 @@
               "principles/xbox-accessibility-guidelines",
               "principles/mgats",
               "principles/sustainability-overview",
-              "principles/energy-efficiency-essentials"
+              "principles/energy-efficiency-essentials",
+              "principles/sustainability-case-studies"
             ]
           }
         ]
@@ -227,6 +235,17 @@
         "tab": "API References",
         "groups": [
           {
+            "group": "Error Codes",
+            "icon": "circle-exclamation",
+            "pages": [
+              "reference/error-codes-overview",
+              "reference/error-codes",
+              "reference/error-codes-detailed",
+              "reference/xbl-error-codes",
+              "reference/playfab-errors"
+            ]
+          },
+          {
             "group": "System APIs",
             "pages": [
               "reference/system-overview",
@@ -247,8 +266,6 @@
               "reference/xspeechsynthesizer",
               "reference/xappcapture",
               "reference/wdp-rest",
-              "reference/error-codes",
-              "reference/error-codes-detailed",
               "reference/xmem",
               "reference/xdisplay",
               "reference/xthread",
@@ -273,7 +290,10 @@
               "reference/pix3",
               "reference/xtf",
               "reference/httpclient",
-              "reference/wdp-extended"
+              "reference/wdp-extended",
+              "reference/xasyncprovider",
+              "reference/xgameruntimetypes",
+              "reference/xgamesave-wrapper"
             ]
           },
           {
@@ -304,8 +324,7 @@
               "reference/xsapi-context-and-globals",
               "reference/xsapi-rest",
               "reference/xsapi-rest-overview",
-              "reference/xsapi-json",
-              "reference/xbl-error-codes"
+              "reference/xsapi-json"
             ]
           },
           {
@@ -327,7 +346,6 @@
               "reference/playfab-groups",
               "reference/playfab-friends",
               "reference/playfab-playstream-events",
-              "reference/playfab-errors",
               "reference/playfab-access-policy"
             ]
           }
@@ -336,7 +354,10 @@
     ]
   },
   "description": "XBOX Game Development Documentation",
-  "logo": "/images/logo.svg",
+  "logo": {
+    "light": "/images/We_Are_Xbox_Email-Signature_200x200.png",
+    "dark": "/images/We_Are_Xbox_Email-Signature_200x200.png"
+  },
   "appearance": {
     "default": "dark"
   },
@@ -344,11 +365,16 @@
     "color": {
       "light": "#FFFFFF",
       "dark": "#09090B"
-    }
+    },
+    "image": {
+      "light": "/images/Team_Xbox_Email-Signature_200x200.png",
+      "dark": "/images/We_Are_Xbox_Teams-Background_02_Original_1920x1080.png"
+    },
+    "decoration": "windows"
   },
   "fonts": {
     "heading": {
-      "family": "Inter",
+      "family": "Rubik",
       "weight": 600
     },
     "body": {

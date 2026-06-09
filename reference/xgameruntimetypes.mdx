@@ -1,0 +1,46 @@
+---
+title: "XGameRuntimeTypes API reference"
+sidebarTitle: "XGameRuntimeTypes"
+icon: "shapes"
+description: "Common GDK type definitions shared across the system APIs — XColor and XVersion."
+---
+
+`XGameRuntimeTypes` declares two small structures used by other GDK APIs. They aren't tied to any single feature — you'll see them returned from a variety of system calls.
+
+## Structures
+
+### XColor
+
+A standard 32-bit color in `BGRA` byte order — used by [XGameUI](/reference/xgameui) for dialog accent colors and by some [Lighting](/reference/lighting) APIs.
+
+```cpp
+struct XColor {
+    uint8_t B;
+    uint8_t G;
+    uint8_t R;
+    uint8_t A;
+};
+```
+
+Values are in the 0–255 range. Alpha of 255 is fully opaque.
+
+### XVersion
+
+Four-part version tuple used by the [XGameRuntime](/reference/xgameruntime) and [XSystem](/reference/xsystem) APIs to report runtime and OS versions.
+
+```cpp
+struct XVersion {
+    uint16_t major;
+    uint16_t minor;
+    uint16_t build;
+    uint16_t revision;
+};
+```
+
+Compare versions by treating the four fields as the lexicographic key. The GDK guarantees monotonically increasing versions within a major.minor line.
+
+## See also
+
+- [XGameRuntime](/reference/xgameruntime) — initialization
+- [XSystem](/reference/xsystem) — runtime info queries
+- [Lighting](/reference/lighting) — color buffers

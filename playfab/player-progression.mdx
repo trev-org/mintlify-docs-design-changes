@@ -1,0 +1,105 @@
+---
+title: "PlayFab player progression — statistics, leaderboards, and achievements"
+sidebarTitle: "Player progression"
+icon: "chart-line"
+description: "Design progression with PlayFab v2 Statistics, entity leaderboards, and reward grants. When to use PlayFab vs. Xbox achievements."
+---
+
+Player progression is the system that turns play sessions into long-term engagement. PlayFab provides versioned **Statistics**, **Leaderboards**, and a flexible **rewards** model that integrate with Xbox achievements where appropriate.
+
+## Statistics v2 model
+
+A **statistic definition** describes:
+
+- The columns (single value, or multi-column for composite stats).
+- The **aggregation** (max, min, sum, last — how new values combine with existing).
+- The **version increment** trigger — manual or scheduled (e.g., weekly).
+- Reset policy when version increments.
+
+Write statistics via `UpdateStatistics`:
+
+```cpp
+UpdateStatistics({
+  entity: titlePlayerEntity,
+  statistics: [
+    { name: "Kills", value: 47, version: currentVersion },
+    { name: "GamesPlayed", value: 1 }  // sum aggregation
+  ]
+});
+```
+
+With max aggregation, only writes that improve the stat take effect — saves bandwidth.
+
+## Leaderboards
+
+Leaderboards are derived from statistics. Each leaderboard definition references a stat and provides:
+
+- Sort order.
+- Page size.
+- Reset cadence.
+- Friend-leaderboard support.
+
+Query patterns:
+
+- `GetLeaderboard` — top N entries.
+- `GetLeaderboardAroundEntity` — entries near a specific player.
+- `GetLeaderboardForEntities` — specific entities' ranks.
+- `GetFriendLeaderboardForEntity` — player's friends only.
+
+Deleting an entity's entry: `DeleteLeaderboardEntries`. Bulk update: `UpdateLeaderboardEntries`.
+
+## Versioning and resets
+
+When a statistic version increments:
+
+- The previous version's leaderboards are archived (still queryable historically).
+- The next version starts fresh.
+- Players can be auto-rewarded based on their final rank.
+
+Trigger via:
+
+- Scheduled task on a cron schedule (most common: weekly Sunday midnight).
+- Manual `IncrementStatisticVersion` for ad-hoc resets.
+- Programmatic via CloudScript at the end of a tournament.
+
+## Reward grants
+
+When a player reaches a milestone, grant inventory items, currency, or XP via PlayStream Rules:
+
+1. Player crosses level 50 → statistic\_updated event fires.
+2. Rule matches: "if statistic\_updated.statisticName == 'Level' and new value \>= 50".
+3. Action: grant the "Level 50 Pack" via Inventory v2.
+
+For scheduled rewards ("weekly leaderboard top 10 get 1000 gold"), use a scheduled task:
+
+1. Task fires every Sunday at 00:00 UTC.
+2. CloudScript queries the top 10 from the leaderboard.
+3. Grants gold to each.
+4. Optionally calls `IncrementStatisticVersion` to reset.
+
+## When to use PlayFab vs. Xbox achievements
+
+| Need | Use |
+| --- | --- |
+| Cross-platform progression | PlayFab Stats v2 — unified across platforms |
+| Xbox gamerscore / platform UI surfaces | Xbox achievements via XSAPI |
+| Leaderboards that survive title-version changes | PlayFab Stats v2 |
+| Show-on-profile achievements | Xbox achievements |
+| Granular event-based progression | PlayFab Stats v2 — more flexible aggregation |
+| Tournament / season resets | PlayFab Stats v2 — native versioning |
+
+Most titles use both: PlayFab for the underlying progression model, Xbox achievements for platform surface area. A CloudScript rule can grant an Xbox achievement when a PlayFab statistic hits a threshold.
+
+## Best practices
+
+1. **Define statistics before launch** — retro-adding a stat doesn't give you historical data.
+2. **Use multi-column stats** for composite metrics (kills \+ deaths \+ assists in one stat).
+3. **Set the aggregation deliberately** — `sum` for play-time, `max` for high score, `last` for current rank.
+4. **Version leaderboards on a fixed cadence** — players plan around predictable resets.
+5. **Index PlayFab stat IDs to your design doc** — stats live forever and breaking them mid-flight is hard.
+
+## See also
+
+- [PlayFab Statistics & Leaderboards (API)](/reference/playfab-statistics)
+- [PlayFab leaderboards & stats (overview)](/playfab/leaderboards-stats)
+- [Xbox achievements](/services/achievements)

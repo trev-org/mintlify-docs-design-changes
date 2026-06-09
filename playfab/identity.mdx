@@ -1,0 +1,82 @@
+---
+title: "PlayFab identity — accounts, linking, and entity model"
+sidebarTitle: "Identity"
+icon: "fingerprint"
+description: "PlayFab identity concepts: master accounts, title player accounts, the entity model, linked providers, and migration patterns."
+---
+
+PlayFab identity has three layers — master player accounts, title player accounts, and the entity model. Understanding how they fit together is critical when integrating with Xbox services, cross-platform play, and account-linking flows.
+
+## Account model
+
+- **Master Player Account** — the publisher-wide identity. Persists across all titles in a publisher's portfolio. Linked to external auth providers (Xbox, Steam, Google, etc.).
+- **Title Player Account** — the per-title slice. Has its own PlayerData, statistics, friends, and inventory. A master account has one title player account per title it has logged into.
+- **Entity** — the modern model. Each entity has a key (`{ type, id }`) and supports profiles, objects, files, and policies. Entity types include `master_player_account`, `title_player_account`, `group`, `character`, and `title`.
+
+Use the entity model for new features. Legacy PlayerData and account APIs still work but are feature-frozen.
+
+## Linking providers
+
+The canonical Xbox flow:
+
+1. Player signs in to Xbox via `XUserAddAsync`.
+2. Title gets an XBL token via `XUserGetTokenAndSignatureUtf16Async`.
+3. Title calls `LoginWithXbox` on the PlayFab client SDK with the XBL token.
+4. PlayFab creates (or finds) a master account linked to that Xbox identity, and returns a session token \+ entity token.
+
+For cross-platform play, additional providers can be linked:
+
+- Player on PC signs in with Steam.
+- Title calls `LinkSteamAccount` on the existing PlayFab session.
+- The master account now has both Xbox and Steam links — either platform can sign in to the same PlayFab identity.
+
+Unlinking is symmetric (`UnlinkXboxAccount`, `UnlinkSteamAccount`).
+
+## Anonymous / device-bound logins
+
+For pre-account experiences (player tries the game before signing in):
+
+- `LoginWithCustomID` — your title provides a stable device ID; PlayFab creates an account bound to it.
+- `LoginWithIOSDeviceID`, `LoginWithAndroidDeviceID` — platform-supplied device IDs.
+
+Later, when the player signs in with Xbox, call `LinkXboxAccount` to merge the device-bound account with the Xbox identity. From then on, either sign-in path resolves to the same master account.
+
+## Account merging
+
+If the player has two PlayFab accounts (one from anonymous play, one created later via Xbox), use the link APIs with `ForceLink = true` to merge them. The currently-signed-in account is kept; the other is deleted. There's no automatic conflict resolution — if both accounts have progression in the same title, you need to design a merge policy.
+
+## Entity tokens
+
+When you call `LoginWithXbox` (or any Login method), the response includes:
+
+- **Session ticket** — used in `X-Authorization` for legacy client APIs.
+- **Entity token** — used in `X-EntityToken` for entity-model APIs (Profiles, Files, Objects, Economy v2).
+
+Keep both. Each has its own expiration; refresh as needed.
+
+## Title player vs. master player flows
+
+Most client code operates on the **title player** — statistics, achievements, inventory are all scoped to the title.
+
+Some cross-title features need the **master player**:
+
+- Publisher-wide PlayerData (shared across all your titles).
+- Friends-list reuse across titles.
+- Cross-title leaderboards.
+
+Use the `GetTitlePlayersFromMasterPlayerAccountIds` API to map between them.
+
+## Privacy and account deletion
+
+When a player requests account deletion (GDPR, etc.):
+
+- `DeleteMasterPlayerAccount` removes the master and all linked title player accounts.
+- `DeletePlayer` (server API) removes a single title player account but preserves the master.
+
+Both are async and irreversible. Document your deletion flow in your privacy policy.
+
+## See also
+
+- [PlayFab player sign-in](/playfab/player-sign-in)
+- [PlayFab Profiles (API)](/reference/playfab-profiles)
+- [PlayFab Authentication (API)](/reference/playfab-authentication)

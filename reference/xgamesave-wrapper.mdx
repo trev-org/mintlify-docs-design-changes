@@ -1,0 +1,73 @@
+---
+title: "XGameSave Wrapper (C++) reference"
+sidebarTitle: "XGameSave Wrapper"
+icon: "floppy-disk"
+description: "Microsoft.Xbox.Wrappers.XGameSave — a thin C++ wrapper that hides XGameSave's async control blocks."
+---
+
+`Microsoft::Xbox::Wrappers::XGameSave` is a thin, header-only C\+\+ wrapper around the flat C [XGameSave](/reference/xgamesave) API. It collapses the multi-call async pattern (`*Async` \+ `*Result`) into linear synchronous-looking methods, while preserving Connected Storage's transactional guarantees.
+
+Use it when:
+
+- You want save code that reads top-to-bottom without `XAsyncBlock` plumbing.
+- You're prototyping or porting from another platform's save system.
+- You don't need fine-grained control over which task queue runs each step.
+
+Drop down to flat C `XGameSave` when:
+
+- You need to chain saves with other async work in a shared `XTaskQueue`.
+- You're inside a low-allocation, low-latency path where the wrapper's heap allocations matter.
+
+## Provider
+
+The wrapper's central class is `Microsoft::Xbox::Wrappers::XGameSave::Provider` — mirrors the flat C `XGameSaveProviderHandle`.
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `Initialize` | Initialize the provider for a user (replaces `XGameSaveInitializeProviderAsync`) |
+| `QueryContainers` | Enumerate containers — returns `ContainerNames` |
+| `QueryContainerBlobs` | Enumerate blobs in a container — returns `BlobInfoSet` |
+| `Load` | Read one or more blobs by name — returns `BlobData` |
+| `Save` | Write one or more blobs to a container (atomic) |
+| `Delete(string& containerName)` | Delete a container |
+| `Delete(string& containerName, string& blobName)` | Delete one blob |
+| `Delete(string& containerName, BlobNames& blobNames)` | Delete multiple blobs |
+| `GetQuota` | Bytes remaining in the user's storage quota |
+
+## Helper structures and vectors
+
+- `BlobInfo` — name \+ size for one blob.
+- `BlobInfoSet` — `std::vector<BlobInfo>` returned by `QueryContainerBlobs`.
+- `BlobNames` — `std::vector<std::string>` for blob-name lists.
+- `BlobData` — `std::vector<uint8_t>` returned by `Load`.
+- `ContainerNames` — `std::vector<std::string>` returned by `QueryContainers`.
+
+## Example
+
+```cpp
+using namespace Microsoft::Xbox::Wrappers::XGameSave;
+
+Provider provider;
+HRESULT hr = provider.Initialize(user, "MyTitleSCID");
+if (FAILED(hr)) return hr;
+
+// Read existing save
+auto data = provider.Load("playerprofile", { "settings", "progress" });
+
+// Write update
+provider.Save("playerprofile", {
+    { "settings", settingsBytes },
+    { "progress", progressBytes }
+});
+
+// Inspect quota
+auto quotaRemaining = provider.GetQuota();
+```
+
+## See also
+
+- [XGameSave (flat C)](/reference/xgamesave) — the underlying API
+- [XGameSaveFiles](/reference/xgamesavefiles) — file-based alternative
+- [Game saves](/gdk/game-saves)

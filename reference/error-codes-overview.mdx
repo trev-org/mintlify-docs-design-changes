@@ -1,0 +1,95 @@
+---
+title: "Error codes overview"
+sidebarTitle: "Overview"
+icon: "compass"
+description: "Where to find error code references across GDK, XSAPI, and PlayFab, and how to decode HRESULTs."
+---
+
+When an API call fails, the first thing you need is the meaning of the code. This section indexes every error code surface across the platforms a GDK title touches.
+
+## At a glance
+
+<CardGroup cols={2}>
+  <Card title="GDK error codes" icon="code" href="/reference/error-codes">
+    `FACILITY_GAMING` HRESULTs from `XGameErr.h` — returned by every `X*` API in the GDK.
+  </Card>
+
+  <Card title="GDK error codes (detailed)" icon="book-open" href="/reference/error-codes-detailed">
+    Per-code constant definitions and remediation hints.
+  </Card>
+
+  <Card title="Xbox Live HRESULTs" icon="cloud" href="/reference/xbl-error-codes">
+    `FACILITY_XBOX` and `FACILITY_HTTP` HRESULTs returned by XSAPI and Xbox services REST.
+  </Card>
+
+  <Card title="PlayFab errors" icon="server" href="/reference/playfab-errors">
+    PlayFab error codes, HTTP status mapping, and retry strategy.
+  </Card>
+</CardGroup>
+
+## Decoding HRESULTs
+
+An HRESULT is a 32-bit signed integer with a structured layout:
+
+```text
+31  30  29 28 27       16 15                       0
+ S   R   C  N  Facility   Code
+```
+
+- **S** (severity): 1 = error, 0 = success.
+- **R, C, N**: customer, reserved, NT-status bits.
+- **Facility** (11 bits): the subsystem that emitted the error.
+- **Code** (16 bits): subsystem-specific code.
+
+### Facility values you'll see
+
+| Facility | Hex | Where it comes from |
+| --- | --- | --- |
+| `FACILITY_GAMING` | `0x027` | GDK system APIs (`XGameErr.h`) |
+| `FACILITY_XBOX` | `0x015` | Xbox services / XSAPI |
+| `FACILITY_HTTP` | `0x019` | HTTP status codes via XSAPI |
+| `FACILITY_WIN32` | `0x007` | Standard Win32 error mapped via `HRESULT_FROM_WIN32` |
+| `FACILITY_WINHTTP` | `0x028` | WinHTTP errors |
+
+Extract the facility with `HRESULT_FACILITY(hr)`; extract the code with `HRESULT_CODE(hr)`.
+
+### Quick decoder
+
+```cpp
+void PrintHResult(HRESULT hr) {
+    printf("HRESULT 0x%08X facility=%d code=0x%04X\n",
+        hr, HRESULT_FACILITY(hr), HRESULT_CODE(hr));
+}
+```
+
+For `FACILITY_HTTP` HRESULTs, `HRESULT_CODE(hr)` gives the HTTP status (e.g., `0x80190194` = HTTP 404).
+
+## Decision flow
+
+1. **Is the HRESULT in `FACILITY_GAMING`?** → [GDK error codes](/reference/error-codes).
+2. **`FACILITY_XBOX` or `FACILITY_HTTP`?** → [Xbox Live HRESULTs](/reference/xbl-error-codes).
+3. **PlayFab returned a JSON envelope with `errorCode`?** → [PlayFab errors](/reference/playfab-errors).
+4. **Standard Win32 error?** → Microsoft's [`HRESULT` reference](https://learn.microsoft.com/openspecs/windows_protocols/ms-erref/) or run `net helpmsg <code>`.
+
+## Common retry patterns
+
+Across all surfaces, the same retry policy works:
+
+1. **Auth failures** (401, `E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED`, `InvalidSessionTicket`) — re-auth, then retry.
+2. **Rate-limited / throttled** (429, `Throttled`, `APIClientRequestRateLimitExceeded`) — honor `Retry-After`, then back off with jitter.
+3. **Transient server / network errors** (500, 503, network timeout) — exponential back off with cap.
+4. **Validation errors** (400, 404, 409) — don't retry; fix the input.
+
+## Diagnosing in production
+
+For live ops:
+
+- Log every HRESULT with its facility / code, the API name, and a correlation ID.
+- Aggregate by `(facility, code)` to spot regressions.
+- Watch `XblErrorCondition` distributions for XSAPI — a spike in `Auth` means token refresh broke; a spike in `Network` means a partner CDN is in trouble.
+
+## See also
+
+- [XError](/reference/xerror) — install a process-wide error callback
+- [Error handling (concepts)](/gdk/error-handling)
+- [Onboarding](/onboarding)
