@@ -368,8 +368,8 @@
       "dark": "#09090B"
     },
     "image": {
-      "light": "/images/Team_Xbox_Teams-Background_Centered_1920x1080-removebg-preview.png",
-      "dark": "/images/We_Are_Xbox_Teams-Background_01_Original_1920x1080.png"
+      "light": "/images/xbox_logo_transparent_25.png",
+      "dark": "/images/xbox_logo_transparent_25.png"
     },
     "decoration": "windows"
   },
