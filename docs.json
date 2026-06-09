@@ -1,20 +1,29 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "name": "XBOX Game Development Documentation",
-  "theme": "palm",
-  "favicon": "https://media.brand.dev/1cc7d407-f23a-4b9b-b989-9f91593a9123.png",
+  "theme": "almond",
+  "favicon": "/images/favicon.svg",
   "colors": {
-    "primary": "#107C10",
-    "light": "#10B25C",
-    "dark": "#107C10"
+    "primary": "#127C10",
+    "light": "#127C10",
+    "dark": "#127C10"
   },
   "navbar": {
     "links": [
       {
         "href": "https://developer.microsoft.com/en-us/games/",
         "label": "XBOX Game Dev"
+      },
+      {
+        "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
+        "label": "Collaborate with us in GitHub"
       }
-    ]
+    ],
+    "primary": {
+      "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
+      "label": "GitHub",
+      "type": "button"
+    }
   },
   "navigation": {
     "tabs": [
@@ -24,6 +33,7 @@
           {
             "group": "Get Started",
             "pages": [
+              "index",
               "onboarding",
               "gdk/welcome",
               "introduction",
@@ -326,27 +336,23 @@
     ]
   },
   "description": "XBOX Game Development Documentation",
-  "logo": {
-    "light": "/images/We_Are_Xbox_Email-Signature_200x200.png",
-    "dark": "/images/We_Are_Xbox_Email-Signature_200x200.png"
-  },
+  "logo": "/images/logo.svg",
   "appearance": {
     "default": "dark"
   },
   "background": {
-    "decoration": "windows",
     "color": {
       "light": "#FFFFFF",
-      "dark": "#1A1B1E"
+      "dark": "#09090B"
     }
   },
   "fonts": {
     "heading": {
-      "family": "Rubik",
-      "weight": 700
+      "family": "Inter",
+      "weight": 600
     },
     "body": {
-      "family": "Albert Sans",
+      "family": "Inter",
       "weight": 400
     }
   },
