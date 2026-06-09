@@ -97,3 +97,47 @@ You can automate package uploads to Partner Center using the open-source **Packa
 ## Dynamic chunk ordering
 
 Your game can change the chunk installation order at runtime in response to player actions — for example, prioritizing the installation of a specific map or game mode based on what the player selects in the title screen. This lets you minimize wait times for the content your players are most likely to engage with first.
+
+## Submission Validator
+
+`SubmissionValidator.dll` runs an offline subset of the Partner Center ingestion checks against a built package before you upload, surfacing failures that would otherwise be caught in certification. Use it in CI to fail builds early on:
+
+- Manifest and `MicrosoftGame.config` schema errors
+- Missing or malformed Intelligent Delivery tags
+- Chunk layout problems (oversized first chunk, broken streaming-install graph)
+- Asset/encoding issues that block ingestion
+
+Validator output includes a fixed catalog of message codes you can suppress or treat as warnings in your pipeline.
+
+## Xbox Game Package Manager (XGPM)
+
+**XGPM** is the developer-PC tool for inspecting, mounting, and managing locally installed packages and their chunks during development. Use it to:
+
+- List installed packages and licenses on the dev kit or PC
+- Mount and unmount packages to verify file layout matches `layout.xml`
+- Trigger streaming-install behavior to test chunk gating
+- Remove and re-register packages without a full uninstall
+
+## Flat File Install
+
+**Flat File Install** lets the GDK launch your game directly from a directory of loose files, skipping the packaged install entirely. It is the fastest inner loop during development because rebuilding does not require re-packaging. Flat File Install is dev-only and not a shipping format.
+
+## Framework Packages (PC)
+
+PC packages declare dependencies on shared runtimes — DirectX, Visual C\+\+ redistributables, .NET, and similar — as **framework packages**. The Store installs the correct framework package automatically alongside your game, so you do not ship private copies of common redistributables.
+
+## Custom installation actions (PC, Win32)
+
+Win32 Microsoft Store games can declare **custom install actions** that run with elevated privileges at install, update, repair, and uninstall time. Use them for driver installation, registry setup, or other prerequisites that cannot be expressed as framework dependencies. Custom actions are reviewed during certification.
+
+## Games-as-a-Service (GaaS) packaging
+
+GaaS titles can ship content updates as separate **content packages** that are licensed and installed independently of the base game. This supports seasonal content, large free updates, and per-region rollouts without re-uploading the full base package.
+
+## Disc and cross-gen test discs
+
+For physical media, the packaging toolchain can produce:
+
+- **Test discs** — burnable images used for compatibility and certification testing on retail hardware
+- **Disc subsets** — small disc layouts that pair with a streaming install for fast first-boot
+- **Cross-generation test discs** — single disc images that install the correct Xbox One or Xbox Series X|S build based on the console it is inserted into

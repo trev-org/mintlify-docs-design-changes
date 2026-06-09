@@ -467,5 +467,12 @@
       "destination": "/reference/error-codes",
       "permanent": true
     }
-  ]
+  ],
+  "banner": {
+    "content": "XBOX Game Development Documentation",
+    "color": {
+      "light": "#008746",
+      "dark": "#008746"
+    }
+  }
 }

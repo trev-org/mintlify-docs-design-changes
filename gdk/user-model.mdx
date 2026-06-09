@@ -15,6 +15,7 @@ Each `XUser` has two distinct identifiers that serve different purposes:
   <Card title="Local ID" icon="house" href="/reference/xgameruntime">
     A session-scoped identifier that persists for the lifetime of the user within the current game session. Use it across any child processes your game spawns, or when calling `XLaunchNewGame`. Do **not** use it to identify a user across gaming sessions. Retrieve it with `XUserGetLocalId`.
   </Card>
+
   <Card title="Xbox services ID (XUID)" icon="globe" href="/reference/xsapi-overview">
     The persistent identifier required when communicating with Xbox services or invoking title-callable UI (TCUI). Retrieve it with `XUserGetId`. User consent may be required; if `XUserGetId` returns `E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED`, call `XUserResolveIssueWithUiAsync` to collect consent.
   </Card>
@@ -49,7 +50,7 @@ Unlike the Xbox One ERA model, your game only interacts with users it explicitly
         auto* game = static_cast<Game*>(async->context);
         XUserHandle userHandle = nullptr;
         HRESULT hr = XUserAddResult(async, &userHandle);
-
+    
         if (SUCCEEDED(hr))
         {
             // Store userHandle and proceed
@@ -62,7 +63,7 @@ Unlike the Xbox One ERA model, your game only interacts with users it explicitly
         }
         delete async;
     };
-
+    
     XUserAddAsync(XUserAddOptions::AddDefaultUserSilently, asyncBlock);
     ```
   </Tab>
@@ -78,14 +79,14 @@ Unlike the Xbox One ERA model, your game only interacts with users it explicitly
         auto* game = static_cast<Game*>(async->context);
         XUserHandle userHandle = nullptr;
         HRESULT hr = XUserAddResult(async, &userHandle);
-
+    
         if (SUCCEEDED(hr))
         {
             game->OnUserAdded(userHandle);
         }
         delete async;
     };
-
+    
     XUserAddAsync(XUserAddOptions::AddDefaultUserAllowingUI, asyncBlock);
     ```
   </Tab>
@@ -141,3 +142,15 @@ By default, your game uses the **Advanced User Model**, which allows the active 
 <Note>
   The Simplified User Model guarantees that the active user at launch remains the active user for the entire session. It also requires both `MSAAppId` and `TitleId` to be present in your `MicrosoftGame.config` when using `configVersion="1"`.
 </Note>
+
+## Handling controller loss
+
+If the controller bound to the active user disconnects, the game should pause and prompt the player to reconnect or hand off to another controller. Watch for device-removal notifications from GameInput and use `XUserFindForDevice` to determine whether the lost device belonged to the active user. Do not silently swap the active user — always require an explicit reassociation gesture (such as pressing a button on the new controller).
+
+## Cross-platform XUser
+
+XUser supports cross-platform identity scenarios where a player signs in to your title with a Microsoft account on PC or Xbox but plays alongside users authenticated through other platforms. Use the `XUserGetGamertag` and Xbox Live Identity APIs to resolve a consistent display identity, and prefer PlayFab or your own service for cross-platform persistence so that progression survives platform switches.
+
+## Headless automation of XUser
+
+For automated testing, dedicated servers, and CI scenarios you can run the GDK in **headless** mode and drive XUser entirely from code — no shell UI, no user-visible sign-in dialogs. Headless automation is intended for development and test only; shipping titles must use the standard interactive sign-in flow.
