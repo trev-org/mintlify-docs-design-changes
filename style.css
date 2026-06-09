@@ -24,8 +24,8 @@
   --xbox-text-muted: #78716c;
 
   /* Brand */
-  --xbox-green: #127C10;
-  --xbox-green-active: #127C10;
+  --xbox-green: #127c10;
+  --xbox-green-active: #127c10;
   --xbox-green-fg: #ffffff;
 
   /* System */
@@ -46,8 +46,8 @@
   --xbox-text-subtle: #9f9fa9;
   --xbox-text-muted: #78716c;
 
-  --xbox-green: #127C10;
-  --xbox-green-active: #127C10;
+  --xbox-green: #127c10;
+  --xbox-green-active: #127c10;
   --xbox-green-fg: #ffffff;
 }
 
@@ -89,7 +89,7 @@ body {
 :root {
   --xbox-page-gutter: 2rem;
   --xbox-sidebar-width: 16rem;
-  --xbox-content-width: 42rem;
+  --xbox-content-width: 50rem;
   --xbox-toc-width: 15rem;
 }
 
@@ -181,7 +181,9 @@ a[href*="/issues/new"] {
   border-radius: 0 !important;
 }
 
-#chat-assistant-sheet .rounded-2xl:has(#chat-assistant-textarea) > div:last-child {
+#chat-assistant-sheet
+  .rounded-2xl:has(#chat-assistant-textarea)
+  > div:last-child {
   padding-bottom: 0.5rem;
 }
 
@@ -522,7 +524,7 @@ a[href*="/issues/new"] {
   .dark .almond-nav-bottom-section button[aria-label="Toggle dark mode"],
   .dark #navbar .xbox-theme-toggle-button {
     background-color: var(--xbox-bg) !important;
-    border-color: #27272A !important;
+    border-color: #27272a !important;
     color: #9f9fa9 !important;
   }
 }
@@ -614,7 +616,7 @@ sidebar-group-header {
 
 .dark #search-bar-entry {
   background-color: #000;
-  border-color: #27272A;
+  border-color: #27272a;
 }
 
 #assistant-entry {
@@ -624,7 +626,7 @@ sidebar-group-header {
 }
 
 .dark #assistant-entry {
-  border-color: #27272A;
+  border-color: #27272a;
 }
 
 /* ---------------------------------------------------------------------
@@ -758,8 +760,7 @@ toc-item[data-active-deepest],
   color: var(--xbox-green-active) !important;
 }
 
-#table-of-contents-content .toc-item[data-active-deepest][data-depth="0"]
-  > a {
+#table-of-contents-content .toc-item[data-active-deepest][data-depth="0"] > a {
   border-left-width: 2px;
   border-left-color: var(--xbox-green-active) !important;
 }
@@ -842,7 +843,7 @@ mdx-content a:not(card a) {
       rgba(18, 124, 16, 0.55) 0%,
       rgba(18, 124, 16, 0) 60%
     ),
-    linear-gradient(135deg, #127C10 0%, #0a0a0c 55%, #1a0b2e 100%);
+    linear-gradient(135deg, #127c10 0%, #0a0a0c 55%, #1a0b2e 100%);
   border: 1px solid var(--xbox-border);
 }
 

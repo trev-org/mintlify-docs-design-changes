@@ -13,22 +13,18 @@
       {
         "href": "https://developer.microsoft.com/en-us/games/",
         "label": "XBOX Game Dev"
-      },
-      {
-        "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
-        "label": "Collaborate with us in GitHub"
       }
     ],
     "primary": {
       "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
-      "label": "GitHub",
+      "label": "Collaborate with us in GitHub",
       "type": "button"
     }
   },
   "navigation": {
     "tabs": [
       {
-        "tab": "XBOX Game Development Documentation",
+        "tab": "Get Started",
         "groups": [
           {
             "group": "Get Started",
@@ -55,7 +51,7 @@
         ]
       },
       {
-        "tab": "Build & Develop",
+        "tab": "Build",
         "groups": [
           {
             "group": "Core Features",
@@ -133,7 +129,7 @@
         ]
       },
       {
-        "tab": "XBOX Console Only Features",
+        "tab": "Console",
         "groups": [
           {
             "group": "Console Features",
@@ -159,7 +155,7 @@
         ]
       },
       {
-        "tab": "Development Tools",
+        "tab": "Tools",
         "groups": [
           {
             "group": "Tools",
@@ -180,7 +176,7 @@
         ]
       },
       {
-        "tab": "Game Principles",
+        "tab": "Principles",
         "groups": [
           {
             "group": "Game Principles",
@@ -199,7 +195,7 @@
         ]
       },
       {
-        "tab": "Publishing & Commerce",
+        "tab": "Publishing",
         "groups": [
           {
             "group": "Publishing & Commerce",
@@ -224,7 +220,7 @@
         ]
       },
       {
-        "tab": "API References",
+        "tab": "APIs",
         "groups": [
           {
             "group": "System APIs",
