@@ -368,14 +368,14 @@
     },
     "image": {
       "light": "/images/Team_Xbox_Email-Signature_200x200.png",
-      "dark": "/images/We_Are_Xbox_Teams-Background_02_Original_1920x1080.png"
+      "dark": "/images/Team_Xbox_Teams-Background_OffCentered_1920x1080.png"
     },
     "decoration": "windows"
   },
   "fonts": {
     "heading": {
       "family": "Rubik",
-      "weight": 600
+      "weight": 700
     },
     "body": {
       "family": "Inter",
