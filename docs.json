@@ -16,14 +16,12 @@
       {
         "href": "https://developer.microsoft.com/en-us/games/",
         "label": "XBOX Game Dev"
-        "type": "button"
       },
+      {
+        "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
+        "label": "Collaborate with us in GitHub"
+      }
     ],
-    "primary": {
-      "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
-      "label": "Collaborate with us in GitHub",
-      "type": "button"
-    }
   },
   "navigation": {
     "tabs": [
