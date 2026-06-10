@@ -75,6 +75,16 @@ When the player buys a hard-currency pack on the Microsoft Store, your title ful
 
 See [Store Integration](/playfab/microsoft-store) for the full pattern.
 
+## Rewarded ads
+
+PlayFab supports **rewarded ads** as a monetization channel orthogonal to in-app purchase. The flow is:
+
+1. The title requests an ad through the PlayFab rewarded-ads SDK, passing a placement identifier configured in Game Manager.
+2. The ad SDK plays the ad and, on completion, calls PlayFab to validate.
+3. PlayFab grants the configured reward (currency, consumable, XP) to the player inventory.
+
+Rewarded ads are usually a poor fit for premium console titles but can be the right model for free-to-play companion or mobile builds. Configure placements per-title in Game Manager, and gate every reward grant through the server-side validation step — never trust a client claim that the ad played.
+
 ## See also
 
 - [Store Integration](/playfab/microsoft-store)

@@ -235,7 +235,9 @@
               "services/game-chat",
               "services/rich-presence",
               "services/multiplayer-activity",
-              "services/people-system"
+              "services/people-system",
+              "services/gamertags-and-privacy",
+              "services/develop-and-test"
             ]
           },
           {

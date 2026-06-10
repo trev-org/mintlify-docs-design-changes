@@ -90,6 +90,28 @@ For scheduled rewards ("weekly leaderboard top 10 get 1000 gold"), use a schedul
 
 Most titles use both: PlayFab for the underlying progression model, Xbox achievements for platform surface area. A CloudScript rule can grant an Xbox achievement when a PlayFab statistic hits a threshold.
 
+## Battle passes and seasonal progression
+
+PlayFab does not ship a dedicated "battle pass" object, but you can compose one cleanly with the primitives:
+
+- **Statistics** track the player's XP toward the next tier.
+- **Versioned leaderboards** segment progress by season.
+- **Economy v2** holds the tiered reward catalog (cosmetics, currencies, consumables).
+- **CloudScript or Azure Functions** evaluate the player's XP at tier boundaries and grant the corresponding inventory entry.
+
+Keep the season's tier table and reward catalog server-authoritative. The title fetches the current season layout at sign-in; never hard-code it into the client.
+
+## Battle passes and seasonal progression
+
+PlayFab does not ship a dedicated "battle pass" object, but you can compose one cleanly with the primitives:
+
+- **Statistics** track the player's XP toward the next tier.
+- **Versioned leaderboards** segment progress by season.
+- **Economy v2** holds the tiered reward catalog (cosmetics, currencies, consumables).
+- **CloudScript or Azure Functions** evaluate XP at tier boundaries and grant the corresponding inventory entry.
+
+Keep the season's tier table and reward catalog server-authoritative. The title fetches the current season layout at sign-in; never hard-code it into the client.
+
 ## Best practices
 
 1. **Define statistics before launch** — retro-adding a stat doesn't give you historical data.
