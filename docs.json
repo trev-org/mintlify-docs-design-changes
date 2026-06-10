@@ -1,5 +1,5 @@
 {
-  "theme": "aspen",
+  "theme": "almond",
   "name": "XBOX Game Development Documentation",
   "description": "XBOX Game Development Documentation",
   "colors": {
@@ -308,7 +308,8 @@
               "tools/device-portal",
               "tools/console-command-line-tools",
               "tools/shader-compiler",
-              "tools/pgo"
+              "tools/pgo",
+              "tools/profile-guided-optimization"
             ]
           }
         ]

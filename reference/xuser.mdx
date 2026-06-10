@@ -74,6 +74,22 @@ async->callback = [](XAsyncBlock* a) {
 XUserAddAsync(XUserAddOptions::AddDefaultUserSilently, async);
 ```
 
+## Modern gamertags
+
+Xbox supports two gamertag formats. Your title's UI must handle both correctly:
+
+- **Classic gamertags** — ASCII-only, up to 15 characters, globally unique. Every existing gamertag prior to 2019.
+- **Modern gamertags** — UTF-8 display name plus a discriminator suffix (`Gamertag#1234`) for uniqueness. Supports non-Latin scripts, allowing players to use their real-language identity.
+
+Implementation guidance:
+
+- Use `XUserGetGamertag` with the **modern** option to retrieve the display gamertag including suffix.
+- Never split the gamertag and discriminator in UI without testing your font's Unicode coverage — modern gamertags include CJK, Cyrillic, Arabic, and more.
+- Treat the discriminator as part of the displayed identity in disambiguation flows; do not show it as a separate field.
+- For analytics and matchmaking keys, use the **XUID**, never the gamertag string.
+
+See the modern gamertags unicode reference for the exact allowed UTF-8 ranges and backwards-compatibility rules.
+
 ## See also
 
 - [User Model](/gdk/user-model) — conceptual overview and best practices

@@ -1,0 +1,33 @@
+---
+title: "Optimize Xbox titles with Profile-Guided Optimization"
+sidebarTitle: "Profile-Guided Optimization"
+description: "Profile-guided optimization (PGO) for Xbox titles — instrument, capture a representative gameplay run, and rebuild with hot-path layout for CPU gains."
+icon: "chart-line"
+---
+
+**Profile-guided optimization (PGO)** rebuilds your title's code with hot-path information from a real gameplay trace. The compiler reorders basic blocks, lays out functions to fit instruction cache lines, and inlines based on actual runtime behavior rather than static heuristics.
+
+On Xbox Series X|S you can expect single-digit-percent CPU gains across the title — free performance for an hour of build-pipeline work.
+
+## Two-step build
+
+1. **Instrumented build** — build the title with `/GENPROFILE` (MSVC) or the equivalent Clang flag. The binary writes a `.pgc` profile data file as it runs.
+2. **Gameplay run** — play through representative scenarios (boot, main menu, first level, combat, cutscene, suspend/resume). The longer and more representative the run, the better the optimization.
+3. **Optimized build** — rebuild with `/USEPROFILE` pointing at the merged `.pgc` data. The compiler uses it to lay out code optimally.
+
+## What to profile
+
+- Boot and first-frame paths — they dominate load-time perception.
+- The most-played 30 seconds of gameplay — the main combat or traversal loop.
+- Memory-heavy scenes — large level loads, save serialization, network reconnect.
+
+## Tips
+
+- Re-run PGO at major milestones (vertical slice, alpha, beta, release candidate) — the code changes enough that stale profile data quickly stops helping.
+- Check the optimized binary into source control next to the profile data so a clean CI build is reproducible.
+- PGO is orthogonal to LTO/LTCG — use both.
+
+## See also
+
+- [Visual Studio](/tools/visual-studio)
+- [PIX for Xbox](/tools/pix-for-xbox) — to find the right scenarios to profile
