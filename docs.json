@@ -8,12 +8,12 @@
     "dark": "#008746"
   },
   "logo": {
-    "light": "/images/We_Are_Xbox_Email-Signature_200x200.png",
-    "dark": "/images/We_Are_Xbox_Email-Signature_200x200.png"
+    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20.png",
+    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20.png"
   },
   "favicon": {
-    "light": "/images/We_Are_Xbox_Email-Signature_200x200.png",
-    "dark": "/images/We_Are_Xbox_Email-Signature_200x200.png"
+    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20.png",
+    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20.png"
   },
   "appearance": {
     "default": "dark"
@@ -51,11 +51,11 @@
   },
   "fonts": {
     "heading": {
-      "family": "Rubik",
+      "family": "Open Sans",
       "weight": 700
     },
     "body": {
-      "family": "Inter",
+      "family": "Open Sans",
       "weight": 400
     }
   },
