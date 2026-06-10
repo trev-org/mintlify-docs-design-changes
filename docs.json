@@ -16,7 +16,8 @@
     "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20-Copy.png"
   },
   "appearance": {
-    "default": "dark"
+    "default": "dark",
+    "strict": true
   },
   "background": {
     "image": {
@@ -143,7 +144,7 @@
     "content": "XBOX Game Development Documentation",
     "color": {
       "light": "#007738",
-      "dark": "#7CC400"
+      "dark": "#007738"
     }
   },
   "metadata": {
