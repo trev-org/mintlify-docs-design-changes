@@ -8,12 +8,12 @@
     "dark": "#008746"
   },
   "logo": {
-    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20.png",
-    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20.png"
+    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20-Copy.png",
+    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20-Copy.png"
   },
   "favicon": {
-    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20.png",
-    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20.png"
+    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20-Copy.png",
+    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20-Copy.png"
   },
   "appearance": {
     "default": "dark"
