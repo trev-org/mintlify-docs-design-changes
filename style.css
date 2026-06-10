@@ -29,7 +29,7 @@
   --xbox-green-fg: #ffffff;
 
   /* System */
-  --xbox-radius: 0px;
+  --xbox-radius: 4px;
   --xbox-topbar-button-size: 2.125rem;
 }
 
@@ -62,7 +62,7 @@ body {
 }
 
 .callout {
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
 #almond-background-color {
@@ -115,7 +115,7 @@ body {
 }
 
 #content-container {
-  border-radius: 0px;
+  border-radius: 4px;
   border: none;
 }
 
@@ -154,31 +154,31 @@ body {
 }
 
 .card {
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
-/* Assistant side panel — remove the theme's inset spacing and rounded sheet corners. */
+/* Assistant side panel — remove the theme's inset spacing and normalize sheet corners. */
 div.sticky.shrink-0:has(> #chat-assistant-sheet) {
   padding: 0 !important;
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
 #chat-assistant-sheet {
-  border-radius: 0px !important;
+  border-radius: 4px !important;
 }
 
 /* The visible assistant input frame is the rounded wrapper, not the transparent textarea. */
 .chat-assistant-floating-input .rounded-2xl:has(#chat-assistant-textarea),
 #chat-assistant-sheet .rounded-2xl:has(#chat-assistant-textarea),
 #chat-assistant-textarea {
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
 #feedback-thumbs-up,
 #feedback-thumbs-down,
 a[href*="/edit/main/"],
 a[href*="/issues/new"] {
-  border-radius: 0 !important;
+  border-radius: 4px !important;
 }
 
 #chat-assistant-sheet
@@ -581,7 +581,7 @@ sidebar-group-header {
   font-weight: 500;
   background-color: transparent;
   border-left: 0;
-  border-radius: 0;
+  border-radius: 4px;
 }
 
 #sidebar-content li:not([data-active]):hover::before,
