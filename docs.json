@@ -132,6 +132,11 @@
       "source": "/reference/error-codes-detailed",
       "destination": "/reference/error-codes",
       "permanent": true
+    },
+    {
+      "source": "/tools/pgo",
+      "destination": "/tools/profile-guided-optimization",
+      "permanent": true
     }
   ],
   "banner": {
@@ -310,7 +315,6 @@
               "tools/device-portal",
               "tools/console-command-line-tools",
               "tools/shader-compiler",
-              "tools/pgo",
               "tools/profile-guided-optimization"
             ]
           }
@@ -331,7 +335,8 @@
               "principles/mgats",
               "principles/sustainability-overview",
               "principles/energy-efficiency-essentials",
-              "principles/sustainability-case-studies"
+              "principles/sustainability-case-studies",
+              "principles/accessibility-resources"
             ]
           }
         ]
@@ -356,7 +361,10 @@
               "publishing/xr-top-failing",
               "publishing/xstore-deep-dive",
               "publishing/xstore-server-to-service",
-              "publishing/xstore-pc"
+              "publishing/xstore-pc",
+              "publishing/xbox-insider-program",
+              "publishing/discs",
+              "publishing/developer-account"
             ]
           }
         ]
