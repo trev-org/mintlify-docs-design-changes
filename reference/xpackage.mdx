@@ -2,11 +2,12 @@
 title: "XPackage API reference for DLC and content"
 sidebarTitle: "XPackage"
 description: "Reference for the XPackage API: enumerate packages, mount DLC, check chunk availability, estimate download sizes, and monitor install progress."
+icon: "box"
 ---
 
 The XPackage API lets your game enumerate, mount, and manage installed packages — including the base game package and any downloadable content (DLC). You can check which content chunks are already available locally, trigger installation of missing chunks, monitor install progress, and mount a DLC package to access its files.
 
-**Header:** `XPackage.h`  
+**Header:** `XPackage.h`\
 **Supported platforms:** Windows, Xbox One family consoles, Xbox Series consoles
 
 ---
@@ -14,7 +15,7 @@ The XPackage API lets your game enumerate, mount, and manage installed packages 
 ## Key types
 
 | Type | Description |
-|---|---|
+| --- | --- |
 | `XPackageMountHandle` | Opaque handle to a mounted package. Use `XPackageGetMountPath` to get the file system path. |
 | `XPackageInstallationMonitorHandle` | Handle to a progress monitor for a package installation. |
 | `XPackageChunkAvailability` | Enum: `Ready` (installed), `Pending` (queued), `Paused`, `Unknown` |
@@ -227,4 +228,17 @@ void CheckDlcAvailability(const char* dlcPackageId)
         XPackageMountWithUiAsync(dlcPackageId, &async);
     }
 }
+```
+
+## Checking for title updates
+
+The Microsoft Store may release a title update while your game is running. Check for a pending update on resume from Quick Resume or before starting a multiplayer match. If an update is available, gate online play and prompt the player to relaunch — never silently continue against an out-of-date manifest.
+
+## See also
+
+- [Packaging](/gdk/packaging)
+- [Intelligent Delivery](/gdk/intelligent-delivery)
+- [XStore](/reference/xstore) — DLC ownership and entitlements }
+
+```text
 ```

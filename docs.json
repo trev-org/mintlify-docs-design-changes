@@ -1,25 +1,153 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "XBOX Game Development Documentation",
   "theme": "almond",
-  "favicon": "/images/favicon.svg",
+  "name": "XBOX Game Development Documentation",
+  "description": "XBOX Game Development Documentation",
   "colors": {
-    "primary": "#127C10",
-    "light": "#127C10",
-    "dark": "#127C10"
+    "primary": "#008746",
+    "light": "#008746",
+    "dark": "#008746"
+  },
+  "logo": {
+    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20-Copy.png",
+    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20-Copy.png"
+  },
+  "favicon": {
+    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20-Copy.png",
+    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20-Copy.png"
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "background": {
+    "image": {
+      "light": "/images/xbox_logo_transparent_6_25.png",
+      "dark": "/images/xbox_logo_transparent_6_25.png"
+    },
+    "decoration": "gradient",
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#09090B"
+    }
   },
   "navbar": {
     "links": [
       {
-        "href": "https://developer.microsoft.com/en-us/games/",
-        "label": "XBOX Game Dev"
+        "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
+        "label": "Collaborate with us in GitHub"
       }
     ],
     "primary": {
-      "href": "https://github.com/edigonzales-microsoft/mintlify-docs",
-      "label": "Collaborate with us in GitHub",
-      "type": "button"
+      "type": "button",
+      "label": "XBOX Game Dev Website",
+      "href": "https://developer.microsoft.com/en-us/games/"
     }
+  },
+  "footer": {
+    "socials": {
+      "discord": "https://developer.microsoft.com/en-us/games",
+      "youtube": "https://www.youtube.com/msftgamedev",
+      "github": "https://github.com/microsoft/Xbox-GDK-Samples"
+    }
+  },
+  "fonts": {
+    "heading": {
+      "family": "Open Sans",
+      "weight": 700
+    },
+    "body": {
+      "family": "Open Sans",
+      "weight": 400
+    }
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
+  },
+  "redirects": [
+    {
+      "source": "/pc-e2e/register-id-xbox",
+      "destination": "/onboarding",
+      "permanent": true
+    },
+    {
+      "source": "/pc-e2e/partner-center-account",
+      "destination": "/onboarding",
+      "permanent": true
+    },
+    {
+      "source": "/pc-e2e/partner-center-product",
+      "destination": "/onboarding",
+      "permanent": true
+    },
+    {
+      "source": "/pc-e2e/integrate-gdk",
+      "destination": "/pc-e2e/engines/custom-engine",
+      "permanent": true
+    },
+    {
+      "source": "/pc-e2e/publish-your-game",
+      "destination": "/publishing/overview",
+      "permanent": true
+    },
+    {
+      "source": "/services/achievements-eb-vs-tm",
+      "destination": "/services/player-data",
+      "permanent": true
+    },
+    {
+      "source": "/services/stats-eb-vs-tm",
+      "destination": "/services/player-data",
+      "permanent": true
+    },
+    {
+      "source": "/services/multiplayer-intro",
+      "destination": "/services/multiplayer",
+      "permanent": true
+    },
+    {
+      "source": "/services/mpsd",
+      "destination": "/services/multiplayer",
+      "permanent": true
+    },
+    {
+      "source": "/services/mpm",
+      "destination": "/services/multiplayer",
+      "permanent": true
+    },
+    {
+      "source": "/services/mpa",
+      "destination": "/services/multiplayer-activity",
+      "permanent": true
+    },
+    {
+      "source": "/services/matchmaking",
+      "destination": "/services/multiplayer",
+      "permanent": true
+    },
+    {
+      "source": "/services/test-accounts",
+      "destination": "/tools/test-account-tool",
+      "permanent": true
+    },
+    {
+      "source": "/reference/error-codes-detailed",
+      "destination": "/reference/error-codes",
+      "permanent": true
+    },
+    {
+      "source": "/tools/pgo",
+      "destination": "/tools/profile-guided-optimization",
+      "permanent": true
+    }
+  ],
+  "banner": {
+    "content": "XBOX Game Development Documentation",
+    "color": {
+      "light": "#008746",
+      "dark": "#008746"
+    }
+  },
+  "metadata": {
+    "timestamp": true
   },
   "navigation": {
     "tabs": [
@@ -45,7 +173,8 @@
               "gdk/developing-new-titles",
               "gdk/samples",
               "gdk/porting-guides",
-              "gdk/security-requirements"
+              "gdk/security-requirements",
+              "gdk/atg-engagement"
             ]
           }
         ]
@@ -75,7 +204,8 @@
               "gdk/memory",
               "gdk/localization",
               "gdk/error-handling",
-              "gdk/text-to-speech"
+              "gdk/text-to-speech",
+              "gdk/platform-integration"
             ]
           },
           {
@@ -89,7 +219,8 @@
               "pc-e2e/engines/gamemaker",
               "pc-e2e/engines/custom-engine",
               "pc-e2e/engines/godot",
-              "pc-e2e/optional-services"
+              "pc-e2e/optional-services",
+              "pc-e2e/handheld"
             ]
           }
         ]
@@ -109,7 +240,9 @@
               "services/game-chat",
               "services/rich-presence",
               "services/multiplayer-activity",
-              "services/people-system"
+              "services/people-system",
+              "services/gamertags-and-privacy",
+              "services/develop-and-test"
             ]
           },
           {
@@ -123,13 +256,16 @@
               "playfab/multiplayer-lobby",
               "playfab/leaderboards-stats",
               "playfab/party-voice",
-              "playfab/analytics"
+              "playfab/analytics",
+              "playfab/identity",
+              "playfab/live-service-management",
+              "playfab/player-progression"
             ]
           }
         ]
       },
       {
-        "tab": "Console",
+        "tab": "Console Features",
         "groups": [
           {
             "group": "Console Features",
@@ -142,6 +278,7 @@
               "gdk/cross-gen",
               "gdk/directstorage",
               "gdk/dynamic-lighting",
+              "gdk/quick-resume",
               "gdk/game-streaming-overview",
               "gdk/cloud-aware-api",
               "gdk/graphics-overview",
@@ -170,7 +307,15 @@
               "tools/test-account-tool",
               "tools/trace-analyzer",
               "tools/xbox-service-tools",
-              "tools/visual-studio"
+              "tools/visual-studio",
+              "tools/pix-for-xbox",
+              "tools/xbwatson",
+              "tools/xbox-manager",
+              "tools/dev-home",
+              "tools/device-portal",
+              "tools/console-command-line-tools",
+              "tools/shader-compiler",
+              "tools/profile-guided-optimization"
             ]
           }
         ]
@@ -182,14 +327,16 @@
             "group": "Game Principles",
             "icon": "compass",
             "pages": [
-              "principles/accessibility-overview",
-              "principles/speech-accessibility",
               "principles/localization-globalization",
               "principles/security-overview",
+              "principles/accessibility-overview",
+              "principles/speech-accessibility",
               "principles/xbox-accessibility-guidelines",
+              "principles/accessibility-resources",
               "principles/mgats",
               "principles/sustainability-overview",
-              "principles/energy-efficiency-essentials"
+              "principles/energy-efficiency-essentials",
+              "principles/sustainability-case-studies"
             ]
           }
         ]
@@ -214,16 +361,30 @@
               "publishing/xr-top-failing",
               "publishing/xstore-deep-dive",
               "publishing/xstore-server-to-service",
-              "publishing/xstore-pc"
+              "publishing/xstore-pc",
+              "publishing/xbox-insider-program",
+              "publishing/discs",
+              "publishing/developer-account"
             ]
           }
         ]
       },
       {
-        "tab": "APIs",
+        "tab": "API",
         "groups": [
           {
+            "group": "Error Codes",
+            "icon": "circle-exclamation",
+            "pages": [
+              "reference/error-codes-overview",
+              "reference/error-codes",
+              "reference/xbl-error-codes",
+              "reference/playfab-errors"
+            ]
+          },
+          {
             "group": "System APIs",
+            "icon": "microchip",
             "pages": [
               "reference/system-overview",
               "reference/xgameruntime",
@@ -243,8 +404,6 @@
               "reference/xspeechsynthesizer",
               "reference/xappcapture",
               "reference/wdp-rest",
-              "reference/error-codes",
-              "reference/error-codes-detailed",
               "reference/xmem",
               "reference/xdisplay",
               "reference/xthread",
@@ -269,11 +428,15 @@
               "reference/pix3",
               "reference/xtf",
               "reference/httpclient",
-              "reference/wdp-extended"
+              "reference/wdp-extended",
+              "reference/xasyncprovider",
+              "reference/xgameruntimetypes",
+              "reference/xgamesave-wrapper"
             ]
           },
           {
             "group": "Xbox Services API",
+            "icon": "xbox",
             "pages": [
               "reference/xsapi-overview",
               "reference/social-manager",
@@ -300,8 +463,7 @@
               "reference/xsapi-context-and-globals",
               "reference/xsapi-rest",
               "reference/xsapi-rest-overview",
-              "reference/xsapi-json",
-              "reference/xbl-error-codes"
+              "reference/xsapi-json"
             ]
           },
           {
@@ -323,7 +485,6 @@
               "reference/playfab-groups",
               "reference/playfab-friends",
               "reference/playfab-playstream-events",
-              "reference/playfab-errors",
               "reference/playfab-access-policy"
             ]
           }

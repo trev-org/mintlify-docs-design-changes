@@ -1,0 +1,47 @@
+---
+title: "Profile and debug Xbox titles with PIX for Xbox"
+sidebarTitle: "PIX for Xbox"
+description: "PIX for Xbox — Timing Captures, GPU Captures, GPU Trace, shader debugging, hardware counters, and Dr. PIX for Xbox Series X|S and Xbox One titles."
+icon: "magnifying-glass-chart"
+---
+
+**PIX for Xbox** is the primary GPU/CPU profiler and debugger for Xbox console titles. It is a superset of PIX for Windows with Xbox-specific hardware counters, deeper shader debugging, and dev-kit-aware capture workflows.
+
+## Capture types
+
+| Capture | What it shows |
+| --- | --- |
+| **Timing Capture** | CPU thread activity, context switches, sampling profiler, critical path, file I/O, custom PIX events. Best for finding stalls and frame-pacing issues. |
+| **GPU Capture** | Single-frame D3D12 capture with full pipeline state, draw-by-draw timing, shader debugging, and resource viewers. Best for rendering correctness and per-draw cost. |
+| **GPU Trace** | Long-running, low-overhead GPU timing capture with hardware counters — bandwidth, wavefront occupancy, cache hit rates. Best for identifying GPU bottlenecks across many frames. |
+| **Instruction Trace** | Cycle-accurate CPU instruction trace on Xbox Series X | S. Best for tight inner-loop optimization. |
+
+## Setup
+
+1. Install PIX as part of the GDK or standalone from [aka.ms/PIXdownloads](https://aka.ms/PIXdownloads).
+2. On the console, set the required `xbconfig` values (PIX prompts you with the exact command).
+3. Configure PDB paths so CPU captures resolve symbols.
+4. Connect to the console from PIX → **Connect**.
+
+## Key analysis surfaces
+
+- **System Monitor** — live CPU/GPU/memory/disk graphs across the whole console.
+- **Title Performance Overlay** — frame time, frame rate, GPU/CPU breakdown rendered directly on the title.
+- **PIX Bottlenecks** — automated GPU bottleneck classifier (bandwidth, ALU, fixed-function, etc.).
+- **Mesh / Texture / BVH viewers** — inspect geometry, textures, and ray-tracing acceleration structures at any draw call.
+- **Shader Debugging** — step through HLSL on captured wavefronts. **Edit and Continue** lets you patch a shader live without re-running the title.
+- **Live Shader Debugging / On-demand Live Debugging** — break into a running shader exception without a recorded capture.
+- **Dr. PIX** — automated correctness checks on a GPU capture.
+- **PIX Memory Pies / Memory Viewer** — visualize VRAM allocation across heaps and resources.
+- **DirectStorage analysis** — see per-request latency, decompression cost, and write-limit violations.
+- **DLI (Dynamic Latency Input) sync** — measure end-to-end input latency.
+
+## Programmatic captures
+
+Use the [PIX API](https://aka.ms/pixapi) (`PIXBeginCapture` / `PIXEndCapture`) to trigger captures from inside the title — essential for capturing reproducible boot-time or matchmaking-window scenarios.
+
+## See also
+
+- [PIX for Windows](/tools/pix-for-windows) — PC counterpart
+- [Graphics overview](/gdk/graphics-overview)
+- [xbWatson](/tools/xbwatson) — crash dump analysis

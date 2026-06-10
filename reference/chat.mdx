@@ -2,6 +2,7 @@
 title: "Chat API reference for Game Chat 2"
 sidebarTitle: "Chat (Game Chat 2)"
 description: "Reference for the Game Chat 2 C++ API: chat_manager, chat_user, channels, communication relationships, TTS/STT, and per-frame state and data processing."
+icon: "microphone"
 ---
 
 The Game Chat 2 C\+\+ API lives in the `xbox::services::game_chat_2` namespace. It exposes a single `chat_manager` singleton plus per-user `chat_user` objects that the manager owns. Your title polls state changes and encoded audio frames each frame, and ferries those frames to and from your network transport.

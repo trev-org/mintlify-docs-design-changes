@@ -1,0 +1,121 @@
+---
+title: "PlayFab live service management — segments, A/B tests, rules, scheduled tasks"
+sidebarTitle: "Live service management"
+icon: "sliders"
+description: "Run a live game with PlayFab: player segments, Rules, scheduled tasks, A/B experiments, content groups, and remote configuration."
+---
+
+A live game ships, but the work doesn't end — you tune economy, run events, A/B-test features, react to retention issues, and patch design without app updates. PlayFab's live-service tooling sits on top of the data and identity primitives.
+
+## Player segments
+
+A **segment** is a saved query over the player population. Segments are computed continuously — a player moves in and out automatically as their state changes.
+
+Define segments by:
+
+- Player properties (country, language, account age, last-seen date).
+- Statistics (level, total-spent, days-active).
+- Linked accounts (has-Xbox, has-Steam).
+- Inventory (owns-DLC, has-currency-balance \> N).
+- Tags (custom labels you apply).
+- Membership in other segments.
+
+Use segments for:
+
+- Targeting messages and rewards.
+- Driving Rules (player-action triggers).
+- Scoping A/B experiments.
+- Reporting and dashboards.
+
+## Rules — event-triggered actions
+
+A **Rule** runs in response to a PlayStream event. When the matching event fires for a player, the rule's action runs server-side.
+
+Common actions:
+
+- Grant currency / items.
+- Execute a CloudScript handler.
+- Send a push notification or email.
+- Add or remove a tag.
+
+Example: when a player crosses level 50 (statistic\_updated event), grant a celebratory bundle.
+
+Rules can be scoped to a segment so they only fire for matching players.
+
+## Scheduled tasks
+
+**Scheduled tasks** run on a schedule — daily, weekly, or cron-style. Use them for:
+
+- Daily / weekly leaderboard resets (`IncrementLeaderboardVersion`).
+- Cohort-wide reward grants.
+- Maintenance jobs (cleanup, audit).
+- Scheduled CloudScript invocations.
+
+Tasks can target a segment to operate on filtered populations.
+
+## A/B experiments
+
+**Experiments** randomly assign players to variants and track outcomes. Use them to test:
+
+- Economy changes (different prices, drop rates).
+- UI flows.
+- Game balance tweaks.
+
+Flow:
+
+1. Define an experiment with N variants.
+2. Choose the player segment to enroll.
+3. Players are assigned a variant at sign-in (deterministically, based on player ID).
+4. Query the variant client-side via `GetTreatmentAssignment` and branch behavior.
+5. Compare segment-level metrics in Insights to evaluate.
+
+Exclusion groups prevent overlap between experiments (a player can't be in two conflicting tests at once).
+
+## Remote configuration
+
+Use **Title Data** for tunable values that change without an app update:
+
+```cpp
+// Pseudo-code
+GetTitleData({ "daily_login_reward", "shop_rotation_seed", "event_id" });
+```
+
+Title Data is cached client-side. Refresh on launch and at strategic gameplay milestones.
+
+For segment-targeted Title Data (different values per cohort), use **Title Data Overrides**.
+
+## Content groups
+
+**Content groups** are versioned bundles of files served from PlayFab CDN. Use them to ship:
+
+- LiveOps event assets (banners, sound effects).
+- Patch-day content drops (without an app update).
+- Region-specific assets.
+
+Clients query the group, get URLs, and download assets directly from CDN.
+
+## Insights and analytics
+
+[PlayFab Insights](/playfab/analytics) is the data layer for live ops. From the same event stream that drives Rules, you can build dashboards measuring:
+
+- Retention (D1, D7, D30).
+- ARPU / ARPPU.
+- Conversion funnels.
+- A/B experiment results.
+- Cohort behavior over time.
+
+Insights uses Kusto Query Language (KQL); the data explorer in Game Manager has prebuilt templates.
+
+## Operational best practices
+
+1. **Define segments before you need them** — retro-segmenting is hard.
+2. **Use Tags for hand-curated cohorts** — employees, VIPs, beta testers.
+3. **Plan event timing centrally** — don't let multiple teams ship overlapping events.
+4. **Build A/B literacy** — require experiment \+ win-condition for any contentious balance change.
+5. **Monitor PlayStream throughput** — event volume scales with your DAU; budget for it.
+
+## See also
+
+- [PlayFab Insights & Analytics](/playfab/analytics)
+- [CloudScript reference](/reference/playfab-cloudscript)
+- [Statistics & Leaderboards](/reference/playfab-statistics)

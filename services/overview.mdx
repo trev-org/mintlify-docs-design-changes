@@ -22,7 +22,7 @@ Your Title
                 └── REST / WebSocket endpoints ──► Xbox services cloud
 ```
 
-XSAPI handles the complexity of OAuth token management, endpoint discovery, and asynchronous HTTP so you can focus on integrating features rather than networking plumbing. For GDK titles, you must use the **XSAPI C-based API** exclusively — the WinRT and C++11 XSAPI variants are for the legacy XDK only.
+XSAPI handles the complexity of OAuth token management, endpoint discovery, and asynchronous HTTP so you can focus on integrating features rather than networking plumbing. For GDK titles, you must use the **XSAPI C-based API** exclusively — the WinRT and C\+\+11 XSAPI variants are for the legacy XDK only.
 
 <Tip>
   Some Xbox services functionality — such as writing game events — is **only** available through XSAPI and has no direct REST equivalent. Always prefer XSAPI for GDK titles.
@@ -34,12 +34,15 @@ XSAPI handles the complexity of OAuth token management, endpoint discovery, and 
   <Card title="Player Data" icon="chart-bar" href="/services/player-data">
     Stats, leaderboards, and achievements. Event-based server-side aggregation or title-managed direct-call models.
   </Card>
+
   <Card title="Multiplayer" icon="users" href="/services/multiplayer">
     MPSD session management, SmartMatch matchmaking, Multiplayer Manager, Game Chat 2, and PlayFab Party.
   </Card>
+
   <Card title="Social" icon="heart" href="/services/social">
     Friends list, followers, Rich Presence strings, Social Manager caching, and Game Hubs.
   </Card>
+
   <Card title="Cloud Storage" icon="cloud" href="/services/cloud-storage">
     Connected Storage for roaming game saves and Title Storage for shared global or per-user assets.
   </Card>
@@ -48,11 +51,11 @@ XSAPI handles the complexity of OAuth token management, endpoint discovery, and 
 ## Xbox services feature summary
 
 | Feature area | Key capabilities |
-|---|---|
+| --- | --- |
 | **Player Data** | Stats, leaderboards, achievements, Gamerscore, Featured Stats |
 | **Social** | Friends list (People system), Rich Presence, activity feed, Game Hubs, reputation |
 | **Multiplayer** | MPSD, Multiplayer Manager, SmartMatch matchmaking, Looking for Group, MPA |
-| **Chat** | Game Chat 2 (voice + text), PlayFab Party (cross-platform) |
+| **Chat** | Game Chat 2 (voice \+ text), PlayFab Party (cross-platform) |
 | **Cloud Storage** | Connected Storage (roaming saves), Title Storage (global/per-user blobs) |
 | **Identity** | Sign-in, profile, gamertag, gamerpic, account management |
 
@@ -115,10 +118,10 @@ Key configuration areas:
 
 ## Xbox Creators Program vs. ID@Xbox
 
-Some Xbox services features are available only to titles in a **managed developer program** such as ID\@Xbox:
+Some Xbox services features are available only to titles in a **managed developer program** such as ID@Xbox:
 
 | Feature | Creators Program | ID@Xbox |
-|---|---|---|
+| --- | --- | --- |
 | Title-Managed Stats | ✅ | ✅ |
 | Event-Based Stats | ❌ | ✅ |
 | Achievements & Gamerscore | ❌ | ✅ |
@@ -127,7 +130,24 @@ Some Xbox services features are available only to titles in a **managed develope
 | Title Storage | ✅ | ✅ |
 | Multiplayer / MPSD | Limited | ✅ |
 
-If you need achievements or event-based stats, apply to [ID\@Xbox](https://www.xbox.com/Developers/id).
+If you need achievements or event-based stats, apply to [ID@Xbox](https://www.xbox.com/Developers/id).
+
+## Best practices for calling Xbox services
+
+- **Batch writes** — collapse multiple stat updates or achievement unlocks into a single call where the API supports it.
+- **Cache reads** — friends lists, presence, and achievements change slowly. Cache the response for at least a few minutes and refresh on a Real-Time Activity (RTA) notification, not a poll.
+- **Respect Fine-Grained Rate Limiting** — Xbox services enforce per-title, per-user, and per-endpoint rate limits. Inspect `X-Rate-Limit-Remaining` / `X-Rate-Limit-Reset` and back off when you approach the budget; do not retry-spam.
+- **Handle 429 with exponential backoff** — when you do get throttled, honor the `Retry-After` header before the next attempt.
+- **Move chatty calls off the gameplay hot path** — defer writes to a background `XTaskQueue` so a slow server response cannot stall the render thread.
+
+## Offline play
+
+Xbox services are designed assuming a connected console, but every shipping title must degrade gracefully when the player is offline:
+
+- Continue gameplay; do not block on a service call from the title boot path.
+- Queue writes locally (achievements unlocked offline, stats deltas, save data) and replay them on reconnect.
+- Show a non-modal banner the first time a feature is unavailable; do not pop a modal every time the player tries to view leaderboards offline.
+- Test the offline path in CI by deploying with the dev kit's NIC unplugged or by using the **Network** page in Dev Home to simulate disconnection.
 
 ## See also
 

@@ -56,6 +56,33 @@ Shared property types you compose into the controls above:
 - **ResponseCurve** — input response shaping.
 - **Stroke** — outline styling.
 
+## Authoring tools
+
+You can author touch layouts two ways:
+
+- **TAK Editor** — a desktop UI for visually creating bundles and layouts, previewing them against captured gameplay, and packing the final `.tak` bundle. Best for designers iterating on visuals.
+- **tak.exe (command-line)** — a CLI for create/build/pack workflows. Best for CI pipelines, scripting, and bulk operations. Subcommands cover bundle creation, layout packing, and validation.
+
+A Touch Adaptation **Bundle** is the deliverable: it groups one or more layouts plus their assets and metadata. The streaming service selects the right layout from the bundle at runtime based on device characteristics and game state.
+
+## Building native touch with IGameInput
+
+If your title needs more control than declarative TAK layouts allow, you can read raw touch input directly through `IGameInput` and render your own on-screen controls. Use this for games with novel touch UIs or layouts that change dynamically based on in-game state.
+
+## Testing streaming with Content Test Applications
+
+Microsoft ships **Content Test Applications (CTAs)** to test your streaming experience before submitting to certification:
+
+- **Windows PC CTA** — desktop client for PC streaming tests
+- **Android CTA** — mobile client for touch and gamepad testing on Android
+- **Web CTA** — browser-based client for low-friction testing on any device
+
+All CTAs support custom stream configuration (resolution, bitrate, codec) and load your packaged title from a dev kit or PC build.
+
+## Xbox streaming server identity (XSTS claims)
+
+When your service receives a request from a streaming session, the user's Xbox services Security Token (XSTS) includes claims that identify the streaming server, not the player's device. Use these claims to differentiate streamed sessions from local play in service-side logic (telemetry, region pinning, anti-abuse). Do not assume the source IP belongs to the player.
+
 ## See also
 
 - [Game streaming](/gdk/game-streaming)

@@ -2,6 +2,7 @@
 title: "Social Manager C API reference"
 sidebarTitle: "Social Manager"
 description: "Reference for the Social Manager C API: add local users, call DoWork each frame, create social user groups, and process social events efficiently."
+icon: "users"
 ---
 
 The Social Manager API efficiently manages and caches the local user's friends and social graph. Rather than making individual service calls to query presence and profile data for each friend, Social Manager maintains an in-memory snapshot of the social graph and delivers incremental updates through a polling model. Call `XblSocialManagerDoWork` once per game frame to receive a list of change events, then update your UI accordingly.

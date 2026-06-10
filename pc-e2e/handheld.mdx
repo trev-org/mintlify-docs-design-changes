@@ -1,0 +1,56 @@
+---
+title: "Ship your PC game on Windows handhelds"
+sidebarTitle: "Handheld Devices"
+description: "Optimize and certify your GDK title for Windows handheld devices like ROG Xbox Ally, including performance, power, launchers, and the Handheld Compatibility program."
+icon: "mobile-screen"
+---
+
+Windows handhelds — including the **ROG Xbox Ally** family and other Windows-based portable PCs — run the same `Gaming.Desktop.x64` GDK binaries as desktops, but they ship in a thermally and battery-constrained form factor with a touch-first shell. Plan for them as a distinct target.
+
+## Handheld Compatibility program
+
+The **Handheld Compatibility program** is the certification track that flags titles as **Verified** or **Playable** on Windows handhelds. Verified titles ship correct defaults for the smaller display, controller-only navigation, and the handheld power envelope without any user tweaking. Playable titles work but may require manual setting changes.
+
+Apply for the program through Partner Center once your title passes the guidelines below.
+
+## Guidelines and test cases
+
+Certification covers a fixed set of behaviors that you must self-test before submission:
+
+- **Default resolution and scale** — the title launches at a resolution that fits the device display (typically 1080p or 1200p) without manual override.
+- **Controller-only UX** — every menu, dialog, store flow, and recoverable error is fully usable with the gamepad. No mouse-only paths.
+- **Text legibility** — UI text is readable at the device's native size and viewing distance; no sub-12pt body text in critical UI.
+- **Touch-friendly system flows** — IME and store overlays render and accept input on the touchscreen.
+- **Startup, suspend, resume** — the title cold-starts, suspends to standby, and resumes without losing state or crashing.
+- **Anti-cheat compatibility** — the title's anti-cheat solution supports the Windows handheld shell and does not require kernel features unavailable on the device.
+
+## Performance and power efficiency
+
+Handhelds run on a battery and dissipate heat through a small chassis. Treat power as a first-class budget:
+
+- **Cap framerate by default** — 30 fps or 40 fps on battery, 60 fps on power. Expose user-facing toggles.
+- **Target sub-15W** TDP on battery for sustained sessions. Profile with the platform power monitor, not just GPU utilization.
+- **Use VRR** where available so a 40 fps cap looks smooth without judder.
+- **Drop background work** in suspended or unfocused state — pause audio mixing, async I/O, and update threads.
+- **Prefer integrated upscalers** (FSR, XeSS, DLSS depending on silicon) over native rendering at the panel resolution.
+- **Cap shader compilation parallelism** during loading screens — a fully saturated 8C/16T burst on a handheld trips thermal throttling and tanks load times.
+
+## Game launchers and the handheld shell
+
+The Xbox app and the handheld's vendor shell (Armoury Crate SE on Ally devices) launch your title and show key art, progress, and Cloud Saves status. To integrate cleanly:
+
+- Ship correct **store metadata and key art** at all required sizes — the shell uses store-listing assets, not in-game assets.
+- Support **deep-link launch** via your registered protocol or AUMID so the shell can resume into a specific mode (continue, multiplayer lobby, DLC).
+- Implement **Quick Resume**-style fast suspend/resume so users can flip between titles from the shell without long reload times.
+
+## Additional considerations
+
+- **Driver and runtime dependencies** — declare any framework packages (DirectX, VC\+\+, .NET) so the store installs them automatically. Do not bundle private copies.
+- **Storage** — handhelds ship with smaller SSDs than desktops; honor Intelligent Delivery tags so optional language, hi-res texture, or campaign-only chunks are user-removable.
+- **Cloud streaming fallback** — handhelds are first-class Xbox Cloud Gaming clients; if a player's local install fails, the shell can offer streaming. Make sure your Cloud Aware code paths are tested on the handheld form factor.
+
+## See also
+
+- [Unity GDK guide](/pc-e2e/engines/unity) — Unity HandheldBestPractices sample
+- [Packaging](/gdk/packaging) — Intelligent Delivery for smaller installs
+- [Game streaming](/gdk/game-streaming) — Cloud Aware APIs for streaming clients

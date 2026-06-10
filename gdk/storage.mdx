@@ -12,7 +12,7 @@ Xbox consoles expose several distinct storage areas, each designed for a specifi
 Four local storage locations are accessible on Xbox consoles. Each is exposed as a drive letter or a path you must query at runtime.
 
 | Storage type | Drive | Use case |
-|---|---|---|
+| --- | --- | --- |
 | Installed game data | `G:\` | Read-only access to your packaged title content |
 | Temporary local storage | `T:\` | Short-lived files (logs, telemetry) available only while the title runs |
 | Developer scratch partition | `D:\` | Development-only scratch space — must be compiled out in retail builds |
@@ -28,6 +28,7 @@ Four local storage locations are accessible on Xbox consoles. Each is exposed as
 Temporary storage (`T:\`) gives you 2 GB of space that is available while your title is running. It is ideal for log files, telemetry dumps, and other transient data you may want to retrieve from a development kit using `xbcp`.
 
 Key characteristics:
+
 - Content **persists** across suspend/resume cycles, including Quick Resume.
 - Content is **deleted** after the title terminates.
 - There is **no guarantee** that data survives between launches.
@@ -111,17 +112,30 @@ You can optionally share your PLS as **read-only** with related titles (for exam
 DirectStorage is an API that allows the GPU to load and decompress assets directly from the NVMe SSD, bypassing the CPU and dramatically reducing load times. On Xbox Series X|S, the NVMe controller and the GPU decompression hardware work together so that large texture and geometry packages can stream at hundreds of MB/s with near-zero CPU overhead.
 
 Key benefits on Xbox Series X|S:
+
 - **GPU decompression:** The GPU's hardware block decompresses BCPack and Zlib assets in parallel with rendering.
 - **Near-zero CPU overhead:** The CPU path is exercised only for metadata and queue management, not for decompression.
 - **Faster level loads:** Streaming world geometry and texture mips becomes a background GPU operation rather than a blocking CPU read.
 
 DirectStorage is documented in its own NDA-gated section. For GDK title integration, see the [DirectStorage documentation](https://learn.microsoft.com/en-us/gaming/gdk/docs/features/console/storage/directstorage-toc).
 
+### XBTC compressed content
+
+For texture-heavy titles, pair DirectStorage with **XBTC** (Xbox Block Texture Compression) to keep textures GPU-decompressible end-to-end. Author offline with the Xbox Texture Compressor, then load through DirectStorage so the GPU hardware path handles decompression on the way to VRAM.
+
+### Drop-in hardware decompression
+
+If you cannot restructure your asset pipeline for full DirectStorage adoption, the **drop-in decompression** path lets you keep your existing file I/O while still benefiting from GPU hardware decompression for supported formats. Use it as a stepping stone before a full DirectStorage integration.
+
+### Shuffle formats
+
+DirectStorage supports **shuffle formats** that rearrange data on the GPU during decompression so that the layout matches your runtime access pattern. Use shuffles when your on-disk format is optimized for compression ratio but your shaders need a different layout — you save both download size and CPU rearrangement work.
+
 ## Comparing storage options
 
-| | PLS | Connected Storage | Title Storage |
-|---|---|---|---|
-| **Location** | Local SSD | Cloud + local cache | Cloud only |
+|  | PLS | Connected Storage | Title Storage |
+| --- | --- | --- | --- |
+| **Location** | Local SSD | Cloud \+ local cache | Cloud only |
 | **Roams across consoles** | ❌ | ✅ | ✅ |
 | **Available offline** | ✅ | ✅ (cached) | ❌ |
 | **Fault-tolerant** | Encrypted/integrity-checked | ✅ (full ACID semantics) | Standard HTTPS |

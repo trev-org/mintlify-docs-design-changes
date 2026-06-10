@@ -72,6 +72,23 @@ Key differences from PC D3D12:
 - **Xbox Texture Compressor (XBTC)** — offline texture pipeline.
 - **Shader Explorer (PIX)** — shader optimization workflows.
 
+## Xbox Series S optimization
+
+Series S shares the Series X feature set but has roughly a third of the GPU compute, less memory, and a lower display target (typically 1440p). Plan for it from day one:
+
+- Target 1440p (or sub-1440p with reconstruction) rather than scaling down a 4K asset budget.
+- Use Sampler Feedback Streaming and Variable Rate Shading aggressively — they pay off more here than on Series X.
+- Cut shader permutations and effects budget instead of resolution where you can; players notice frame pacing more than pixel count.
+- Ship Series S as a first-class build, not a runtime downscale, when feasible.
+
+## Action-safe areas and presentation
+
+Even on flat-panel TVs, players may have overscan or non-standard scaling enabled. Keep critical HUD inside the action-safe area (about 90% of the visible frame), and use the D3D12.x presentation helpers to query the actual output resolution and HDR mode before laying out UI.
+
+## Image processing (WIC)
+
+For non-real-time image work — loading PNG/JPEG title art, generating screenshots, decoding store assets — use **Windows Imaging Component (WIC)**, which is available on Xbox as well as PC. WIC is not for game-asset streaming; use DirectStorage \+ XBTC for that path.
+
 ## See also
 
 - [Memory](/gdk/memory) — system memory model that backs GPU resources

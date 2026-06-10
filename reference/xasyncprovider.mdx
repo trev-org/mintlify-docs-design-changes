@@ -1,0 +1,91 @@
+---
+title: "XAsyncProvider API reference"
+sidebarTitle: "XAsyncProvider"
+icon: "plug"
+description: "Implement your own async APIs in the GDK async pattern using the provider model."
+---
+
+`XAsyncProvider` is the provider-side counterpart to [`XAsync`](/reference/xasync). Use it when you're wrapping a long-running platform call — or any work you want to expose as a first-class GDK-style async API — so callers can use the same `XAsyncBlock`, `XAsyncGetStatus`, and `XTaskQueue` patterns they already know.
+
+## When to write a provider
+
+- You have a synchronous library call that blocks (DB, file I/O, third-party SDK) and you want to expose it as async.
+- You're integrating native HTTP / WebSocket or messaging libraries into the GDK async surface.
+- You want pluggable mock implementations for tests — the provider model makes that easy.
+
+If you only need to dispatch a free-standing callback, prefer [`XAsyncRun`](/reference/xasync) — it's simpler.
+
+## Lifecycle
+
+The `XAsyncProvider` callback is the single entry point your provider implements. The runtime calls it five times, with different `XAsyncOp` values:
+
+| Op | When | Your job |
+| --- | --- | --- |
+| `XAsyncOp::Begin` | After `XAsyncBegin` | Kick off the work (post to a queue, start a thread, fire an IO request) |
+| `XAsyncOp::DoWork` | When `XAsyncSchedule` runs | Do incremental work; return `E_PENDING` if more is needed, or call `XAsyncComplete` |
+| `XAsyncOp::GetResult` | When the caller calls `*AsyncResult` | Copy the result into the caller's buffer |
+| `XAsyncOp::Cancel` | When the caller calls `XAsyncCancel` | Cancel any in-flight work and call `XAsyncComplete(hr=E_ABORT)` |
+| `XAsyncOp::Cleanup` | After completion \+ result retrieval | Free any state you allocated |
+
+## Provider API surface
+
+| Function | Description |
+| --- | --- |
+| `XAsyncBegin` | Start an async operation — call this from your public `*Async` entry point |
+| `XAsyncSchedule` | Schedule the next `DoWork` callback (typically with a delay) |
+| `XAsyncComplete` | Mark the operation complete and store the result size |
+| `XAsyncGetResult` | Retrieve the typed result inside the `GetResult` op handler |
+
+## Provider data
+
+- `XAsyncProviderData` — passed into your callback. Includes the `XAsyncBlock`, the op, the caller-provided context buffer, and the buffer size.
+- `XAsyncOp` — the current operation (`Begin`, `DoWork`, `GetResult`, `Cancel`, `Cleanup`).
+
+## Minimal provider example
+
+```cpp
+struct MyContext {
+    int input;
+    int result;
+};
+
+HRESULT MyProvider(XAsyncOp op, const XAsyncProviderData* data) {
+    auto ctx = reinterpret_cast<MyContext*>(data->context);
+    switch (op) {
+    case XAsyncOp::DoWork:
+        ctx->result = ctx->input * 2;       // The "work"
+        XAsyncComplete(data->async, S_OK, sizeof(int));
+        return S_OK;
+
+    case XAsyncOp::GetResult:
+        *reinterpret_cast<int*>(data->buffer) = ctx->result;
+        return S_OK;
+
+    case XAsyncOp::Cancel:
+    case XAsyncOp::Cleanup:
+    case XAsyncOp::Begin:
+    default:
+        return S_OK;
+    }
+}
+
+HRESULT MyComputeAsync(int input, XAsyncBlock* async) {
+    auto ctx = std::make_unique<MyContext>();
+    ctx->input = input;
+
+    HRESULT hr = XAsyncBegin(async, ctx.get(), MyComputeAsync, __FUNCTION__, MyProvider);
+    if (FAILED(hr)) return hr;
+    ctx.release();                          // Owned by the provider now
+    return XAsyncSchedule(async, 0);
+}
+
+HRESULT MyComputeAsyncResult(XAsyncBlock* async, int* result) {
+    return XAsyncGetResult(async, MyComputeAsync, sizeof(int), result, nullptr);
+}
+```
+
+## See also
+
+- [XAsync](/reference/xasync) — the consumer-facing async model
+- [XTaskQueue](/reference/xtaskqueue) — dispatch control
+- [Async programming model](/gdk/async-programming)

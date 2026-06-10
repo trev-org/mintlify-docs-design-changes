@@ -2,11 +2,12 @@
 title: "XGameStreaming API reference for cloud gaming"
 sidebarTitle: "XGameStreaming"
 description: "Reference for the XGameStreaming API: detect streaming sessions, query client properties, manage touch control layouts, and handle latency."
+icon: "satellite-dish"
 ---
 
 The XGameStreaming API lets your game detect and respond to Xbox Game Streaming and Remote Play sessions. When a player streams your game to a phone, tablet, or PC, the game itself runs on a server or console and the video is sent to the client device. Your game can use XGameStreaming to determine whether it is currently being streamed, query display and touch capabilities of the streaming client, and dynamically show or hide touch control layouts.
 
-**Header:** `XGameStreaming.h`  
+**Header:** `XGameStreaming.h`\
 **Supported platforms:** Xbox One family consoles, Xbox Series consoles, Windows PC
 
 ---
@@ -176,7 +177,7 @@ When a player streams to a touch-enabled device, you can display on-screen touch
 ## Key types
 
 | Type | Description |
-|---|---|
+| --- | --- |
 | `XGameStreamingClientId` | Opaque handle identifying a connected streaming client |
 | `XGameStreamingConnectionState` | Enum: `Connected`, `Disconnected` |
 | `XGameStreamingDisplayDetails` | Struct: resolution, safe area margins, `XGameStreamingVideoFlags` |

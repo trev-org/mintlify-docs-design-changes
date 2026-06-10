@@ -1,5 +1,5 @@
 ---
-title: "porting-guides"
+title: "Porting guides to the Microsoft GDK"
 sidebarTitle: "Porting guides"
 description: "Index of porting guidance for bringing existing titles to the GDK from Xbox One ERA, FXC, Steamworks, and other platforms."
 icon: "arrow-right-arrow-left"
@@ -28,6 +28,14 @@ For existing Xbox One ERA titles, the porting guide covers:
 - Packaging migration to MSIXVC.
 
 See [**Memory porting**](/gdk/memory) for ERA → GDK memory specifics.
+
+### EMiLi (ERA Migration Library)
+
+**EMiLi** is a Microsoft-supplied compatibility shim that implements common Xbox One ERA APIs on top of the GDK. Drop it into an existing ERA codebase and large parts of the title will keep compiling and running unchanged while you incrementally rewrite hot paths against the native GDK APIs. EMiLi is a porting accelerator, not a shipping target — plan to remove it before final certification.
+
+### EMiLi (ERA Migration Library)
+
+**EMiLi** is a Microsoft-supplied compatibility shim that implements common Xbox One ERA APIs on top of the GDK. Drop it into an existing ERA codebase and large parts of the title will keep compiling and running unchanged while you incrementally rewrite hot paths against the native GDK APIs. EMiLi is a porting accelerator, not a shipping target — plan to remove it before final certification.
 
 ## Shaders: FXC → DXC
 

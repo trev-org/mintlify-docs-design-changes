@@ -1,75 +1,233 @@
 ---
-author: M-Stahl
+author: edigonzales
 title: "Error codes"
 description: "Constant definitions for the Microsoft Game Development Kit (GDK) error code values, declared in XGameErr.h."
 kindex: Error codes
 ms.topic: article
-edited: 12/30/2028
+edited: 6/15/2026
 applies-to: pc-gdk
-ms.date: '08/01/2022'
+ms.date: '6/15/2026'
 permissioned-type: public
 ---
 
 # Error codes  
   
 Constant definitions for the Microsoft Game Development Kit (GDK) error code values, declared in XGameErr.h.  
+
+For comprehensive tool and platform HRESULT coverage (including launch, deployment, and diagnostics tool scenarios), see [Error Lookup (xberror.exe)](../tools/tools-console/commandlinetools/xberror.md).
   
-| Code | Value | Description |  
-| --- | --- | --- |  
-| E_GAME_MISSING_GAME_CONFIG | 0x87e5001F | This app is missing a required MicrosoftGame.Config file. |
-| E_GAMERUNTIME_NOT_INITIALIZED | 0x89240100 | The game runtime not initialized. |  
-| E_GAMERUNTIME_DLL_NOT_FOUND | 0x89240101 | The game runtime DLL wasn't found. |  
-| E_GAMERUNTIME_VERSION_MISMATCH | 0x89240102 | The game runtime DLL doesn't support this version of the Microsoft Game Development Kit (GDK). |
-| E_GAMERUNTIME_WINDOW_NOT_FOREGROUND | 0x89240103 | The operation requires an application window to be in the foreground. |
-| E_GAMERUNTIME_SUSPENDED | 0x89240104 | The game runtime is in a suspended state. |
-| E_GAMERUNTIME_UNINITIALIZE_ACTIVEOBJECTS | 0x89240105 | The game runtime has active objects at XGameRuntimeUninitialize. |
-| E_GAMERUNTIME_MULTIPLAYER_NOT_CONFIGURED | 0x89240106 | There's no multiplayer activity set on the service for this user on this title. |
-| E_GAMERUNTIME_OPTIONS_MISMATCH | 0x89240109 | Indicates other code in different module already initialized the runtime with a given set of options. The runtime must be uninitialized before it can be initialized with a different set of options. |
-| E_GAMERUNTIME_OPTIONS_NOT_SUPPORTED | 0x8924010A | The options passed aren't compatible with the game's package. When a game is packaged, the game config information passed into the options structure must match the game config of the package. |
-| E_GAMERUNTIME_GAMECONFIG_BAD_FORMAT | 0x8924010B | Indicates the game config passed to Initialize can't be parsed. |
-| E_GAMERUNTIME_INVALID_HANDLE | 0x8924010C | If the game runtime is uninitialized and later reinitialized, handles aren't valid for use across initializations. |
-| E_GAMEUSER_MAX_USERS_ADDED | 0x89245100 | Can't add this user because the max number of users reached. |  
-| E_GAMEUSER_SIGNED_OUT | 0x89245101 | Can't perform the operation because the user is signed out. |  
-| E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED | 0x89245102 | Needs UI to resolve an issue with this user. In general, if you're getting E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED (can happen from multiple APIs), you should call [XUserResolveIssueWithUiAsync](system/xuser/functions/xuserresolveissuewithuiasync.md). |  
-| E_GAMEUSER_DEFERRAL_NOT_AVAILABLE | 0x89245103 | Not an appropriate time to request deferral. |  
-| E_GAMEUSER_USER_NOT_FOUND | 0x89245104 | User matching the ID wasn't found. |  
-| E_GAMEUSER_NO_TOKEN_REQUIRED | 0x89245105 | No token is required for this call. |  
-| E_GAMEUSER_NO_DEFAULT_USER | 0x89245106 | There's no current default user. If you're getting this error, it likely means that you called XUserAddAsync(AddDefaultUsersSilently, ...). To fix the issue, you should call XUserAddAsync again, this time without AddDefaultUserSilently to get a user. |  
-| E_GAMEUSER_FAILED_TO_RESOLVE | 0x89245107 | Failed to resolve the given privilege. |  
-| E_GAMEUSER_NO_TITLE_ID | 0x89245108 | An Xbox live titleID must be configured. |  
-| E_GAMEUSER_UNKNOWN_GAME_IDENTITY | 0x89245109 | The game identity isn't recognized. This error happens when the &lt;MSAAppId> and &lt;TitleId> don't match the ones associated to the game. |  
-| E_GAMEUSER_NO_PACKAGE_IDENTITY | 0x89245110 | A package identity must be configured. |  
-| E_GAMEUSER_FAILED_TO_GET_TOKEN | 0x89245111 | The token request failed. |
-| E_GAMEUSER_INVALID_APP_CONFIGURATION | 0x89245112 | The MSAAppId in the game config is invalid or isn't configured for the authentication stack. |
-| E_GAMEUSER_MALFORMED_MSAAPPID | 0x89245113 | The MSAAppId in the game config doesn't match an expected format, either a 16 character string or GUID. |
-| E_GAMEUSER_INCONSISTENT_MSAAPPID_AND_TITLEID | 0x89245114 | The MSAAppId and TitleId in the game config don't match the ones associated to the game. |
-| E_GAMEPACKAGE_APP_NOT_PACKAGED | 0x89245200 | The game isn't packaged in a container. |  
-| E_GAMEPACKAGE_NO_INSTALLED_LANGUAGES | 0x89245201 | The game uses Intelligent Delivery to selectively install languages, but none of the languages are installed. |
-| E_GAMEPACKAGE_NO_STORE_ID | 0x89245202 | This API requires that the StoreId attribute be set in the application's game config. |
-| E_GAMEPACKAGE_INVALID_SELECTOR | 0x89245203 | A chunk selector was provided which doesn't resolve to a chunk in the package. |
-| E_GAMEPACKAGE_DOWNLOAD_REQUIRED | 0x89245204 | One or more required chunks must be downloaded to mount the package on this device. |
-| E_GAMEPACKAGE_NO_TAG_CHANGE | 0x89245205 | Change installed chunks in this package using Features, not tags. |
-| E_GAMEPACKAGE_DLC_NOT_SUPPORTED | 0x89245206 | Game does not support the DLC package. Ensure the correct DLC compatibility is set in the game config. |
-| E_GAMEPACKAGE_DUPLICATE_ID_VALUES | 0x89245207 | The package contains more than one executable mapping to the same 'ID' attribute. Check the game config for duplicate 'ID' attributes in the 'Executable' elements. |
-| E_GAMEPACKAGE_NO_PACKAGE_IDENTIFIER | 0x89245208 | Couldn't resolve an identifier for the package. The package might not be installed. |
-| E_GAMEPACKAGE_CONFIG_NO_ROOT_NODE | 0x89245209 | couldn't find a root &lt;Game> node in the MicrosoftGame.config file. Check the MicrosoftGame.config file to ensure it's properly formatted. |
-| E_GAMEPACKAGE_CONFIG_ZERO_VERSION | 0x8924520A | The 'Version' attribute in the 'Identity' node in the MicrosoftGame.config can't be 0.0.0.0. Increment or remove this attribute. If no version is specified, the default value is 1.0.0.0. |
-| E_GAMEPACKAGE_CONFIG_NO_MSAAPPID_NOTITLEID | 0x8924520B | The 'MSAAppId' or 'TitleId' element in the MicrosoftGame.config is missing. If one of these values is specified, both must be specified when using configVersion >= 1. Use the MicrosoftGame.config Editor "Associate with Store" feature to automatically retrieve ID values from Partner Center. |
-| E_GAMEPACKAGE_CONFIG_DEPRECATED_PC_ENTRIES | 0x8924520C | The DesktopRegistration entries "modFolder", "enableWritesToPackageRoot", "disableRegistryWriteVirtualization" and "disableFilesystemWriteVirtualization" are deprecated in configVersion >= 1. |
-| E_GAMEPACKAGE_CONFIG_SUM_REQUIRES_MSAAPPID | 0x8924520D | The 'MSAAppId' and 'TitleId' elements in the MicrosoftGame.config are required when using the Simplified User Model (AdvancedUserModel element) and configVersion >= 1. Use the MicrosoftGame.config Editor "Associate with Store" feature to automatically retrieve ID values from Partner Center. |
-| E_GAMEPACKAGE_CONFIG_NO_CODE_CLOUD_SAVES_REQUIRES_MSAAPPID | 0x8924520E | The 'MSAAppId' and 'TitleId' elements in the MicrosoftGame.config are required when using No Code Cloud Saves (NoCodePCRoot element) and configVersion >= 1. Use the MicrosoftGame.config Editor "Associate with Store" feature to automatically retrieve ID values from Partner Center. |
-| E_GAMEPACKAGE_CONFIG_MSAAPPID_OR_TITLEID_IS_DEFAULT | 0x8924520F | The 'MSAAppId' or 'TitleId' element in the MicrosoftGame.config is a default value. If NoCodePCRoot or AdvancedUserModel is specified, then the TitleId and MSAAppId must both be valid IDs from Partner Center when using configVersion >= 1. Use the MicrosoftGame.config Editor "Associate with Store" feature to automatically retrieve ID values from Partner Center. |
-| E_GAMESTORE_LICENSE_ACTION_NOT_APPLICABLE_TO_PRODUCT | 0x89245300 | The game requested a license for a product that can't be licensed. |  
-| E_GAMESTORE_NETWORK_ERROR | 0x89245301 | The game failed to communicate with the store network. |  
-| E_GAMESTORE_SERVER_ERROR | 0x89245302 | The game received a bad response from the store server. |  
-| E_GAMESTORE_INSUFFICIENT_QUANTITY | 0x89245303 | The user doesn't have enough of this consumable to use the requested amount. |  
-| E_GAMESTORE_ALREADY_PURCHASED | 0x89245304 | The user already owns this product. |  
-| E_GAMESTREAMING_NOT_INITIALIZED | 0x89245400 | The XGameStreaming runtime not initialized. Call XGameStreamingInitialize before calling other APIs. |
-| E_GAMESTREAMING_CLIENT_NOT_CONNECTED | 0x89245401 | The specified client isn't connected. |
-| E_GAMESTREAMING_NO_DATA | 0x89245402 | The requested data isn't available. The data might be available later. |
-| E_GAMESTREAMING_NO_DATACENTER | 0x89245403 | The current machine isn't running in a datacenter. |
-| E_GAMESTREAMING_NOT_STREAMING_CONTROLLER | 0x89245404 | The current reading didn't come from a streaming controller. |
+| Code | Value | Description | Source |
+| --- | --- | --- | --- |
+| E_GAME_MISSING_GAME_CONFIG | 0x87e5001F | This app is missing a required MicrosoftGame.Config file. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMERUNTIME_NOT_INITIALIZED | 0x89240100 | The game runtime is not initialized. | [XGameRuntime](system/xgameruntimeinit/xgameruntimeinit_members.md) |
+| E_GAMERUNTIME_DLL_NOT_FOUND | 0x89240101 | The game runtime DLL was not found. | [XGameRuntime](system/xgameruntimeinit/xgameruntimeinit_members.md) |
+| E_GAMERUNTIME_VERSION_MISMATCH | 0x89240102 | The game runtime DLL does not support this version of the GDK. | [XGameRuntime](system/xgameruntimeinit/xgameruntimeinit_members.md) |
+| E_GAMERUNTIME_WINDOW_NOT_FOREGROUND | 0x89240103 | The operation requires the application window to be in the foreground. | |
+| E_GAMERUNTIME_SUSPENDED | 0x89240104 | The game runtime is in a suspended state. | |
+| E_GAMERUNTIME_UNINITIALIZE_ACTIVEOBJECTS | 0x89240105 | The game runtime has active objects at XGameRuntimeUninitialize. | [XGameRuntimeUninitialize](system/xgameruntimeinit/functions/xgameruntimeuninitialize.md) |
+| E_GAMERUNTIME_MULTIPLAYER_NOT_CONFIGURED | 0x89240106 | No multiplayer activity is set on the service for this user on this title. | [Xbox Services Multiplayer](../services/multiplayer/overviews/live-multiplayer-intro.md) |
+| E_GAMERUNTIME_OPTIONS_MISMATCH | 0x89240109 | The runtime was already initialized with a different set of options. Uninitialize before reinitializing with new options. | [XGameRuntimeUninitialize](system/xgameruntimeinit/functions/xgameruntimeuninitialize.md) |
+| E_GAMERUNTIME_OPTIONS_NOT_SUPPORTED | 0x8924010A | The options passed are not compatible with the game's package. The game config information must match the package. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMERUNTIME_GAMECONFIG_BAD_FORMAT | 0x8924010B | The game config passed to Initialize cannot be parsed. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMERUNTIME_INVALID_HANDLE | 0x8924010C | Handles are not valid for use across runtime initializations. | |
+| E_GAMEUSER_MAX_USERS_ADDED | 0x89245100 | Cannot add this user because the maximum number of users has been reached. | [XUserAddAsync](system/xuser/functions/xuseraddasync.md) |
+| E_GAMEUSER_SIGNED_OUT | 0x89245101 | Cannot perform the operation because the user is signed out. | [XUserAddAsync](system/xuser/functions/xuseraddasync.md) |
+| E_GAMEUSER_RESOLVE_USER_ISSUE_REQUIRED | 0x89245102 | UI is required to resolve an issue with this user. | [XUserResolveIssueWithUiAsync](system/xuser/functions/xuserresolveissuewithuiasync.md) |
+| E_GAMEUSER_DEFERRAL_NOT_AVAILABLE | 0x89245103 | Not an appropriate time to request deferral. | [XUserGetTokenAndSignatureAsync](system/xuser/functions/xusergettokenandsignatureasync.md) |
+| E_GAMEUSER_USER_NOT_FOUND | 0x89245104 | User matching the ID was not found. | |
+| E_GAMEUSER_NO_TOKEN_REQUIRED | 0x89245105 | No token is required for this call. | |
+| E_GAMEUSER_NO_DEFAULT_USER | 0x89245106 | No current default user. If you get this error, call XUserAddAsync again without AddDefaultUserSilently. | [XUserAddAsync](system/xuser/functions/xuseraddasync.md) |
+| E_GAMEUSER_FAILED_TO_RESOLVE | 0x89245107 | Failed to resolve the given privilege. | |
+| E_GAMEUSER_NO_TITLE_ID | 0x89245108 | An Xbox Live TitleId must be configured. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEUSER_UNKNOWN_GAME_IDENTITY | 0x89245109 | The game identity is not recognized. The MSAAppId and TitleId do not match the ones associated to the game. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEUSER_NO_PACKAGE_IDENTITY | 0x89245110 | A package identity must be configured. | |
+| E_GAMEUSER_FAILED_TO_GET_TOKEN | 0x89245111 | The token request failed. | |
+| E_GAMEUSER_INVALID_APP_CONFIGURATION | 0x89245112 | The MSAAppId in the game config is invalid or not configured for the authentication stack. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEUSER_MALFORMED_MSAAPPID | 0x89245113 | The MSAAppId in the game config does not match the expected format (16 character string or GUID). | |
+| E_GAMEUSER_INCONSISTENT_MSAAPPID_AND_TITLEID | 0x89245114 | The MSAAppId and TitleId in the game config do not match the ones associated to the game. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEPACKAGE_APP_NOT_PACKAGED | 0x89245200 | The game is not packaged in a container. | |
+| E_GAMEPACKAGE_NO_INSTALLED_LANGUAGES | 0x89245201 | The game uses Intelligent Delivery to selectively install languages, but none are installed. | |
+| E_GAMEPACKAGE_NO_STORE_ID | 0x89245202 | The StoreId attribute must be set in the application's game config. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEPACKAGE_INVALID_SELECTOR | 0x89245203 | A chunk selector was provided that does not resolve to a chunk in the package. | |
+| E_GAMEPACKAGE_DOWNLOAD_REQUIRED | 0x89245204 | One or more required chunks must be downloaded to mount the package on this device. | |
+| E_GAMEPACKAGE_NO_TAG_CHANGE | 0x89245205 | Change installed chunks in this package using Features, not tags. | |
+| E_GAMEPACKAGE_DLC_NOT_SUPPORTED | 0x89245206 | Game does not support the DLC package. Ensure correct DLC compatibility in the game config. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEPACKAGE_DUPLICATE_ID_VALUES | 0x89245207 | The package contains more than one executable mapping to the same 'ID' attribute. Check for duplicate 'ID' attributes in the 'Executable' elements. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEPACKAGE_NO_PACKAGE_IDENTIFIER | 0x89245208 | Could not resolve an identifier for the package. The package might not be installed. | |
+| E_GAMEPACKAGE_CONFIG_NO_ROOT_NODE | 0x89245209 | Could not find a root <Game> node in the MicrosoftGame.config file. Check that the file is properly formatted. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEPACKAGE_CONFIG_ZERO_VERSION | 0x8924520A | The 'Version' attribute in the 'Identity' node in MicrosoftGame.config cannot be 0.0.0.0. Increment or remove this attribute. If no version is specified, the default is 1.0.0.0. | |
+| E_GAMEPACKAGE_CONFIG_NO_MSAAPPID_NOTITLEID | 0x8924520B | The 'MSAAppId' or 'TitleId' element in MicrosoftGame.config is missing. Both must be specified when using configVersion >= 1. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEPACKAGE_CONFIG_DEPRECATED_PC_ENTRIES | 0x8924520C | The DesktopRegistration entries "modFolder", "enableWritesToPackageRoot", "disableRegistryWriteVirtualization", and "disableFilesystemWriteVirtualization" are deprecated in configVersion >= 1. | |
+| E_GAMEPACKAGE_CONFIG_SUM_REQUIRES_MSAAPPID | 0x8924520D | The 'MSAAppId' and 'TitleId' elements are required when using the Simplified User Model (AdvancedUserModel element) and configVersion >= 1. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEPACKAGE_CONFIG_NO_CODE_CLOUD_SAVES_REQUIRES_MSAAPPID | 0x8924520E | The 'MSAAppId' and 'TitleId' elements are required when using No Code Cloud Saves (NoCodePCRoot element) and configVersion >= 1. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMEPACKAGE_CONFIG_MSAAPPID_OR_TITLEID_IS_DEFAULT | 0x8924520F | The 'MSAAppId' or 'TitleId' element is a default value. If NoCodePCRoot or AdvancedUserModel is specified, both TitleId and MSAAppId must be valid IDs from Partner Center when using configVersion >= 1. | [MicrosoftGame.config element reference](system/microsoftgameconfig/elements/gc-microsoftgameconfig-toc.md) |
+| E_GAMESTORE_LICENSE_ACTION_NOT_APPLICABLE_TO_PRODUCT | 0x89245300 | The game requested a license for a product that cannot be licensed. | |
+| E_GAMESTORE_NETWORK_ERROR | 0x89245301 | The game failed to communicate with the store network. | |
+| E_GAMESTORE_SERVER_ERROR | 0x89245302 | The game received a bad response from the store server. | |
+| E_GAMESTORE_INSUFFICIENT_QUANTITY | 0x89245303 | The user does not have enough of this consumable to use the requested amount. | |
+| E_GAMESTORE_ALREADY_PURCHASED | 0x89245304 | The user already owns this product. | |
+| E_GAMESTORE_LICENSE_ACTION_THROTTLED | 0x89245305 | The game excessively queried a license for the product and is now throttled. Limit is 30 licensing attempts within 10 minutes for the same product. | [XStore](system/xstore/xstore_members.md) |
+| E_GAMESTREAMING_NOT_INITIALIZED | 0x89245400 | The XGameStreaming runtime is not initialized. Call XGameStreamingInitialize before calling other APIs. | [XGameStreamingInitialize](system/xgamestreaming/functions/xgamestreaminginitialize.md) |
+| E_GAMESTREAMING_CLIENT_NOT_CONNECTED | 0x89245401 | The specified client is not connected. | |
+| E_GAMESTREAMING_NO_DATA | 0x89245402 | The requested data is not available. The data might be available later. | |
+| E_GAMESTREAMING_NO_DATACENTER | 0x89245403 | The current machine is not running in a datacenter. | |
+| E_GAMESTREAMING_NOT_STREAMING_CONTROLLER | 0x89245404 | The current reading did not come from a streaming controller. | |
+| E_GS_INVALID_CONTAINER_NAME | 0x80830001 | The name of the container is invalid. Valid container name characters include uppercase/lowercase letters, digits, underscores, and forward slashes. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_NO_ACCESS | 0x80830002 | The operation failed because the title does not have access to the container storage spaces. Check that the SCID and TitleId are configured correctly. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_OUT_OF_LOCAL_STORAGE | 0x80830003 | The device does not have enough storage capacity to save the game. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_USER_CANCELED | 0x80830004 | The user canceled the download of their save games. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_UPDATE_TOO_BIG | 0x80830005 | The size of the save update is too large. The total size of an XGameSave update must be smaller than GS_MAX_BLOB_SIZE (16 MB). | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_QUOTA_EXCEEDED | 0x80830006 | The title's storage quota for this user has been exceeded. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_PROVIDED_BUFFER_TOO_SMALL | 0x80830007 | The buffer provided to the API was too small. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_BLOB_NOT_FOUND | 0x80830008 | The specified blob cannot be found. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_NO_SERVICE_CONFIGURATION | 0x80830009 | The title is not properly configured for connected storage. Check that the SCID is correct and the title is configured in Partner Center. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_CONTAINER_NOT_IN_SYNC | 0x8083000A | The container is not synchronized yet. Ensure the XGameSave container is synchronized before submitting updates. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_CONTAINER_SYNC_FAILED | 0x8083000B | The synchronization of the container failed. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_USER_NOT_REGISTERED_IN_SERVICE | 0x8083000C | The user's MSA is not yet an Xbox services account. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_HANDLE_EXPIRED | 0x8083000D | The handle used by the function expired and must be reacquired. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_ASYNC_FUNCTION_REQUIRED | 0x8083000E | This synchronous function is being called on a time-sensitive thread and risks deadlocks. Use the async implementation instead. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+| E_GS_PROVIDER_MISMATCH | 0x8083000F | The game is mixing XGameSave and XGameSaveFiles calls, which is not supported. | [XGameSave](system/xgamesave/xgamesave_members.md) |
+
+## Additional error codes
+
+The following additional error codes are consolidated from other GDK reference areas (Xbox Live, Remote Iteration, XAPU, and XDSP).
+
+| Code | Value | Description | Source |
+| --- | --- | --- | --- |
+| E_ABORT | 0x80004004 | The operation was aborted before completion. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_ACCESSDENIED | 0x80070005 | Access to the requested resource or operation is denied. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_ADMIN_REQUIRED | 0x8c114016 | Administrator privileges required. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_BOUNDS | 0x8000000b | A supplied index or range is outside valid bounds. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_CLIENTNOTAUTHORIZED | 0x8c114008 | Device rejected client. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_CONNECTIONERROR | 0x8c114014 | Connection error. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_FAIL | 0x80004005 | The operation failed with an unspecified error. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_GAMEEXITABANDONED | 0x8c11400f | Abandoned wait for game to exit. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_GAMEFILEPATHNOTEXIST | 0x8c114010 | Game file path does not exist. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_GAMENOTSUSPENDED | 0x8c11400b | Specified process cannot be resumed. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_GAMENOTRUNNING | 0x8c11400c | No game process is running. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_GAMEOVERSUSPENDED | 0x8c11400d | The thread suspend count is not zero. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_GAMESTILLRUNNING | 0x8c11400e | Only one game may run at a time. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_HC_ALREADY_INITIALISED | 0x89235004 | HTTP Client runtime is already initialized. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| E_HC_CONNECT_ALREADY_CALLED | 0x89235005 | Connect has already been called for this WebSocket/session. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| E_HC_NO_NETWORK | 0x89235006 | No network connectivity is currently available. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| E_HC_NOT_INITIALISED | 0x89235001 | HTTP Client runtime is not initialized. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| E_HC_PERFORM_ALREADY_CALLED | 0x89235003 | This HTTP operation has already been executed. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| E_INVALIDADDRESS | 0x8c114013 | Invalid address. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_INVALIDARG | 0x80070057 | One or more arguments are invalid. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_INVALIDPIDTID_PAIR | 0x8c114018 | Given process ID is not associated with given thread ID. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_INVALIDPIN | 0x8c114004 | Pin is not in proper format. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_INVALIDPROCESSID | 0x8c114003 | Invalid process ID. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_INVALIDSSHKEY | 0x8c114005 | SSH key is not in expected form. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_INVALIDTHREADID | 0x8c114017 | Invalid thread ID. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_LISTENERALREADYRUNNING | 0x8c114015 | Another listener is active. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_NAMERESOLUTIONFAILED | 0x8c114012 | Could not resolve the remote machine name. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_NO_TASK_QUEUE | 0x800701ab | No task queue was provided or available for the operation. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_NOINTERFACE | 0x80004002 | The requested interface is not available on this object. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_NOT_SUFFICIENT_BUFFER | 0x8007007a | The provided buffer is too small for the requested data. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_NOT_SUPPORTED | 0x80070032 | This operation is not supported in the current context. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_NOTIMPL | 0x80004001 | This functionality is not implemented. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_OUTOFMEMORY | 0x8007000e | The operation failed because memory allocation could not be satisfied. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_PAIRINGTIMEOUT | 0x8c114006 | Pair mode exceeded maximum time. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_PENDING | 0x8000000a | The operation has started but has not completed yet. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_POINTER | 0x80004003 | A required pointer is null or invalid. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_PROCESSNOTFOUND | 0x8c114002 | Process not found. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_SERVERNOTAUTHORIZED | 0x8c114009 | Client rejected device. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_SERVERTOOOLD | 0x8c114011 | The server version is too old for this client. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_SSHKEYTOOLARGE | 0x8c11400a | SSH key too large. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_THREADNOTFOUND | 0x8c114019 | Thread not found. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_TIME_CRITICAL_THREAD | 0x800701a0 | The call is not allowed on a time-critical thread. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_TOOMANYFAILURES | 0x8c114007 | Too many failed PIN attempts. | [Xbox PC Remote Iteration API Error Codes](remoting/error-codes.md) |
+| E_UNEXPECTED | 0x8000ffff | An unexpected internal error occurred. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| E_XAL_ALREADYINITIALIZED | 0x89235101 | XAL has already been initialized. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_CLIENTERROR | 0x89235107 | A client-side error occurred in XAL. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_DEFERRALNOTAVAILABLE | 0x8923510d | A deferral cannot be requested at this time. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_DEVICEUSER | 0x8923510c | The operation is not valid for the current device user context. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_DUPLICATEDUSER | 0x89235105 | The user is already present in the user set. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_FAILEDTORESOLVE | 0x89235112 | XAL could not resolve the requested privilege or identity state. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_HANDLERALREADYREGISTERED | 0x89235109 | A required handler was already registered. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_MISSINGPLATFORMEVENTHANDLER | 0x8923510e | A required platform event handler is missing. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_NETWORK | 0x89235106 | A network error occurred while processing the request. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_NODEFAULTUSER | 0x89235111 | No default user is currently available. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_NOTATTACHEDTOJVM | 0x8923510b | XAL is not attached to the Java VM when required. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_NOTINITIALIZED | 0x89235001 | XAL is not initialized. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_NOTOKENREQUIRED | 0x89235110 | No token is required for this request. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_UIREQUIRED | 0x89235108 | User interaction is required to complete the operation. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_UNEXPECTEDUSERSIGNEDIN | 0x8923510a | A different or unexpected user signed in during the operation. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_USERNOTFOUND | 0x8923510f | The specified user could not be found. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_USERSETFULL | 0x89235103 | The user set has reached its maximum capacity. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_USERSETNOTEMPTY | 0x89235102 | The target user set is not empty. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XAL_USERSIGNEDOUT | 0x89235104 | The target user is signed out. | [Xbox Live HRESULT Error Codes (XAL)](live/xbl-hresult-error-codes.md#xal) |
+| E_XBL_ALREADY_INITIALIZED | 0x89235207 | Xbox Live services are already initialized. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| E_XBL_AUTH_NO_TOKEN | 0x89235206 | No authentication token is available. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| E_XBL_AUTH_RUNTIME_ERROR | 0x89235205 | Authentication failed due to a runtime error. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| E_XBL_AUTH_UNKNOWN_ERROR | 0x89235204 | An unknown authentication error occurred. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| E_XBL_NOT_INITIALIZED | 0x89235208 | Xbox Live services are not initialized. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| E_XBL_RTA_NOT_ACTIVATED | 0x89235209 | The Real-Time Activity service isn't activated. Call XblRealTimeActivityActivate to activate the Real-Time Activity service. | [Error Lookup (xberror.exe)](../tools/tools-console/commandlinetools/xberror.md) |
+| E_XBL_RTA_ACCESS_DENIED | 0x89235203 | Access to RTA functionality was denied. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| E_XBL_RTA_GENERIC_ERROR | 0x89235201 | A generic Real-Time Activity (RTA) error occurred. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| E_XBL_RTA_SUBSCRIPTION_LIMIT_REACHED | 0x89235202 | The RTA subscription limit was reached. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| E_XBL_RUNTIME_ERROR | 0x89235200 | A generic Xbox Live runtime error occurred. | [Xbox Live HRESULT Error Codes (XSAPI)](live/xbl-hresult-error-codes.md#xsapi) |
+| FGRL (Rate Limit) Exceeded | 0x801901ad | Request was throttled because the rate limit was exceeded. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_AMBIGUOUS | 0x8019012c | HTTP response indicates an ambiguous resource match. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_BAD_GATEWAY | 0x801901f6 | HTTP 502: received an invalid response from an upstream server. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_BAD_METHOD | 0x80190195 | HTTP method is not valid for this endpoint. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_BAD_REQUEST | 0x80190190 | HTTP 400: the request is malformed or invalid. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_CONFLICT | 0x80190199 | HTTP 409: request conflicts with current server state. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_DENIED | 0x80190191 | HTTP 401: request is unauthorized or denied. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_EXPECTATION_FAILED | 0x801901a1 | HTTP 417: the server could not meet request expectations. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_FORBIDDEN | 0x80190193 | HTTP 403: access is forbidden for this resource. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_GATEWAY_TIMEOUT | 0x801901f8 | HTTP 504: upstream server timed out. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_GONE | 0x8019019a | HTTP 410: requested resource is no longer available. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_LENGTH_REQUIRED | 0x8019019b | HTTP 411: Content-Length is required. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_MOVED | 0x8019012d | HTTP redirect indicates the resource has moved. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_NONE_ACCEPTABLE | 0x80190196 | HTTP 406: no acceptable representation available. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_NOT_FOUND | 0x80190194 | HTTP 404: requested resource was not found. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_NOT_MODIFIED | 0x80190130 | HTTP 304: resource has not changed since conditional request. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_NOT_SUPPORTED | 0x801901f5 | HTTP capability requested is not supported. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_PAYMENT_REQ | 0x80190192 | HTTP 402: payment is required for this request. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_PRECOND_FAILED | 0x8019019c | HTTP 412: request precondition failed. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_PROXY_AUTH_REQ | 0x80190197 | HTTP 407: proxy authentication is required. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_RANGE_NOT_SATISFIABLE | 0x801901a0 | HTTP 416: requested range cannot be satisfied. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_REDIRECT | 0x8019012e | HTTP redirect response received. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_REDIRECT_KEEP_VERB | 0x80190133 | HTTP redirect that preserves the original method/verb. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_REDIRECT_METHOD | 0x8019012f | HTTP redirect that requires a method change. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_REQUEST_TIMEOUT | 0x80190198 | HTTP 408: server timed out waiting for the request. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_REQUEST_TOO_LARGE | 0x8019019d | HTTP 413: request payload is too large. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_SERVER_ERROR | 0x801901f4 | HTTP 500: server encountered an internal error. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_SERVICE_UNAVAIL | 0x801901f7 | HTTP 503: service is temporarily unavailable. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_UNEXPECTED | 0x80190001 | HTTP client encountered an unexpected protocol/status condition. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_UNEXPECTED_SERVER_ERROR | 0x80190005 | Server returned an unexpected error condition. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_UNSUPPORTED_MEDIA | 0x8019019f | HTTP 415: media type is not supported. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_URI_TOO_LONG | 0x8019019e | HTTP 414: request URI is too long. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_USE_PROXY | 0x80190131 | HTTP request must be made through a proxy. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| HTTP_E_STATUS_VERSION_NOT_SUP | 0x801901f9 | HTTP version is not supported by the server. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| ONL_E_ACTION_REQUIRED | 0x8086000c | User or title action is required before the operation can continue. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| S_OK | 0x00000000 | Operation completed successfully. | [Xbox Live HRESULT Error Codes (Global)](live/xbl-hresult-error-codes.md#global) |
+| WEB_E_INVALID_JSON_STRING | 0x83750007 | The JSON payload is invalid or malformed. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| WEB_E_UNEXPECTED_CONTENT | 0x83750005 | The response content did not match the expected format. | [Xbox Live HRESULT Error Codes (HTTP Client)](live/xbl-hresult-error-codes.md#http-client) |
+| XAPU_E_ALREADY_ACTIVE | 0x8ac81005 | The stream is already active. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_BAD_OPUS_PACKET | 0x8ac81008 | The hardware encountered errors when decoding an Opus packet. Please check for any errors in encoding. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_BUFFER_TOO_SMALL | 0x8ac81006 | Output buffer is too small to fit the data. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_DEVICE_FATAL_ERROR | 0x8ac81052 | The hardware has encountered an error and the connection needs to be re-established. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_DEVICE_FAULT | 0x8ac81050 | An unrecoverable firmware crash has occurred. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_DEVICE_TIMEOUT | 0x8ac81051 | The hardware did not respond in a timely manner. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_INVALID_COMMAND | 0x8ac81002 | Invalid XAPU command value. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_INVALID_STREAM_INDEX | 0x8ac81003 | Invalid stream index in the submitted XAPU command. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_NO_DEVICE_RESOURCES | 0x8ac81004 | Not enough resources on the system to support the requested number of streams. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_PENDING_RESULTS | 0x8ac81001 | No result available at the moment. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_PROCESSING_ERROR | 0x8ac81007 | The hardware failed to process the command. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XAPU_E_QUEUE_FULL | 0x8ac81000 | XAPU command queue is full. | [XAPU Errors](audio/xapu/enums/xapuerrors.md) |
+| XDSP_E_DEVICE_FATAL_ERROR | 0x8ac810a3 | A fatal error has occurred (eg. crash/hang) for the currently processed command. Please check the [XDspStatus](audio/xdspaudio/structs/xdspstatus.md) structure to understand which command sequence has failed. The hardware has an auto-recovery mechanism that will allow subsequent commands to continue being processed. | [XDSP Errors](audio/xdspaudio/enums/xdsperrors.md) |
+| XDSP_E_INVALID_IMPULSE_RESPONSE_LENGTH | 0x8ac810a7 | [XDspActivate](audio/xdspaudio/functions/xdspactivate.md) was called with an impulse response length that is either too large or too small. | [XDSP Errors](audio/xdspaudio/enums/xdsperrors.md) |
+| XDSP_E_MAX_AGGREGATE_IMPULSE_RESPONSE_EXCEEDED | 0x8ac810a6 | The current [XDspConnect](audio/xdspaudio/functions/xdspconnect.md) call will cause XDSP to exceed the maximum supported aggregate impulse response length, and is therefore invalid. | [XDSP Errors](audio/xdspaudio/enums/xdsperrors.md) |
+| XDSP_E_MAX_CLIENTS_EXCEEDED | 0x8ac810a5 | The maximum number of XDspClients have already been created. | [XDSP Errors](audio/xdspaudio/enums/xdsperrors.md) |
+| XDSP_E_NO_DEVICE_RESOURCES | 0x8ac810a2 | No XDSP device resources are available to service your request. | [XDSP Errors](audio/xdspaudio/enums/xdsperrors.md) |
+| XDSP_E_NOT_ALL_HANDLES_DEACTIVATED | 0x8ac810a4 | [XDspDisconnect](audio/xdspaudio/functions/xdspdisconnect.md) was called on an XDspClient before all XDspStream objects associated with the client have been deactivated. | [XDSP Errors](audio/xdspaudio/enums/xdsperrors.md) |
+| XDSP_E_PENDING_RESULTS | 0x8ac810a1 | The XDspStream was deactivated before all results from submitted commands were received. Please wait a sufficient amount of time for the hardware to finish processing the submitted commands of the stream before deactivating the stream. | [XDSP Errors](audio/xdspaudio/enums/xdsperrors.md) |
+| XDSP_E_QUEUE_FULL | 0x8ac810a0 | The command queue is full. Please wait a sufficient amount of time for the hardware to finish processing the current submitted commands before submitting more. | [XDSP Errors](audio/xdspaudio/enums/xdsperrors.md) |
 
 ## See also  
   
 [API reference](gc-reference-toc.md)
+
+

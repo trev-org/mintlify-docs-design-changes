@@ -1,0 +1,69 @@
+---
+title: "Develop, test, and troubleshoot Xbox services integrations"
+sidebarTitle: "Develop & Test"
+description: "Sandboxes, test accounts, offline play, fine-grained rate limiting, and the standard troubleshooting flow for Xbox services development."
+icon: "flask"
+---
+
+Xbox services has two distinct realities: **RETAIL** (the live production Xbox network) and your **dev sandboxes** (isolated copies of the service stack for testing). Every step of development happens against a sandbox; every certified build runs against RETAIL.
+
+## Sandboxes
+
+A **sandbox** is a string identifier (for example `MYTITLE.1`) that scopes every Xbox services call you make — achievements unlocked, sessions joined, stats written, presence shown. Other titles in the same Partner Center publisher share access to your sandbox; outsiders cannot see it.
+
+- **PC** — switch sandboxes with [`XblPCSandbox.exe`](/tools/pc-sandbox-switcher).
+- **Console** — switch with `xbconfig.exe Sandbox` or through [Xbox Manager](/tools/xbox-manager) / [Dev Home](/tools/dev-home).
+
+Go back to `RETAIL` before certification testing.
+
+## Test accounts
+
+A **test account** is an Xbox Live account that exists only inside your sandbox. Microsoft provisions a pool of them for your title; you can also add real accounts for senior dev/QA. Use the [Test Account Tool](/tools/test-account-tool) to set them up on a kit.
+
+When something looks wrong, the [Player Data Reset tool](/tools/player-data-reset) wipes achievements, stats, and history for a test account so you can re-run the unlock path cleanly.
+
+## Best practices for calling Xbox services
+
+- **Batch writes** — do not flush a stat or achievement every frame. Coalesce to natural game beats.
+- **Cache reads** — friend lists, presence, and profile data can be stale for a few minutes; don't re-fetch on every UI redraw.
+- **Use async** — every Xbox services call is async (`XAsyncBlock` / `XTaskQueue`). Never block the game thread.
+- **Don't poll** — prefer notification callbacks (presence change, friend change, sign-out) over polling loops.
+
+## Fine-grained rate limiting
+
+Each service has its own per-title, per-user, per-time-window quota. When you hit it, the service returns 429 and a hint at when to retry. Treat 429 as expected:
+
+- Apply exponential backoff with jitter on retries.
+- Surface a friendly "syncing…" state in UI rather than an error toast.
+- Check the [Trace Analyzer](/tools/trace-analyzer) reports for repeated 429s during dev — they predict cert failures.
+
+## Offline play
+
+Not every session has network. Design every Xbox services touchpoint to degrade gracefully:
+
+- Achievements and stats unlock locally; sync to the service when connectivity returns.
+- Cloud saves (`XGameSave`) keep working against local storage and sync on reconnect.
+- Friends, presence, MPSD show last-known state, marked as stale.
+- Block only the features that absolutely require live network (matchmaking, leaderboard refresh, store purchase).
+
+The full **offline play** guidance covers the certification rules for what must keep working without network.
+
+## Troubleshooting
+
+The top three causes of "my title can't reach Xbox services":
+
+1. **Wrong sandbox** on the kit or PC — always check `xbconfig` / `XblPCSandbox` first.
+2. **Token expired** — reacquire on every resume from suspend.
+3. **Service config drift** — the title's `XblConfig` in Partner Center does not match what the title is compiled against. Re-run [Config as Source](#).
+
+Deeper diagnosis:
+
+- [Trace Analyzer](/tools/trace-analyzer) — offline call-pattern review.
+- [Fiddler integration](#) — inspect raw HTTPS traffic.
+- The published service troubleshooting docs cover sign-in errors, sandbox errors, and per-API HTTP error reference.
+
+## See also
+
+- [Service Tools](/tools/xbox-service-tools)
+- [Sign-in concepts](/playfab/sign-in-concepts)
+- [Cloud Storage](/services/cloud-storage)

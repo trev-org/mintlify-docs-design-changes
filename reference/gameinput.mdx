@@ -2,6 +2,7 @@
 title: "GameInput API reference for input devices"
 sidebarTitle: "GameInput"
 description: "Reference for the GameInput API: enumerate devices, read gamepad and keyboard state, sample arcade sticks, and handle haptics across Xbox and Windows."
+icon: "gamepad"
 ---
 
 **GameInput** is the modern input API for the Microsoft GDK. It replaces XInput, DirectInput, and Raw Input with a single surface that handles gamepads, keyboards, mice, racing wheels, arcade sticks, and flight sticks consistently across Xbox consoles and Windows PC.
@@ -90,6 +91,31 @@ device->SetRumbleState(&rumble);
 ```
 
 For advanced haptic effects on supported controllers, use `IGameInputDevice::SetHapticMotorState` with platform-specific effect descriptors.
+
+## Callbacks and work queues
+
+GameInput can deliver readings either by polling (`GetCurrentReading`) or via **callbacks**. Register a device or reading callback with `RegisterDeviceCallback` / `RegisterReadingCallback` and choose a **work queue** to control which thread dispatches them. Use callbacks when you need the lowest latency response to a specific event (button press, device arrival) and polling when you read input every frame.
+
+## Dynamic Latency Input (DLI)
+
+Dynamic Latency Input synchronizes input sampling to the latest possible point before frame submission, reducing the end-to-end latency from controller event to on-screen response. Opt in with `SetInputSynchronizationState` and call `SendInputSynchronizationHint` once per frame at the latest safe point in your render loop.
+
+## Force feedback
+
+Force-feedback-capable devices (racing wheels, flight sticks) are driven through the GameInput force-feedback interface, which exposes effect creation, parameter updates, and effect lifetime management distinct from the simpler rumble/haptics motors. Effects can be looped, conditioned on axis position, or shaped by a response curve.
+
+## Virtual keyboard
+
+On Xbox and streaming clients, request the system virtual keyboard to capture text input from gamepad or touch. The virtual keyboard returns text through GameInput's text-input pathway so you do not need a separate code path for physical vs. virtual keyboards.
+
+## Porting from XInput or Windows.Xbox.Input
+
+- **XInput → GameInput** — XInput continues to work on PC via the XInput-on-GameInput shim, but new development should target GameInput directly for access to all device classes, sensors, and lower latency. The porting guide maps each XInput call to its GameInput equivalent.
+- **Windows.Xbox.Input (WXI) → GameInput** — Xbox One ERA titles using WXI map to GameInput via a parallel porting guide. Major changes: device enumeration model, reading lifetime, and user-to-device association now go through XUser.
+
+## Hardware developers
+
+GameInput exposes interfaces for new hardware to integrate cleanly: device descriptors, sensor and haptic capability declarations, and the Device Mapping Tool for testing button/axis assignments against a reference layout before shipping.
 
 ## See also
 
