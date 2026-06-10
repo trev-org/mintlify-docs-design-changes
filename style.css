@@ -557,14 +557,14 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
    contrast against the page content. */
 #sidebar-content,
 .dark #sidebar-content {
-  background-color: #2F343C !important;
+  background-color: #1E2127 !important;
   opacity: 1 !important;
 }
 
 /* Ensure the sidebar layer/wrapper is opaque (defeat any theme transparency). */
 #sidebar,
 .dark #sidebar {
-  background-color: #2F343C !important;
+  background-color: #1E2127 !important;
   opacity: 1 !important;
 }
 
@@ -597,7 +597,7 @@ sidebar-group-header {
 /* Active page — darker brand green for stronger contrast on the grey */
 #sidebar-content li[data-active] > a,
 #sidebar-content li[data-active] a {
-  color: #5BC98A;
+  color: #3FB377;
   font-weight: 500;
   background-color: transparent;
   border-left: 0;
@@ -621,7 +621,7 @@ sidebar-group-header {
 
 #sidebar-content li[data-active]::before {
   width: 2px;
-  background-color: #5BC98A;
+  background-color: #3FB377;
 }
 
 /* ---------------------------------------------------------------------

@@ -265,7 +265,7 @@
         ]
       },
       {
-        "tab": "Console Only Features",
+        "tab": "Console Features",
         "groups": [
           {
             "group": "Console Features",
@@ -292,7 +292,7 @@
         ]
       },
       {
-        "tab": "Development Tools",
+        "tab": "Tools",
         "groups": [
           {
             "group": "Tools",
@@ -321,22 +321,22 @@
         ]
       },
       {
-        "tab": "Game Principles",
+        "tab": "Principles",
         "groups": [
           {
             "group": "Game Principles",
             "icon": "compass",
             "pages": [
-              "principles/accessibility-overview",
-              "principles/speech-accessibility",
               "principles/localization-globalization",
               "principles/security-overview",
+              "principles/accessibility-overview",
+              "principles/speech-accessibility",
               "principles/xbox-accessibility-guidelines",
+              "principles/accessibility-resources",
               "principles/mgats",
               "principles/sustainability-overview",
               "principles/energy-efficiency-essentials",
-              "principles/sustainability-case-studies",
-              "principles/accessibility-resources"
+              "principles/sustainability-case-studies"
             ]
           }
         ]
@@ -370,7 +370,7 @@
         ]
       },
       {
-        "tab": "API References",
+        "tab": "API",
         "groups": [
           {
             "group": "Error Codes",
