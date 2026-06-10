@@ -49,16 +49,6 @@
       "github": "https://github.com/microsoft/Xbox-GDK-Samples"
     }
   },
-  "fonts": {
-    "heading": {
-      "family": "Open Sans",
-      "weight": 700
-    },
-    "body": {
-      "family": "Open Sans",
-      "weight": 400
-    }
-  },
   "styling": {
     "eyebrows": "breadcrumbs"
   },
@@ -492,17 +482,6 @@
       }
     ]
   },
-  "description": "XBOX Game Development Documentation",
-  "logo": "/images/logo.svg",
-  "appearance": {
-    "default": "dark"
-  },
-  "background": {
-    "color": {
-      "light": "#FFFFFF",
-      "dark": "#09090B"
-    }
-  },
   "fonts": {
     "heading": {
       "family": "Segoe UI",
@@ -516,85 +495,5 @@
       "format": "woff",
       "weight": 400
     }
-  },
-  "styling": {
-    "eyebrows": "breadcrumbs"
-  },
-  "footer": {
-    "socials": {
-      "discord": "https://developer.microsoft.com/en-us/games",
-      "youtube": "https://www.youtube.com/msftgamedev",
-      "github": "https://github.com/microsoft/Xbox-GDK-Samples"
-    }
-  },
-  "metadata": {
-    "timestamp": true
-  },
-  "redirects": [
-    {
-      "source": "/pc-e2e/register-id-xbox",
-      "destination": "/onboarding",
-      "permanent": true
-    },
-    {
-      "source": "/pc-e2e/partner-center-account",
-      "destination": "/onboarding",
-      "permanent": true
-    },
-    {
-      "source": "/pc-e2e/partner-center-product",
-      "destination": "/onboarding",
-      "permanent": true
-    },
-    {
-      "source": "/pc-e2e/integrate-gdk",
-      "destination": "/pc-e2e/engines/custom-engine",
-      "permanent": true
-    },
-    {
-      "source": "/pc-e2e/publish-your-game",
-      "destination": "/publishing/overview",
-      "permanent": true
-    },
-    {
-      "source": "/services/achievements-eb-vs-tm",
-      "destination": "/services/player-data",
-      "permanent": true
-    },
-    {
-      "source": "/services/stats-eb-vs-tm",
-      "destination": "/services/player-data",
-      "permanent": true
-    },
-    {
-      "source": "/services/multiplayer-intro",
-      "destination": "/services/multiplayer",
-      "permanent": true
-    },
-    {
-      "source": "/services/mpsd",
-      "destination": "/services/multiplayer",
-      "permanent": true
-    },
-    {
-      "source": "/services/mpm",
-      "destination": "/services/multiplayer",
-      "permanent": true
-    },
-    {
-      "source": "/services/mpa",
-      "destination": "/services/multiplayer-activity",
-      "permanent": true
-    },
-    {
-      "source": "/services/matchmaking",
-      "destination": "/services/multiplayer",
-      "permanent": true
-    },
-    {
-      "source": "/services/test-accounts",
-      "destination": "/tools/test-account-tool",
-      "permanent": true
-    }
-  ]
+  }
 }

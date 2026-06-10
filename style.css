@@ -27,9 +27,9 @@
   --xbox-green: #008746;
   --xbox-green-active: #008746;
   --xbox-green-fg: #ffffff;
-  --xbox-grey: #484E58;
-  --xbox-red: #E51D23;
-  --xbox-blue: #007DB5;
+  --xbox-grey: #484e58;
+  --xbox-red: #e51d23;
+  --xbox-blue: #007db5;
 
   /* System */
   --xbox-radius: 4px;
@@ -52,9 +52,9 @@
   --xbox-green: #008746;
   --xbox-green-active: #008746;
   --xbox-green-fg: #ffffff;
-  --xbox-grey: #484E58;
-  --xbox-red: #E51D23;
-  --xbox-blue: #007DB5;
+  --xbox-grey: #484e58;
+  --xbox-red: #e51d23;
+  --xbox-blue: #007db5;
 }
 
 /* ---------------------------------------------------------------------
@@ -118,6 +118,10 @@ body {
   margin-right: 0;
   padding-left: var(--xbox-page-gutter);
   padding-right: var(--xbox-page-gutter);
+}
+
+.navbar-link {
+  font-weight: 500;
 }
 
 #content-container {
@@ -300,7 +304,7 @@ a[href*="/issues/new"] {
   text-transform: uppercase;
   color: var(--xbox-text-muted);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: normal;
 }
 
@@ -371,7 +375,7 @@ a[href*="/issues/new"] {
 
 .nav-tabs-item {
   color: var(--xbox-text-muted);
-  font-weight: 500;
+  font-weight: 700;
   transition: color 0.15s ease;
 }
 
@@ -561,26 +565,34 @@ a[href*="/issues/new"] {
    Sidebar navigation
    --------------------------------------------------------------------- */
 
-/* Sidebar background — solid darker Xbox grey on every tab, both themes.
-   Original brand grey is #484E58; this is a darkened variant for better
-   contrast against the page content. */
-#sidebar-content,
+/* Sidebar background — opaque in both themes, with theme-specific colors. */
+#sidebar-content {
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+}
+
 .dark #sidebar-content {
-  background-color: #1E2127 !important;
+  background-color: #1e2127 !important;
   opacity: 1 !important;
 }
 
 /* Ensure the sidebar layer/wrapper is opaque (defeat any theme transparency). */
-#sidebar,
-.dark #sidebar {
-  background-color: #1E2127 !important;
+#sidebar {
+  background-color: #ffffff !important;
   opacity: 1 !important;
 }
 
-/* On dark mode the page background sits behind the sidebar fixed positioning,
-   so make sure the rail edges read against the grey rather than the page bg. */
+.dark #sidebar {
+  background-color: #1e2127 !important;
+  opacity: 1 !important;
+}
+
+/* Rail edges need enough contrast against each theme's sidebar surface. */
 #sidebar-content::before,
-#sidebar-content::after,
+#sidebar-content::after {
+  border-left-color: var(--xbox-border);
+}
+
 .dark #sidebar-content::before,
 .dark #sidebar-content::after {
   border-left-color: rgba(255, 255, 255, 0.12);
@@ -588,26 +600,49 @@ a[href*="/issues/new"] {
 
 sidebar-title,
 sidebar-group-header {
+  color: var(--xbox-text-main);
+  font-weight: 700;
+}
+
+.dark sidebar-title,
+.dark sidebar-group-header {
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 #sidebar-content li a {
-  color: #d4d4d8;
+  color: var(--xbox-text-subtle);
   border-radius: var(--xbox-radius);
 }
 
-#sidebar-content li a:hover,
+#sidebar-content li a:hover {
+  color: var(--xbox-text-main);
+  background-color: transparent !important;
+}
+
+.dark #sidebar-content li a {
+  color: #d4d4d8;
+}
+
 .dark #sidebar-content li a:hover {
   color: #ffffff;
   background-color: transparent !important;
 }
 
-/* Active page — darker brand green for stronger contrast on the grey */
+/* Active page — use theme-specific greens for contrast against each surface. */
 #sidebar-content li[data-active] > a,
 #sidebar-content li[data-active] a {
-  color: #3FB377;
-  font-weight: 500;
+  color: var(--xbox-green-active);
+  font-weight: 700;
+  background-color: transparent;
+  border-left: 0;
+  border-radius: 4px;
+}
+
+.dark #sidebar-content li[data-active] > a,
+.dark #sidebar-content li[data-active] a {
+  color: #3fb377;
+  font-weight: 700;
   background-color: transparent;
   border-left: 0;
   border-radius: 4px;
@@ -625,12 +660,20 @@ sidebar-group-header {
 }
 
 #sidebar-content li:not([data-active]):hover::before {
+  background-color: var(--xbox-border);
+}
+
+.dark #sidebar-content li:not([data-active]):hover::before {
   background-color: rgba(255, 255, 255, 0.35);
 }
 
 #sidebar-content li[data-active]::before {
   width: 2px;
-  background-color: #3FB377;
+  background-color: var(--xbox-green-active);
+}
+
+.dark #sidebar-content li[data-active]::before {
+  background-color: #3fb377;
 }
 
 /* ---------------------------------------------------------------------
@@ -663,7 +706,7 @@ sidebar-group-header {
    --------------------------------------------------------------------- */
 #page-title {
   color: var(--xbox-text-main);
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: -0.7px;
 }
 
@@ -696,7 +739,7 @@ card .font-semibold,
 card h2,
 card h3 {
   color: var(--xbox-text-main);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 card p {
@@ -934,7 +977,7 @@ mdx-content a:not(card a) {
 .xbox-quick-body h3 {
   margin: 0;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: -0.2px;
   color: var(--xbox-text-main);
 }
@@ -949,7 +992,7 @@ mdx-content a:not(card a) {
 .xbox-quick-link {
   margin-top: auto;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   color: var(--xbox-green-active);
 }
 
@@ -992,7 +1035,7 @@ mdx-content a:not(card a) {
   align-items: center;
   padding: 8px 16px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   text-decoration: none;
   border-radius: var(--xbox-radius);
   transition:
