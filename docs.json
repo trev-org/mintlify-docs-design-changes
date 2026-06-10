@@ -3,9 +3,9 @@
   "name": "XBOX Game Development Documentation",
   "description": "XBOX Game Development Documentation",
   "colors": {
-    "primary": "#008746",
-    "light": "#008746",
-    "dark": "#008746"
+    "primary": "#007738",
+    "light": "#7CC400",
+    "dark": "#007738"
   },
   "logo": {
     "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20-Copy.png",
@@ -142,8 +142,8 @@
   "banner": {
     "content": "XBOX Game Development Documentation",
     "color": {
-      "light": "#008746",
-      "dark": "#008746"
+      "light": "#007738",
+      "dark": "#007738"
     }
   },
   "metadata": {
