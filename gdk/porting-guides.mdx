@@ -29,6 +29,10 @@ For existing Xbox One ERA titles, the porting guide covers:
 
 See [**Memory porting**](/gdk/memory) for ERA → GDK memory specifics.
 
+### EMiLi (ERA Migration Library)
+
+**EMiLi** is a Microsoft-supplied compatibility shim that implements common Xbox One ERA APIs on top of the GDK. Drop it into an existing ERA codebase and large parts of the title will keep compiling and running unchanged while you incrementally rewrite hot paths against the native GDK APIs. EMiLi is a porting accelerator, not a shipping target — plan to remove it before final certification.
+
 ## Shaders: FXC → DXC
 
 The DirectX Shader Compiler (DXC) is the modern HLSL compiler. The FXC → DXC port guide covers:

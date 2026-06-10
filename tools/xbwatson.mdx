@@ -1,0 +1,34 @@
+---
+title: "Collect and analyze Xbox crash dumps with xbWatson"
+sidebarTitle: "xbWatson"
+description: "xbWatson — collect crash mini-dumps from dev kits and retail consoles in dev mode, symbolicate against your PDB store, and triage by signature."
+icon: "skull"
+---
+
+**xbWatson** is the Xbox crash dump collection and analysis tool. When your title crashes on a dev kit, retail console in dev mode, or in a tester's hands, xbWatson is what gives you the symbolicated callstack.
+
+## How it works
+
+1. The console writes a crash mini-dump to its local storage whenever a title process terminates abnormally.
+2. **xbWatson** pulls those dumps from one or more consoles in your studio.
+3. It resolves them against your PDB symbol store and produces grouped reports by failure signature.
+
+## When to use it
+
+- **Pre-cert testing** — run xbWatson against the test team's consoles overnight to catch every crash from the previous play session.
+- **Crash triage** — group dumps by signature so you can prioritize the most frequent crash, not the most recent one.
+- **External betas** — collect dumps from playtester kits before they wipe them.
+
+## Symbol setup
+
+xbWatson needs PDBs to be useful. Either:
+
+- Point it at a UNC symbol store populated by your CI build.
+- Use `symsrv.dll` against the Microsoft public symbol server for Microsoft binaries.
+
+Without PDBs you get raw RVAs; with PDBs you get function, file, and line.
+
+## See also
+
+- [Hang Investigation](/tools/hang-investigation) — for hangs, which don't produce dumps
+- [PIX for Xbox](/tools/pix-for-xbox)

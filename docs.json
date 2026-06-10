@@ -1,5 +1,5 @@
 {
-  "theme": "almond",
+  "theme": "aspen",
   "name": "XBOX Game Development Documentation",
   "description": "XBOX Game Development Documentation",
   "colors": {
@@ -199,7 +199,8 @@
               "gdk/memory",
               "gdk/localization",
               "gdk/error-handling",
-              "gdk/text-to-speech"
+              "gdk/text-to-speech",
+              "gdk/platform-integration"
             ]
           },
           {
@@ -213,7 +214,8 @@
               "pc-e2e/engines/gamemaker",
               "pc-e2e/engines/custom-engine",
               "pc-e2e/engines/godot",
-              "pc-e2e/optional-services"
+              "pc-e2e/optional-services",
+              "pc-e2e/handheld"
             ]
           }
         ]
@@ -269,6 +271,7 @@
               "gdk/cross-gen",
               "gdk/directstorage",
               "gdk/dynamic-lighting",
+              "gdk/quick-resume",
               "gdk/game-streaming-overview",
               "gdk/cloud-aware-api",
               "gdk/graphics-overview",
@@ -297,7 +300,9 @@
               "tools/test-account-tool",
               "tools/trace-analyzer",
               "tools/xbox-service-tools",
-              "tools/visual-studio"
+              "tools/visual-studio",
+              "tools/pix-for-xbox",
+              "tools/xbwatson"
             ]
           }
         ]

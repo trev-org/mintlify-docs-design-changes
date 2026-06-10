@@ -1,0 +1,67 @@
+---
+title: "Platform integration: activation, media, text, and OAuth"
+sidebarTitle: "Platform Integration"
+description: "GDK platform integration topics every title needs: protocol activation, file type activation, Media Foundation video decoding, UTF-8 strings, Windows messages, and OAuth."
+icon: "plug"
+---
+
+Shell launches, file associations, media decoding, text encoding, and OAuth flows are all covered by individual GDK APIs. None of them are big enough for a dedicated page, but every shipping title hits all of them.
+
+## Protocol activation
+
+A **protocol activation** is when the shell launches your title via a URI such as `mygame://lobby/abc123`. Register your scheme in `MicrosoftGame.config` and receive the URI through the [XGameActivation](/reference/xgameactivation) callback at startup.
+
+Use cases:
+
+- Deep-link from a friend's invite into a specific match or lobby.
+- Resume from an external launcher (Xbox app, store, vendor shell on handhelds).
+- Hand off from a chat or social app.
+
+## File type activation
+
+**File type activation** is the same mechanism for files: associate a file extension (`.mygame-replay`, `.mygame-mod`) in `MicrosoftGame.config` and the OS routes double-click and "Open with\\u2026" actions to your title. The activation callback receives the file paths.
+
+Keep file handlers idempotent — the OS may activate an already-running instance instead of cold-starting.
+
+## Media Foundation transform decoding
+
+For video cutscenes, in-game streaming, and FMV, use **Media Foundation** transforms to decode H.264, H.265/HEVC, and VP9 on both Xbox and Windows. The hardware decoder path is automatic on capable Xbox consoles; PC falls back to whatever the GPU driver supports.
+
+Prefer Media Foundation over hand-rolled decoders:
+
+- It uses the dedicated video decode block on Xbox, freeing the GPU and CPU.
+- It integrates with the audio mixer for synchronized A/V.
+- It is certification-friendly — Microsoft already validated the codecs and DRM paths.
+
+## UTF-8 support
+
+All new GDK string APIs are **UTF-8**. The legacy Win32 `A` variants (e.g., `CreateFileA`) now accept UTF-8, not the system ANSI code page, when your title opts in via the `<UseUtf8Codepage>` manifest setting.
+
+Guidelines:
+
+- Store all strings on disk as UTF-8.
+- Treat `char*` as UTF-8 throughout the title; reserve `wchar_t*` for the small number of APIs that still require UTF-16.
+- Be deliberate about converting at the API boundary; do not convert speculatively in hot paths.
+
+## Windows messages on Xbox
+
+Xbox titles run under a windowed message loop in the same way PC titles do. The system delivers PLM (suspend, resume, constrain), display (resolution change, HDR mode), and input (controller, IME) events through `WindowProc`. Pump messages every frame and do not block in the handler.
+
+If you use the GameInput callback model and the task queue dispatcher, you can keep your `WindowProc` tiny — most input and async completions flow through the queue, not the message loop.
+
+## OAuth
+
+For titles that integrate with external services (your own backend, a third-party publisher account, a vendor SDK), use the GDK OAuth flow rather than rolling your own browser:
+
+- Launch the platform web view through `XLauncher` so the system handles cookies, redirects, and the on-screen keyboard.
+- Receive the OAuth token via [protocol activation](#protocol-activation) on the registered redirect URI.
+- Store refresh tokens in [Persistent Local Storage](/reference/xpersistentlocalstorage), never in unencrypted save data.
+
+Do **not** ship your own web view, browser shim, or platform login UI. Certification will flag it.
+
+## See also
+
+- [XGameActivation](/reference/xgameactivation) — unified activation callback
+- [XLauncher](/reference/xlauncher) — launch URIs, system UI, and partner apps
+- [MicrosoftGame.config elements](/reference/microsoftgameconfig-elements) — declare protocols, file types, and capabilities
+- [Persistent Local Storage](/reference/xpersistentlocalstorage) — secure token storage

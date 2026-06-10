@@ -1,0 +1,83 @@
+---
+title: "Quick Resume guidance for Xbox developers"
+sidebarTitle: "Quick Resume"
+description: "How Quick Resume suspends and rehydrates your Xbox title, what state survives, and how to keep cloud-dependent features correct after a long suspend."
+icon: "play"
+---
+
+**Quick Resume** lets Xbox Series X|S players hold the state of multiple titles in memory at once and jump between them in seconds. Your game looks and feels like it never left memory — because it didn't. As a developer, your job is to make sure the world the player returns to is still valid.
+
+## What Quick Resume actually does
+
+Quick Resume is the Xbox platform's process lifecycle management (PLM) at scale. When the player switches away from your title, the OS:
+
+1. Sends your process a **suspending** notification.
+2. Stops scheduling your threads.
+3. Snapshots your virtual memory and GPU resources to fast NVMe.
+4. Frees the foreground for another title.
+
+When the player returns, the OS rehydrates the snapshot, resumes your threads, and sends a **resuming** notification. Open file handles, network connections (TCP/UDP), GPU command queues, and async tasks all survive in place.
+
+## What does _not_ survive
+
+Lots of state is logically stale even though it is still in memory. You are responsible for refreshing it on resume:
+
+- **Clock and elapsed time** — hours or days may have passed. Re-query `XGetTickCount64`, system time, and any wall-clock timer.
+- **Live service state** — friends, presence, party, multiplayer session, sign-in token, store catalog. Tokens may be expired; refresh them.
+- **Network reachability** — the player may have changed networks, lost connectivity, or switched continents. Re-validate before you assume your last socket is still useful.
+- **Controller bindings** — the gamepad set or active user may have changed; re-query through XUser and GameInput.
+- **Title updates and DLC** — a content update may have shipped while you were suspended; check on resume and prompt for re-launch if needed.
+- **Date/time-sensitive content** — daily quests, live events, leaderboards, season passes.
+
+## Handling suspend and resume
+
+<Steps>
+  <Step title="Register for PLM notifications">
+    Subscribe to `CoreApplication::Suspending` (or the GameRuntime equivalent) on startup. Keep the handler fast — you have roughly two seconds before the OS stops scheduling you.
+  </Step>
+  <Step title="Persist anything that must survive a cold start">
+    A Quick Resume snapshot lives in memory; a power-cycle wipes it. Treat the suspend handler as your last chance to flush save data, network checkpoints, and analytics events to disk or cloud.
+  </Step>
+  <Step title="Detach from the GPU cleanly">
+    Wait for outstanding command lists with `ID3D12CommandQueue::Wait`, close any work you don't want resumed, and call `Trim()` on the device so the driver can repack VRAM in the snapshot.
+  </Step>
+  <Step title="On resume, validate world state">
+    In the resuming callback, refresh tokens, query elapsed time, re-validate the live multiplayer session, and check for content updates before unpausing gameplay.
+  </Step>
+  <Step title="Show a quick re-orient UI if needed">
+    If the resume took a meaningful amount of wall-clock time (player was away for hours), briefly pause and tell them what just happened — "You were away from the match for 4 hours; rejoining lobby."
+  </Step>
+</Steps>
+
+## Network sessions and multiplayer
+
+Long-lived TCP/UDP sockets technically survive the snapshot, but the remote peer almost certainly does not still think you are connected. Treat every multiplayer session as **invalid** on resume:
+
+- Drop and reopen sockets.
+- Re-join the MPSD session, lobby, or match through your matchmaking service.
+- Reconcile any local game state with authoritative server state before resuming gameplay.
+
+## Friends, presence, and store
+
+XboxLive tokens, friend lists, presence records, and store catalogs all need a refresh. Don't display stale friend status or stale prices.
+
+## Quick Resume and DirectStorage
+
+DirectStorage requests in flight at suspend time are paused and replayed on resume. File handles passed to `IDStorage*` are preserved across the snapshot. You do not need to recreate `IDStorageFile` objects.
+
+## Testing Quick Resume
+
+Dev kits and retail consoles in dev mode let you trigger suspend/resume from the dashboard. Test:
+
+- Long suspend across an Xbox system update.
+- Suspend during a multiplayer match.
+- Suspend during a long load screen, DirectStorage stream, or async save.
+- Suspend with the player signed out, then resumed after a different user signs in.
+
+A correct Quick Resume implementation is invisible to the player. A wrong one ships stale leaderboards, dead lobbies, and "why is my clock wrong?" reports.
+
+## See also
+
+- [User Model](/gdk/user-model) — active user can change across resume
+- [DirectStorage](/gdk/directstorage) — in-flight request behavior
+- [Networking](/gdk/networking) — socket state on resume
