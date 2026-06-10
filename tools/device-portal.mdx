@@ -1,0 +1,36 @@
+---
+title: "Manage your dev kit from a browser with Windows Device Portal"
+sidebarTitle: "Device Portal"
+description: "Windows Device Portal on Xbox — browser-based console management, file explorer, performance graphs, HTTP monitor, crash data, and script authoring."
+icon: "globe"
+---
+
+The **Windows Device Portal on Xbox** is a browser-based UI served by your dev kit. Open `https://<console-ip>:11443` in any browser to manage the console without installing PC tooling.
+
+## Pages
+
+| Page | Use |
+| --- | --- |
+| **Home** | Console status, OS version, signed-in users, quick actions. |
+| **File explorer** | Browse the dev partition; download or upload files. |
+| **Performance** | Live CPU, GPU, memory, network graphs. |
+| **Xbox Live** | Sandbox, services, signed-in user accounts. |
+| **HTTP monitor** | Live HTTP/HTTPS traffic from the console — useful for inspecting backend calls without Fiddler. |
+| **Network** | Interface configuration, debug NIC, ping/throughput. |
+| **Media capture** | Take screenshots and video clips. |
+| **Crash data** | Browse and download crash dumps for [xbWatson](/tools/xbwatson). |
+| **OS update** | Apply OS recoveries from the browser. |
+| **Game event** | Inspect title XEvents (achievements, stats) as they fire. |
+| **Script authoring** | Author and run PowerShell-style automation scripts directly on the console. |
+| **Settings** | Console-wide settings exposed without leaving the browser. |
+| **Overlay folders** | Configure overlay mounts. |
+| **Adding tools to workspaces** | Pin custom tools into the WDP UI. |
+
+## Enabling Device Portal
+
+Device Portal is on by default on dev kits but disabled on dev-mode retail consoles. Enable it from **Dev Home → Settings → Device Portal**, then connect with the credentials shown.
+
+## See also
+
+- [Developer Home](/tools/dev-home)
+- [Xbox Manager](/tools/xbox-manager)

@@ -1,0 +1,52 @@
+---
+title: "Xbox console command-line tools"
+sidebarTitle: "Console CLI Tools"
+description: "Reference for the xb* command-line tools that drive every Xbox dev kit workflow — deploy, reboot, capture, profile, and diagnose from your PC."
+icon: "terminal"
+---
+
+Most Xbox console workflows are scriptable through the **`xb*` command-line tools** shipped in the GDK. They are the primitives that Visual Studio, Xbox Manager, and your CI pipeline call into.
+
+Run them from the **GDK Command Prompt** (start menu shortcut) so the right PATH, INCLUDE, and LIB are set.
+
+## Most-used tools
+
+| Tool | What it does |
+| --- | --- |
+| **`xbapp.exe`** | Install, register, launch, list, update, uninstall titles. Most-used tool by far. |
+| **`xbconnect.exe`** | Set the default console; add and remove consoles. |
+| **`xbconfig.exe`** | Read and write console settings (sandbox, language, region, debug NIC, PIX prerequisites). |
+| **`xbcp.exe`** | High-throughput file copy to/from the console dev partition. Use this, not `xcopy`. |
+| **`xbcopy.exe`** | Alternative bulk-copy with deeper retry logic. |
+| **`xbreboot.exe`** | Reboot to title OS, to system OS, or to recovery. |
+| **`xbuser.exe`** | Sign accounts in and out from the command line. |
+| **`xbrun.exe`** | Execute a tool or batch file on the console. |
+| **`xbdbgmon.exe`** | Tail debug output from a connected console. Like `OutputDebugString` over the network. |
+| **`xbcapture.exe`** | Screenshot the console. |
+| **`xbgamestream.exe`** | Manage game streaming sessions on the console. |
+| **`xbstorage.exe`** | Inspect and manipulate `XGameSave` Connected Storage on a console. |
+| **`xbperf.exe`** | CPU performance snapshots. |
+| **`xbstress.exe`** | Stress-test the console (network, storage, thermal). |
+| **`xbcleanup.exe`** | Free disk space; remove stale packages. |
+| **`xbttd.exe`** | Time Travel Debugging captures for Xbox. |
+| **`xberror.exe`** | Look up an Xbox HRESULT or NTSTATUS by code. |
+| **`xbdiaginfo.exe`** | Collect a full console diagnostic bundle to attach to a Microsoft support ticket. |
+| **`xbprovision.exe`** | Provision a new console with your studio's standard image. |
+| **`xbversioninfo.exe`** | Print OS, recovery, and SDK versions on the console. |
+
+## Console-resident `wd*` tools
+
+Some `wd*` tools (`wdapp.exe`, `wdcapture.exe`, `wdconfig.exe`, `wdcred.exe`, `wdgamestream.exe`, `wdpanel.exe`, `wdRecovery.exe`, `wdRun.exe`, `wdtrace.exe`, `wduser.exe`) run **on the console** rather than from your PC. You invoke them from your title or from an automation script that already runs on-device.
+
+These are the right choice for automation that needs to keep working when the PC tools are unavailable — for example, an unattended soak rig in a lab.
+
+## Tips
+
+- Use `/?` on any tool for current syntax — they evolve between GDK versions.
+- Set `XBOX_DEFAULT_CONSOLE` to override the target console for a script without calling `xbconnect`.
+- Wrap deploy \+ run in a single batch file: `xbcp build\\ xd:\\game\\ /R && xbrun /x/title /O xd:\\game\\GameLauncher.exe`.
+
+## See also
+
+- [Application Management (wdapp.exe)](/tools/wdapp) — the PC counterpart for PC titles
+- [Xbox Manager](/tools/xbox-manager) — GUI on top of these primitives

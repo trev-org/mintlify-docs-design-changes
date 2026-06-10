@@ -302,7 +302,13 @@
               "tools/xbox-service-tools",
               "tools/visual-studio",
               "tools/pix-for-xbox",
-              "tools/xbwatson"
+              "tools/xbwatson",
+              "tools/xbox-manager",
+              "tools/dev-home",
+              "tools/device-portal",
+              "tools/console-command-line-tools",
+              "tools/shader-compiler",
+              "tools/pgo"
             ]
           }
         ]

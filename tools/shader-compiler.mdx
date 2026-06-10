@@ -1,0 +1,57 @@
+---
+title: "Compile HLSL for Xbox with the DirectX Shader Compiler (DXC)"
+sidebarTitle: "Shader Compiler"
+description: "DXC — the DirectX Shader Compiler used for Xbox HLSL, including Shader Model 6.x, Xbox intrinsics and defines, HLSL extensions, and FXC porting."
+icon: "wand-magic-sparkles"
+---
+
+Xbox titles compile HLSL with the **DirectX Shader Compiler (DXC)**. DXC is the long-term successor to FXC and is the only compiler that supports Shader Model 6.x, mesh shaders, ray tracing, and Xbox-specific intrinsics.
+
+## Why DXC, not FXC
+
+FXC tops out at Shader Model 5.1 and is no longer receiving feature work. DXC is required for:
+
+- Shader Model 6.0\+ (wave intrinsics, packed math).
+- Mesh and amplification shaders.
+- Ray tracing (DXR / XDXR).
+- Sampler Feedback.
+- Xbox HLSL extensions and intrinsics.
+
+## Using DXC
+
+Invoke `dxc.exe` directly or through the Visual Studio HLSL build rules. Common flags:
+
+```text
+dxc -T ps_6_6 -E main -Fo shader.dxil -Fh shader.h -O3 shader.hlsl
+```
+
+The Xbox toolchain ships a console-specific build of DXC; use it (not the public PC DXC) for binaries that target Xbox PSOs.
+
+## FXC to DXC porting
+
+The FXC → DXC port guide covers:
+
+- Different reflection metadata format.
+- `register(b#)` semantics changes for constant buffers in SM6.
+- `groupshared` initialization rules.
+- `Texture2D<float4>` strict typing.
+- Updated entry-point declaration syntax.
+
+Most code compiles unchanged. Plan for a clean-up pass on warnings.
+
+## Xbox-specific HLSL
+
+Three Xbox-only surfaces you should know:
+
+- **Xbox defines** — preprocessor macros set by the Xbox toolchain so you can `#ifdef _GAMING_XBOX_SCARLETT` for Series X|S-only code paths.
+- **Xbox intrinsics** — hand-tuned HLSL builtins that map to Xbox GPU instructions you cannot express in stock HLSL.
+- **Xbox HLSL extensions** — language extensions (e.g., extended type qualifiers, hardware-specific resource bindings).
+
+Keep the Xbox-only code paths behind clear `#ifdef`s so the same HLSL still compiles for PC.
+
+## See also
+
+- [Graphics overview](/gdk/graphics-overview)
+- [Mesh shaders](/gdk/mesh-shaders)
+- [Ray tracing](/gdk/raytracing)
+- [Porting guides](/gdk/porting-guides) — FXC → DXC porting
