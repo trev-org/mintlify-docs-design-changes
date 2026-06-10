@@ -573,15 +573,15 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
    Sidebar navigation
    --------------------------------------------------------------------- */
 
-/* Sidebar background — revert to page background (dark near-black in dark mode,
-   white in light mode). */
+/* Sidebar background — solid darker Xbox grey (#2F343C) in dark mode,
+   white in light mode. */
 #sidebar-content {
   background-color: #fff !important;
   opacity: 1 !important;
 }
 
 .dark #sidebar-content {
-  background-color: var(--xbox-bg) !important;
+  background-color: #2F343C !important;
   opacity: 1 !important;
 }
 
@@ -592,7 +592,7 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
 }
 
 .dark #sidebar {
-  background-color: var(--xbox-bg) !important;
+  background-color: #2F343C !important;
   opacity: 1 !important;
 }
 
