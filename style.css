@@ -546,15 +546,26 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
 }
 
 #topbar-cta-button a {
-  background-color: var(--xbox-green);
-  color: var(--xbox-green-fg);
+  background-color: var(--xbox-surface);
+  color: var(--xbox-text-main);
   border-radius: var(--xbox-radius);
-  border: none;
+  border: 1px solid var(--xbox-border-muted);
   transition: background-color 0.15s ease;
 }
 
 #topbar-cta-button a:hover {
-  background-color: var(--xbox-green-active);
+  background-color: var(--xbox-surface-subtle);
+  opacity: 1;
+}
+
+.dark #topbar-cta-button a {
+  background-color: var(--xbox-bg);
+  color: var(--xbox-text-main);
+  border: 1px solid var(--xbox-surface-muted);
+}
+
+.dark #topbar-cta-button a:hover {
+  background-color: var(--xbox-surface-subtle);
   opacity: 1;
 }
 
@@ -562,26 +573,26 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
    Sidebar navigation
    --------------------------------------------------------------------- */
 
-/* Sidebar background — Xbox nav-bar grey (#89919F) in dark mode,
-   Light Grey (#e6e6e6) in light mode. */
+/* Sidebar background — revert to page background (dark near-black in dark mode,
+   white in light mode). */
 #sidebar-content {
-  background-color: var(--xbox-grey-light) !important;
+  background-color: #fff !important;
   opacity: 1 !important;
 }
 
 .dark #sidebar-content {
-  background-color: var(--xbox-grey) !important;
+  background-color: var(--xbox-bg) !important;
   opacity: 1 !important;
 }
 
 /* Ensure the sidebar layer/wrapper is opaque (defeat any theme transparency). */
 #sidebar {
-  background-color: var(--xbox-grey-light) !important;
+  background-color: #fff !important;
   opacity: 1 !important;
 }
 
 .dark #sidebar {
-  background-color: var(--xbox-grey) !important;
+  background-color: var(--xbox-bg) !important;
   opacity: 1 !important;
 }
 
