@@ -551,30 +551,43 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
 /* ---------------------------------------------------------------------
    Sidebar navigation
    --------------------------------------------------------------------- */
+
+/* Sidebar background — Xbox grey #484E58 on every tab, both themes. */
+#sidebar-content,
+.dark #sidebar-content {
+  background-color: #484E58 !important;
+}
+
+/* On dark mode the page background sits behind the sidebar fixed positioning,
+   so make sure the rail edges read against the grey rather than the page bg. */
+#sidebar-content::before,
+#sidebar-content::after,
+.dark #sidebar-content::before,
+.dark #sidebar-content::after {
+  border-left-color: rgba(255, 255, 255, 0.12);
+}
+
 sidebar-title,
 sidebar-group-header {
-  color: var(--xbox-text-main);
+  color: #ffffff;
   font-weight: 500;
 }
 
 #sidebar-content li a {
-  color: var(--xbox-text-subtle);
+  color: #d4d4d8;
   border-radius: var(--xbox-radius);
 }
 
-#sidebar-content li a:hover {
-  color: black;
+#sidebar-content li a:hover,
+.dark #sidebar-content li a:hover {
+  color: #ffffff;
   background-color: transparent !important;
 }
 
-.dark #sidebar-content li a:hover {
-  color: #cecece;
-}
-
-/* Active page — green text with a green leading rule (Figma 8014:3348) */
+/* Active page — keep brand green but ensure it's legible on the grey */
 #sidebar-content li[data-active] > a,
 #sidebar-content li[data-active] a {
-  color: var(--xbox-green-active);
+  color: #7ee2a8;
   font-weight: 500;
   background-color: transparent;
   border-left: 0;
@@ -593,12 +606,12 @@ sidebar-group-header {
 }
 
 #sidebar-content li:not([data-active]):hover::before {
-  background-color: #cecece;
+  background-color: rgba(255, 255, 255, 0.35);
 }
 
 #sidebar-content li[data-active]::before {
   width: 2px;
-  background-color: var(--xbox-green-active);
+  background-color: #7ee2a8;
 }
 
 /* ---------------------------------------------------------------------
