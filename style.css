@@ -974,10 +974,10 @@ mdx-content a:not(card a) {
   padding: 16px;
 }
 
-.xbox-quick-body h3 {
+.xbox-quick-title {
   margin: 0;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 700 !important;
   letter-spacing: -0.2px;
   color: var(--xbox-text-main);
 }
@@ -986,6 +986,7 @@ mdx-content a:not(card a) {
   margin: 0;
   font-size: 14px;
   line-height: 20px;
+  font-weight: 400;
   color: var(--xbox-text-subtle);
 }
 
