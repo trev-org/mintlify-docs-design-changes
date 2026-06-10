@@ -552,10 +552,20 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
    Sidebar navigation
    --------------------------------------------------------------------- */
 
-/* Sidebar background — Xbox grey #484E58 on every tab, both themes. */
+/* Sidebar background — solid darker Xbox grey on every tab, both themes.
+   Original brand grey is #484E58; this is a darkened variant for better
+   contrast against the page content. */
 #sidebar-content,
 .dark #sidebar-content {
-  background-color: #484E58 !important;
+  background-color: #2F343C !important;
+  opacity: 1 !important;
+}
+
+/* Ensure the sidebar layer/wrapper is opaque (defeat any theme transparency). */
+#sidebar,
+.dark #sidebar {
+  background-color: #2F343C !important;
+  opacity: 1 !important;
 }
 
 /* On dark mode the page background sits behind the sidebar fixed positioning,
@@ -584,10 +594,10 @@ sidebar-group-header {
   background-color: transparent !important;
 }
 
-/* Active page — keep brand green but ensure it's legible on the grey */
+/* Active page — darker brand green for stronger contrast on the grey */
 #sidebar-content li[data-active] > a,
 #sidebar-content li[data-active] a {
-  color: #7ee2a8;
+  color: #5BC98A;
   font-weight: 500;
   background-color: transparent;
   border-left: 0;
@@ -611,7 +621,7 @@ sidebar-group-header {
 
 #sidebar-content li[data-active]::before {
   width: 2px;
-  background-color: #7ee2a8;
+  background-color: #5BC98A;
 }
 
 /* ---------------------------------------------------------------------
