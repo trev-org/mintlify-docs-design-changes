@@ -26,7 +26,7 @@
     "decoration": "gradient",
     "color": {
       "light": "#FFFFFF",
-      "dark": "#09090B"
+      "dark": "#000000"
     }
   },
   "navbar": {
@@ -143,7 +143,7 @@
     "content": "XBOX Game Development Documentation",
     "color": {
       "light": "#007738",
-      "dark": "#007738"
+      "dark": "#7CC400"
     }
   },
   "metadata": {

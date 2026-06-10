@@ -24,12 +24,17 @@
   --xbox-text-muted: #78716c;
 
   /* Brand */
-  --xbox-green: #008746;
-  --xbox-green-active: #008746;
+  --xbox-green: #007738;            /* Green for Buttons */
+  --xbox-green-active: #007738;
+  --xbox-green-official: #7CC400;   /* Official Green */
   --xbox-green-fg: #ffffff;
-  --xbox-grey: #484E58;
-  --xbox-red: #E51D23;
-  --xbox-blue: #007DB5;
+  --xbox-grey: #89919F;              /* Grey for nav-bar */
+  --xbox-grey-light: #e6e6e6;        /* Light Grey */
+  --xbox-red: #FF4747;
+  --xbox-blue: #003761;
+  --xbox-yellow: #FFBD3F;
+  --xbox-black: #000000;
+  --xbox-white: #ffffff;
 
   /* System */
   --xbox-radius: 0px;
@@ -49,12 +54,17 @@
   --xbox-text-subtle: #9f9fa9;
   --xbox-text-muted: #78716c;
 
-  --xbox-green: #008746;
-  --xbox-green-active: #008746;
+  --xbox-green: #007738;
+  --xbox-green-active: #007738;
+  --xbox-green-official: #7CC400;
   --xbox-green-fg: #ffffff;
-  --xbox-grey: #484E58;
-  --xbox-red: #E51D23;
-  --xbox-blue: #007DB5;
+  --xbox-grey: #89919F;
+  --xbox-grey-light: #e6e6e6;
+  --xbox-red: #FF4747;
+  --xbox-blue: #003761;
+  --xbox-yellow: #FFBD3F;
+  --xbox-black: #000000;
+  --xbox-white: #ffffff;
 }
 
 /* ---------------------------------------------------------------------
@@ -552,19 +562,26 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
    Sidebar navigation
    --------------------------------------------------------------------- */
 
-/* Sidebar background — solid darker Xbox grey on every tab, both themes.
-   Original brand grey is #484E58; this is a darkened variant for better
-   contrast against the page content. */
-#sidebar-content,
+/* Sidebar background — Xbox nav-bar grey (#89919F) in dark mode,
+   Light Grey (#e6e6e6) in light mode. */
+#sidebar-content {
+  background-color: var(--xbox-grey-light) !important;
+  opacity: 1 !important;
+}
+
 .dark #sidebar-content {
-  background-color: #1E2127 !important;
+  background-color: var(--xbox-grey) !important;
   opacity: 1 !important;
 }
 
 /* Ensure the sidebar layer/wrapper is opaque (defeat any theme transparency). */
-#sidebar,
+#sidebar {
+  background-color: var(--xbox-grey-light) !important;
+  opacity: 1 !important;
+}
+
 .dark #sidebar {
-  background-color: #1E2127 !important;
+  background-color: var(--xbox-grey) !important;
   opacity: 1 !important;
 }
 
@@ -579,29 +596,48 @@ div.sticky.shrink-0:has(> #chat-assistant-sheet) {
 
 sidebar-title,
 sidebar-group-header {
-  color: #ffffff;
+  color: var(--xbox-black);
+  font-weight: 500;
+}
+
+.dark sidebar-title,
+.dark sidebar-group-header {
+  color: var(--xbox-white);
   font-weight: 500;
 }
 
 #sidebar-content li a {
-  color: #d4d4d8;
+  color: #1f2937;
   border-radius: var(--xbox-radius);
 }
 
-#sidebar-content li a:hover,
-.dark #sidebar-content li a:hover {
-  color: #ffffff;
+.dark #sidebar-content li a {
+  color: var(--xbox-white);
+}
+
+#sidebar-content li a:hover {
+  color: var(--xbox-black);
   background-color: transparent !important;
 }
 
-/* Active page — darker brand green for stronger contrast on the grey */
+.dark #sidebar-content li a:hover {
+  color: var(--xbox-white);
+  background-color: transparent !important;
+}
+
+/* Active page — Official Xbox green for strong contrast on the grey */
 #sidebar-content li[data-active] > a,
 #sidebar-content li[data-active] a {
-  color: #3FB377;
+  color: var(--xbox-green);
   font-weight: 500;
   background-color: transparent;
   border-left: 0;
   border-radius: 0;
+}
+
+.dark #sidebar-content li[data-active] > a,
+.dark #sidebar-content li[data-active] a {
+  color: var(--xbox-green-official);
 }
 
 #sidebar-content li:not([data-active]):hover::before,
@@ -616,12 +652,20 @@ sidebar-group-header {
 }
 
 #sidebar-content li:not([data-active]):hover::before {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.dark #sidebar-content li:not([data-active]):hover::before {
   background-color: rgba(255, 255, 255, 0.35);
 }
 
 #sidebar-content li[data-active]::before {
   width: 2px;
-  background-color: #3FB377;
+  background-color: var(--xbox-green);
+}
+
+.dark #sidebar-content li[data-active]::before {
+  background-color: var(--xbox-green-official);
 }
 
 /* ---------------------------------------------------------------------
@@ -1026,38 +1070,160 @@ mdx-content a:not(card a) {
 }
 
 /* ---------------------------------------------------------------------
-   Warning callouts — official Xbox red (#E51D23)
+   Warning / Danger callouts — Xbox red (#FF4747)
    --------------------------------------------------------------------- */
 callout[type="warning"],
+callout[type="danger"],
 .callout-warning,
-[data-callout-type="warning"] {
+.callout-danger,
+[data-callout-type="warning"],
+[data-callout-type="danger"] {
   border-color: var(--xbox-red) !important;
-  background-color: rgba(229, 29, 35, 0.06) !important;
+  background-color: rgba(255, 71, 71, 0.06) !important;
 }
 
 callout[type="warning"] svg,
+callout[type="danger"] svg,
 .callout-warning svg,
+.callout-danger svg,
 [data-callout-type="warning"] svg,
+[data-callout-type="danger"] svg,
 callout[type="warning"] .callout-icon,
-.callout-warning .callout-icon {
+callout[type="danger"] .callout-icon,
+.callout-warning .callout-icon,
+.callout-danger .callout-icon {
   color: var(--xbox-red) !important;
   fill: var(--xbox-red) !important;
 }
 
 callout[type="warning"] .callout-title,
+callout[type="danger"] .callout-title,
 .callout-warning .callout-title,
-[data-callout-type="warning"] .callout-title {
+.callout-danger .callout-title,
+[data-callout-type="warning"] .callout-title,
+[data-callout-type="danger"] .callout-title {
   color: var(--xbox-red) !important;
 }
 
 .dark callout[type="warning"],
+.dark callout[type="danger"],
 .dark .callout-warning,
-.dark [data-callout-type="warning"] {
-  background-color: rgba(229, 29, 35, 0.12) !important;
+.dark .callout-danger,
+.dark [data-callout-type="warning"],
+.dark [data-callout-type="danger"] {
+  background-color: rgba(255, 71, 71, 0.12) !important;
 }
 
 /* ---------------------------------------------------------------------
-   Code-block syntax highlighting — Xbox blue (#007DB5) accent
+   Note / Tip callouts — Xbox yellow (#FFBD3F)
+   --------------------------------------------------------------------- */
+callout[type="note"],
+callout[type="tip"],
+.callout-note,
+.callout-tip,
+[data-callout-type="note"],
+[data-callout-type="tip"] {
+  border-color: var(--xbox-yellow) !important;
+  background-color: rgba(255, 189, 63, 0.08) !important;
+}
+
+callout[type="note"] svg,
+callout[type="tip"] svg,
+.callout-note svg,
+.callout-tip svg,
+[data-callout-type="note"] svg,
+[data-callout-type="tip"] svg,
+callout[type="note"] .callout-icon,
+callout[type="tip"] .callout-icon,
+.callout-note .callout-icon,
+.callout-tip .callout-icon {
+  color: var(--xbox-yellow) !important;
+  fill: var(--xbox-yellow) !important;
+}
+
+callout[type="note"] .callout-title,
+callout[type="tip"] .callout-title,
+.callout-note .callout-title,
+.callout-tip .callout-title,
+[data-callout-type="note"] .callout-title,
+[data-callout-type="tip"] .callout-title {
+  color: var(--xbox-yellow) !important;
+}
+
+.dark callout[type="note"],
+.dark callout[type="tip"],
+.dark .callout-note,
+.dark .callout-tip,
+.dark [data-callout-type="note"],
+.dark [data-callout-type="tip"] {
+  background-color: rgba(255, 189, 63, 0.14) !important;
+}
+
+/* ---------------------------------------------------------------------
+   Info / Check callouts — Xbox blue (#003761)
+   --------------------------------------------------------------------- */
+callout[type="info"],
+callout[type="check"],
+.callout-info,
+.callout-check,
+[data-callout-type="info"],
+[data-callout-type="check"] {
+  border-color: var(--xbox-blue) !important;
+  background-color: rgba(0, 55, 97, 0.06) !important;
+}
+
+callout[type="info"] svg,
+callout[type="check"] svg,
+.callout-info svg,
+.callout-check svg,
+[data-callout-type="info"] svg,
+[data-callout-type="check"] svg,
+callout[type="info"] .callout-icon,
+callout[type="check"] .callout-icon,
+.callout-info .callout-icon,
+.callout-check .callout-icon {
+  color: var(--xbox-blue) !important;
+  fill: var(--xbox-blue) !important;
+}
+
+callout[type="info"] .callout-title,
+callout[type="check"] .callout-title,
+.callout-info .callout-title,
+.callout-check .callout-title,
+[data-callout-type="info"] .callout-title,
+[data-callout-type="check"] .callout-title {
+  color: var(--xbox-blue) !important;
+}
+
+.dark callout[type="info"],
+.dark callout[type="check"],
+.dark .callout-info,
+.dark .callout-check,
+.dark [data-callout-type="info"],
+.dark [data-callout-type="check"] {
+  /* Lighten blue in dark mode for legibility */
+  border-color: #4d80b3 !important;
+  background-color: rgba(0, 55, 97, 0.35) !important;
+}
+
+.dark callout[type="info"] svg,
+.dark callout[type="check"] svg,
+.dark .callout-info svg,
+.dark .callout-check svg,
+.dark [data-callout-type="info"] svg,
+.dark [data-callout-type="check"] svg,
+.dark callout[type="info"] .callout-title,
+.dark callout[type="check"] .callout-title,
+.dark .callout-info .callout-title,
+.dark .callout-check .callout-title,
+.dark [data-callout-type="info"] .callout-title,
+.dark [data-callout-type="check"] .callout-title {
+  color: #82b4e0 !important;
+  fill: #82b4e0 !important;
+}
+
+/* ---------------------------------------------------------------------
+   Code-block syntax highlighting — Xbox palette accents
    Targets Shiki tokens used by Mintlify's code renderer.
    --------------------------------------------------------------------- */
 .code-block .shiki .token.keyword,
@@ -1074,6 +1240,20 @@ pre code .token.selector {
   color: var(--xbox-blue) !important;
 }
 
+/* Strings -> Official Green; Numbers/booleans -> Yellow */
+.code-block .shiki .token.string,
+pre code .token.string {
+  color: var(--xbox-green-official) !important;
+}
+
+.code-block .shiki .token.number,
+.code-block .shiki .token.boolean,
+pre code .token.number,
+pre code .token.boolean,
+pre code .token.constant {
+  color: var(--xbox-yellow) !important;
+}
+
 /* Shiki inline-style tokens: re-color common keyword/function hues to Xbox blue */
 .code-block span[style*="#C586C0"],
 .code-block span[style*="#569CD6"],
@@ -1086,4 +1266,20 @@ pre code span[style*="#4FC1FF"],
 pre code span[style*="#9CDCFE"],
 pre code span[style*="#DCDCAA"] {
   color: var(--xbox-blue) !important;
+}
+
+/* Common Shiki string hues -> Official Green */
+.code-block span[style*="#CE9178"],
+.code-block span[style*="#A3BE8C"],
+pre code span[style*="#CE9178"],
+pre code span[style*="#A3BE8C"] {
+  color: var(--xbox-green-official) !important;
+}
+
+/* Common Shiki numeric / constant hues -> Yellow */
+.code-block span[style*="#B5CEA8"],
+.code-block span[style*="#D7BA7D"],
+pre code span[style*="#B5CEA8"],
+pre code span[style*="#D7BA7D"] {
+  color: var(--xbox-yellow) !important;
 }
