@@ -20,10 +20,10 @@
   },
   "background": {
     "image": {
-      "light": "/images/xbox_logo_transparent_25.png",
+      "light": "/images/xbox_logo_transparent_12_5.png",
       "dark": "/images/xbox_logo_transparent_12_5.png"
     },
-    "decoration": "windows",
+    "decoration": "gradient",
     "color": {
       "light": "#FFFFFF",
       "dark": "#09090B"
