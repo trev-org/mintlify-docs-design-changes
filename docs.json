@@ -1,4 +1,5 @@
 {
+  "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "XBOX Game Development Documentation",
   "description": "XBOX Game Development Documentation",
@@ -8,19 +9,14 @@
     "dark": "#7CC400"
   },
   "logo": {
-    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20-Copy.png",
-    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20-Copy.png"
+    "light": "/images/We_Are_Xbox_Email-Signature_200x200.png",
+    "dark": "/images/We_Are_Xbox_Email-Signature_200x200.png"
   },
   "favicon": "/favicon.png",
   "appearance": {
-    "default": "dark",
-    "strict": true
+    "default": "dark"
   },
   "background": {
-    "image": {
-      "light": "/images/xbox_logo_transparent_6_25.png",
-      "dark": "/images/xbox_logo_transparent_6_25.png"
-    },
     "color": {
       "light": "#FFFFFF",
       "dark": "#09090b"
@@ -140,13 +136,6 @@
       "permanent": true
     }
   ],
-  "banner": {
-    "content": "XBOX Game Development Documentation",
-    "color": {
-      "light": "#007738",
-      "dark": "#007738"
-    }
-  },
   "metadata": {
     "timestamp": true
   },
