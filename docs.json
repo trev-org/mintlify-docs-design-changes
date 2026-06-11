@@ -1,5 +1,5 @@
 {
-  "theme": "almond",
+  "theme": "maple",
   "name": "XBOX Game Development Documentation",
   "description": "XBOX Game Development Documentation",
   "colors": {
@@ -24,7 +24,6 @@
       "light": "/images/xbox_logo_transparent_6_25.png",
       "dark": "/images/xbox_logo_transparent_6_25.png"
     },
-    "decoration": "gradient",
     "color": {
       "light": "#FFFFFF",
       "dark": "#000000"
@@ -51,14 +50,7 @@
     }
   },
   "fonts": {
-    "heading": {
-      "family": "Open Sans",
-      "weight": 700
-    },
-    "body": {
-      "family": "Open Sans",
-      "weight": 400
-    }
+    "family": "Open Sans"
   },
   "styling": {
     "eyebrows": "breadcrumbs"
