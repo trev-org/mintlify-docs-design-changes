@@ -1,70 +1,31 @@
 ---
 title: "XBOX Documentation Hub"
 sidebarTitle: "Home"
-description: "Xbox game development documentation to develop and publish XBOX games using Microsoft products, tools, and services."
+description: "XBOX GDK documentation to develop and publish XBOX games using Microsoft products, tools, and services."
+icon: "house"
 ---
-
-<div className="xbox-hero not-prose">
-  <div className="xbox-hero-glow" />
-
-  <img src="/images/bb78206fa90f3fcfbbfec7388e5eec8b10c21c1c.png" alt="Xbox" className="xbox-hero-logo" noZoom />
-</div>
 
 ## Quick Access
 
 Jump into the guides most teams use first, from environment setup to release notes and reference material.
 
-<a className="xbox-quick-card" href="/onboarding">
-  <div className="xbox-quick-body">
-    <h3>Onboard with ID\@Xbox</h3>
+<Columns cols={2}>
+  <Card title="Onboard with ID@Xbox" icon="id-badge" href="/onboarding">
+    Complete the NDA, concept approval, and Partner Center setup that unlock GDK access.
+  </Card>
 
-    <p>
-      Complete the NDA, concept approval, and Partner Center setup that unlock
-      GDK access.
-    </p>
+  <Card title="Get started with the GDK" icon="rocket" href="/gdk/get-started">
+    Pick a development path, install the toolchain, and build your first console or PC project.
+  </Card>
 
-    <span className="xbox-quick-link">Read guide →</span>
-  </div>
+  <Card title="Download & install" icon="download" href="/gdk/download-install">
+    Grab the latest GDK release and configure Visual Studio for Xbox and Windows targets.
+  </Card>
 
-  <div className="xbox-quick-thumb xbox-thumb-2" />
-</a>
-
-<div className="xbox-quick-grid not-prose">
-  <a className="xbox-quick-card" href="/gdk/get-started">
-    <div className="xbox-quick-body">
-      <h3>Get started with the GDK</h3>
-      <p>Pick a development path, install the toolchain, and build your first console or PC project.</p>
-      <span className="xbox-quick-link">Read guide →</span>
-    </div>
-
-    <div className="xbox-quick-thumb xbox-thumb-1" />
-  </a>
-
-  <a className="xbox-quick-card" href="/gdk/download-install">
-    <div className="xbox-quick-body">
-      <h3>Download & install</h3>
-
-      <p>
-        Grab the latest GDK release and configure Visual Studio for Xbox and
-        Windows targets.
-      </p>
-
-      <span className="xbox-quick-link">Read guide →</span>
-    </div>
-
-    <div className="xbox-quick-thumb xbox-thumb-3" />
-  </a>
-
-  <a className="xbox-quick-card" href="/reference/system-overview">
-    <div className="xbox-quick-body">
-      <h3>API reference</h3>
-      <p>Browse Gaming Runtime, Xbox Services, and platform APIs across the full GDK surface.</p>
-      <span className="xbox-quick-link">Read guide →</span>
-    </div>
-
-    <div className="xbox-quick-thumb xbox-thumb-4" />
-  </a>
-</div>
+  <Card title="API reference" icon="brackets-curly" href="/reference/system-overview">
+    Browse Gaming Runtime, Xbox Services, and platform APIs across the full GDK surface.
+  </Card>
+</Columns>
 
 ## Build Paths
 
@@ -75,13 +36,15 @@ Choose the entry point that matches your platform, engine, and stage of developm
     Write once with the shared Game Core model and target Xbox Series X|S, Xbox One, and Windows PC.
   </Card>
 
-  <Card title="Backend with PlayFab" icon="server" href="/playfab/overview">
-    Add player accounts, economy, multiplayer, and live ops with PlayFab managed services.
-  </Card>
+<Card title="Backend with PlayFab" icon="server" href="/playfab/overview">
+  Add player accounts, economy, multiplayer, and live ops with PlayFab managed
+  services.
+</Card>
 
-  <Card title="Xbox Services integration" icon="trophy" href="/services/overview">
-    Wire up achievements, leaderboards, multiplayer, cloud saves, and social features.
-  </Card>
+<Card title="Xbox Services integration" icon="trophy" href="/services/overview">
+  Wire up achievements, leaderboards, multiplayer, cloud saves, and social
+  features.
+</Card>
 
   <Card title="Publish to the Store" icon="store" href="/publishing/overview">
     Package your title, meet certification, and ship to the Microsoft Store and Xbox.
@@ -97,21 +60,21 @@ The features most teams reach for while building a title.
     Define identity, capabilities, and packaging metadata in `MicrosoftGame.config`.
   </Card>
 
-  <Card title="Packaging" icon="box" href="/gdk/packaging">
-    Build MSIXVC and loose packages for testing, submission, and distribution.
-  </Card>
+<Card title="Packaging" icon="box" href="/gdk/packaging">
+  Build MSIXVC and loose packages for testing, submission, and distribution.
+</Card>
 
-  <Card title="Game saves" icon="floppy-disk" href="/gdk/game-saves">
-    Persist progress with connected storage that roams across devices.
-  </Card>
+<Card title="Game saves" icon="floppy-disk" href="/gdk/game-saves">
+  Persist progress with connected storage that roams across devices.
+</Card>
 
-  <Card title="Input" icon="gamepad" href="/gdk/input">
-    Handle gamepads, keyboard, and mouse with the GameInput API.
-  </Card>
+<Card title="Input" icon="gamepad" href="/gdk/input">
+  Handle gamepads, keyboard, and mouse with the GameInput API.
+</Card>
 
-  <Card title="Networking" icon="network-wired" href="/gdk/networking">
-    Connect players with secure sockets, peer-to-peer, and service traffic.
-  </Card>
+<Card title="Networking" icon="network-wired" href="/gdk/networking">
+  Connect players with secure sockets, peer-to-peer, and service traffic.
+</Card>
 
   <Card title="Storage" icon="hard-drive" href="/gdk/storage">
     Manage local and connected storage across console and PC.
@@ -127,21 +90,33 @@ Tools, samples, and references to keep you moving.
     Profilers, deployment, and diagnostics for console and PC development.
   </Card>
 
-  <Card title="Visual Studio" icon="code" href="/tools/visual-studio">
-    Set up project templates, debugging, and deployment for GDK titles.
-  </Card>
+<Card title="Visual Studio" icon="code" href="/tools/visual-studio">
+  Set up project templates, debugging, and deployment for GDK titles.
+</Card>
 
-  <Card title="Xbox service tools" icon="terminal" href="/tools/xbox-service-tools">
-    Configure sandboxes, test accounts, and service-side settings.
-  </Card>
+<Card
+  title="Xbox service tools"
+  icon="terminal"
+  href="/tools/xbox-service-tools"
+>
+  Configure sandboxes, test accounts, and service-side settings.
+</Card>
 
-  <Card title="API reference" icon="brackets-curly" href="/reference/system-overview">
-    Gaming Runtime, Xbox Services, and platform API documentation.
-  </Card>
+<Card
+  title="API reference"
+  icon="brackets-curly"
+  href="/reference/system-overview"
+>
+  Gaming Runtime, Xbox Services, and platform API documentation.
+</Card>
 
-  <Card title="Error codes" icon="circle-exclamation" href="/reference/error-codes">
-    Look up GDK and Xbox Services error codes and how to resolve them.
-  </Card>
+<Card
+  title="Error codes"
+  icon="circle-exclamation"
+  href="/reference/error-codes"
+>
+  Look up GDK and Xbox Services error codes and how to resolve them.
+</Card>
 
   <Card title="GDK samples" icon="github" href="https://github.com/microsoft/Xbox-GDK-Samples">
     Browse official, buildable samples on GitHub for every major feature.
@@ -152,12 +127,18 @@ Tools, samples, and references to keep you moving.
 
 Use the getting started guides to set up your environment, choose a platform path, and move into samples.
 
-<div className="xbox-cta-links not-prose">
-  <a className="xbox-cta-primary" href="/gdk/get-started">
-    Open Quickstart →
+<div className="not-prose mt-6 flex flex-wrap gap-3">
+  <a
+    className="inline-flex items-center justify-center rounded-lg bg-[#107C10] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0D660D] dark:bg-[#10B25C] dark:text-zinc-950 dark:hover:bg-[#0FA454]"
+    href="/gdk/get-started"
+  >
+    Open Quickstart
   </a>
 
-  <a className="xbox-cta-secondary" href="/onboarding">
-    Onboarding →
+  <a
+    className="inline-flex items-center justify-center rounded-lg border border-zinc-300 px-5 py-2.5 text-sm font-semibold text-zinc-700 transition-colors hover:border-[#107C10] hover:text-[#107C10] dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-[#10B25C] dark:hover:text-[#10B25C]"
+    href="/onboarding"
+  >
+    Onboarding
   </a>
 </div>

@@ -3,18 +3,15 @@
   "name": "XBOX Game Development Documentation",
   "description": "XBOX Game Development Documentation",
   "colors": {
-    "primary": "#007738",
+    "primary": "#7CC400",
     "light": "#7CC400",
-    "dark": "#007738"
+    "dark": "#7CC400"
   },
   "logo": {
     "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20-Copy.png",
     "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20-Copy.png"
   },
-  "favicon": {
-    "light": "/images/XBOX_logo_Sphere_4C_forLight_RGB_2026-05-20-Copy.png",
-    "dark": "/images/XBOX_Sphere_logo_4C_forDark_RGB_2026-05-20-Copy.png"
-  },
+  "favicon": "/favicon.png",
   "appearance": {
     "default": "dark",
     "strict": true
@@ -26,7 +23,7 @@
     },
     "color": {
       "light": "#FFFFFF",
-      "dark": "#000000"
+      "dark": "#09090b"
     }
   },
   "navbar": {
@@ -50,7 +47,18 @@
     }
   },
   "fonts": {
-    "family": "Open Sans"
+    "heading": {
+      "family": "Segoe UI Bold",
+      "source": "/fonts/Segoe UI Bold.woff",
+      "format": "woff",
+      "weight": 700
+    },
+    "body": {
+      "family": "Segoe UI",
+      "source": "/fonts/Segoe UI.woff",
+      "format": "woff",
+      "weight": 400
+    }
   },
   "styling": {
     "eyebrows": "breadcrumbs"
